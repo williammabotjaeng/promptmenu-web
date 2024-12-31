@@ -29,6 +29,7 @@ const Hero: React.FC = () => {
         position: 'relative',
         height: '88vh',
         overflow: 'hidden',
+        fontFamily: 'Open Sans'
       }}
     >
       <iframe
@@ -53,6 +54,7 @@ const Hero: React.FC = () => {
           height: '100%',
           background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.7), rgba(58, 176, 224, 0.7))',
           zIndex: 1,
+          fontFamily: 'Open Sans'
         }}
       />
       <Box
@@ -70,7 +72,7 @@ const Hero: React.FC = () => {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.5 }}
         >
-          <Typography variant="h2">
+          <Typography variant="h2" sx={{ fontFamily: 'Open Sans' }}>
             Welcome to Our Casting Agency
           </Typography>
         </motion.div>
@@ -81,7 +83,7 @@ const Hero: React.FC = () => {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.5 }}
         >
-          <Typography variant="h6">
+          <Typography variant="h6" style={{ fontFamily: 'Open Sans' }}>
             Staffing Your Success, One Event at a Time.
           </Typography>
         </motion.div>
@@ -98,6 +100,7 @@ const Hero: React.FC = () => {
             backgroundColor: 'black',
             marginTop: '20px',
             fontSize: '32px',
+            fontFamily: 'Open Sans'
           }}
         >
           Get Started

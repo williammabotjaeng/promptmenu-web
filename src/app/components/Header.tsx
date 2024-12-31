@@ -17,26 +17,27 @@ const Header: React.FC = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#000', height: '16vh' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#000', height: '16vh', fontFamily: 'Open Sans' }}>
       <Toolbar sx={{ mt: 3 }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <Link href="/" style={{ color: 'white', textDecoration: 'none' }}>
-            <h1>SSH | Staffing Supply Hub</h1>
+            <h3>SSH | Staffing Supply Hub</h3>
           </Link>
         </Typography>
         <Button color="inherit" onClick={handleMenuClose}>
-          <Link href="/" style={{ color: 'white', textDecoration: 'none' }}>Home</Link>
+          <Link href="/" style={{ color: 'white', textDecoration: 'none', fontFamily: 'Open Sans' }}>Home</Link>
         </Button>
         <Button color="inherit" onClick={handleMenuClose}>
-          <Link href="/about" style={{ color: 'white', textDecoration: 'none' }}>About</Link>
+          <Link href="/about" style={{ color: 'white', textDecoration: 'none', fontFamily: 'Open Sans' }}>About</Link>
         </Button>
-        <Button color="inherit" onClick={handleMenuClick}>
+        <Button color="inherit" onClick={handleMenuClick} sx={{ fontFamily: 'Open Sans' }}>
           Services
         </Button>
         <Menu
           anchorEl={anchorEl}
           open={open}
           onClose={handleMenuClose}
+          sx={{ fontFamily: 'Open Sans' }}
         >
           <MenuItem onClick={handleMenuClose}>
             <Link href="/services/talent-casting" style={{ textDecoration: 'none' }}>Talent Casting</Link>

@@ -19,13 +19,13 @@
 
 body {
   margin: 0;
-  font-family: "Open Sans","Raleway", Arial, sans-serif !important;
+  font-family: "Open Sans", "Raleway", Arial, sans-serif !important;
   background-color: #1a1a1a; /* Dark background */
-  color: #e0e0e0; /* Light text color */
 }
 
 h1, h2, h3 {
-  color: var(--blue-munsell);
+  color: "White";
+  font-family: "Open Sans";
 }
 
 a {
@@ -44,6 +44,7 @@ button {
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: "Open Sans";
 }
 
 button:hover {

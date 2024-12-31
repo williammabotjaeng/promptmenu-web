@@ -1,4 +1,3 @@
-// components/Services.tsx
 const Services: React.FC = () => {
     return (
       <section className="grid-x grid-padding-x" style={{ padding: '50px 20px', backgroundColor: '#1a1a1a' }}>
