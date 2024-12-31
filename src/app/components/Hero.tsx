@@ -1,44 +1,87 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 
+const giphyEmbeds = [
+  'https://giphy.com/embed/tYo3qHjD1FPVI2DrTn', 
+  'https://giphy.com/embed/88irBytASglCWNxunm',
+  'https://giphy.com/embed/uEOms1gk6a5xlGaUeP'
+];
+
 const Hero: React.FC = () => {
+  const [currentClipIndex, setCurrentClipIndex] = useState(0);
+
   useEffect(() => {
-    const textElements = document.querySelectorAll('.slide-in-text');
-    textElements.forEach((element) => {
-      element.classList.add('animate');
-    });
+    const interval = setInterval(() => {
+      setCurrentClipIndex((prevIndex) => (prevIndex + 1) % giphyEmbeds.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <Box
       sx={{
-        background: 'linear-gradient(180deg, #3B82F6, #3AB0E0)',
-        padding: '100px 20px',
-        color: '#fff',
-        textAlign: 'right',
-        height: '88vh'
+        position: 'relative',
+        height: '88vh',
+        overflow: 'hidden',
+        width: '100%'
       }}
     >
-      <Typography variant="h2" className="slide-in-text">
-        Welcome to Our Casting Agency
-      </Typography>
-      <br />
-      <Typography variant="h6" className="slide-in-text">
-      Staffing Your Success, One Event at a Time.
-      </Typography>
-      <br />
-      <Button
-        variant="contained"
+      <iframe
+        src={giphyEmbeds[currentClipIndex]}
+        width="102%"
+        height="138%"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          zIndex: -1,
+          border: 'none',
+          overflow: 'hidden'
+        }}
+        allowFullScreen
+      ></iframe>
+      <Box
         sx={{
-          backgroundColor: 'black',
-          marginTop: '20px',
-          fontSize: '32px'
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.7), rgba(58, 176, 224, 0.7))', // Adjust opacity as needed
+          zIndex: 1,
+        }}
+      />
+      <Box
+        sx={{
+          position: 'relative',
+          zIndex: 2,
+          padding: '100px 20px',
+          color: '#fff',
+          textAlign: 'right',
         }}
       >
-        Get Started
-      </Button>
+        <Typography variant="h2" className="slide-in-text">
+          Welcome to Our Casting Agency
+        </Typography>
+        <br />
+        <Typography variant="h6" className="slide-in-text">
+          Staffing Your Success, One Event at a Time.
+        </Typography>
+        <br />
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: 'black',
+            marginTop: '20px',
+            fontSize: '32px',
+          }}
+        >
+          Get Started
+        </Button>
+      </Box>
     </Box>
   );
 };
