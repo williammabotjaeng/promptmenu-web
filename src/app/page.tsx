@@ -2,7 +2,6 @@
 
 import Header from './components/Header';
 import { useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
 import Hero from './components/Hero';
 import '../app/styles/globals.css';
 
