@@ -17,7 +17,7 @@ const Home: React.FC = () => {
       <Header />
       <Box textAlign="center" mt={5}>
         <Typography variant="h3" className="slide-in-text">Welcome to SSH | Staffing Supply Hub</Typography>
-        <Typography variant="h6">Your gateway to the best talent in the industry.</Typography>
+        <Typography variant="h6">Staffing Your Success, One Event at a Time.</Typography>
       </Box>
     </div>
   );
