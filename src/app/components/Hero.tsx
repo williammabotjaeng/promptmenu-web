@@ -2,11 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
+import { motion } from 'framer-motion';
 
 const giphyEmbeds = [
   'https://giphy.com/embed/tYo3qHjD1FPVI2DrTn', 
-  'https://giphy.com/embed/uEOms1gk6a5xlGaUeP',
+  'https://giphy.com/embed/AGDOyVndCDMfd40Zda',
   'https://giphy.com/embed/88irBytASglCWNxunm',
+  'https://giphy.com/embed/fV2O1h54jpyYa9UNHJ',
+  'https://giphy.com/embed/uEOms1gk6a5xlGaUeP',
 ];
 
 const Hero: React.FC = () => {
@@ -61,13 +64,27 @@ const Hero: React.FC = () => {
           textAlign: 'right',
         }}
       >
-        <Typography variant="h2" className="typing-effect">
-          Welcome to Our Casting Agency
-        </Typography>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Typography variant="h2">
+            Welcome to Our Casting Agency
+          </Typography>
+        </motion.div>
         <br />
-        <Typography variant="h6" className="typing-effect">
-          Staffing Your Success, One Event at a Time.
-        </Typography>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Typography variant="h6">
+            Staffing Your Success, One Event at a Time.
+          </Typography>
+        </motion.div>
         <br />
         <Button
           variant="contained"
