@@ -5,8 +5,8 @@ import { Box, Typography, Button } from '@mui/material';
 
 const giphyEmbeds = [
   'https://giphy.com/embed/tYo3qHjD1FPVI2DrTn', 
+  'https://giphy.com/embed/uEOms1gk6a5xlGaUeP',
   'https://giphy.com/embed/88irBytASglCWNxunm',
-  'https://giphy.com/embed/uEOms1gk6a5xlGaUeP'
 ];
 
 const Hero: React.FC = () => {
@@ -15,9 +15,9 @@ const Hero: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentClipIndex((prevIndex) => (prevIndex + 1) % giphyEmbeds.length);
-    }, 5000);
+    }, 5000); // Change clip every 5 seconds
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
   }, []);
 
   return (
@@ -26,7 +26,6 @@ const Hero: React.FC = () => {
         position: 'relative',
         height: '88vh',
         overflow: 'hidden',
-        width: '100%'
       }}
     >
       <iframe
@@ -39,7 +38,6 @@ const Hero: React.FC = () => {
           left: 0,
           zIndex: -1,
           border: 'none',
-          overflow: 'hidden'
         }}
         allowFullScreen
       ></iframe>
@@ -50,7 +48,7 @@ const Hero: React.FC = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.7), rgba(58, 176, 224, 0.7))', // Adjust opacity as needed
+          background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.7), rgba(58, 176, 224, 0.7))',
           zIndex: 1,
         }}
       />
@@ -63,11 +61,11 @@ const Hero: React.FC = () => {
           textAlign: 'right',
         }}
       >
-        <Typography variant="h2" className="slide-in-text">
+        <Typography variant="h2" className="typing-effect">
           Welcome to Our Casting Agency
         </Typography>
         <br />
-        <Typography variant="h6" className="slide-in-text">
+        <Typography variant="h6" className="typing-effect">
           Staffing Your Success, One Event at a Time.
         </Typography>
         <br />
