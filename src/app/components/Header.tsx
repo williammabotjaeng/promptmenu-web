@@ -17,11 +17,11 @@ const Header: React.FC = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#000' }}>
-      <Toolbar>
+    <AppBar position="static" sx={{ backgroundColor: '#000', height: '16vh' }}>
+      <Toolbar sx={{ mt: 3 }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <Link href="/" style={{ color: 'white', textDecoration: 'none' }}>
-            <strong>SSH | Staffing Supply Hub</strong>
+            <h1>SSH | Staffing Supply Hub</h1>
           </Link>
         </Typography>
         <Button color="inherit" onClick={handleMenuClose}>

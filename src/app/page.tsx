@@ -3,6 +3,7 @@
 import Header from './components/Header';
 import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
+import Hero from './components/Hero';
 
 const Home: React.FC = () => {
   useEffect(() => {
@@ -15,10 +16,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <Header />
-      <Box textAlign="center" mt={5}>
-        <Typography variant="h3" className="slide-in-text">Welcome to SSH | Staffing Supply Hub</Typography>
-        <Typography variant="h6">Staffing Your Success, One Event at a Time.</Typography>
-      </Box>
+      <Hero />
     </div>
   );
 };

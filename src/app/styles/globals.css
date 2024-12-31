@@ -1,15 +1,49 @@
-.slide-in-text {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+/* styles/globals.css */
+@import "@fontsource/raleway"; 
+@import "@fontsource/raleway/400.css"; 
+@import "@fontsource/raleway/400-italic.css"; 
+
+@import "@fontsource/open-sans";
+@import "@fontsource/open-sans/400.css";
+@import "@fontsource/open-sans/400-italic.css"; 
+
+:root {
+  --blue-munsell: #459099ff;
+  --moonstone: #7AAEB8ff;
+  --blue-munsell-2: #44919Cff;
+  --non-photo-blue: #91C8D5ff;
+  --dark-cyan: #458A91ff;
 }
 
-.slide-in-text.animate {
-  opacity: 1;
-  transform: translateY(0);
+body {
+  margin: 0;
+  font-family: "Open Sans","Raleway", Arial, sans-serif !important;
+  background-color: #1a1a1a; /* Dark background */
+  color: #e0e0e0; /* Light text color */
 }
 
-.header-title {
-  font-size: 72px;
-  margin: 10px;
+h1, h2, h3 {
+  color: var(--blue-munsell);
+}
+
+a {
+  color: var(--blue-munsell-2);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  background-color: var(--blue-munsell-2);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--moonstone);
 }
