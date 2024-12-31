@@ -1,0 +1,15 @@
+.slide-in-text {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.slide-in-text.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.header-title {
+  font-size: 72px;
+  margin: 10px;
+}
