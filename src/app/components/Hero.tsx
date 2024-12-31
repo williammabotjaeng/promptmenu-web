@@ -86,6 +86,12 @@ const Hero: React.FC = () => {
           </Typography>
         </motion.div>
         <br />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 5 }}
+        >
         <Button
           variant="contained"
           sx={{
@@ -96,6 +102,7 @@ const Hero: React.FC = () => {
         >
           Get Started
         </Button>
+        </motion.div>
       </Box>
     </Box>
   );
