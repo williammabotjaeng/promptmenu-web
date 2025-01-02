@@ -17,6 +17,10 @@ const Home: React.FC = () => {
     <div>
       <Header />
       <Hero />
+      <br />
+      <p style={{
+        textAlign: 'center'
+      }}>&copy; 2025 Support Staffing Hub</p>
     </div>
   );
 };
