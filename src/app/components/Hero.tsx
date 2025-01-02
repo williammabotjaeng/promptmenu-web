@@ -79,7 +79,7 @@ const Hero: React.FC = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <PersonSearchOutlinedIcon sx={{ fontSize: '128px', color: '#000' }} />
+              <PersonSearchOutlinedIcon sx={{ fontSize: '172px', color: '#000' }} />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
@@ -151,7 +151,7 @@ const Hero: React.FC = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <ContentPasteSearchIcon sx={{ fontSize: '128px', color: '#000', }} />
+              <ContentPasteSearchIcon sx={{ fontSize: '172px', color: '#000', }} />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
