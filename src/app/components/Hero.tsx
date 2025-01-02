@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0, scale: .2 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 1.5 }}
             >
               <PersonSearchOutlinedIcon sx={{ fontSize: '172px', color: '#000' }} />
             </motion.div>
@@ -85,7 +85,7 @@ const Hero: React.FC = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 1.5 }}
             >
               <Button
                 variant="contained"
