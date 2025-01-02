@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SSH | Staff Supply Hub",
+  title: "SSH | Support Staffing Hub",
   description: "Staffing Your Success, One Event at a Time.",
 };
 

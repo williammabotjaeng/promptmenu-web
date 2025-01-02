@@ -21,7 +21,7 @@ const Header: React.FC = () => {
       <Toolbar sx={{ mt: 3 }}>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           <Link href="/" style={{ color: 'white', textDecoration: 'none' }}>
-            <h3>SSH | Staffing Supply Hub</h3>
+            <h3>SSH | Support Staffing Hub</h3>
           </Link>
         </Typography>
         <Button color="inherit" onClick={handleMenuClose}>
