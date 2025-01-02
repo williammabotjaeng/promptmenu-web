@@ -92,9 +92,11 @@ const Hero: React.FC = () => {
                 sx={{
                   backgroundColor: '#000', 
                   color: '#977342', 
+                  border: '4px solid #977342',
                   fontSize: '32px',
                   fontFamily: 'Open Sans',
                   marginTop: '10px',
+                  fontWeight: '700',
                   '&:hover': {
                     backgroundColor: '#CEAB76', 
                     color: '#000', 
@@ -162,8 +164,10 @@ const Hero: React.FC = () => {
                 sx={{
                   backgroundColor: '#000', 
                   color: '#977342', 
+                  border: '4px solid #977342',
                   fontSize: '32px',
                   fontFamily: 'Open Sans',
+                  fontWeight: '700',
                   marginTop: '10px',
                   '&:hover': {
                     backgroundColor: '#CEAB76', 
