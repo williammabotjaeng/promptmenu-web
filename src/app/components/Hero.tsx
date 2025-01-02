@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
-import PersonIcon from '@mui/icons-material/Person';
-import BriefcaseIcon from '@mui/icons-material/Work';
+import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 
 const giphyEmbeds = [
   'https://giphy.com/embed/tYo3qHjD1FPVI2DrTn', 
@@ -79,7 +79,7 @@ const Hero: React.FC = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <PersonIcon sx={{ fontSize: '128px', color: '#000' }} />
+              <PersonSearchOutlinedIcon sx={{ fontSize: '128px', color: '#000' }} />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
@@ -149,7 +149,7 @@ const Hero: React.FC = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <BriefcaseIcon sx={{ fontSize: '128px', color: '#000', }} />
+              <ContentPasteSearchIcon sx={{ fontSize: '128px', color: '#000', }} />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
