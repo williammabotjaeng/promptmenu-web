@@ -52,7 +52,7 @@ const Hero: React.FC = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(180deg, rgba(59, 130, 246, 0.7), rgba(58, 176, 224, 0.7))',
+          background: 'rgba(151, 115, 66, 0.8)', // Gold overlay with some transparency
           zIndex: 1,
           fontFamily: 'Open Sans'
         }}
@@ -62,7 +62,7 @@ const Hero: React.FC = () => {
           position: 'relative',
           zIndex: 2,
           padding: '100px 20px',
-          color: '#fff',
+          color: '#000', // Black text color
           textAlign: 'right',
         }}
       >
@@ -72,7 +72,7 @@ const Hero: React.FC = () => {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.5 }}
         >
-          <Typography variant="h2" sx={{ fontFamily: 'Open Sans' }}>
+          <Typography variant="h2" sx={{ fontFamily: 'Open Sans', color: '#000' }}>
             Welcome to Our Casting Agency
           </Typography>
         </motion.div>
@@ -83,7 +83,7 @@ const Hero: React.FC = () => {
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.5 }}
         >
-          <Typography variant="h6" style={{ fontFamily: 'Open Sans' }}>
+          <Typography variant="h6" style={{ fontFamily: 'Open Sans', color: '#000' }}>
             Staffing Your Success, One Event at a Time.
           </Typography>
         </motion.div>
@@ -94,17 +94,22 @@ const Hero: React.FC = () => {
           exit={{ opacity: 0 }}
           transition={{ duration: 5 }}
         >
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: 'black',
-            marginTop: '20px',
-            fontSize: '32px',
-            fontFamily: 'Open Sans'
-          }}
-        >
-          Get Started
-        </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: '#000', // Black background for button
+              color: '#977342', // Dark Gold text for button
+              marginTop: '20px',
+              fontSize: '32px',
+              fontFamily: 'Open Sans',
+              '&:hover': {
+                backgroundColor: '#CEAB76', // Change to Light Beige on hover
+                color: '#000', // Change text color to black on hover
+              },
+            }}
+          >
+            Get Started
+          </Button>
         </motion.div>
       </Box>
     </Box>

@@ -1,4 +1,3 @@
-
 @import "@fontsource/raleway"; 
 @import "@fontsource/raleway/400.css"; 
 @import "@fontsource/raleway/400-italic.css"; 
@@ -10,21 +9,25 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
 :root {
-  --blue-munsell: #459099ff;
-  --moonstone: #7AAEB8ff;
-  --blue-munsell-2: #44919Cff;
-  --non-photo-blue: #91C8D5ff;
-  --dark-cyan: #458A91ff;
+  --blue-munsell: #459099ff; 
+  --moonstone: #7AAEB8ff;   
+  --blue-munsell-2: #44919Cff; 
+  --non-photo-blue: #91C8D5ff; 
+  --dark-cyan: #458A91ff;   
+  --primary-bg: #000000;     
+  --primary-text: #CEAB76;   
+  --dark-gold: #977342;       
 }
 
 body {
   margin: 0;
   font-family: "Open Sans", "Raleway", Arial, sans-serif !important;
-  background-color: #1a1a1a; /* Dark background */
+  background-color: var(--primary-bg); 
+  color: var(--primary-text); 
 }
 
 h1, h2, h3 {
-  color: "White";
+  color: var(--primary-text);
   font-family: "Open Sans";
 }
 
@@ -70,8 +73,21 @@ button:hover {
   display: inline-block;
   overflow: hidden; 
   white-space: nowrap; 
-  border-right: 3px solid #fff; 
+  border-right: 3px solid var(--primary-text); 
   animation: typing 4s steps(30, end), blink 0.75s step-end infinite; 
   font-size: 2rem; 
-  color: #fff;
+  color: var(--primary-text); 
+}
+
+/* Additional styles using Dark Gold */
+h1 {
+  color: var(--dark-gold); 
+}
+
+button {
+  border: 2px solid var(--dark-gold); 
+}
+
+button:hover {
+  background-color: var(--dark-gold); 
 }
