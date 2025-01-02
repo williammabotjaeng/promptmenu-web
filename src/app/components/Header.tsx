@@ -8,10 +8,10 @@ import SSHGoldLogo from '../assets/GoldLogo.png';
 
 const Header: React.FC = () => {
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#000', height: '30vh', fontFamily: 'Open Sans' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#000', height: '30vh', borderBottom: '8px solid #977342' }}>
       <Toolbar sx={{ flexDirection: 'column', alignItems: 'center' }}>
         <Image src={SSHGoldLogo} alt="Logo" width={140} height={140} />
-        <Typography variant="h4" component="div" sx={{ color: 'var(--primary-text)' }}>
+        <Typography variant="h4" component="div" sx={{ color: 'var(--primary-text)', fontFamily: 'Open Sans', fontWeight: '700', marginTop: '-20px' }}>
           Support Staffing Hub
         </Typography>
       </Toolbar>

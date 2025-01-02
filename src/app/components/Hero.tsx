@@ -31,7 +31,8 @@ const Hero: React.FC = () => {
         position: 'relative',
         height: '60vh',
         overflow: 'hidden',
-        fontFamily: 'Open Sans'
+        fontFamily: 'Open Sans',
+        borderBottom: '8px solid #977342'
       }}
     >
       <iframe
