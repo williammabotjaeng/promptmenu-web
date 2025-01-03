@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Box, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -9,10 +9,10 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 const ContactCard = () => {
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
-      <form style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+      <form style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }}> {/* Increased gap */}
         
         {/* First Column: Name, Email, Message, and Send Button */}
-        <div style={{ gridColumn: 'span 1' }}>
+        <div style={{ gridColumn: 'span 1', marginRight: '20px' }}>
           <label htmlFor="name">Name</label>
           <TextField
             id="name"
@@ -22,12 +22,12 @@ const ContactCard = () => {
             fullWidth
             style={{
               marginTop: '5px',
-              height: '40px', 
-              border: '2px solid #977342', 
+              height: '40px',
+              border: '2px solid #977342',
             }}
             InputProps={{
               style: {
-                height: '40px', 
+                height: '40px',
               },
             }}
           />
@@ -42,12 +42,12 @@ const ContactCard = () => {
             fullWidth
             style={{
               marginTop: '5px',
-              height: '40px', 
+              height: '40px',
               border: '2px solid #977342',
             }}
             InputProps={{
               style: {
-                height: '40px', 
+                height: '40px',
               },
             }}
           />
@@ -60,14 +60,14 @@ const ContactCard = () => {
             required
             fullWidth
             multiline
-            rows={3} 
+            rows={3}
             style={{
               marginTop: '5px',
-              border: '2px solid #977342', 
+              border: '2px solid #977342',
             }}
             InputProps={{
               style: {
-                height: '80px', 
+                height: '80px',
               },
             }}
           />
@@ -91,21 +91,22 @@ const ContactCard = () => {
         </div>
 
         {/* Second Column: Contact Details */}
-        <div style={{ gridColumn: 'span 1' }}>
+        <div style={{ gridColumn: 'span 1', marginLeft: '20px' }}>
+          <h3>Contact Details</h3>
+          <br />
           <p><strong>Address:</strong><br /> 123 Main St, City, Country</p>
+          <br />
           <p><strong>Phone:</strong><br /> +123 456 7890</p>
+          <br />
           <p><strong>Email:</strong><br /> contact@example.com</p>
         </div>
 
-        {/* Third Column: Social Links with Icons */}
-        <div style={{ gridColumn: 'span 1' }}>
-          <h3>Follow Us</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <Link href="#"><FacebookIcon style={{ color: "#977342" }} /></Link>
-            <Link href="#"><TwitterIcon style={{ color: "#977342" }} /></Link>
-            <Link href="#"><InstagramIcon style={{ color: "#977342" }} /></Link>
-            <Link href="#"><LinkedInIcon style={{ color: "#977342" }} /></Link>
-          </div>
+        {/* Third Column: Social Links with Icons in 2x2 Grid */}
+        <div style={{ gridColumn: 'span 1', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
+          <Link href="#"><FacebookIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
+          <Link href="#"><TwitterIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
+          <Link href="#"><InstagramIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
+          <Link href="#"><LinkedInIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
         </div>
       </form>
     </div>
