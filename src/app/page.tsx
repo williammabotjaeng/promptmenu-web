@@ -3,7 +3,7 @@
 import Header from '@/components/Header';
 import { useEffect } from 'react';
 import Hero from '@/components/Hero';
-import '@/app/styles/globals.css';
+import '@/styles/globals.css';
 
 const Home: React.FC = () => {
   useEffect(() => {
