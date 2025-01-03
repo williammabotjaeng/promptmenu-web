@@ -22,7 +22,6 @@ const LoginForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
     const newErrors = {};
     if (!formData.usernameOrEmail) newErrors.usernameOrEmail = "Username or Email is required.";
     if (!formData.password) newErrors.password = "Password is required.";
@@ -30,7 +29,6 @@ const LoginForm = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Submit the form (e.g., send to API)
       console.log("Login form submitted:", formData);
       alert("Login successful!");
     }
@@ -75,7 +73,14 @@ const LoginForm = () => {
               },
               "&.Mui-focused fieldset": {
                 borderColor: "#977342", 
+                color: "#977342"
               },
+            },
+            "& .MuiInputLabel-root": {
+              color: "#977342", 
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "#977342", 
             },
           }}
         />
@@ -102,7 +107,14 @@ const LoginForm = () => {
               },
               "&.Mui-focused fieldset": {
                 borderColor: "#977342", 
+                color: '#977342'
               },
+            },
+            "& .MuiInputLabel-root": {
+              color: "#977342", 
+            },
+            "& .MuiInputLabel-root.Mui-focused": {
+              color: "#977342", 
             },
           }}
         />
