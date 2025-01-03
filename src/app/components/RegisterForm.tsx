@@ -1,80 +1,124 @@
-"use client";
+import React from 'react';
 
-import { useState } from 'react';
-
-export default function RegisterForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        alert('Form submitted successfully!');
-        setFormData({ name: '', email: '', message: '' }); 
-      } else {
-        alert('Failed to submit the form.');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('An error occurred. Please try again.');
-    }
-  };
-
+const RegisterForm = () => {
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
-          id="name"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="email">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="message">Message:</label>
-        <textarea
-          id="message"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
+      <h1>Register</h1>
+      <form style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+        
+        {/* Radio Buttons for Client/Talent */}
+        <div style={{ gridColumn: 'span 1' }}>
+          <label style={{
+            margin: '2px'
+          }}>Register as:</label>
+          <div>
+            <label className='form-check-label p-1'>
+              <input type="radio" name="role" value="client" required className='form-check-input' />
+              &nbsp;Client
+            </label>
+            <label style={{ marginLeft: '20px' }} className='form-check-label'>
+              <input type="radio" name="role" value="talent" required className='form-check-input' />
+              &nbsp;Talent
+            </label>
+          </div>
+        </div>
+
+        {/* Email Field */}
+        <div style={{ gridColumn: 'span 2' }}>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+          />
+        </div>
+
+        {/* First Name */}
+        <div>
+          <label htmlFor="firstname">First Name</label>
+          <input
+            type="text"
+            id="firstname"
+            name="firstname"
+            placeholder="Enter your first name"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+          />
+        </div>
+
+        {/* Last Name */}
+        <div>
+          <label htmlFor="lastname">Last Name</label>
+          <input
+            type="text"
+            id="lastname"
+            name="lastname"
+            placeholder="Enter your last name"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+          />
+        </div>
+
+        {/* Date of Birth */}
+        <div>
+          <label htmlFor="dob">Date of Birth</label>
+          <input
+            type="date"
+            id="dob"
+            name="dob"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+          />
+        </div>
+
+        {/* Password */}
+        <div>
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+          />
+        </div>
+
+        {/* Confirm Password */}
+        <div>
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Re-enter your password"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+          />
+        </div>
+
+        {/* Submit Button */}
+        <div style={{ gridColumn: 'span 4', textAlign: 'center', marginTop: '20px' }}>
+          <button
+            type="submit"
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#0070f3',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
   );
-}
+};
+
+export default RegisterForm;

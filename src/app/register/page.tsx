@@ -16,7 +16,7 @@ const Register: React.FC = () => {
   return (
     <div>
       <Header />
-      <Register />
+      <RegisterForm />
       <br />
       <p style={{
         textAlign: 'center'
