@@ -20,7 +20,7 @@ const Home: React.FC = () => {
       <br />
       <p style={{
         textAlign: 'center'
-      }}>&copy; 2025 Support Staffing Hub</p>
+      }}>&copy; 2025 Staffing Solutions Hub</p>
     </div>
   );
 };

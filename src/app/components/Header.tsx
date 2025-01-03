@@ -13,7 +13,7 @@ const Header: React.FC = () => {
           <Image src={SSHGoldLogo} alt="Logo" width={140} height={140} style={{ cursor: 'pointer' }} />
         </Link>
         <Typography variant="h4" component="div" sx={{ color: 'var(--primary-text)', fontFamily: 'Open Sans', fontWeight: '700', marginTop: '-20px' }}>
-          Support Staffing Hub
+          Staffing Solutions Hub
         </Typography>
         <Box sx={{ position: 'absolute', top: '20px', left: '20px', display: 'flex', gap: '10px' }}>
           <Link href="/register" passHref>

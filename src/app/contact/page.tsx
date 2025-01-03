@@ -24,7 +24,7 @@ const Contact: React.FC = () => {
         width: '100vw',
         marginTop: '12px',
         padding: '4px'
-      }}>&copy; 2025 Support Staffing Hub</p>
+      }}>&copy; 2025 Staffing Solutions Hub</p>
     </div>
   );
 };
