@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 
 export default function RegisterForm() {
@@ -28,7 +30,7 @@ export default function RegisterForm() {
 
       if (response.ok) {
         alert('Form submitted successfully!');
-        setFormData({ name: '', email: '', message: '' }); // Reset form
+        setFormData({ name: '', email: '', message: '' }); 
       } else {
         alert('Failed to submit the form.');
       }

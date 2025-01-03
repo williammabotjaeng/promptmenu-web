@@ -1,9 +1,9 @@
 "use client";
 
-import Header from '../../components/Header';
+import Header from '../components/Header';
 import { useEffect } from 'react';
-import RegisterForm from '../../components/RegisterForm';
-import '../app/styles/globals.css';
+import RegisterForm from '../components/RegisterForm';
+import '../styles/globals.css';
 
 const Register: React.FC = () => {
   useEffect(() => {
