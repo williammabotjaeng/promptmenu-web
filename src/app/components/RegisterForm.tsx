@@ -1,4 +1,5 @@
-import { SpaOutlined } from '@mui/icons-material';
+"use client";
+
 import Link from 'next/link';
 import React from 'react';
 
