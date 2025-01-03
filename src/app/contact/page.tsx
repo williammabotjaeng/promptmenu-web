@@ -1,9 +1,9 @@
 "use client";
 
-import Header from '../components/Header';
+import Header from '@/components/Header';
 import { useEffect } from 'react';
-import ContactCard from '../components/ContactCard';
-import '../styles/globals.css';
+import ContactCard from '@/components/ContactCard';
+import '@/styles/globals.css';
 
 const Contact: React.FC = () => {
   useEffect(() => {

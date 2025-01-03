@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import Image from 'next/image';
-import SSHGoldLogo from '../assets/GoldLogo.png';
+import SSHGoldLogo from '@/assets/GoldLogo.png';
 
 const Header: React.FC = () => {
   return (

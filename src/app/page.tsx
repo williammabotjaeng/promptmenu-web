@@ -1,9 +1,9 @@
 "use client";
 
-import Header from './components/Header';
+import Header from '@/components/Header';
 import { useEffect } from 'react';
-import Hero from './components/Hero';
-import '../app/styles/globals.css';
+import Hero from '@/components/Hero';
+import '@/app/styles/globals.css';
 
 const Home: React.FC = () => {
   useEffect(() => {
