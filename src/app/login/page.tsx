@@ -19,7 +19,11 @@ const Login: React.FC = () => {
       <LoginForm />
       <br />
       <p style={{
-        textAlign: 'center'
+        textAlign: 'center',
+        borderTop: '8px solid #977342',
+        width: '100vw',
+        marginTop: '12px',
+        padding: '4px'
       }}>&copy; 2025 Support Staffing Hub</p>
     </div>
   );

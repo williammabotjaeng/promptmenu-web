@@ -44,9 +44,12 @@ const LoginForm = () => {
         padding: "20px",
         backgroundColor: "var(--primary-bg)",
         color: "var(--primary-text)",
-        border: "2px solid var(--dark-gold)",
+        border: "2px solid #977342", 
         borderRadius: "8px",
         fontFamily: "Open Sans",
+        outline: "2px solid #977342", 
+        outlineOffset: "4px", 
+        marginTop: '24px'
       }}
     >
       <h1 style={{ textAlign: "center", color: "var(--dark-gold)" }}>Login</h1>
@@ -61,7 +64,20 @@ const LoginForm = () => {
           required
           error={!!errors.usernameOrEmail}
           helperText={errors.usernameOrEmail}
-          sx={{ marginBottom: "20px" }}
+          sx={{
+            marginBottom: "20px",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#977342", // Set the outline color for the input
+              },
+              "&:hover fieldset": {
+                borderColor: "#977342", // Change outline color on hover
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#977342", // Change outline color when focused
+              },
+            },
+          }}
         />
 
         {/* Password Field */}
@@ -75,7 +91,20 @@ const LoginForm = () => {
           required
           error={!!errors.password}
           helperText={errors.password}
-          sx={{ marginBottom: "20px" }}
+          sx={{
+            marginBottom: "20px",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#977342", // Set the outline color for the input
+              },
+              "&:hover fieldset": {
+                borderColor: "#977342", // Change outline color on hover
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#977342", // Change outline color when focused
+              },
+            },
+          }}
         />
 
         {/* Submit Button */}
