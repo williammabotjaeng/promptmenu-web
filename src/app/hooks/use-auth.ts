@@ -1,22 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
-import api from './api'; // Import your Axios instance
-
-// Define the types for the user data
-interface User {
-  email: string;
-  password: string;
-  firstname?: string;
-  lastname?: string;
-}
+import api from '@/hooks/utility/api'; 
+import { RegistrationData, LoginData, OTPData } from '@/types/types'; 
 
 const useAuth = () => {
   // User Registration Mutation
-  const register = useMutation((userData: User) => {
+  const register = useMutation((userData: RegistrationData) => {
     return api.post('/register', userData);
   });
 
   // User Login Mutation
-  const login = useMutation((userData: Pick<User, 'email' | 'password'>) => {
+  const login = useMutation((userData: LoginData) => {
     return api.post('/login', userData);
   });
 
@@ -30,11 +23,17 @@ const useAuth = () => {
     return api.post('/forgot-password', { email });
   });
 
+  // Verify OTP Mutation
+  const verifyOTP = useMutation((otpData: OTPData) => {
+    return api.post('/verify-otp', otpData);
+  });
+
   return {
     register,
     login,
     logout,
     forgotPassword,
+    verifyOTP,
   };
 };
 
