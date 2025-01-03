@@ -1,3 +1,5 @@
+import { SpaOutlined } from '@mui/icons-material';
+import Link from 'next/link';
 import React from 'react';
 
 const RegisterForm = () => {
@@ -102,10 +104,12 @@ const RegisterForm = () => {
 
         {/* Submit Button */}
         <div style={{ gridColumn: 'span 4', textAlign: 'center', marginTop: '20px' }}>
+        <span style={{ display: 'flex', flexDirection: 'row'}}><input style={{ display: 'inline' }} type="checkbox" className='form-check-input'></input>&nbsp;&nbsp;<span style={{ display: 'inline', textWrap: 'nowrap' }}>By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.</span></span>
           <button
             type="submit"
             style={{
               padding: '10px 20px',
+              marginTop: '4px',
               backgroundColor: '#977342',
               color: '#fff',
               border: 'none',
