@@ -68,13 +68,13 @@ const LoginForm = () => {
             marginBottom: "20px",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "#977342", // Set the outline color for the input
+                borderColor: "#977342", 
               },
               "&:hover fieldset": {
-                borderColor: "#977342", // Change outline color on hover
+                borderColor: "#977342", 
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#977342", // Change outline color when focused
+                borderColor: "#977342", 
               },
             },
           }}
@@ -95,13 +95,13 @@ const LoginForm = () => {
             marginBottom: "20px",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "#977342", // Set the outline color for the input
+                borderColor: "#977342", 
               },
               "&:hover fieldset": {
-                borderColor: "#977342", // Change outline color on hover
+                borderColor: "#977342",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#977342", // Change outline color when focused
+                borderColor: "#977342", 
               },
             },
           }}
@@ -113,11 +113,11 @@ const LoginForm = () => {
           variant="contained"
           fullWidth
           sx={{
-            backgroundColor: "var(--blue-munsell-2)",
+            backgroundColor: "#977342",
             color: "#fff",
             fontWeight: "bold",
             "&:hover": {
-              backgroundColor: "var(--moonstone)",
+              backgroundColor: "#CEAB76",
             },
           }}
         >
