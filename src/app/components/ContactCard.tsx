@@ -9,7 +9,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 const ContactCard = () => {
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
-      <form style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }}> {/* Increased gap */}
+      <form style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '40px' }}>
         
         {/* First Column: Name, Email, Message, and Send Button */}
         <div style={{ gridColumn: 'span 1', marginRight: '20px' }}>
@@ -28,6 +28,12 @@ const ContactCard = () => {
             InputProps={{
               style: {
                 height: '40px',
+              },
+              onFocus: (e) => {
+                e.target.style.borderColor = '#CEAB76'; // Change border color on focus
+              },
+              onBlur: (e) => {
+                e.target.style.borderColor = '#977342'; // Revert border color on blur
               },
             }}
           />
@@ -49,6 +55,12 @@ const ContactCard = () => {
               style: {
                 height: '40px',
               },
+              onFocus: (e) => {
+                e.target.style.borderColor = '#CEAB76'; // Change border color on focus
+              },
+              onBlur: (e) => {
+                e.target.style.borderColor = '#977342'; // Revert border color on blur
+              },
             }}
           />
           
@@ -68,6 +80,12 @@ const ContactCard = () => {
             InputProps={{
               style: {
                 height: '80px',
+              },
+              onFocus: (e) => {
+                e.target.style.borderColor = '#CEAB76'; // Change border color on focus
+              },
+              onBlur: (e) => {
+                e.target.style.borderColor = '#977342'; // Revert border color on blur
               },
             }}
           />
