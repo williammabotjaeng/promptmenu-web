@@ -4,12 +4,15 @@ import { RegistrationData } from '@/types/RegistrationData';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useAuth } from '@/providers/auth-providers';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { NextResponse } from 'next/server'
 
-interface RegisterFormProps {
-  onRegister: (userData: RegistrationData) => void; 
-}
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
+const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState({
     user_roles: '',
     email: '',
@@ -18,8 +21,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
     date_of_birth: '',
     password: '',
     confirmPassword: '',
-    username: '' // Added username field
+    username: ''
   });
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+  const clientURL = process.env.NEXT_PUBLIC_CLIENT_URL;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,7 +41,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
     e.preventDefault();
     try {
       await register(
-        formData.username, // Include username in registration
+        formData.username,
         formData.password,
         formData.email,
         formData.date_of_birth,
@@ -40,11 +49,39 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
         formData.firstname,
         formData.lastname
       ); 
-      // Optionally, handle successful registration (e.g., show a message or redirect)
+      
+      // Show success message and redirect to login
+      setSnackbarMessage('Registration successful! Redirecting to login...');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+      
+      // Redirect after a short delay
+      setTimeout(() => {
+        return NextResponse.redirect(`${clientURL}/login`)
+      }, 3000); // 3 seconds delay
+
     } catch (error) {
       console.error('Registration failed:', error);
-      // Optionally, handle registration error (e.g., show an error message)
+      let errorMessage = 'Registration failed. Please try again.';
+      
+      // Handle specific error messages
+      if (error.response) {
+        if (error.response.data.message.includes('unique constraint')) {
+          errorMessage = 'Email or username already exists.';
+        }
+      }
+
+      setSnackbarMessage(errorMessage);
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
+  };
+
+  const handleSnackbarClose = (event: React.SyntheticEvent<any> | Event, reason: 'timeout' | 'clickaway') => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   return (
@@ -186,6 +223,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
           </button>
         </div>
       </form>
+
+      {/* Snackbar for feedback */}
+      <Snackbar 
+        open={snackbarOpen} 
+        autoHideDuration={6000} 
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
