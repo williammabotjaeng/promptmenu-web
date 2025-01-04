@@ -3,7 +3,11 @@
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onLogin: (userData: { usernameOrEmail: string; password: string }) => void; 
+}
+
+const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const [formData, setFormData] = useState({
     usernameOrEmail: "",
     password: "",
@@ -29,8 +33,8 @@ const LoginForm = () => {
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      console.log("Login form submitted:", formData);
-      alert("Login successful!");
+      // Call the onLogin prop with the form data
+      onLogin(formData);
     }
   };
 
