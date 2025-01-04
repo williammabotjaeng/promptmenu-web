@@ -1,26 +1,49 @@
 "use client";
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  onRegister: (userData: RegistrationData) => void; // Define the prop type
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
+  const [formData, setFormData] = useState({
+    role: '',
+    email: '',
+    firstname: '',
+    lastname: '',
+    dob: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Call the onRegister prop with the form data
+    onRegister(formData);
+  };
+
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <h1>Register</h1>
-      <form style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+      <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
         
         {/* Radio Buttons for Client/Talent */}
         <div style={{ gridColumn: 'span 1' }}>
-          <label style={{
-            margin: '2px'
-          }}>Register as:</label>
+          <label style={{ margin: '2px' }}>Register as:</label>
           <div>
             <label className='form-check-label p-1'>
-              <input type="radio" name="role" value="client" required className='form-check-input' />
+              <input type="radio" name="role" value="client" required className='form-check-input' onChange={handleChange} />
               &nbsp;Client
             </label>
             <label style={{ marginLeft: '20px' }} className='form-check-label'>
-              <input type="radio" name="role" value="talent" required className='form-check-input' />
+              <input type="radio" name="role" value="talent" required className='form-check-input' onChange={handleChange} />
               &nbsp;Talent
             </label>
           </div>
@@ -36,6 +59,7 @@ const RegisterForm = () => {
             placeholder="Enter your email"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
           />
         </div>
 
@@ -49,6 +73,7 @@ const RegisterForm = () => {
             placeholder="Enter your first name"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
           />
         </div>
 
@@ -62,6 +87,7 @@ const RegisterForm = () => {
             placeholder="Enter your last name"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
           />
         </div>
 
@@ -74,6 +100,7 @@ const RegisterForm = () => {
             name="dob"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
           />
         </div>
 
@@ -87,6 +114,7 @@ const RegisterForm = () => {
             placeholder="Enter your password"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
           />
         </div>
 
@@ -100,12 +128,16 @@ const RegisterForm = () => {
             placeholder="Re-enter your password"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
           />
         </div>
 
         {/* Submit Button */}
         <div style={{ gridColumn: 'span 4', textAlign: 'center', marginTop: '20px' }}>
-        <span style={{ display: 'flex', flexDirection: 'row'}}><input style={{ display: 'inline' }} type="checkbox" className='form-check-input'></input>&nbsp;&nbsp;<span style={{ display: 'inline', textWrap: 'nowrap' }}>By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.</span></span>
+          <span style={{ display: 'flex', flexDirection: 'row' }}>
+            <input style={{ display: 'inline' }} type="checkbox" className='form-check-input' required />
+            &nbsp;&nbsp;<span style={{ display: 'inline', textWrap: 'nowrap' }}>By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.</span>
+          </span>
           <button
             type="submit"
             style={{
