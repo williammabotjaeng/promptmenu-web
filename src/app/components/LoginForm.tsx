@@ -2,20 +2,19 @@
 
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
+import { useAuth } from '@/providers/auth-providers'; 
+import { LoginData } from '@/types/LoginData'; 
 
-interface LoginFormProps {
-  onLogin: (userData: { usernameOrEmail: string; password: string }) => void; 
-}
-
-const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
-  const [formData, setFormData] = useState({
-    usernameOrEmail: "",
+const LoginForm: React.FC = () => {
+  const { login } = useAuth();
+  const [formData, setFormData] = useState<LoginData>({
+    username: "",
     password: "",
   });
 
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -23,18 +22,23 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newErrors = {};
-    if (!formData.usernameOrEmail) newErrors.usernameOrEmail = "Username or Email is required.";
+    const newErrors: any = {};
+    if (!formData.username) newErrors.username = "Username or Email is required.";
     if (!formData.password) newErrors.password = "Password is required.";
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
-      // Call the onLogin prop with the form data
-      onLogin(formData);
+      try {
+        await login(formData.username, formData.password);
+        // Optionally handle successful login (e.g., show a message or redirect)
+      } catch (error) {
+        console.error('Login failed:', error);
+        // Optionally handle login error (e.g., show an error message)
+      }
     }
   };
 

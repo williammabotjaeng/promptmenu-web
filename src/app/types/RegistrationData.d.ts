@@ -7,13 +7,3 @@ export interface RegistrationData {
     firstname: string;
     lastname: string;
   }
-  
-  export interface LoginData {
-    username: string;
-    password: string;
-  }
-  
-  export interface OTPData {
-    username: string;
-    otp: string; 
-  }

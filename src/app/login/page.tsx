@@ -6,9 +6,9 @@ import Header from '@/components/Header';
 import LoginForm from '@/components/LoginForm';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
-import useAuth from '@/hooks/use-auth'; 
+import { useAuth } from '@/providers/auth-providers'; 
 import '@/styles/globals.css';
-import { LoginData } from '@/types/types'; 
+import { LoginData } from '@/types/LoginData'; 
 
 const Login: React.FC = () => {
   const { login } = useAuth(); 
@@ -26,7 +26,7 @@ const Login: React.FC = () => {
 
   const handleLogin = async (userData: LoginData) => {
     try {
-      await login.mutateAsync(userData);
+      await login(userData.username, userData.password); 
       setSnackbarMessage('Login successful!');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);

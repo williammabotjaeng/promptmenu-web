@@ -1,19 +1,18 @@
 "use client";
 
+import { RegistrationData } from '@/types/RegistrationData';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useAuth } from '@/providers/auth-providers'; 
 
-interface RegisterFormProps {
-  onRegister: (userData: RegistrationData) => void; // Define the prop type
-}
-
-const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
+const RegisterForm: React.FC = () => {
+  const { register } = useAuth(); // Access the register function from AuthContext
   const [formData, setFormData] = useState({
-    role: '',
+    user_roles: '',
     email: '',
     firstname: '',
     lastname: '',
-    dob: '',
+    date_of_birth: '',
     password: '',
     confirmPassword: '',
   });
@@ -23,10 +22,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Call the onRegister prop with the form data
-    onRegister(formData);
+    try {
+      await register(formData); // Call the register function
+      // Optionally, handle successful registration (e.g., show a message or redirect)
+    } catch (error) {
+      console.error('Registration failed:', error);
+      // Optionally, handle registration error (e.g., show an error message)
+    }
   };
 
   return (
@@ -39,11 +43,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
           <label style={{ margin: '2px' }}>Register as:</label>
           <div>
             <label className='form-check-label p-1'>
-              <input type="radio" name="role" value="client" required className='form-check-input' onChange={handleChange} />
+              <input type="radio" name="user_roles" value="client" required className='form-check-input' onChange={handleChange} />
               &nbsp;Client
             </label>
             <label style={{ marginLeft: '20px' }} className='form-check-label'>
-              <input type="radio" name="role" value="talent" required className='form-check-input' onChange={handleChange} />
+              <input type="radio" name="user_roles" value="talent" required className='form-check-input' onChange={handleChange} />
               &nbsp;Talent
             </label>
           </div>
@@ -93,11 +97,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
 
         {/* Date of Birth */}
         <div>
-          <label htmlFor="dob">Date of Birth</label>
+          <label htmlFor="date_of_birth">Date of Birth</label>
           <input
             type="date"
-            id="dob"
-            name="dob"
+            id="date_of_birth"
+            name="date_of_birth"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
             onChange={handleChange}

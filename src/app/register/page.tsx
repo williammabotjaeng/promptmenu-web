@@ -6,9 +6,9 @@ import Header from '@/components/Header';
 import RegisterForm from '@/components/RegisterForm';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
-import useAuth from '@/hooks/use-auth';
+import { useAuth } from '@/providers/auth-providers';
 import '@/styles/globals.css';
-import { RegistrationData } from '@/types/types';
+import { RegistrationData } from '@/types/RegistrationData';
 
 const Register: React.FC = () => {
   const { register } = useAuth();
@@ -26,13 +26,13 @@ const Register: React.FC = () => {
 
   const handleRegister = async (userData: RegistrationData) => {
     try {
-      await register.mutateAsync(userData);
+      await register(userData); 
       setSnackbarMessage('User registered successfully!');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
       
       setTimeout(() => {
-        router.push('/login');
+        router.push('/login'); // Redirect to login after successful registration
       }, 2000); 
     } catch (error) {
       console.error('Registration failed:', error);
