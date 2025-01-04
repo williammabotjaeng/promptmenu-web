@@ -1,8 +1,11 @@
-import { useMutation } from '@tanstack/react-query';
+"use client";
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import api from '@/hooks/utility/api'; 
 import { RegistrationData, LoginData, OTPData } from '@/types/types'; 
 
 const useAuth = () => {
+  const queryClient = useQueryClient();
 
   // User Registration Mutation
   const register = useMutation({
