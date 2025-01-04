@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Cookies } from 'react-cookies';
+import Cookies from 'react-cookies';
 
 interface AuthState {
   accessToken: string | null;
