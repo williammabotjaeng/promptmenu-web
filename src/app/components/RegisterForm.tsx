@@ -3,6 +3,7 @@
 import { RegistrationData } from '@/types/RegistrationData';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useAuth } from '@/providers/auth-providers';
 
 interface RegisterFormProps {
   onRegister: (userData: RegistrationData) => void; 
@@ -17,7 +18,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
     date_of_birth: '',
     password: '',
     confirmPassword: '',
-    username: ''
+    username: '' // Added username field
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,10 +26,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const { register } = useAuth();
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await onRegister(formData); 
+      await register(
+        formData.username, // Include username in registration
+        formData.password,
+        formData.email,
+        formData.date_of_birth,
+        formData.user_roles,
+        formData.firstname,
+        formData.lastname
+      ); 
       // Optionally, handle successful registration (e.g., show a message or redirect)
     } catch (error) {
       console.error('Registration failed:', error);
@@ -54,6 +65,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
               &nbsp;Talent
             </label>
           </div>
+        </div>
+
+        {/* Username Field */}
+        <div style={{ gridColumn: 'span 2' }}>
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
+          />
         </div>
 
         {/* Email Field */}

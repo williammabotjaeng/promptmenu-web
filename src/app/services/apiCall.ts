@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL;
-const X_API_KEY = process.env.REACT_APP_X_API_KEY; 
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const X_API_KEY = process.env.NEXT_PUBLIC_X_API_KEY; 
+console.log("X API Key", X_API_KEY);
 const axiosInstance = axios.create({
   baseURL: API_URL,
 });
@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 export const apiCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT', body: any = null) => {
 
   const response = await axiosInstance({
-    url: endpoint,
+    url: `http://localhost:8000${endpoint}`,
     method,
     data: body,
     headers: {
