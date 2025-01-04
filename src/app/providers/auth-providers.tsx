@@ -17,7 +17,14 @@ interface AuthContextType {
   login: (username: string, password: string) => Promise<void>;
   verifyOtp: (username: string, otp: string) => Promise<void>;
   logout: () => void;
-  register: (username: string, password: string, email: string) => Promise<void>;
+  register: (
+     username: string,
+     password: string, 
+     email: string,
+     date_of_birth: string,
+     user_roles: string,
+     firstname: string,
+     lastname: string ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -26,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
   const { setTokens } = useTokenStore(); 
   const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh']); 
-
+  
   const loginMutation = useMutation({
     mutationKey: ['login_user'],
     mutationFn: async ({ username, password }: LoginData) => {

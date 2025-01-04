@@ -15,8 +15,7 @@ export const apiCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT', 
     data: body,
     headers: {
       'Content-Type': 'application/json',
-      'X-API-KEY': X_API_KEY,
-      'platform': 'web'
+      'X-API-KEY': X_API_KEY
     },
   });
   return response.data;

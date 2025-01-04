@@ -26,13 +26,21 @@ const Register: React.FC = () => {
 
   const handleRegister = async (userData: RegistrationData) => {
     try {
-      await register(userData); 
+      await register(
+        userData.date_of_birth,
+        userData.email,
+        userData.firstname,
+        userData.lastname,
+        userData.password,
+        userData.user_roles,
+        userData.username
+      ); 
       setSnackbarMessage('User registered successfully!');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
       
       setTimeout(() => {
-        router.push('/login'); // Redirect to login after successful registration
+        router.push('/login'); 
       }, 2000); 
     } catch (error) {
       console.error('Registration failed:', error);

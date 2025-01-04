@@ -3,10 +3,12 @@
 import { RegistrationData } from '@/types/RegistrationData';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import { useAuth } from '@/providers/auth-providers'; 
 
-const RegisterForm: React.FC = () => {
-  const { register } = useAuth(); // Access the register function from AuthContext
+interface RegisterFormProps {
+  onRegister: (userData: RegistrationData) => void; 
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
   const [formData, setFormData] = useState({
     user_roles: '',
     email: '',
@@ -15,6 +17,7 @@ const RegisterForm: React.FC = () => {
     date_of_birth: '',
     password: '',
     confirmPassword: '',
+    username: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +28,7 @@ const RegisterForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await register(formData); // Call the register function
+      await onRegister(formData); 
       // Optionally, handle successful registration (e.g., show a message or redirect)
     } catch (error) {
       console.error('Registration failed:', error);
