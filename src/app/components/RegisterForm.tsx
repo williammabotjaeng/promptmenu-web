@@ -60,13 +60,13 @@ const RegisterForm: React.FC = () => {
         redirect('/login')
       }, 3000); // 3 seconds delay
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Registration failed:', error);
       let errorMessage = 'Registration failed. Please try again.';
       
       // Handle specific error messages
-      if (error.response) {
-        if (error.response.data.message.includes('unique constraint')) {
+      if (error?.response) {
+        if (error?.response.data.message.includes('unique constraint')) {
           errorMessage = 'Email or username already exists.';
         }
       }
