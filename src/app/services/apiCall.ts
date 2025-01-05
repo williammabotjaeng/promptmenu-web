@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 export const apiCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT', body: any = null) => {
 
   const response = await axiosInstance({
-    url: `http://localhost:8000${endpoint}`,
+    url: `${API_URL}${endpoint}`,
     method,
     data: body,
     headers: {
