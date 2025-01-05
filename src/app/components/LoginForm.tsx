@@ -2,17 +2,27 @@
 
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
-import { useAuth } from '@/providers/auth-providers'; 
-import { LoginData } from '@/types/LoginData'; 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { useAuth } from "@/providers/auth-providers";
+import { redirect } from "next/navigation"; 
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const LoginForm: React.FC = () => {
   const { login } = useAuth();
-  const [formData, setFormData] = useState<LoginData>({
+
+  const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,7 +35,7 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const newErrors: any = {};
+    const newErrors: { [key: string]: string } = {};
     if (!formData.username) newErrors.username = "Username or Email is required.";
     if (!formData.password) newErrors.password = "Password is required.";
 
@@ -34,61 +44,65 @@ const LoginForm: React.FC = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         await login(formData.username, formData.password);
-        // Optionally handle successful login (e.g., show a message or redirect)
+
+        // Show success message and redirect to dashboard
+        setSnackbarMessage("Login successful! Redirecting...");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+
+        // Redirect after a short delay
+        setTimeout(() => {
+          redirect('/otp');
+        }, 3000); 
       } catch (error) {
-        console.error('Login failed:', error);
-        // Optionally handle login error (e.g., show an error message)
+        console.error("Login failed:", error);
+        setSnackbarMessage("Login failed. Please check your credentials.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
       }
     }
   };
 
+  const handleSnackbarClose = (event: React.SyntheticEvent<any> | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   return (
-    <Box
-      sx={{
-        maxWidth: "400px",
-        margin: "0 auto",
-        padding: "20px",
-        backgroundColor: "var(--primary-bg)",
-        color: "var(--primary-text)",
-        border: "2px solid #977342", 
-        borderRadius: "8px",
-        fontFamily: "Open Sans",
-        outline: "2px solid #977342", 
-        outlineOffset: "4px", 
-        marginTop: '24px'
-      }}
-    >
+    <Box sx={{ maxWidth: "400px", margin: "0 auto", padding: "20px", backgroundColor: "var(--primary-bg)", color: "var(--primary-text)", border: "2px solid #977342", borderRadius: "8px", fontFamily: "Open Sans", outline: "2px solid #977342", outlineOffset: "4px", marginTop: "24px" }}>
       <h1 style={{ textAlign: "center", color: "var(--dark-gold)" }}>Login</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{ display: "grid", gap: "20px" }}>
+        
         {/* Username or Email Field */}
         <TextField
           label="Username or Email"
-          name="usernameOrEmail"
-          value={formData.usernameOrEmail}
+          name="username"
+          value={formData.username}
           onChange={handleChange}
           fullWidth
           required
-          error={!!errors.usernameOrEmail}
-          helperText={errors.usernameOrEmail}
+          error={!!errors.username}
+          helperText={errors.username}
           sx={{
-            marginBottom: "20px",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "#977342", 
+                borderColor: "#977342",
               },
               "&:hover fieldset": {
-                borderColor: "#977342", 
+                borderColor: "#977342",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#977342", 
-                color: "#977342"
+                borderColor: "#977342",
+                color: "#977342",
               },
             },
             "& .MuiInputLabel-root": {
-              color: "#977342", 
+              color: "#977342",
             },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "#977342", 
+              color: "#977342",
             },
           }}
         />
@@ -105,24 +119,23 @@ const LoginForm: React.FC = () => {
           error={!!errors.password}
           helperText={errors.password}
           sx={{
-            marginBottom: "20px",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "#977342", 
+                borderColor: "#977342",
               },
               "&:hover fieldset": {
                 borderColor: "#977342",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "#977342", 
-                color: '#977342'
+                borderColor: "#977342",
+                color: "#977342",
               },
             },
             "& .MuiInputLabel-root": {
-              color: "#977342", 
+              color: "#977342",
             },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "#977342", 
+              color: "#977342",
             },
           }}
         />
@@ -144,6 +157,18 @@ const LoginForm: React.FC = () => {
           Login
         </Button>
       </form>
+
+      {/* Snackbar for feedback */}
+      <Snackbar 
+        open={snackbarOpen} 
+        autoHideDuration={6000} 
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
