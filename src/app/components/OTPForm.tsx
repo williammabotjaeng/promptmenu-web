@@ -60,12 +60,15 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
           fullWidth
           required
           sx={{
+            color: "#977342",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "#977342",
+                color: "#977342"
               },
               "&:hover fieldset": {
                 borderColor: "#977342",
+                color: "#977342"
               },
               "&.Mui-focused fieldset": {
                 borderColor: "#977342",
