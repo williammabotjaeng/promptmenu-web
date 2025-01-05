@@ -5,6 +5,7 @@ import { Box, Button, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { useAuth } from '@/providers/auth-providers';
+import { redirect } from 'next/navigation';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -28,6 +29,10 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
       setSnackbarMessage('OTP verification successful!');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
+      
+      setTimeout(() => {
+            redirect('/dashboard');
+      }, 2000); 
     } catch (error) {
       console.error('OTP verification failed:', error);
       setSnackbarMessage('OTP verification failed. Please try again.');
