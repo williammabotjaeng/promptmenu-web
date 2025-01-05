@@ -1,6 +1,6 @@
 export interface UserState {
     username: string;
     email: string;
-    setUser: (username: string, email: string) => void;
-    clearUser: () => void;
+    setCurrentUser: (username: string, email: string) => void;
+    clearCurrentUser: () => void;
 }

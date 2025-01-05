@@ -1,19 +1,15 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Header from '@/components/Header';
-import LoginForm from '@/components/LoginForm';
 import OTPForm from '@/components/OTPForm';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
 import { useAuth } from '@/providers/auth-providers'; 
 import '@/styles/globals.css';
-import { LoginData } from '@/types/LoginData'; 
 
-const Login: React.FC = () => {
-  const { login } = useAuth(); 
-  const router = useRouter();
+const OTP: React.FC = () => {
+  
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
@@ -25,25 +21,6 @@ const Login: React.FC = () => {
     }
   }, []);
 
-  const handleLogin = async (userData: LoginData) => {
-    try {
-      await login(userData.username, userData.password); 
-      setSnackbarMessage('Login successful!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-      
-      // Redirect to the dashboard or home page after successful login
-      setTimeout(() => {
-        router.push('/dashboard'); 
-      }, 2000); 
-    } catch (error) {
-      console.error('Login failed:', error);
-      setSnackbarMessage('Login failed. Please check your credentials.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    }
-  };
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -51,7 +28,7 @@ const Login: React.FC = () => {
   return (
     <div>
       <Header />
-      <OTPForm />
+      <OTPForm username={"username"} />
       <br />
       <p style={{ textAlign: 'center' }}>&copy; 2025 Staffing Solutions Hub</p>
 
@@ -70,4 +47,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default OTP;
