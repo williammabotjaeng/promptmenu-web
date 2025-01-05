@@ -108,8 +108,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await verifyOtpMutation.mutateAsync({ username, otp });
   };
 
-  const register = async (username: string, password: string, email: string) => {
-    await registerMutation.mutateAsync({ username, password, email });
+  const register = async (
+    username: string, 
+    password: string, 
+    email: string,
+    user_roles: string,
+    firstname: string,
+    lastname: string,
+    date_of_birth: string
+  ) => {
+    await registerMutation.mutateAsync({ username, password, email, user_roles, firstname, lastname, date_of_birth });
   };
 
   return (
