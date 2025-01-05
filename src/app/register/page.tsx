@@ -57,7 +57,7 @@ const Register: React.FC = () => {
   return (
     <div>
       <Header />
-      <RegisterForm onRegister={handleRegister} />
+      <RegisterForm />
       <br />
       <p style={{ textAlign: 'center' }}>&copy; 2025 Staffing Solutions Hub</p>
 

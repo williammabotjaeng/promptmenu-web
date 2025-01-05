@@ -58,7 +58,7 @@ const RegisterForm: React.FC = () => {
       // Redirect after a short delay
       setTimeout(() => {
         redirect('/login')
-      }, 3000); // 3 seconds delay
+      }, 3000); 
 
     } catch (error: any) {
       console.error('Registration failed:', error);
@@ -75,13 +75,6 @@ const RegisterForm: React.FC = () => {
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
-  };
-
-  const handleSnackbarClose = (event: React.SyntheticEvent<any> | Event, reason: 'timeout' | 'clickaway') => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
   };
 
   return (
