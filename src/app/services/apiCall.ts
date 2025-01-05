@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const X_API_KEY = process.env.NEXT_PUBLIC_X_API_KEY; 
-console.log("X API Key", X_API_KEY);
+
 const axiosInstance = axios.create({
   baseURL: API_URL,
 });
