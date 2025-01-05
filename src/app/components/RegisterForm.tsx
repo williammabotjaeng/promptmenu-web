@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { useAuth } from '@/providers/auth-providers';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { NextResponse } from 'next/server'
+import { redirect } from 'next/navigation';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -57,7 +57,7 @@ const RegisterForm: React.FC = () => {
       
       // Redirect after a short delay
       setTimeout(() => {
-        return NextResponse.redirect(`${clientURL}/login`)
+        redirect('/login')
       }, 3000); // 3 seconds delay
 
     } catch (error) {
