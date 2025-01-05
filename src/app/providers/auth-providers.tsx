@@ -11,6 +11,8 @@ import { OTPData } from '@/types/OTPData';
 import { useCookies } from 'react-cookie'; 
 import useTokenStore from '@/state/use-token-store'; 
 import { apiCall } from '@/services/apiCall';
+import setCurrentUser from '@/state/use-user-store';
+import clearCurrentUser from '@/state/use-user-store';
 
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null; 
@@ -52,7 +54,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         access: data.access,
       };
       setUser(loggedInUser);
-      
     },
     onError: (error: ErrorData) => {
       console.error('Login error: ', error);
@@ -96,6 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeCookie('access', { path: '/' }); 
     removeCookie('refresh', { path: '/' }); 
     setUser(null); 
+    clearCurrentUser();
   };
 
   const login = async (username: string, password: string) => {

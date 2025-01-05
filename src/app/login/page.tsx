@@ -24,25 +24,6 @@ const Login: React.FC = () => {
     }
   }, []);
 
-  const handleLogin = async (userData: LoginData) => {
-    try {
-      await login(userData.username, userData.password); 
-      setSnackbarMessage('Login successful!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-      
-      // Redirect to the dashboard or home page after successful login
-      setTimeout(() => {
-        router.push('/dashboard'); 
-      }, 2000); 
-    } catch (error) {
-      console.error('Login failed:', error);
-      setSnackbarMessage('Login failed. Please check your credentials.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    }
-  };
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -50,7 +31,7 @@ const Login: React.FC = () => {
   return (
     <div>
       <Header />
-      <LoginForm onLogin={handleLogin} /> {/* Pass the handleLogin function as a prop */}
+      <LoginForm /> {/* Pass the handleLogin function as a prop */}
       <br />
       <p style={{ textAlign: 'center' }}>&copy; 2025 Staffing Solutions Hub</p>
 

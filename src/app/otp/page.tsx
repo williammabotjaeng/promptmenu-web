@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import OTPForm from '@/components/OTPForm';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
-import { useAuth } from '@/providers/auth-providers'; 
+import useUserStore from '@/state/use-user-store';
 import '@/styles/globals.css';
 
 const OTP: React.FC = () => {
@@ -28,7 +28,7 @@ const OTP: React.FC = () => {
   return (
     <div>
       <Header />
-      <OTPForm username={"username"} />
+      <OTPForm username={useUserStore.getState().username} />
       <br />
       <p style={{ textAlign: 'center' }}>&copy; 2025 Staffing Solutions Hub</p>
 
