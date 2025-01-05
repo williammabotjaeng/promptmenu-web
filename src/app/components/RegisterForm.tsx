@@ -228,10 +228,9 @@ const RegisterForm: React.FC = () => {
       <Snackbar 
         open={snackbarOpen} 
         autoHideDuration={6000} 
-        onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+        <Alert severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
