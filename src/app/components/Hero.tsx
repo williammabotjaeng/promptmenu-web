@@ -30,7 +30,7 @@ const Hero: React.FC = () => {
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'rgba(151, 115, 66, 0.5)', // Background overlay
+              background: "linear-gradient(to bottom, #977342, #CEAB76)",
               zIndex: 1,
             }}
           />
@@ -74,7 +74,7 @@ const Hero: React.FC = () => {
                     color: '#000',
                   },
                 }}
-                onClick={() => router.push('/register')} // Navigate to "register" route
+                onClick={() => router.push('/register')} 
               >
                 Find Talent
               </Button>
@@ -91,7 +91,7 @@ const Hero: React.FC = () => {
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'rgba(151, 115, 66, 0.5)', // Background overlay
+              background: "linear-gradient(to bottom, #977342, #CEAB76)",
               zIndex: 1,
               borderLeft: '4px solid black'
             }}
@@ -136,7 +136,7 @@ const Hero: React.FC = () => {
                     color: '#000',
                   },
                 }}
-                onClick={() => router.push('/register')} // Navigate to "register" route
+                onClick={() => router.push('/register')} 
               >
                 Job Calls
               </Button>
