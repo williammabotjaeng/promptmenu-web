@@ -1,8 +1,9 @@
 "use client";
 
 import { Geist, Geist_Mono } from "next/font/google";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; 
-import { AuthProvider } from '@/providers/auth-providers'; 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@/providers/auth-providers';
+import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -22,12 +23,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
-            {children}
+            <ProtectedRoutes>
+              {children}
+            </ProtectedRoutes>
           </AuthProvider>
         </QueryClientProvider>
       </body>

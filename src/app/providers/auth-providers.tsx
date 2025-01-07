@@ -13,7 +13,7 @@ import useTokenStore from '@/state/use-token-store';
 import { apiCall } from '@/services/apiCall';
 import setCurrentUser from '@/state/use-user-store';
 import clearCurrentUser from '@/state/use-user-store';
-
+import { useRouter } from 'next/navigation';
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null; 
   login: (username: string, password: string) => Promise<void>;
@@ -37,6 +37,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
   const { setTokens } = useTokenStore(); 
   const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh']); 
+
+  const router = useRouter();
   
   const loginMutation = useMutation({
     mutationKey: ['login_user'],
@@ -104,6 +106,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (username: string, password: string) => {
     await loginMutation.mutateAsync({ username, password });
+    if (user) {
+      router.push('/dashboard'); 
+    }
   };
 
   const verifyOtp = async (username: string, otp: string) => {
