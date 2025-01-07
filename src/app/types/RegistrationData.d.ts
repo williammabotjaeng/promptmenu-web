@@ -1,6 +1,6 @@
 export interface RegistrationData {
     email: string;
-    user_roles: string;
+    user_role: string;
     date_of_birth: string; 
     password: string;
     username: string;

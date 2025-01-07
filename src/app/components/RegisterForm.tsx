@@ -15,13 +15,12 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 
 const RegisterForm: React.FC = () => {
   const [formData, setFormData] = useState({
-    user_roles: '',
+    user_role: '',
     email: '',
     firstname: '',
     lastname: '',
     date_of_birth: '',
     password: '',
-    confirmPassword: '',
     username: '',
     gender: '',
     phonenumber: ''
@@ -43,15 +42,16 @@ const RegisterForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log("Form Data", formData);
     try {
       await register(
-        formData.username,
-        formData.password,
+        formData.user_role,
         formData.email,
-        formData.date_of_birth,
-        formData.user_roles,
         formData.firstname,
         formData.lastname,
+        formData.date_of_birth,
+        formData.password,
+        formData.username,
         formData.gender,
         formData.phonenumber
       ); 
@@ -93,11 +93,11 @@ const RegisterForm: React.FC = () => {
           <label style={{ margin: '2px' }}>Register as:</label>
           <div>
             <label className='form-check-label p-1'>
-              <input type="radio" name="user_roles" value="client" required className='form-check-input' onChange={handleChange} />
+              <input type="radio" name="user_role" value="client" required className='form-check-input' onChange={handleChange} />
               &nbsp;Client
             </label>
             <label style={{ marginLeft: '20px' }} className='form-check-label'>
-              <input type="radio" name="user_roles" value="talent" required className='form-check-input' onChange={handleChange} />
+              <input type="radio" name="user_role" value="talent" required className='form-check-input' onChange={handleChange} />
               &nbsp;Talent
             </label>
           </div>
@@ -120,7 +120,7 @@ const RegisterForm: React.FC = () => {
         {/* Gender Field */}
         <div style={{ gridColumn: 'span 1' }}>
           <label htmlFor="gender">Gender</label>
-          <select id="gender" name="gender" required style={{ width: '100%', padding: '8px', marginTop: '5px' }}>
+          <select onChange={handleChange} id="gender" name="gender" required style={{ width: '100%', padding: '8px', marginTop: '5px' }}>
               <option value="male">Male</option>
               <option value="female">Female</option>
           </select>

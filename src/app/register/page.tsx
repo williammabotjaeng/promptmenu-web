@@ -33,7 +33,7 @@ const Register: React.FC = () => {
         userData.firstname,
         userData.lastname,
         userData.password,
-        userData.user_roles,
+        userData.user_role,
         userData.username,
         userData.gender,
         userData.phonenumber

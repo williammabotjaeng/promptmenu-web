@@ -24,7 +24,7 @@ interface AuthContextType {
      password: string, 
      email: string,
      date_of_birth: string,
-     user_roles: string,
+     user_role: string,
      firstname: string,
      lastname: string,
      gender: string,
@@ -56,7 +56,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const registerMutation = useMutation({
     mutationKey: ['register_user'],
     mutationFn: async (userData: RegistrationData) => {
-      return await apiCall('/accounts/register/', 'POST', userData);
+      return await apiCall('/accounts/register/', 'POST', {
+        username: userData.username,
+        user_role: userData.user_role,
+        date_of_birth: userData.date_of_birth,
+        email: userData.email,
+        firstname: userData.firstname,
+        lastname: userData.lastname,
+        password: userData.password,
+        gender: userData.gender,
+        phonenumber: userData.phonenumber
+      });
     },
     onSuccess: (data: RegistrationSuccessData) => {
       console.log('Registration successful: ', data);
@@ -95,9 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (username: string, password: string) => {
     await loginMutation.mutateAsync({ username, password });
-    if (user) {
-      router.push('/dashboard'); 
-    }
+
   };
 
   const verifyOtp = async (username: string, otp: string) => {
@@ -108,14 +116,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     username: string, 
     password: string, 
     email: string,
-    user_roles: string,
+    user_role: string,
     firstname: string,
     lastname: string,
     date_of_birth: string,
     gender: string,
     phonenumber: string
   ) => {
-    await registerMutation.mutateAsync({ username, password, email, user_roles, firstname, lastname, date_of_birth, gender, phonenumber });
+    await registerMutation.mutateAsync({ 
+      username: username, 
+      password: password, 
+      email: email, 
+      user_role: user_role, 
+      firstname: firstname, 
+      lastname: lastname, 
+      date_of_birth: date_of_birth, 
+      gender: gender, 
+      phonenumber: phonenumber 
+    });
   };
 
   return (
