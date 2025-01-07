@@ -121,7 +121,6 @@ const RegisterForm: React.FC = () => {
         <div style={{ gridColumn: 'span 1' }}>
           <label htmlFor="gender">Gender</label>
           <select id="gender" name="gender" required style={{ width: '100%', padding: '8px', marginTop: '5px' }}>
-              <option value="" disabled selected>Select your gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
           </select>

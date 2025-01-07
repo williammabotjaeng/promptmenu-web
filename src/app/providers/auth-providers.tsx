@@ -47,17 +47,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     onSuccess: (data: LoginSuccessData) => {
       console.log('Login successful: ', data);
-      // Store tokens in Zustand
-      setTokens(data.refresh, data.access); 
-      // Store tokens in cookies
-      setCookie('access', data.access, { path: '/', maxAge: 604800 });
-      setCookie('refresh', data.refresh, { path: '/', maxAge: 604800 });
-      // Optionally set user state
-      const loggedInUser: AuthenticatedUser = {
-        refresh: data.refresh,
-        access: data.access,
-      };
-      setUser(loggedInUser);
     },
     onError: (error: ErrorData) => {
       console.error('Login error: ', error);

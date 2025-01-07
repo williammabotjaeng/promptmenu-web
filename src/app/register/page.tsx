@@ -23,6 +23,7 @@ const Register: React.FC = () => {
       textElement.classList.add('animate');
     }
   }, []);
+  
 
   const handleRegister = async (userData: RegistrationData) => {
     try {
