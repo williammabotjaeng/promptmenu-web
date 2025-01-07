@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-const DashboardContent: React.FC = () => {
+const PortalContent: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'messages' | 'projects'>('messages');
 
   return (
@@ -12,11 +12,11 @@ const DashboardContent: React.FC = () => {
         <h2>Stats</h2>
         <div style={{ margin: '10px 0', padding: '10px' }}>
           <h1>{0}</h1>
-          <p>Number of Jobs Posted</p>
+          <p>Number of Projects Completed</p>
         </div>
         <div style={{ margin: '10px 0', padding: '10px' }}>
           <h1>{0}</h1>
-          <p>Talent Engaged</p>
+          <p>Clients Engaged</p>
         </div>
       </div>
 
@@ -70,7 +70,7 @@ const DashboardContent: React.FC = () => {
           {/* Tab Content */}
           {activeTab === 'messages' && (
             <div>
-              <h3>Messages with Talent</h3>
+              <h3>Messages with Clients</h3>
               <p>No new messages.</p>
             </div>
           )}
@@ -86,4 +86,4 @@ const DashboardContent: React.FC = () => {
   );
 };
 
-export default DashboardContent;
+export default PortalContent;
