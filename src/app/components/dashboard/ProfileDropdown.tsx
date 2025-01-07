@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Avatar, Button, Menu, MenuItem } from '@mui/material';
+import { Avatar, Menu, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
 const ProfileDropdown: React.FC = () => {
@@ -35,15 +35,57 @@ const ProfileDropdown: React.FC = () => {
         onClose={handleClose}
         PaperProps={{
           style: {
+            backgroundColor: '#977342', 
+            color: 'black', 
             maxHeight: 48 * 4.5 + 8,
             width: '20ch',
           },
         }}
       >
-        <MenuItem onClick={() => handleMenuItemClick('/account')}>Account</MenuItem>
-        <MenuItem onClick={() => handleMenuItemClick('/payments')}>Payments</MenuItem>
-        <MenuItem onClick={() => handleMenuItemClick('/settings')}>Settings</MenuItem>
-        <MenuItem onClick={() => handleMenuItemClick('/support')}>Support</MenuItem>
+        <MenuItem 
+          onClick={() => handleMenuItemClick('/account')} 
+          sx={{ 
+            '&:hover': { 
+              backgroundColor: 'black', 
+              color: '#977342', 
+            },
+          }}
+        >
+          Account
+        </MenuItem>
+        <MenuItem 
+          onClick={() => handleMenuItemClick('/payments')} 
+          sx={{ 
+            '&:hover': { 
+              backgroundColor: 'black', 
+              color: '#977342', 
+            },
+          }}
+        >
+          Payments
+        </MenuItem>
+        <MenuItem 
+          onClick={() => handleMenuItemClick('/settings')} 
+          sx={{ 
+            '&:hover': { 
+              backgroundColor: 'black', 
+              color: '#977342', 
+            },
+          }}
+        >
+          Settings
+        </MenuItem>
+        <MenuItem 
+          onClick={() => handleMenuItemClick('/support')} 
+          sx={{ 
+            '&:hover': { 
+              backgroundColor: 'black', 
+              color: '#977342', 
+            },
+          }}
+        >
+          Support
+        </MenuItem>
       </Menu>
     </div>
   );
