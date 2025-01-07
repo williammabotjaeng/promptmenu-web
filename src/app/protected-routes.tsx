@@ -12,23 +12,25 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   const pathname = usePathname();
 
-  const [cookies] = useCookies(['accessToken']);
+  const [cookies] = useCookies(['access']);
 
-  const accessToken = cookies.accessToken; 
+  const accessToken = cookies.access; 
+
 
   useEffect(() => {
     if (accessToken && (pathname === '/login' || pathname === '/register' || pathname === '/')) {
       router.push('/dashboard'); 
     }
-  }, [accessToken, router]);
+  }, [cookies, router]);
 
   return (
     <NextShield
       isAuth={!!accessToken} 
       isLoading={false} 
       router={router}
-      privateRoutes={['/dashboard', '/contact']} 
-      publicRoutes={['/', '/login', '/register', '/otp', '/contact']} 
+      privateRoutes={['/dashboard']} 
+      publicRoutes={['/', '/login', '/register', '/otp']}
+      hybridRoutes={['/contact']} 
       accessRoute="/dashboard" 
       loginRoute="/login"
       LoadingComponent={<p>Loading...</p>} 
