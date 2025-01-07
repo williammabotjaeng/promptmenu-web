@@ -14,7 +14,6 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 const RegisterForm: React.FC = () => {
-  const [genderVal, setGenderVal] = useState('Male');
   const [formData, setFormData] = useState({
     user_role: '',
     email: '',
@@ -23,7 +22,7 @@ const RegisterForm: React.FC = () => {
     date_of_birth: '',
     password: '',
     username: '',
-    gender: '',
+    gender: 'male',
     phonenumber: ''
   });
 
@@ -34,7 +33,6 @@ const RegisterForm: React.FC = () => {
  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("Field Details", name, value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -42,7 +40,6 @@ const RegisterForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Data", formData);
     try {
       await register(
         formData.username,
