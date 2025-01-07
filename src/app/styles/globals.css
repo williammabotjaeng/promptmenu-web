@@ -95,3 +95,7 @@ button:hover {
 .css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
   background-color: white !important;
 }
+
+.MuiFormLabel-root {
+  margin-bottom: 10px !important;
+}

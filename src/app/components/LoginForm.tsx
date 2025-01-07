@@ -111,7 +111,7 @@ const LoginForm: React.FC = () => {
               color: "#977342",
             },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "#977342",
+              display: 'none'
             },
           }}
         />
@@ -144,7 +144,7 @@ const LoginForm: React.FC = () => {
               color: "#977342",
             },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "#977342",
+              display: 'none'
             },
           }}
         />
