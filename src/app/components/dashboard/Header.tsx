@@ -30,6 +30,7 @@ const Header: React.FC = () => {
                 '&:hover': {
                   backgroundColor: '#CEAB76', 
                   color: '#000', 
+                  fontWeight: '700'
                 },
               }}
             >
@@ -37,7 +38,6 @@ const Header: React.FC = () => {
             </Button>
           </Link>
           <Box sx={{
-            borderRight: '2px solid black',
             borderLeft: '2px solid black'
           }}>
           <Link href="/find-talent" passHref>
@@ -48,6 +48,7 @@ const Header: React.FC = () => {
                 '&:hover': {
                   backgroundColor: '#CEAB76',
                   color: '#000',
+                  fontWeight: '700'
                 },
               }}
             >
@@ -55,6 +56,9 @@ const Header: React.FC = () => {
             </Button>
           </Link>
           </Box>
+          <Box sx={{
+            borderLeft: '2px solid black'
+          }}>
           <Link href="/contact" passHref>
             <Button 
               sx={{ 
@@ -62,23 +66,25 @@ const Header: React.FC = () => {
                 '&:hover': {
                   backgroundColor: '#CEAB76', 
                   color: '#000',
+                  fontWeight: '700'
                 },
               }}
             >
               Contact Us
             </Button>
           </Link>
-          
+          </Box>
           {/* Log Out Button */}
           {accessToken && (
             <Button 
-              onClick={logout} // Call the logout function from the Auth context
+              onClick={logout} 
               sx={{ 
                 backgroundColor: 'black', 
-                color: '#FFD700', // Gold font color
+                color: '#728542', 
                 '&:hover': {
                   backgroundColor: '#CEAB76', 
                   color: '#000', 
+                  fontWeight: '700'
                 },
               }}
             >
