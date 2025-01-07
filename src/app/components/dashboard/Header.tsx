@@ -8,6 +8,7 @@ import { useCookies } from 'react-cookie';
 import { useAuth } from '@/providers/auth-providers'; 
 import { useRouter } from 'next/navigation';
 import ProfileDropdown from './ProfileDropdown';
+import NotificationDropdown from './NotificationDropdown';
 
 const Header: React.FC = () => {
   const [cookies] = useCookies(["access"]);
@@ -38,6 +39,7 @@ const Header: React.FC = () => {
 
         {/* Menu on the right */}
         <Box sx={{ display: 'flex', gap: '20px' }}>
+          <NotificationDropdown />
           <ProfileDropdown />
           <Link href="/post-job" passHref>
             <Button 
