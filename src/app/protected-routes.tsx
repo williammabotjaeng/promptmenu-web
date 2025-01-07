@@ -25,7 +25,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     if (!accessToken) {
       router.push('/login');
     }
-  }, [cookies, router]);
+  }, [cookies, router, pathname]);
 
   return (
     <NextShield

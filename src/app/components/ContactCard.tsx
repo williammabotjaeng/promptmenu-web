@@ -33,10 +33,10 @@ const ContactCard = () => {
                 color: "#977342"
               },
               onFocus: (e) => {
-                e.target.style.borderColor = '#CEAB76'; // Change border color on focus
+                e.target.style.borderColor = '#CEAB76'; 
               },
               onBlur: (e) => {
-                e.target.style.borderColor = '#977342'; // Revert border color on blur
+                e.target.style.borderColor = '#977342';
               },
             }}
           />
