@@ -14,6 +14,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 });
 
 const RegisterForm: React.FC = () => {
+  const [genderVal, setGenderVal] = useState('Male');
   const [formData, setFormData] = useState({
     user_role: '',
     email: '',
@@ -27,14 +28,13 @@ const RegisterForm: React.FC = () => {
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [gender, seGender] = useState('Male');
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
-  const clientURL = process.env.NEXT_PUBLIC_CLIENT_URL;
-
+ 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("Field Details", name, value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
