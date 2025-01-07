@@ -31,6 +31,7 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
       setSnackbarOpen(true);
       
       setTimeout(() => {
+        
             redirect('/dashboard');
       }, 2000); 
     } catch (error) {
