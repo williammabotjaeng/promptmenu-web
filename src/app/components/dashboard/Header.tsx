@@ -6,11 +6,26 @@ import Image from 'next/image';
 import SSHBlackLogo from '@/assets/SSHBlackLogo.png';
 import { useCookies } from 'react-cookie';
 import { useAuth } from '@/providers/auth-providers'; 
+import { useRouter } from 'next/navigation';
 
 const Header: React.FC = () => {
   const [cookies] = useCookies(["access"]);
   const accessToken = cookies['access'];
   const { logout } = useAuth(); 
+
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  }
+
+  if (!accessToken)
+  {
+    router.push('/login');
+  }
+
+
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#977342', borderBottom: '8px solid #000' }}>
@@ -77,7 +92,7 @@ const Header: React.FC = () => {
           {/* Log Out Button */}
           {accessToken && (
             <Button 
-              onClick={logout} 
+              onClick={handleLogout} 
               sx={{ 
                 backgroundColor: 'black', 
                 color: '#728542', 

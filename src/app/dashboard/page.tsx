@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import Header from '@/components/dashboard/Header'; // Adjust the path as necessary
-import Footer from '@/components/dashboard/Footer'; // Adjust the path as necessary
-import '@/styles/globals.css'; // Import global styles if needed
+import Header from '@/components/dashboard/Header'; 
+import Footer from '@/components/dashboard/Footer'; 
+import '@/styles/globals.css';
 
 const Dashboard: React.FC = () => {
   return (
