@@ -7,6 +7,7 @@ import SSHBlackLogo from '@/assets/SSHBlackLogo.png';
 import { useCookies } from 'react-cookie';
 import { useAuth } from '@/providers/auth-providers'; 
 import { useRouter } from 'next/navigation';
+import ProfileDropdown from './ProfileDropdown';
 
 const Header: React.FC = () => {
   const [cookies] = useCookies(["access"]);
@@ -37,6 +38,7 @@ const Header: React.FC = () => {
 
         {/* Menu on the right */}
         <Box sx={{ display: 'flex', gap: '20px' }}>
+          <ProfileDropdown />
           <Link href="/post-job" passHref>
             <Button 
               sx={{ 
