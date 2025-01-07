@@ -18,8 +18,12 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
 
   useEffect(() => {
-    if (accessToken && (pathname === '/login' || pathname === '/register' || pathname === '/')) {
+    if (accessToken && (pathname === '/login' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
       router.push('/dashboard'); 
+    }
+
+    if (!accessToken) {
+      router.push('/login');
     }
   }, [cookies, router]);
 
