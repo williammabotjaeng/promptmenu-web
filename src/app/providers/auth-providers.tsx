@@ -56,7 +56,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const registerMutation = useMutation({
     mutationKey: ['register_user'],
     mutationFn: async (userData: RegistrationData) => {
-      console.log("User Data", userData);
       return await apiCall('/accounts/register/', 'POST', {
         username: userData.username,
         user_role: userData.user_role,
@@ -106,7 +105,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (username: string, password: string) => {
     await loginMutation.mutateAsync({ username, password });
-
+    if (user)
+    {
+      router.push('/dashboard')
+    }
   };
 
   const verifyOtp = async (username: string, otp: string) => {
