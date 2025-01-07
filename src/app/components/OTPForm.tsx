@@ -59,8 +59,9 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
           onChange={handleChange}
           fullWidth
           required
+          onFocus={(e) => e.target.style.color = "#977342"} 
+          onBlur={(e) => e.target.style.color = "#977342"}
           sx={{
-            color: "#977342",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "#977342",
@@ -71,6 +72,10 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
                 color: "#977342"
               },
               "&.Mui-focused fieldset": {
+                borderColor: "#977342",
+                color: "#977342",
+              },
+              "&.Mui-filled fieldset": {
                 borderColor: "#977342",
                 color: "#977342",
               },

@@ -95,11 +95,17 @@ const LoginForm: React.FC = () => {
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "#977342",
+                color: "#977342"
               },
               "&:hover fieldset": {
                 borderColor: "#977342",
+                color: "#977342"
               },
               "&.Mui-focused fieldset": {
+                borderColor: "#977342",
+                color: "#977342",
+              },
+              "&.Mui-filled fieldset": {
                 borderColor: "#977342",
                 color: "#977342",
               },
