@@ -124,10 +124,10 @@ const ContactCard = () => {
 
         {/* Third Column: Social Links with Icons in 2x2 Grid */}
         <div style={{ gridColumn: 'span 1', display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-          <Link href="#"><FacebookIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
-          <Link href="#"><TwitterIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
+          <Link href="https://web.facebook.com/people/Staffing-Solutions-Hub/61568735786489" target='_blank'><FacebookIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
+          <Link href="https://x.com/staffinghub_ae" target="_blank"><TwitterIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
           <Link href="#"><InstagramIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
-          <Link href="#"><LinkedInIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
+          <Link href="https://www.linkedin.com/company/staffing-solutions-hub/" target='_blank'><LinkedInIcon style={{ fontSize: '80px', color: '#977342' }} /></Link>
         </div>
       </form>
     </div>
