@@ -4,30 +4,14 @@ import React from 'react';
 import Header from '@/components/dashboard/Header'; 
 import Footer from '@/components/dashboard/Footer'; 
 import '@/styles/globals.css';
+import DashboardContent from '@/components/dashboard/DashboardContent';
 
 const Dashboard: React.FC = () => {
   return (
     <div>
       <Header />
-      <main style={{ padding: '20px' }}>
-        <h1>Dashboard</h1>
-        <p>Welcome to your dashboard! Here you can manage your settings, view analytics, and more.</p>
-        
-        {/* Add more dashboard components or sections here */}
-        <section>
-          <h2>Your Stats</h2>
-          <div>
-            {/* Example stats or cards */}
-            <div style={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
-              <h3>Stat 1</h3>
-              <p>Details about stat 1.</p>
-            </div>
-            <div style={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
-              <h3>Stat 2</h3>
-              <p>Details about stat 2.</p>
-            </div>
-          </div>
-        </section>
+      <main style={{ padding: '10px' }}>
+        <DashboardContent />
       </main>
       <Footer />
     </div>
