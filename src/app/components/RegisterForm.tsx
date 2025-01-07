@@ -7,6 +7,7 @@ import { useAuth } from '@/providers/auth-providers';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { redirect } from 'next/navigation';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -21,10 +22,13 @@ const RegisterForm: React.FC = () => {
     date_of_birth: '',
     password: '',
     confirmPassword: '',
-    username: ''
+    username: '',
+    gender: '',
+    phoneNumber: ''
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [gender, seGender] = useState('Male');
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
@@ -47,7 +51,9 @@ const RegisterForm: React.FC = () => {
         formData.date_of_birth,
         formData.user_roles,
         formData.firstname,
-        formData.lastname
+        formData.lastname,
+        formData.gender,
+        formData.phoneNumber
       ); 
       
       // Show success message and redirect to login
@@ -111,6 +117,18 @@ const RegisterForm: React.FC = () => {
           />
         </div>
 
+        {/* Username Field */}
+        <div style={{ gridColumn: 'span 1' }}>
+          <label htmlFor="gender">Gender</label>
+          <select id="gender" name="gender" required style={{ width: '100%', padding: '8px', marginTop: '5px' }}>
+              <option value="" disabled selected>Select your gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+          </select>
+        </div>
+
+       
+
         {/* Email Field */}
         <div style={{ gridColumn: 'span 2' }}>
           <label htmlFor="email">Email</label>
@@ -165,6 +183,21 @@ const RegisterForm: React.FC = () => {
             onChange={handleChange}
           />
         </div>
+
+        {/* Phone Number */}
+        <div>
+          <label htmlFor="phonenumber">Phone Number</label>
+          <input
+            type="text"
+            id="phonenumber"
+            name="phonenumber"
+            placeholder="Enter your Phone Number"
+            required
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+            onChange={handleChange}
+          />
+        </div>
+        
 
         {/* Password */}
         <div>
