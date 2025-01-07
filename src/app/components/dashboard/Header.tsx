@@ -95,7 +95,7 @@ const Header: React.FC = () => {
               onClick={handleLogout} 
               sx={{ 
                 backgroundColor: 'black', 
-                color: '#728542', 
+                color: '#977342', 
                 '&:hover': {
                   backgroundColor: '#CEAB76', 
                   color: '#000', 
