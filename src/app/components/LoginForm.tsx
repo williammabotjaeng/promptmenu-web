@@ -15,14 +15,11 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 
 const LoginForm: React.FC = () => {
   const { login } = useAuth();
-
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-
   const router = useRouter();
-
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -50,7 +47,6 @@ const LoginForm: React.FC = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         await login(formData.username, formData.password);
-
         setCurrentUser(formData.username, '');
 
         // Show success message and redirect to dashboard
@@ -58,7 +54,6 @@ const LoginForm: React.FC = () => {
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
         
-
         // Redirect after a short delay
         setTimeout(() => {
           router.push('/otp');
@@ -94,6 +89,8 @@ const LoginForm: React.FC = () => {
           required
           error={!!errors.username}
           helperText={errors.username}
+          onFocus={(e) => e.target.style.color = "#977342"} 
+          onBlur={(e) => e.target.style.color = "#977342"}
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
@@ -111,7 +108,7 @@ const LoginForm: React.FC = () => {
               color: "#977342",
             },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "#977342"
+              color: "#977342",
             },
           }}
         />
@@ -127,6 +124,8 @@ const LoginForm: React.FC = () => {
           required
           error={!!errors.password}
           helperText={errors.password}
+          onFocus={(e) => e.target.style.color = "#977342"} 
+          onBlur={(e) => e.target.style.color = "#977342"} 
           sx={{
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
@@ -144,7 +143,7 @@ const LoginForm: React.FC = () => {
               color: "#977342",
             },
             "& .MuiInputLabel-root.Mui-focused": {
-              color: "#977342"
+              color: "#977342",
             },
           }}
         />
