@@ -33,7 +33,9 @@ const Register: React.FC = () => {
         userData.lastname,
         userData.password,
         userData.user_roles,
-        userData.username
+        userData.username,
+        userData.gender,
+        userData.phonenumber
       ); 
       setSnackbarMessage('User registered successfully!');
       setSnackbarSeverity('success');

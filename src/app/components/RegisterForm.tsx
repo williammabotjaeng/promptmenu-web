@@ -24,7 +24,7 @@ const RegisterForm: React.FC = () => {
     confirmPassword: '',
     username: '',
     gender: '',
-    phoneNumber: ''
+    phonenumber: ''
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -53,7 +53,7 @@ const RegisterForm: React.FC = () => {
         formData.firstname,
         formData.lastname,
         formData.gender,
-        formData.phoneNumber
+        formData.phonenumber
       ); 
       
       // Show success message and redirect to login
