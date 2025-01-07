@@ -91,3 +91,7 @@ button {
 button:hover {
   background-color: var(--dark-gold); 
 }
+
+.css-16wblaj-MuiInputBase-input-MuiOutlinedInput-input {
+  background-color: white !important;
+}
