@@ -190,7 +190,8 @@ const RegisterForm: React.FC = () => {
             type="text"
             id="phonenumber"
             name="phonenumber"
-            placeholder="Enter your Phone Number"
+            placeholder="Enter a Valid UAE Phone"
+            pattern="^(?:\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$" 
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
             onChange={handleChange}
