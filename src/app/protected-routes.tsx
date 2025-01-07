@@ -22,9 +22,6 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       router.push('/dashboard'); 
     }
 
-    if (!accessToken) {
-      router.push('/login');
-    }
   }, [cookies, router, pathname]);
 
   return (
