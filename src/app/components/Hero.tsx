@@ -1,29 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Box, Button, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-
-const giphyEmbeds = [
-  'https://giphy.com/embed/tYo3qHjD1FPVI2DrTn', 
-  'https://giphy.com/embed/AGDOyVndCDMfd40Zda',
-  'https://giphy.com/embed/88irBytASglCWNxunm',
-  'https://giphy.com/embed/fV2O1h54jpyYa9UNHJ',
-  'https://giphy.com/embed/uEOms1gk6a5xlGaUeP',
-];
+import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
 
 const Hero: React.FC = () => {
-  const [currentClipIndex, setCurrentClipIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentClipIndex((prevIndex) => (prevIndex + 1) % giphyEmbeds.length);
-    }, 5000); 
-
-    return () => clearInterval(interval); 
-  }, []);
+  const router = useRouter(); // Initialize useRouter
 
   return (
     <Box
@@ -36,21 +21,8 @@ const Hero: React.FC = () => {
       }}
     >
       <Grid container sx={{ height: '100%' }}>
+        {/* Left Section */}
         <Grid item xs={6} sx={{ position: 'relative', overflow: 'hidden' }}>
-          <iframe
-            src={giphyEmbeds[currentClipIndex]}
-            width="100%"
-            height="100%"
-            style={{
-              border: 'none',
-              filter: 'blur(5px)', 
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              zIndex: -1,
-            }}
-            allowFullScreen
-          ></iframe>
           <Box
             sx={{
               position: 'absolute',
@@ -58,7 +30,7 @@ const Hero: React.FC = () => {
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'rgba(151, 115, 66, 0.5)', 
+              background: 'rgba(151, 115, 66, 0.5)', // Background overlay
               zIndex: 1,
             }}
           />
@@ -74,7 +46,7 @@ const Hero: React.FC = () => {
             }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: .2 }}
+              initial={{ opacity: 0, scale: 0.2 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.5 }}
@@ -90,39 +62,28 @@ const Hero: React.FC = () => {
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: '#000', 
-                  color: '#977342', 
+                  backgroundColor: '#000',
+                  color: '#977342',
                   border: '4px solid #977342',
                   fontSize: '32px',
                   fontFamily: 'Open Sans',
                   marginTop: '10px',
                   fontWeight: '700',
                   '&:hover': {
-                    backgroundColor: '#CEAB76', 
-                    color: '#000', 
+                    backgroundColor: '#CEAB76',
+                    color: '#000',
                   },
                 }}
+                onClick={() => router.push('/register')} // Navigate to "register" route
               >
                 Find Talent
               </Button>
             </motion.div>
           </Box>
         </Grid>
+
+        {/* Right Section */}
         <Grid item xs={6} sx={{ position: 'relative', overflow: 'hidden' }}>
-          <iframe
-            src={giphyEmbeds[(currentClipIndex + 1) % giphyEmbeds.length]} 
-            width="100%"
-            height="100%"
-            style={{
-              border: 'none',
-              filter: 'blur(5px)', 
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              zIndex: -1,
-            }}
-            allowFullScreen
-          ></iframe>
           <Box
             sx={{
               position: 'absolute',
@@ -130,8 +91,9 @@ const Hero: React.FC = () => {
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'rgba(151, 115, 66, 0.5)', 
+              background: 'rgba(151, 115, 66, 0.5)', // Background overlay
               zIndex: 1,
+              borderLeft: '4px solid black'
             }}
           />
           <Box
@@ -146,12 +108,12 @@ const Hero: React.FC = () => {
             }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: .2 }}
+              initial={{ opacity: 0, scale: 0.2 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <ContentPasteSearchIcon sx={{ fontSize: '172px', color: '#000', }} />
+              <ContentPasteSearchIcon sx={{ fontSize: '172px', color: '#000' }} />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
@@ -162,18 +124,19 @@ const Hero: React.FC = () => {
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: '#000', 
-                  color: '#977342', 
+                  backgroundColor: '#000',
+                  color: '#977342',
                   border: '4px solid #977342',
                   fontSize: '32px',
                   fontFamily: 'Open Sans',
                   fontWeight: '700',
                   marginTop: '10px',
                   '&:hover': {
-                    backgroundColor: '#CEAB76', 
-                    color: '#000', 
+                    backgroundColor: '#CEAB76',
+                    color: '#000',
                   },
                 }}
+                onClick={() => router.push('/register')} // Navigate to "register" route
               >
                 Job Calls
               </Button>
