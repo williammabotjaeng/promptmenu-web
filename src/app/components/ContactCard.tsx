@@ -68,6 +68,34 @@ const ContactCard = () => {
               },
             }}
           />
+
+          <label htmlFor="phonenumber" style={{ marginTop: '10px' }}>Phone Number</label>
+          <TextField
+            type="text"
+            id="phonenumber"
+            name="phonenumber"
+            placeholder="Enter your Phone Number"
+            required
+            fullWidth
+            style={{
+              marginTop: '5px',
+              height: '40px',
+              border: '2px solid #977342',
+              color: "#977342"
+            }}
+            InputProps={{
+              style: {
+                height: '40px',
+                color: "#977342"
+              },
+              onFocus: (e) => {
+                e.target.style.borderColor = '#CEAB76'; 
+              },
+              onBlur: (e) => {
+                e.target.style.borderColor = '#977342'; 
+              },
+            }}
+          />
           
           <label htmlFor="message" style={{ marginTop: '10px' }}>Message</label>
           <TextField
