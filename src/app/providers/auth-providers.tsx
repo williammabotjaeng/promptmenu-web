@@ -56,6 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const registerMutation = useMutation({
     mutationKey: ['register_user'],
     mutationFn: async (userData: RegistrationData) => {
+      console.log("User Data", userData);
       return await apiCall('/accounts/register/', 'POST', {
         username: userData.username,
         user_role: userData.user_role,

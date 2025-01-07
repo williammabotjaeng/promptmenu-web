@@ -45,13 +45,13 @@ const RegisterForm: React.FC = () => {
     console.log("Form Data", formData);
     try {
       await register(
-        formData.user_role,
+        formData.username,
+        formData.password,
         formData.email,
+        formData.date_of_birth,
+        formData.user_role,
         formData.firstname,
         formData.lastname,
-        formData.date_of_birth,
-        formData.password,
-        formData.username,
         formData.gender,
         formData.phonenumber
       ); 
