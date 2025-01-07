@@ -26,7 +26,9 @@ interface AuthContextType {
      date_of_birth: string,
      user_roles: string,
      firstname: string,
-     lastname: string ) => Promise<void>;
+     lastname: string,
+     gender: string,
+     phonenumber: string ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -115,9 +117,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     user_roles: string,
     firstname: string,
     lastname: string,
-    date_of_birth: string
+    date_of_birth: string,
+    gender: string,
+    phonenumber: string
   ) => {
-    await registerMutation.mutateAsync({ username, password, email, user_roles, firstname, lastname, date_of_birth });
+    await registerMutation.mutateAsync({ username, password, email, user_roles, firstname, lastname, date_of_birth, gender, phonenumber });
   };
 
   return (
