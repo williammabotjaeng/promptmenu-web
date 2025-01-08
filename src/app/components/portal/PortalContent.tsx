@@ -70,7 +70,7 @@ const PortalContent: React.FC = () => {
           {/* Tab Content */}
           {activeTab === 'messages' && (
             <div>
-              <h3>Messages with Clients</h3>
+              <h3>Messages with Admin</h3>
               <p>No new messages.</p>
             </div>
           )}
