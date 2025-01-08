@@ -37,7 +37,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
   const { setTokens } = useTokenStore(); 
-  const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh']); 
+  const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh', 'user_role']); 
 
   const router = useRouter();
   
@@ -51,7 +51,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const loggedInUser: AuthenticatedUser = {
         refresh: data?.tokens?.refresh,
         access: data?.tokens?.access,
+        user_role: data?.tokens?.user_role
       };
+      console.log("tokens", data?.tokens)
       setUser(loggedInUser); 
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 }); 

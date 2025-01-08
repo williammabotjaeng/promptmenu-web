@@ -78,7 +78,7 @@ const Hero: React.FC = () => {
                     color: '#000',
                   },
                 }}
-                onClick={() => handleButtonClick('talent')} // Pass 'talent' as the type
+                onClick={() => handleButtonClick('client')} 
               >
                 Find Talent
               </Button>
@@ -140,7 +140,7 @@ const Hero: React.FC = () => {
                     color: '#000',
                   },
                 }}
-                onClick={() => handleButtonClick('client')} 
+                onClick={() => handleButtonClick('talent')} 
               >
                 Job Calls
               </Button>

@@ -36,10 +36,10 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       isAuth={!!accessToken} 
       isLoading={false} 
       router={router}
-      privateRoutes={['/dashboard']} 
+      privateRoutes={['/dashboard', '/portal']} 
       publicRoutes={['/', '/login', '/register', '/otp']}
       hybridRoutes={['/contact']} 
-      accessRoute="/dashboard" 
+      accessRoute={user_role === 'client' ? '/dashboard' : '/portal'} 
       loginRoute="/login"
       LoadingComponent={<p>Loading...</p>} 
     >

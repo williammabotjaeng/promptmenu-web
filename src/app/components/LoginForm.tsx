@@ -57,7 +57,7 @@ const LoginForm: React.FC = () => {
         
         // Redirect after a short delay
         setTimeout(() => {
-
+          console.log("user role", user_role);
           user_role === 'client' ? router.push('/dashboard') : router.push('/portal');
         }, 2000); 
       } catch (error) {

@@ -1,12 +1,25 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '@/components/dashboard/Header'; 
 import Footer from '@/components/dashboard/Footer'; 
 import '@/styles/globals.css';
 import DashboardContent from '@/components/dashboard/DashboardContent';
+import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/navigation';
 
 const Dashboard: React.FC = () => {
+
+  const router = useRouter();
+  const [cookies] = useCookies(['user_role']);
+  
+  const user_role = cookies?.user_role;
+
+  useEffect(() => {
+    console.log("User Role", user_role);
+    if (user_role === 'talent') router.push('/portal');
+  }, [])
+
   return (
     <div>
       <Header />
