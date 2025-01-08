@@ -6,8 +6,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useAuth } from "@/providers/auth-providers";
 import { useRouter } from "next/navigation"; 
-import useUserStore from "@/state/use-user-store";
-import { useStore } from "zustand";
+
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -33,8 +32,6 @@ const LoginForm: React.FC = () => {
     }));
   };
 
-  const { setCurrentUser } = useStore(useUserStore);
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -47,7 +44,6 @@ const LoginForm: React.FC = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         await login(formData.username, formData.password);
-        setCurrentUser(formData.username, '');
 
         // Show success message and redirect to dashboard
         setSnackbarMessage("Login successful! Redirecting...");

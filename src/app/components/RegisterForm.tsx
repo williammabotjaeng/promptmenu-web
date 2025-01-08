@@ -9,6 +9,8 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { redirect } from 'next/navigation';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import useUserStore from "@/state/use-user-store";
+import { useStore } from "zustand";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -50,6 +52,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const { register } = useAuth();
 
+  const { setCurrentUser } = useStore(useUserStore);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -66,8 +70,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         country
       );
 
+      setCurrentUser(formData.username, '');
+
       // Show success message and redirect to login
-      setSnackbarMessage('Registration successful! Redirecting to login...');
+      setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
 

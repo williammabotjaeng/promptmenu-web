@@ -140,7 +140,7 @@ const Hero: React.FC = () => {
                     color: '#000',
                   },
                 }}
-                onClick={() => handleButtonClick('job')} // Pass 'job' as the type
+                onClick={() => handleButtonClick('client')} 
               >
                 Job Calls
               </Button>
