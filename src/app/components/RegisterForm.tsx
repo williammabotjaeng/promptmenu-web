@@ -13,9 +13,13 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const RegisterForm: React.FC = () => {
+interface RegisterFormProps {
+  userRole: string;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [formData, setFormData] = useState({
-    user_role: '',
+    user_role: userRole,
     email: '',
     firstname: '',
     lastname: '',
@@ -46,7 +50,7 @@ const RegisterForm: React.FC = () => {
         formData.password,
         formData.email,
         formData.date_of_birth,
-        formData.user_role,
+        userRole,
         formData.firstname,
         formData.lastname,
         formData.gender,

@@ -22,19 +22,6 @@ const Header: React.FC = () => {
         <Box sx={{ position: 'absolute', top: '20px', left: '20px', display: 'flex', gap: '10px' }}>
           {!accessToken && (
             <>
-              <Link href="/register" passHref>
-                <Button 
-                  sx={{ 
-                    color: '#977342',
-                    '&:hover': {
-                      backgroundColor: '#CEAB76', 
-                      color: '#000', 
-                    },
-                  }}
-                >
-                  Register
-                </Button>
-              </Link>
               <Link href="/login" passHref>
                 <Button 
                   sx={{ 

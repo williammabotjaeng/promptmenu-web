@@ -6,7 +6,6 @@ import useTokenStore from '@/state/use-token-store';
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
-import { jwtDecode } from 'jwt-decode';
 
 const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
@@ -19,20 +18,16 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   console.log("Access Token", accessToken);
 
-  const userClaim = jwtDecode(accessToken);
-
-  console.log("user claim", userClaim);
-
   useEffect(() => {
-    if (accessToken && (pathname === '/login' || pathname === '/portal' || pathname === '/register' || pathname === '/otp' || pathname === '/') && userClaim?.user_role === "client") {
+    if (accessToken && (pathname === '/login' || pathname === '/portal' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
       router.push('/dashboard'); 
     }
 
-    if (accessToken && (pathname === '/login' || pathname === '/dashboard' || pathname === '/register' || pathname === '/otp' || pathname === '/') && userClaim?.user_role === "talent") {
+    if (accessToken && (pathname === '/login' || pathname === '/dashboard' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
       router.push('/portal'); 
     }
 
-  }, []);
+  }, [pathname, accessToken, router]);
 
   return (
     <NextShield

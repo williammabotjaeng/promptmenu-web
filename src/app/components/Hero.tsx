@@ -5,10 +5,14 @@ import { Box, Button, Grid } from '@mui/material';
 import { motion } from 'framer-motion';
 import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
+import { useRouter } from 'next/navigation';
 
 const Hero: React.FC = () => {
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
+
+  const handleButtonClick = (type: string) => {
+    router.push(`/register?type=${type}`); // Pass the type as a query parameter
+  };
 
   return (
     <Box
@@ -74,7 +78,7 @@ const Hero: React.FC = () => {
                     color: '#000',
                   },
                 }}
-                onClick={() => router.push('/register')} 
+                onClick={() => handleButtonClick('talent')} // Pass 'talent' as the type
               >
                 Find Talent
               </Button>
@@ -136,7 +140,7 @@ const Hero: React.FC = () => {
                     color: '#000',
                   },
                 }}
-                onClick={() => router.push('/register')} 
+                onClick={() => handleButtonClick('job')} // Pass 'job' as the type
               >
                 Job Calls
               </Button>
