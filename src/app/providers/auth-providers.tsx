@@ -48,6 +48,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     onSuccess: (data: LoginSuccessData) => {
       console.log('Login successful: ', data);
+      const loggedInUser: AuthenticatedUser = {
+        refresh: data?.tokens?.refresh,
+        access: data?.tokens?.access,
+      };
+      setUser(loggedInUser); 
+      setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
+      setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 }); 
+      setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 }); 
     },
     onError: (error: ErrorData) => {
       console.error('Login error: ', error);
@@ -85,13 +93,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     onSuccess: (data) => {
       console.log('OTP verification successful: ', data);
-      const loggedInUser: AuthenticatedUser = {
-        refresh: data?.tokens?.refresh,
-        access: data?.tokens?.access,
-      };
-      setUser(loggedInUser); 
-      setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
-      setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 }); 
     },
     onError: (error) => {
       console.error('OTP verification error: ', error);

@@ -6,6 +6,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useAuth } from "@/providers/auth-providers";
 import { useRouter } from "next/navigation"; 
+import { useCookies } from "react-cookie";
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
@@ -23,6 +24,10 @@ const LoginForm: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
+
+  const [cookies] = useCookies(['user_role']);
+
+  const user_role = cookies?.user_role;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -52,8 +57,9 @@ const LoginForm: React.FC = () => {
         
         // Redirect after a short delay
         setTimeout(() => {
-          router.push('/dashboard');
-        }, 3000); 
+
+          user_role === 'client' ? router.push('/dashboard') : router.push('/portal');
+        }, 2000); 
       } catch (error) {
         console.error("Login failed:", error);
         setSnackbarMessage("Login failed. Please check your credentials.");

@@ -12,22 +12,24 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   const pathname = usePathname();
 
-  const [cookies] = useCookies(['access']);
+  const [cookies] = useCookies(['access', 'user_role']);
 
-  const accessToken = cookies.access; 
+  const accessToken = cookies?.access; 
+  const user_role = cookies?.user_role;
 
   console.log("Access Token", accessToken);
+  console.log("User Role", user_role);
 
   useEffect(() => {
-    if (accessToken && (pathname === '/login' || pathname === '/portal' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
+    if ((accessToken && user_role === 'client') && (pathname === '/login' || pathname === '/portal' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
       router.push('/dashboard'); 
     }
 
-    // if (accessToken && (pathname === '/login' || pathname === '/dashboard' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
-      // router.push('/portal'); 
-   // }
+    if ((accessToken && user_role === 'talent') && (pathname === '/login' || pathname === '/dashboard' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
+      router.push('/portal'); 
+    }
 
-  }, [pathname, accessToken, router]);
+  }, [pathname, accessToken, router, user_role]);
 
   return (
     <NextShield
