@@ -8,6 +8,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { redirect } from 'next/navigation';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -27,14 +28,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     password: '',
     username: '',
     gender: 'male',
-    phonenumber: ''
+    phonenumber: '',
+    nationality: ''
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const [country, setCountry] = useState('');
+  
+    const handleCountryChange = (val: React.SetStateAction<string>) => {
+      setCountry(val);
+    };
+  
 
- 
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -54,23 +62,24 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         formData.firstname,
         formData.lastname,
         formData.gender,
-        formData.phonenumber
-      ); 
-      
+        formData.phonenumber,
+        country
+      );
+
       // Show success message and redirect to login
       setSnackbarMessage('Registration successful! Redirecting to login...');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-      
+
       // Redirect after a short delay
       setTimeout(() => {
         redirect('/login')
-      }, 3000); 
+      }, 3000);
 
     } catch (error: any) {
       console.error('Registration failed:', error);
       let errorMessage = 'Registration failed. Please try again.';
-      
+
       // Handle specific error messages
       if (error?.response) {
         if (error?.response.data.message.includes('unique constraint')) {
@@ -88,21 +97,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
       <h1>Register</h1>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
-        
-        {/* Radio Buttons for Client/Talent */}
-        <div style={{ gridColumn: 'span 1' }}>
-          <label style={{ margin: '2px' }}>Register as:</label>
-          <div>
-            <label className='form-check-label p-1'>
-              <input type="radio" name="user_role" value="client" required className='form-check-input' onChange={handleChange} />
-              &nbsp;Client
-            </label>
-            <label style={{ marginLeft: '20px' }} className='form-check-label'>
-              <input type="radio" name="user_role" value="talent" required className='form-check-input' onChange={handleChange} />
-              &nbsp;Talent
-            </label>
-          </div>
-        </div>
 
         {/* Username Field */}
         <div style={{ gridColumn: 'span 2' }}>
@@ -122,12 +116,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         <div style={{ gridColumn: 'span 1' }}>
           <label htmlFor="gender">Gender</label>
           <select onChange={handleChange} id="gender" name="gender" required style={{ width: '100%', padding: '8px', marginTop: '5px' }}>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
           </select>
         </div>
 
-       
+        {/* Nationality Field */}
+        <div style={{ gridColumn: 'span 1' }}>
+          <label htmlFor="nationality">Nationality</label>
+          <CountryDropdown
+            value={country}
+            onChange={handleCountryChange}
+            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+          />
+        </div>
+
+
 
         {/* Email Field */}
         <div style={{ gridColumn: 'span 2' }}>
@@ -192,13 +196,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             id="phonenumber"
             name="phonenumber"
             placeholder="Enter a Valid UAE Phone"
-            pattern="^(?:\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$" 
+            pattern="^(?:\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
             required
             style={{ width: '100%', padding: '8px', marginTop: '5px' }}
             onChange={handleChange}
           />
         </div>
-        
+
 
         {/* Password */}
         <div>
@@ -252,9 +256,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
       </form>
 
       {/* Snackbar for feedback */}
-      <Snackbar 
-        open={snackbarOpen} 
-        autoHideDuration={6000} 
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity={snackbarSeverity} sx={{ width: '100%' }}>

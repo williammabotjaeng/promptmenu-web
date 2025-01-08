@@ -8,4 +8,5 @@ export interface RegistrationData {
     lastname: string;
     phonenumber: string;
     gender: string;
+    country: string;
   }

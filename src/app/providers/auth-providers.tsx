@@ -28,7 +28,8 @@ interface AuthContextType {
      firstname: string,
      lastname: string,
      gender: string,
-     phonenumber: string ) => Promise<void>;
+     phonenumber: string,
+     nationality: string ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -65,7 +66,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastname: userData.lastname,
         password: userData.password,
         gender: userData.gender,
-        phonenumber: userData.phonenumber
+        phonenumber: userData.phonenumber,
+        nationality: userData.country
       });
     },
     onSuccess: (data: RegistrationSuccessData) => {
@@ -124,7 +126,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     lastname: string,
     date_of_birth: string,
     gender: string,
-    phonenumber: string
+    phonenumber: string,
+    nationality: string
   ) => {
     await registerMutation.mutateAsync({ 
       username: username, 
@@ -135,7 +138,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       lastname: lastname, 
       date_of_birth: date_of_birth, 
       gender: gender, 
-      phonenumber: phonenumber 
+      phonenumber: phonenumber,
+      nationality: nationality
     });
   };
 
