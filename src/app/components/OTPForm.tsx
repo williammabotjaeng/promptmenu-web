@@ -30,9 +30,8 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
       
-      setTimeout(() => {
-        
-            redirect('/dashboard');
+      setTimeout(() => {     
+            redirect('/login');
       }, 2000); 
     } catch (error) {
       console.error('OTP verification failed:', error);

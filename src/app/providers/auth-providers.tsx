@@ -104,6 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     removeCookie('access', { path: '/' }); 
     removeCookie('refresh', { path: '/' }); 
+    removeCookie('user_role', { path: '/' });
     setUser(null); 
     clearCurrentUser();
   };

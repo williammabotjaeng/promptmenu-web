@@ -58,6 +58,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      console.log("User Role", userRole);
       await register(
         formData.username,
         formData.password,
