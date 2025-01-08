@@ -52,7 +52,7 @@ const LoginForm: React.FC = () => {
         
         // Redirect after a short delay
         setTimeout(() => {
-          router.push('/otp');
+          router.push('/dashboard');
         }, 3000); 
       } catch (error) {
         console.error("Login failed:", error);

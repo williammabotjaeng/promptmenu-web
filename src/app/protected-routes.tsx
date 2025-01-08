@@ -23,9 +23,9 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       router.push('/dashboard'); 
     }
 
-    if (accessToken && (pathname === '/login' || pathname === '/dashboard' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
-      router.push('/portal'); 
-    }
+    // if (accessToken && (pathname === '/login' || pathname === '/dashboard' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
+      // router.push('/portal'); 
+   // }
 
   }, [pathname, accessToken, router]);
 
