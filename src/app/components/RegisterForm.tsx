@@ -73,8 +73,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
       // Redirect after a short delay
       setTimeout(() => {
-        redirect('/login')
-      }, 3000);
+        redirect('/otp')
+      }, 2000);
 
     } catch (error: any) {
       console.error('Registration failed:', error);
