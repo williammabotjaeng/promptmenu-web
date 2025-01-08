@@ -21,6 +21,7 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
+  console.log("user role reg", userRole)
   const [formData, setFormData] = useState({
     user_role: userRole,
     email: '',

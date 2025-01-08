@@ -19,7 +19,7 @@ const Register: React.FC = () => {
 
   // Extract user_role from query parameters
   const { searchParams } = new URL(window.location.href);
-  const userRole = searchParams.get('type') === 'talent' ? 'client' : 'talent'; 
+  const userRole = searchParams.get('type'); 
   useEffect(() => {
     const textElement = document.querySelector('.slide-in-text');
     if (textElement) {
@@ -27,33 +27,6 @@ const Register: React.FC = () => {
     }
   }, []);
   
-  const handleRegister = async (userData: RegistrationData) => {
-    try {
-      await register(
-        userData.date_of_birth,
-        userData.email,
-        userData.firstname,
-        userData.lastname,
-        userData.password,
-        userRole, 
-        userData.username,
-        userData.gender,
-        userData.phonenumber
-      ); 
-      setSnackbarMessage('User registered successfully!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-      
-      setTimeout(() => {
-        router.push('/login'); 
-      }, 2000); 
-    } catch (error) {
-      console.error('Registration failed:', error);
-      setSnackbarMessage('Registration failed. Please try again.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    }
-  };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -62,7 +35,7 @@ const Register: React.FC = () => {
   return (
     <div>
       <Header />
-      <RegisterForm userRole={userRole} onRegister={handleRegister} /> {/* Pass userRole to RegisterForm */}
+      <RegisterForm userRole={userRole} /> 
       <br />
       <p style={{ textAlign: 'center' }}>&copy; 2025 Staffing Solutions Hub</p>
 
