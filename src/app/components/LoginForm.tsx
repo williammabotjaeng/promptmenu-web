@@ -55,6 +55,7 @@ const LoginForm: React.FC = () => {
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
         
+        
         // Redirect after a short delay
         setTimeout(() => {
           user_role === 'client' ? router.push('/dashboard') : router.push('/portal');

@@ -37,7 +37,11 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
   const { setTokens } = useTokenStore(); 
-  const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh', 'user_role']); 
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'access', 'refresh', 'user_role', 
+    'onboarding_presented', 'profile_progress', 
+    'profile_completed'
+  ]); 
 
   const router = useRouter();
   
@@ -58,6 +62,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 }); 
       setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 }); 
+      setCookie('profile_progress', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
+      setCookie('onboarding_presented', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
+      setCookie('profile_completed', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
     },
     onError: (error: ErrorData) => {
       console.error('Login error: ', error);
