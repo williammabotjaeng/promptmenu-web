@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import './ClientOnboarding.css'; // Assuming you have a separate CSS file for styles
 
 const ClientOnboarding: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0);
