@@ -16,6 +16,10 @@ const DashboardContent: React.FC = () => {
         </div>
         <div style={{ margin: '10px 0', padding: '10px' }}>
           <h1>{0}</h1>
+          <p>Projects Completed</p>
+        </div>
+        <div style={{ margin: '10px 0', padding: '10px' }}>
+          <h1>{0}</h1>
           <p>Talent Engaged</p>
         </div>
       </div>

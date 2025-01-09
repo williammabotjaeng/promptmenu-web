@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Header from '@/components/Header';
 import RegisterForm from '@/components/RegisterForm';
 import Snackbar from '@mui/material/Snackbar'; 
@@ -18,8 +18,9 @@ const Register: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
   // Extract user_role from query parameters
-  const { searchParams } = new URL(window.location.href);
-  const userRole = searchParams.get('type'); 
+  const searchParams = useSearchParams();
+  const userRole = searchParams.get('type');
+   
   useEffect(() => {
     const textElement = document.querySelector('.slide-in-text');
     if (textElement) {

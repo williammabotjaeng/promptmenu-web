@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
   const user_role = cookies?.user_role;
 
   useEffect(() => {
-    console.log("User Role", user_role);
+   
     if (user_role === 'talent') router.push('/portal');
   }, [])
 

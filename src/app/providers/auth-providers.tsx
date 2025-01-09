@@ -53,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         access: data?.tokens?.access,
         user_role: data?.tokens?.user_role
       };
-      console.log("tokens", data?.tokens)
+      
       setUser(loggedInUser); 
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 }); 
@@ -67,6 +67,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const registerMutation = useMutation({
     mutationKey: ['register_user'],
     mutationFn: async (userData: RegistrationData) => {
+      
       return await apiCall('/accounts/register/', 'POST', {
         username: userData.username,
         user_role: userData.user_role,

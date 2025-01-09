@@ -21,7 +21,6 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
-  console.log("user role reg", userRole)
   const [formData, setFormData] = useState({
     user_role: userRole,
     email: '',
@@ -58,7 +57,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log("User Role", userRole);
+      
       await register(
         formData.username,
         formData.password,

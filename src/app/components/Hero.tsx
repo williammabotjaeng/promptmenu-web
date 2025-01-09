@@ -11,7 +11,6 @@ const Hero: React.FC = () => {
   const router = useRouter();
 
   const handleButtonClick = (type: string) => {
-    console.log("Type argument", type);
     router.push(`/register?type=${type}`); 
   };
 
