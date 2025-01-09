@@ -8,7 +8,7 @@ import DashboardContent from '@/components/dashboard/DashboardContent';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/navigation';
 
-const Dashboard: React.FC = () => {
+const Messages: React.FC = () => {
 
   const router = useRouter();
   const [cookies] = useCookies(['user_role']);
@@ -31,4 +31,4 @@ const Dashboard: React.FC = () => {
   );
 };
 
-export default Dashboard;
+export default Messages;

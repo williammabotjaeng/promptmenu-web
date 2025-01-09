@@ -80,7 +80,7 @@ const DashboardContent: React.FC = () => {
           )}
           {activeTab === 'completed' && (
             <div>
-              <h3>Completed</h3>
+              <h3>Completed Projects</h3>
               <p>No completed projects.</p>
             </div>
           )}

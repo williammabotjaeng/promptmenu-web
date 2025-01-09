@@ -41,6 +41,24 @@ const Header: React.FC = () => {
         <Box sx={{ display: 'flex', gap: '20px' }}>
           <NotificationDropdown />
           <ProfileDropdown />
+          <Link href="/create-project" passHref>
+            <Button 
+              sx={{ 
+                color: 'black',
+                backgroundColor: '#977342',
+                '&:hover': {
+                  backgroundColor: '#CEAB76', 
+                  color: '#000', 
+                  fontWeight: '700'
+                },
+              }}
+            >
+              Create a Project
+            </Button>
+          </Link>
+          <Box sx={{
+            borderLeft: '2px solid black'
+          }}>
           <Link href="/post-job" passHref>
             <Button 
               sx={{ 
@@ -56,6 +74,7 @@ const Header: React.FC = () => {
               Post a Job
             </Button>
           </Link>
+          </Box>
           <Box sx={{
             borderLeft: '2px solid black'
           }}>
