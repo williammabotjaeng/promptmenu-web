@@ -17,7 +17,6 @@ const Dashboard: React.FC = () => {
   const user_role = cookies?.user_role;
 
   useEffect(() => {
-    co
     if (user_role === 'client') router.push('/dashboard');
   }, [])
 

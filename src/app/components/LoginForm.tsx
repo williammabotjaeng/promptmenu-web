@@ -26,7 +26,7 @@ const LoginForm: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
   const [cookies] = useCookies(['user_role', 'profile_progress', 'onboarding_presented', 'profile_completed']);
-
+  console.log('cookies', cookies);
   const user_role = cookies?.user_role;
   const profile_progress = cookies?.profile_progress;
   const onboarding_presented = cookies?.onboarding_presented;
@@ -59,13 +59,21 @@ const LoginForm: React.FC = () => {
         setSnackbarOpen(true);
         
         setTimeout(() => {
-          if (onboarding_presented && profile_progress > 60) {
+          
+          console.log("1. ", onboarding_presented);
+          console.log("2. ", profile_progress);
+          console.log("3. ", profile_completed);
+
+          if (onboarding_presented && profile_progress > 0.6) {
+            console.log("Routing option 1");
             const redirectPath = user_role === 'client' ? '/dashboard' : '/portal';
             router.push(redirectPath);
           } else if (profile_progress < 1 && !profile_completed) {
+            console.log("Routing option 2");
             const onboardingPath = user_role === 'client' ? '/client-onboarding' : '/talent-onboarding';
             router.push(onboardingPath);
           } else {
+            console.log("Routing option 3");
             const fallbackPath = user_role === 'client' ? '/dashboard' : '/portal';
             router.push(fallbackPath);
           }

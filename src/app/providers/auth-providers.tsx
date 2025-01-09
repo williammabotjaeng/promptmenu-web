@@ -62,9 +62,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 }); 
       setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 }); 
-      setCookie('profile_progress', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
-      setCookie('onboarding_presented', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
-      setCookie('profile_completed', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
+      setCookie('profile_progress', data?.tokens?.profile_progress, { path: '/', maxAge: 604800 });
+      setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
+      setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
     },
     onError: (error: ErrorData) => {
       console.error('Login error: ', error);
@@ -113,6 +113,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeCookie('access', { path: '/' }); 
     removeCookie('refresh', { path: '/' }); 
     removeCookie('user_role', { path: '/' });
+    removeCookie('profile_completed', { path: '/' });
+    removeCookie('onboarding_presented', { path: '/' });
+    removeCookie('profile_progress', { path: '/' });
     setUser(null); 
     clearCurrentUser();
   };
