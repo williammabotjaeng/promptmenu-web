@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 const DashboardContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'messages' | 'projects'>('messages');
+  const [activeTab, setActiveTab] = useState<'inprogress' | 'completed'>('inprogress');
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
@@ -37,51 +37,51 @@ const DashboardContent: React.FC = () => {
         </div>
       </div>
 
-      {/* Third Column: Messages and Projects Tabs */}
+      {/* Third Column: Projects Tabs */}
       <div style={{ flex: 1 }}>
-        <h2>Messages</h2>
+        <h2>Projects</h2>
         <div style={{ margin: '10px 0', padding: '10px', borderLeft: '1px solid #977342', borderTop: '1px solid #977342' }}>
           {/* Tab Navigation */}
           <div style={{ display: 'flex', marginBottom: '10px' }}>
             <button 
-              onClick={() => setActiveTab('messages')} 
+              onClick={() => setActiveTab('inprogress')} 
               style={{ 
                 flex: 1, 
                 padding: '10px', 
-                backgroundColor: activeTab === 'messages' ? '#977342' : '#f0f0f0', 
-                color: activeTab === 'messages' ? '#fff' : '#000', 
+                backgroundColor: activeTab === 'inprogress' ? '#977342' : '#f0f0f0', 
+                color: activeTab === 'inprogress' ? '#fff' : '#000', 
                 border: 'none', 
                 cursor: 'pointer' 
               }}
             >
-              Messages
+              In Progress
             </button>
             <button 
-              onClick={() => setActiveTab('projects')} 
+              onClick={() => setActiveTab('completed')} 
               style={{ 
                 flex: 1, 
                 padding: '10px', 
-                backgroundColor: activeTab === 'projects' ? '#977342' : '#f0f0f0', 
-                color: activeTab === 'projects' ? '#fff' : '#000', 
+                backgroundColor: activeTab === 'completed' ? '#977342' : '#f0f0f0', 
+                color: activeTab === 'completed' ? '#fff' : '#000', 
                 border: 'none', 
                 cursor: 'pointer' 
               }}
             >
-              Projects
+              Completed
             </button>
           </div>
 
           {/* Tab Content */}
-          {activeTab === 'messages' && (
+          {activeTab === 'inprogress' && (
             <div>
-              <h3>Messages with Admin</h3>
-              <p>No new messages.</p>
+              <h3>In Progress Projects</h3>
+              <p>No running projects.</p>
             </div>
           )}
-          {activeTab === 'projects' && (
+          {activeTab === 'completed' && (
             <div>
-              <h3>Your Projects</h3>
-              <p>No ongoing projects.</p>
+              <h3>Completed</h3>
+              <p>No completed projects.</p>
             </div>
           )}
         </div>
