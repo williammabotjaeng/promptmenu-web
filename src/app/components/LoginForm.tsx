@@ -25,9 +25,12 @@ const LoginForm: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
-  const [cookies] = useCookies(['user_role']);
+  const [cookies] = useCookies(['user_role', 'profile_progress', 'onboarding_presented', 'profile_completed']);
 
   const user_role = cookies?.user_role;
+  const profile_progress = cookies?.profile_progress;
+  const onboarding_presented = cookies?.onboarding_presented;
+  const profile_completed = cookies?.profile_completed;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,11 +58,19 @@ const LoginForm: React.FC = () => {
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
         
-        
-        // Redirect after a short delay
         setTimeout(() => {
-          user_role === 'client' ? router.push('/dashboard') : router.push('/portal');
-        }, 2000); 
+          if (onboarding_presented && profile_progress > 60) {
+            const redirectPath = user_role === 'client' ? '/dashboard' : '/portal';
+            router.push(redirectPath);
+          } else if (profile_progress < 1 && !profile_completed) {
+            const onboardingPath = user_role === 'client' ? '/client-onboarding' : '/talent-onboarding';
+            router.push(onboardingPath);
+          } else {
+            const fallbackPath = user_role === 'client' ? '/dashboard' : '/portal';
+            router.push(fallbackPath);
+          }
+        }, 2000);
+        
       } catch (error) {
         console.error("Login failed:", error);
         setSnackbarMessage("Login failed. Please check your credentials.");
