@@ -93,6 +93,31 @@ const ProfileDropdown: React.FC = () => {
                     </span>
                 </MenuItem>
                 <MenuItem
+                    onClick={() => handleMenuItemClick('/projects')}
+                    sx={{
+                        '&:hover': {
+                            backgroundColor: 'black',
+                            color: '#977342',
+                        },
+                    }}
+                >
+                    My Projects
+                    <span style={{
+                        background: 'black',
+                        borderRadius: '50%', 
+                        color: '#977342',
+                        width: '24px', 
+                        height: '24px', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        marginLeft: '8px', 
+                        fontSize: '14px', 
+                    }}>
+                        {0}
+                    </span>
+                </MenuItem>
+                <MenuItem
                     onClick={() => handleMenuItemClick('/payments')}
                     sx={{
                         '&:hover': {
@@ -113,17 +138,6 @@ const ProfileDropdown: React.FC = () => {
                     }}
                 >
                     Settings
-                </MenuItem>
-                <MenuItem
-                    onClick={() => handleMenuItemClick('/support')}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
-                        },
-                    }}
-                >
-                    Support
                 </MenuItem>
             </Menu>
         </div>
