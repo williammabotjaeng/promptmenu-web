@@ -105,6 +105,7 @@ button:hover {
   background: linear-gradient(135deg, var(--dark-gold), var(--primary-text), var(--dark-gold));
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  width: '100vw' !important;
 }
 
 .onboarding-content {
@@ -113,5 +114,6 @@ button:hover {
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.1); 
   border-radius: 10px;
+  width: '100vw' !important;
 }
 
