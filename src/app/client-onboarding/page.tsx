@@ -26,12 +26,20 @@ const ClientOnboarding: React.FC = () => {
   return (
     <div className="onboarding-container">
       <div className="onboarding-content">
-        <h2>{steps[activeStep].title}</h2>
-        <p>{steps[activeStep].content}</p>
+        <h2 style={{
+            color: 'black !important'
+        }}>{steps[activeStep].title}</h2>
+        <p style={{
+            color: 'black !important'
+        }}>{steps[activeStep].content}</p>
 
         <div className="onboarding-buttons">
-          <button onClick={handleNext}>Next</button>
-          <button onClick={handleSkip} style={{ marginLeft: '10px' }}>Skip this for now</button>
+          <button onClick={handleNext} style={{
+            backgroundColor: '#977342 !important',
+            color: '#fff !important',
+            borderRadius: '12px'
+          }}>Next</button>
+          <button onClick={handleSkip} style={{ marginLeft: '10px', backgroundColor: '#000 !important', color: '#977342 !important', borderRadius: '12px'   }}>Skip this for now</button>
         </div>
       </div>
     </div>

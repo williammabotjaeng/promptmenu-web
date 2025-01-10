@@ -97,18 +97,21 @@ button:hover {
 }
 
 .onboarding-container {
+  color: 'black' !important;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, var(--dark-gold), var(--blue-munsell), var(--moonstone));
+  background: linear-gradient(135deg, var(--dark-gold), var(--primary-text), var(--dark-gold));
   border-radius: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
 .onboarding-content {
+  color: 'black' !important;
   text-align: center;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  background-color: rgba(255, 255, 255, 0.1); 
   border-radius: 10px;
 }
+
