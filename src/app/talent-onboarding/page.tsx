@@ -119,7 +119,7 @@ const TalentOnboarding: React.FC = () => {
       body: JSON.stringify(talentData),
     });
 
-    router.push('/dashboard');
+    router.push('/portal');
   };
 
   const handleHeadshotUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
