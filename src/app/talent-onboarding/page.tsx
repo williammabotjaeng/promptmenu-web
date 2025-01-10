@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, act } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { Box, Typography, Grid, TextField, Button, Avatar, IconButton } from '@mui/material';
 import { AddAPhoto } from '@mui/icons-material';
 import { TalentProfileData } from '@/types/TalentProfileData';
 import PersonalInformation from '@/components/portal/onboarding/PersonalInfo';
+import PhysicalAttributes from '@/components/portal/onboarding/PhysicalAttr';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
@@ -38,6 +39,12 @@ const TalentOnboarding: React.FC = () => {
     date_of_birth: '1990-01-01',
     gender: 'Female',
     phone_number: '+1 (555) 123-4567',
+  });
+
+  const [physicalAttr, setPhysicalAttr] = useState({
+    height: '',
+    weight: '',
+    ethnicity: '',
   });
 
   const steps = [
@@ -125,6 +132,9 @@ const TalentOnboarding: React.FC = () => {
               <input type="file" hidden onChange={handleHeadshotUpload} />
             </IconButton>
           </Box>
+        )}
+        {activeStep === 2 && (
+          <PhysicalAttributes activeStep={activeStep} physicalAttr={physicalAttr} setPhysicalAttr={setPhysicalAttr} />
         )}
 
         {/* Additional steps can be added here */}
