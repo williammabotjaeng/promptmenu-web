@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, TextField, Typography } from '@mui/material';
 
-const CompanyInfo = ({ activeStep, companyData, setCompanyData }) => {
+const CompanyInfo = ({ activeStep, companyInfo, setCompanyInfo }) => {
     return (
         <>
             {activeStep === 0 && (
@@ -13,8 +13,8 @@ const CompanyInfo = ({ activeStep, companyData, setCompanyData }) => {
                             label="Company Name"
                             placeholder="Company Name"
                             variant="outlined"
-                            value={companyData.name}
-                            onChange={(e) => setCompanyData({ ...companyData, name: e.target.value })}
+                            value={companyInfo.name}
+                            onChange={(e) => setCompanyInfo({ ...companyInfo, name: e.target.value })}
                         />
                     </Box>
                     <Box className="mb-4">
@@ -23,8 +23,8 @@ const CompanyInfo = ({ activeStep, companyData, setCompanyData }) => {
                             label="Slogan"
                             placeholder="Slogan"
                             variant="outlined"
-                            value={companyData.slogan}
-                            onChange={(e) => setCompanyData({ ...companyData, slogan: e.target.value })}
+                            value={companyInfo.slogan}
+                            onChange={(e) => setCompanyInfo({ ...companyInfo, slogan: e.target.value })}
                         />
                     </Box>
                     <Box className="mb-4">
@@ -35,8 +35,8 @@ const CompanyInfo = ({ activeStep, companyData, setCompanyData }) => {
                             variant="outlined"
                             multiline
                             rows={4}
-                            value={companyData.description}
-                            onChange={(e) => setCompanyData({ ...companyData, description: e.target.value })}
+                            value={companyInfo.description}
+                            onChange={(e) => setCompanyInfo({ ...companyInfo, description: e.target.value })}
                         />
                     </Box>
                 </Box>

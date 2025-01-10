@@ -8,6 +8,7 @@ import { Box } from '@mui/material';
 import { Grid, TextField } from '@mui/material';
 import PaymentMethod from '@/components/dashboard/onboarding/PaymentMethod';
 import CompanyInfo from '@/components/dashboard/onboarding/CompanyInfo';
+import AddressAndContactInfo from '@/components/dashboard/onboarding/AddressContactInfo';
 
 const ClientOnboarding: React.FC = () => {
   const router = useRouter();
@@ -24,6 +25,12 @@ const ClientOnboarding: React.FC = () => {
     payment_method: '',
     website: '',
     social_media_links: {},
+  });
+
+  const [contactInfoData, setContactInfoData] = useState({
+    address: "123 Tech Lane, Silicon Valley, CA 94043",
+    phone_number: "+1 (555) 123-4567",
+    whatsapp_number: "+1 (555) 987-6543",
   });
 
   const [dummyCompanyData, setDummyCompanyData] = useState({
@@ -52,6 +59,12 @@ const ClientOnboarding: React.FC = () => {
 
     loadCompanyData();
   }, []);
+
+  const handleBack = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    }
+  };
 
   const handleNext = () => {
     if (activeStep < steps.length - 1) {
@@ -90,38 +103,10 @@ const ClientOnboarding: React.FC = () => {
 
         {/* Render input fields based on the active step */}
         {activeStep === 0 && (
-          <CompanyInfo activeStep={activeStep} companyData={dummyCompanyData} setCompanyData={setDummyCompanyData} />
+          <CompanyInfo activeStep={activeStep} companyInfo={dummyCompanyData} setCompanyInfo={setDummyCompanyData} />
         )}
         {activeStep === 1 && (
-          <div className="w-full max-w-md mx-auto">
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Address"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={companyData.address}
-                onChange={(e) => setCompanyData({ ...companyData, address: e.target.value })}
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="Phone Number"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={companyData.phone_number}
-                onChange={(e) => setCompanyData({ ...companyData, phone_number: e.target.value })}
-              />
-            </div>
-            <div className="mb-4">
-              <input
-                type="text"
-                placeholder="WhatsApp Number"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                value={companyData.whatsapp_number}
-                onChange={(e) => setCompanyData({ ...companyData, whatsapp_number: e.target.value })}
-              />
-            </div>
-          </div>
+          <AddressAndContactInfo activeStep={activeStep} contactInfoData={contactInfoData} setContactInfoData={setContactInfoData} />
         )}
         {activeStep === 2 && (
           <PaymentMethod />
@@ -196,6 +181,11 @@ const ClientOnboarding: React.FC = () => {
         <br />
         <br />
         <div>
+          {activeStep > 0 && (
+            <button onClick={handleBack} style={{ marginRight: '10px', backgroundColor: '#000', color: '#977342', borderRadius: '12px' }}>
+              Back
+            </button>
+          )}
           {activeStep < steps.length - 1 && (
             <button onClick={handleNext} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
               Next
