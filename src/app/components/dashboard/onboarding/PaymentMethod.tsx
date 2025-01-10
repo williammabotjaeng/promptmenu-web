@@ -16,19 +16,19 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
 
     return (
         <Box className="w-full max-w-2xl mx-auto">
-            <Typography variant="h6" className="mb-4">Preferred Payment Method</Typography>
+            <Typography variant="h6" className="mb-4" style={{ color: 'black' }}>Preferred Payment Method</Typography>
             <RadioGroup
                 value={paymentMethod}
                 onChange={handlePaymentMethodChange}
                 row
             >
-                <FormControlLabel value="creditCard" control={<Radio />} label="Credit Card" />
-                <FormControlLabel value="paypal" control={<Radio />} label="PayPal" />
-                <FormControlLabel value="stripe" control={<Radio />} label="Stripe" />
+                <FormControlLabel value="creditCard" control={<Radio />} label={<Typography style={{ color: 'black' }}>Credit Card</Typography>} />
+                <FormControlLabel value="paypal" control={<Radio />} label={<Typography style={{ color: 'black' }}>PayPal</Typography>} />
+                <FormControlLabel value="stripe" control={<Radio />} label={<Typography style={{ color: 'black' }}>Stripe</Typography>} />
             </RadioGroup>
 
             {paymentMethod === 'creditCard' && (
-                <Grid container spacing={2}>
+                <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
                             id="ccNumber"
@@ -97,6 +97,7 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                     value={paymentMethods.paypalEmail || ''}
                     onChange={handleInputChange('paypalEmail')}
                     className="mb-2"
+                    InputLabelProps={{ style: { color: 'black' } }} 
                 />
             )}
 
@@ -112,10 +113,9 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                     value={paymentMethods.stripeDetails || ''}
                     onChange={handleInputChange('stripeDetails')}
                     className="mb-2"
+                    InputLabelProps={{ style: { color: 'black' } }}
                 />
             )}
-            <br />
-            <br />
         </Box>
     );
 };
