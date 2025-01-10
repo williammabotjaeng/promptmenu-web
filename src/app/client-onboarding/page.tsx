@@ -39,6 +39,17 @@ const ClientOnboarding: React.FC = () => {
     description: "Tech Innovations Inc. is dedicated to creating cutting-edge technology solutions that empower businesses and enhance everyday life. Our mission is to drive progress through innovation and excellence in service.",
   });
 
+  const [paymentMethods, setPaymentMethods] = useState({
+    payment_method: 'creditCard',
+    ccNumber: '4111 1111 1111 1111',
+    ccFirstName: 'John',
+    ccLastName: 'Doe',
+    ccExpiry: '12/25',
+    ccCVC: '123',
+    paypalEmail: 'john.doe@example.com',
+    stripeDetails: 'Stripe account details here',
+  });
+
   const steps = [
     { title: "Step 1: Basic Information", content: "Please provide your basic information." },
     { title: "Step 2: Business Details", content: "Tell us about your business." },
@@ -109,7 +120,7 @@ const ClientOnboarding: React.FC = () => {
           <AddressAndContactInfo activeStep={activeStep} contactInfoData={contactInfoData} setContactInfoData={setContactInfoData} />
         )}
         {activeStep === 2 && (
-          <PaymentMethod />
+          <PaymentMethod paymentMethods={paymentMethods} setPaymentMethods={setPaymentMethods} activeStep={activeStep} />
         )}
         {activeStep === 3 && (
           <div className="w-full" style={{ margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

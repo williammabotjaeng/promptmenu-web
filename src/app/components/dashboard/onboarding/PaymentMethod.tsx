@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid } from '@mui/material';
 
-const PaymentMethod = () => {
-    const [paymentMethod, setPaymentMethod] = useState('creditCard');
-    const [companyData, setCompanyData] = useState({
-        payment_method: 'Credit Card',
-        ccNumber: '',
-        ccExpiry: '',
-        ccCVC: '',
-        ccFirstName: '',
-        ccLastName: '',
-        paypalEmail: '',
-        stripeDetails: '',
-    });
+const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
+    const [paymentMethod, setPaymentMethod] = useState(paymentMethods.payment_method || 'creditCard');
+
+    const handlePaymentMethodChange = (event) => {
+        const selectedMethod = event.target.value;
+        setPaymentMethod(selectedMethod);
+        setPaymentMethods((prev) => ({ ...prev, payment_method: selectedMethod }));
+    };
+
+    const handleInputChange = (field) => (event) => {
+        setPaymentMethods((prev) => ({ ...prev, [field]: event.target.value }));
+    };
 
     return (
         <Box className="w-full max-w-2xl mx-auto">
             <Typography variant="h6" className="mb-4">Preferred Payment Method</Typography>
             <RadioGroup
                 value={paymentMethod}
-                onChange={(e) => setPaymentMethod(e.target.value)}
+                onChange={handlePaymentMethodChange}
                 row
             >
                 <FormControlLabel value="creditCard" control={<Radio />} label="Credit Card" />
@@ -36,8 +36,8 @@ const PaymentMethod = () => {
                             placeholder="Card Number"
                             variant="outlined"
                             fullWidth
-                            value={companyData.ccNumber}
-                            onChange={(e) => setCompanyData({ ...companyData, ccNumber: e.target.value })}
+                            value={paymentMethods.ccNumber || ''}
+                            onChange={handleInputChange('ccNumber')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -47,8 +47,8 @@ const PaymentMethod = () => {
                             placeholder="First Name"
                             variant="outlined"
                             fullWidth
-                            value={companyData.ccFirstName}
-                            onChange={(e) => setCompanyData({ ...companyData, ccFirstName: e.target.value })}
+                            value={paymentMethods.ccFirstName || ''}
+                            onChange={handleInputChange('ccFirstName')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -58,8 +58,8 @@ const PaymentMethod = () => {
                             placeholder="Last Name"
                             variant="outlined"
                             fullWidth
-                            value={companyData.ccLastName}
-                            onChange={(e) => setCompanyData({ ...companyData, ccLastName: e.target.value })}
+                            value={paymentMethods.ccLastName || ''}
+                            onChange={handleInputChange('ccLastName')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -69,8 +69,8 @@ const PaymentMethod = () => {
                             placeholder="MM/YY"
                             variant="outlined"
                             fullWidth
-                            value={companyData.ccExpiry}
-                            onChange={(e) => setCompanyData({ ...companyData, ccExpiry: e.target.value })}
+                            value={paymentMethods.ccExpiry || ''}
+                            onChange={handleInputChange('ccExpiry')}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -80,8 +80,8 @@ const PaymentMethod = () => {
                             placeholder="CVC"
                             variant="outlined"
                             fullWidth
-                            value={companyData.ccCVC}
-                            onChange={(e) => setCompanyData({ ...companyData, ccCVC: e.target.value })}
+                            value={paymentMethods.ccCVC || ''}
+                            onChange={handleInputChange('ccCVC')}
                         />
                     </Grid>
                 </Grid>
@@ -94,8 +94,8 @@ const PaymentMethod = () => {
                     placeholder="PayPal Email"
                     variant="outlined"
                     fullWidth
-                    value={companyData.paypalEmail}
-                    onChange={(e) => setCompanyData({ ...companyData, paypalEmail: e.target.value })}
+                    value={paymentMethods.paypalEmail || ''}
+                    onChange={handleInputChange('paypalEmail')}
                     className="mb-2"
                 />
             )}
@@ -109,8 +109,8 @@ const PaymentMethod = () => {
                     fullWidth
                     multiline
                     rows={4}
-                    value={companyData.stripeDetails}
-                    onChange={(e) => setCompanyData({ ...companyData, stripeDetails: e.target.value })}
+                    value={paymentMethods.stripeDetails || ''}
+                    onChange={handleInputChange('stripeDetails')}
                     className="mb-2"
                 />
             )}
