@@ -8,6 +8,7 @@ import { AddAPhoto } from '@mui/icons-material';
 import { TalentProfileData } from '@/types/TalentProfileData';
 import PersonalInformation from '@/components/portal/onboarding/PersonalInfo';
 import PhysicalAttributes from '@/components/portal/onboarding/PhysicalAttr';
+import IDandCreds from '@/components/portal/onboarding/IDandCreds';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
@@ -45,6 +46,14 @@ const TalentOnboarding: React.FC = () => {
     height: '',
     weight: '',
     ethnicity: '',
+  });
+
+  const [governmentID, setGovernmentID] = useState(null);
+  const [bankDetails, setBankDetails] = useState({
+    bankName: '',
+    accountNumber: '',
+    iban: '',
+    accountHolderName: '', 
   });
 
   const steps = [
@@ -137,7 +146,15 @@ const TalentOnboarding: React.FC = () => {
           <PhysicalAttributes activeStep={activeStep} physicalAttr={physicalAttr} setPhysicalAttr={setPhysicalAttr} />
         )}
 
-        {/* Additional steps can be added here */}
+        {activeStep === 3 && (
+          <IDandCreds 
+            activeStep={activeStep} 
+            governmentID={governmentID} 
+            setGovernmentID={setGovernmentID} 
+            bankDetails={bankDetails}
+            setBankDetails={setBankDetails}
+            />
+        )}
 
         <div>
           <br /><br />
