@@ -9,6 +9,8 @@ import { TalentProfileData } from '@/types/TalentProfileData';
 import PersonalInformation from '@/components/portal/onboarding/PersonalInfo';
 import PhysicalAttributes from '@/components/portal/onboarding/PhysicalAttr';
 import IDandCreds from '@/components/portal/onboarding/IDandCreds';
+import ProfileReview from '@/components/portal/onboarding/ProfileReview';
+import SocialMediaLinks from '@/components/portal/onboarding/SocialMediaLinks';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
@@ -56,12 +58,22 @@ const TalentOnboarding: React.FC = () => {
     accountHolderName: '', 
   });
 
+  const [profileSocials, setProfileSocials] = useState({
+      website: 'https://example.com',
+      social_media_links: {
+        twitter: 'https://twitter.com/example',
+        facebook: 'https://facebook.com/example',
+        instagram: 'https://instagram.com/example',
+        linkedin: 'https://linkedin.com/company/example',
+      },
+    });
+
   const steps = [
     { title: 'Step 1: Personal Information', content: 'Please provide your personal details.' },
     { title: 'Step 2: Headshot', content: 'Upload a headshot photo.' },
     { title: 'Step 3: Physical Attributes', content: 'Provide your physical attributes.' },
     { title: 'Step 4: Identification and Credentials', content: 'Upload your government ID and banking details.' },
-    { title: 'Step 5: Portfolio', content: 'Upload your portfolio PDF and additional images.' },
+    { title: 'Step 5: Social Media & Online', content: '' },
     { title: 'Step 6: Review', content: 'Review your information.' },
     { title: 'Step 7: Submit', content: 'Submit your information.' },
   ];
@@ -154,6 +166,14 @@ const TalentOnboarding: React.FC = () => {
             bankDetails={bankDetails}
             setBankDetails={setBankDetails}
             />
+        )}
+
+        {activeStep === 4 && (
+          <SocialMediaLinks profileSocials={profileSocials} setProfileSocials={setProfileSocials} activeStep={activeStep} />
+        )}
+
+        {activeStep === 5 && (
+          <ProfileReview talentData={talentData} personalInfo={personalInfo} physicalAttr={physicalAttr} />
         )}
 
         <div>

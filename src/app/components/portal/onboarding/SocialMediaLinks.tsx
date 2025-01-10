@@ -1,9 +1,9 @@
 import React from 'react';
 import { Grid, TextField } from '@mui/material';
 
-const SocialMediaLinks = ({ companySocials, setCompanySocials, activeStep }) => {
+const SocialMediaLinks = ({ profileSocials, setProfileSocials, activeStep }) => {
     const handleInputChange = (field) => (event) => {
-        setCompanySocials((prev) => ({
+        setProfileSocials((prev) => ({
             ...prev,
             social_media_links: {
                 ...prev.social_media_links,
@@ -21,8 +21,8 @@ const SocialMediaLinks = ({ companySocials, setCompanySocials, activeStep }) => 
                     placeholder="Website"
                     variant="outlined"
                     fullWidth
-                    value={setCompanySocials.website}
-                    onChange={(e) => setCompanySocials({ ...companySocials, website: e.target.value })}
+                    value={setProfileSocials.website}
+                    onChange={(e) => setProfileSocials({ ...profileSocials, website: e.target.value })}
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -32,7 +32,7 @@ const SocialMediaLinks = ({ companySocials, setCompanySocials, activeStep }) => 
                     placeholder="Twitter URL"
                     variant="outlined"
                     fullWidth
-                    value={companySocials.social_media_links.twitter || ''}
+                    value={profileSocials.social_media_links.twitter || ''}
                     onChange={handleInputChange('twitter')}
                 />
             </Grid>
@@ -43,7 +43,7 @@ const SocialMediaLinks = ({ companySocials, setCompanySocials, activeStep }) => 
                     placeholder="Facebook URL"
                     variant="outlined"
                     fullWidth
-                    value={companySocials.social_media_links.facebook || ''}
+                    value={profileSocials.social_media_links.facebook || ''}
                     onChange={handleInputChange('facebook')}
                 />
             </Grid>
@@ -54,7 +54,7 @@ const SocialMediaLinks = ({ companySocials, setCompanySocials, activeStep }) => 
                     placeholder="Instagram URL"
                     variant="outlined"
                     fullWidth
-                    value={companySocials.social_media_links.instagram || ''}
+                    value={profileSocials.social_media_links.instagram || ''}
                     onChange={handleInputChange('instagram')}
                 />
             </Grid>
@@ -65,7 +65,7 @@ const SocialMediaLinks = ({ companySocials, setCompanySocials, activeStep }) => 
                     placeholder="LinkedIn URL"
                     variant="outlined"
                     fullWidth
-                    value={companySocials.social_media_links.linkedin || ''}
+                    value={profileSocials.social_media_links.linkedin || ''}
                     onChange={handleInputChange('linkedin')}
                 />
             </Grid>
