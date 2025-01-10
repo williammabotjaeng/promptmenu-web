@@ -9,6 +9,8 @@ import { Grid, TextField } from '@mui/material';
 import PaymentMethod from '@/components/dashboard/onboarding/PaymentMethod';
 import CompanyInfo from '@/components/dashboard/onboarding/CompanyInfo';
 import AddressAndContactInfo from '@/components/dashboard/onboarding/AddressContactInfo';
+import SocialMediaLinks from '@/components/dashboard/onboarding/SocialMediaLinks';
+import CompanyReview from '@/components/dashboard/onboarding/CompanyReview';
 
 const ClientOnboarding: React.FC = () => {
   const router = useRouter();
@@ -48,6 +50,16 @@ const ClientOnboarding: React.FC = () => {
     ccCVC: '123',
     paypalEmail: 'john.doe@example.com',
     stripeDetails: 'Stripe account details here',
+  });
+
+  const [companySocials, setCompanySocials] = useState({
+    website: 'https://example.com',
+    social_media_links: {
+      twitter: 'https://twitter.com/example',
+      facebook: 'https://facebook.com/example',
+      instagram: 'https://instagram.com/example',
+      linkedin: 'https://linkedin.com/company/example',
+    },
   });
 
   const steps = [
@@ -123,71 +135,15 @@ const ClientOnboarding: React.FC = () => {
           <PaymentMethod paymentMethods={paymentMethods} setPaymentMethods={setPaymentMethods} activeStep={activeStep} />
         )}
         {activeStep === 3 && (
-          <div className="w-full" style={{ margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Grid container spacing={2} maxWidth="md">
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="website"
-                  label="Website"
-                  placeholder="Website"
-                  variant="outlined"
-                  fullWidth
-                  value={companyData.website}
-                  onChange={(e) => setCompanyData({ ...companyData, website: e.target.value })}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="twitter"
-                  label="Twitter"
-                  placeholder="Twitter URL"
-                  variant="outlined"
-                  fullWidth
-                  value={companyData.social_media_links.twitter || ''}
-                  onChange={(e) => setCompanyData({ ...companyData, social_media_links: { ...companyData.social_media_links, twitter: e.target.value } })}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="facebook"
-                  label="Facebook"
-                  placeholder="Facebook URL"
-                  variant="outlined"
-                  fullWidth
-                  value={companyData.social_media_links.facebook || ''}
-                  onChange={(e) => setCompanyData({ ...companyData, social_media_links: { ...companyData.social_media_links, facebook: e.target.value } })}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="instagram"
-                  label="Instagram"
-                  placeholder="Instagram URL"
-                  variant="outlined"
-                  fullWidth
-                  value={companyData.social_media_links.instagram || ''}
-                  onChange={(e) => setCompanyData({ ...companyData, social_media_links: { ...companyData.social_media_links, instagram: e.target.value } })}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  id="linkedin"
-                  label="LinkedIn"
-                  placeholder="LinkedIn URL"
-                  variant="outlined"
-                  fullWidth
-                  value={companyData.social_media_links.linkedin || ''}
-                  onChange={(e) => setCompanyData({ ...companyData, social_media_links: { ...companyData.social_media_links, linkedin: e.target.value } })}
-                />
-              </Grid>
-            </Grid>
-          </div>
+          <SocialMediaLinks companySocials={companySocials} setCompanySocials={setCompanySocials} activeStep={activeStep} />
         )}
         {activeStep === 4 && (
-          <div>
-            <h3>Review Your Information</h3>
-            <pre>{JSON.stringify(companyData, null, 2)}</pre>
-          </div>
+          <CompanyReview 
+            contactInfoData={contactInfoData} 
+            companySocials={companySocials} 
+            dummyCompanyData={dummyCompanyData}
+            paymentMethods={paymentMethods}
+            />
         )}
         <br />
         <br />
