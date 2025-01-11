@@ -9,9 +9,7 @@ import { RegistrationErrorData } from '@/types/RegistrationErrorData';
 import { ErrorData } from '@/types/ErrorData';
 import { OTPData } from '@/types/OTPData';
 import { useCookies } from 'react-cookie'; 
-import useTokenStore from '@/state/use-token-store'; 
 import { apiCall } from '@/services/apiCall';
-import setCurrentUser from '@/state/use-user-store';
 import clearCurrentUser from '@/state/use-user-store';
 import { useRouter } from 'next/navigation';
 import { useStore } from 'zustand';
@@ -38,18 +36,13 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
-  const { setTokens } = useTokenStore(); 
-  const [cookies, setCookie, removeCookie] = useCookies([
+  const [setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'user_role', 
     'onboarding_presented', 'profile_progress', 
     'profile_completed'
   ]); 
 
   const { 
-    user_role, 
-    onboarding_presented, 
-    profile_progress, 
-    profile_completed, 
     setUserData, 
     clearUserData } = useStore(useUserDataStore); 
 
@@ -103,7 +96,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password: userData.password,
         gender: userData.gender,
         phonenumber: userData.phonenumber,
-        nationality: userData.country
+        nationality: userData.country,
+        has_accepted: userData.has_accepted,
+        is_influencer: userData.is_influencer,
+        whatsapp_number: userData.whatsapp_number
       });
     },
     onSuccess: (data: RegistrationSuccessData) => {
@@ -161,7 +157,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     date_of_birth: string,
     gender: string,
     phonenumber: string,
-    nationality: string
+    nationality: string,
+    has_accepted: boolean,
+    is_influencer: boolean,
+    whatsapp_number: string
   ) => {
     await registerMutation.mutateAsync({ 
       username: username, 
@@ -173,7 +172,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       date_of_birth: date_of_birth, 
       gender: gender, 
       phonenumber: phonenumber,
-      nationality: nationality
+      country: nationality,
+      has_accepted: has_accepted,
+      is_influencer: is_influencer,
+      whatsapp_number: whatsapp_number
     });
   };
 

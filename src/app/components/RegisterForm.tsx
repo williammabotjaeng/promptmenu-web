@@ -28,6 +28,11 @@ const inputStyles = {
 };
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
+
+  const [isInfluencer, setIsInfluencer] = useState('no');
+  const [country, setCountry] = useState('');
+  const [hasAccepted, setHasAccepted] = useState(false);
+  
   const [formData, setFormData] = useState({
     user_role: userRole,
     email: '',
@@ -38,15 +43,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     username: '',
     gender: 'male',
     phonenumber: '',
-    nationality: ''
+    nationality: '',
+    whatsapp_number: '',
+    has_accepted: hasAccepted,
+    is_influencer: isInfluencer,
+
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-  const [isInfluencer, setIsInfluencer] = useState('no');
-  const [country, setCountry] = useState('');
-  const [hasAccepted, setHasAccepted] = useState(false);
 
   const handleInfluencerChange = (event) => {
     setIsInfluencer(event.target.value);
@@ -89,7 +95,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         formData.lastname,
         formData.gender,
         formData.phonenumber,
-        country
+        formData.whatsapp_number,
+        country,
+        isInfluencer,
+        hasAccepted,
+
       );
 
       setCurrentUser(formData.username, '');

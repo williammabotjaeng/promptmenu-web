@@ -9,4 +9,7 @@ export interface RegistrationData {
     phonenumber: string;
     gender: string;
     country: string;
+    has_accepted: boolean;
+    whatsapp_number: string;
+    is_influencer: boolean;
   }
