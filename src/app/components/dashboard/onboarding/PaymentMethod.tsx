@@ -1,17 +1,23 @@
 import React from 'react';
 import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
+import { useStore } from 'zustand';
 
 const PaymentMethod = ({ activeStep }) => {
-    const { paymentMethod, setPaymentMethod } = useClientOnboardingStore();
+    const { paymentMethod, setPaymentMethod } = useStore(useClientOnboardingStore);
 
     const handlePaymentMethodChange = (event) => {
         const selectedMethod = event.target.value;
-        setPaymentMethod((prev) => ({ ...prev, payment_method: selectedMethod }));
+        if (paymentMethod?.payment_method !== selectedMethod) {
+            setPaymentMethod((prev) => ({ ...prev, payment_method: selectedMethod }));
+        }
     };
 
     const handleInputChange = (field) => (event) => {
-        setPaymentMethod((prev) => ({ ...prev, [field]: event.target.value }));
+        const newValue = event.target.value;
+        if (paymentMethod[field] !== newValue) {
+            setPaymentMethod((prev) => ({ ...prev, [field]: newValue }));
+        }
     };
 
     return (

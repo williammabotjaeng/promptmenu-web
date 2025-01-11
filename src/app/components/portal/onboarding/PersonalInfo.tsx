@@ -1,7 +1,11 @@
 import React from 'react';
 import { Box, TextField, Typography, Grid } from '@mui/material';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
 
-const PersonalInformation = ({ activeStep, personalInfo, setPersonalInfo }) => {
+const PersonalInformation = ({ activeStep }) => {
+    const { personalInfo, setPersonalInfo } = useStore(useTalentOnboardingStore);
+
     return (
         <>
             {activeStep === 0 && (
@@ -14,7 +18,7 @@ const PersonalInformation = ({ activeStep, personalInfo, setPersonalInfo }) => {
                                 label="Name"
                                 placeholder="Enter your name"
                                 variant="outlined"
-                                value={personalInfo.user}
+                                value={personalInfo?.user || ''}
                                 onChange={(e) => setPersonalInfo((prev) => ({ ...prev, user: e.target.value }))}
                             />
                         </Grid>
@@ -24,7 +28,7 @@ const PersonalInformation = ({ activeStep, personalInfo, setPersonalInfo }) => {
                                 label="Date of Birth"
                                 placeholder="YYYY-MM-DD"
                                 variant="outlined"
-                                value={personalInfo.date_of_birth}
+                                value={personalInfo?.date_of_birth || ''}
                                 onChange={(e) => setPersonalInfo((prev) => ({ ...prev, date_of_birth: e.target.value }))}
                             />
                         </Grid>
@@ -34,7 +38,7 @@ const PersonalInformation = ({ activeStep, personalInfo, setPersonalInfo }) => {
                                 label="Gender"
                                 placeholder="Enter your gender"
                                 variant="outlined"
-                                value={personalInfo.gender}
+                                value={personalInfo?.gender || ''}
                                 onChange={(e) => setPersonalInfo((prev) => ({ ...prev, gender: e.target.value }))}
                             />
                         </Grid>
@@ -44,7 +48,7 @@ const PersonalInformation = ({ activeStep, personalInfo, setPersonalInfo }) => {
                                 label="Phone Number"
                                 placeholder="Enter your phone number"
                                 variant="outlined"
-                                value={personalInfo.phone_number}
+                                value={personalInfo?.phone_number || ''}
                                 onChange={(e) => setPersonalInfo((prev) => ({ ...prev, phone_number: e.target.value }))}
                             />
                         </Grid>

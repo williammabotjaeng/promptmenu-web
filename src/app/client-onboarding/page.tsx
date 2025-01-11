@@ -16,51 +16,6 @@ const ClientOnboarding: React.FC = () => {
   const router = useRouter();
   const [cookies, setCookie] = useCookies(['companyData']);
   const [activeStep, setActiveStep] = useState(0);
-  const [companyData, setCompanyData] = useState({
-    name: '',
-    logo: null,
-    slogan: '',
-    description: '',
-    address: '',
-    phone_number: '',
-    whatsapp_number: '',
-    payment_method: '',
-    website: '',
-    social_media_links: {},
-  });
-
-  const [contactInfoData, setContactInfoData] = useState({
-    address: "123 Tech Lane, Silicon Valley, CA 94043",
-    phone_number: "+1 (555) 123-4567",
-    whatsapp_number: "+1 (555) 987-6543",
-  });
-
-  const [dummyCompanyData, setDummyCompanyData] = useState({
-    name: "Tech Innovations Inc.",
-    slogan: "Innovating the Future",
-    description: "Tech Innovations Inc. is dedicated to creating cutting-edge technology solutions that empower businesses and enhance everyday life. Our mission is to drive progress through innovation and excellence in service.",
-  });
-
-  const [paymentMethods, setPaymentMethods] = useState({
-    payment_method: 'creditCard',
-    ccNumber: '4111 1111 1111 1111',
-    ccFirstName: 'John',
-    ccLastName: 'Doe',
-    ccExpiry: '12/25',
-    ccCVC: '123',
-    paypalEmail: 'john.doe@example.com',
-    stripeDetails: 'Stripe account details here',
-  });
-
-  const [companySocials, setCompanySocials] = useState({
-    website: 'https://example.com',
-    social_media_links: {
-      twitter: 'https://twitter.com/example',
-      facebook: 'https://facebook.com/example',
-      instagram: 'https://instagram.com/example',
-      linkedin: 'https://linkedin.com/company/example',
-    },
-  });
 
   const steps = [
     { title: "Step 1: Basic Information", content: "Please provide your basic information." },
@@ -69,19 +24,7 @@ const ClientOnboarding: React.FC = () => {
     { title: "Step 4: Social Medial Links", content: "Your Website & Social Media Links." },
     { title: "Step 5: Submit", content: "Review & Submit your information." },
   ];
-
-  useEffect(() => {
-    // Load company data from the onboarding provider or cookies
-    const loadCompanyData = async () => {
-      const response = await fetch('/api/company'); 
-      const data = await response.json();
-      if (data) {
-        setCompanyData(data);
-      }
-    };
-
-    loadCompanyData();
-  }, []);
+    
 
   const handleBack = () => {
     if (activeStep > 0) {
@@ -96,23 +39,11 @@ const ClientOnboarding: React.FC = () => {
   };
 
   const handleSkip = () => {
-    // Save current step data to cookies
-    setCookie('companyData', JSON.stringify(companyData), { path: '/' });
     router.push('/dashboard');
   };
 
   const handleSubmit = async () => {
-    const method = companyData.id ? 'PUT' : 'POST';
-    const endpoint = companyData.id ? `/dashboard/company/${companyData.id}` : '/dashboard/company';
-
-    await fetch(endpoint, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(companyData),
-    });
-
+   
     router.push('/dashboard');
   };
 
@@ -126,24 +57,19 @@ const ClientOnboarding: React.FC = () => {
 
         {/* Render input fields based on the active step */}
         {activeStep === 0 && (
-          <CompanyInfo activeStep={activeStep} companyInfo={dummyCompanyData} setCompanyInfo={setDummyCompanyData} />
+          <CompanyInfo activeStep={activeStep}  />
         )}
         {activeStep === 1 && (
-          <AddressAndContactInfo activeStep={activeStep} contactInfoData={contactInfoData} setContactInfoData={setContactInfoData} />
+          <AddressAndContactInfo activeStep={activeStep} />
         )}
         {activeStep === 2 && (
-          <PaymentMethod paymentMethods={paymentMethods} setPaymentMethods={setPaymentMethods} activeStep={activeStep} />
+          <PaymentMethod activeStep={activeStep} />
         )}
         {activeStep === 3 && (
-          <SocialMediaLinks companySocials={companySocials} setCompanySocials={setCompanySocials} activeStep={activeStep} />
+          <SocialMediaLinks activeStep={activeStep} />
         )}
         {activeStep === 4 && (
-          <CompanyReview 
-            contactInfoData={contactInfoData} 
-            companySocials={companySocials} 
-            dummyCompanyData={dummyCompanyData}
-            paymentMethods={paymentMethods}
-            />
+          <CompanyReview />
         )}
         <br />
         <br />

@@ -1,7 +1,11 @@
 import React from 'react';
 import { Grid, TextField } from '@mui/material';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
 
-const SocialMediaLinks = ({ profileSocials, setProfileSocials, activeStep }) => {
+const SocialMediaLinks = ({ activeStep }) => {
+    const { profileSocials, setProfileSocials } = useStore(useTalentOnboardingStore);
+
     const handleInputChange = (field) => (event) => {
         setProfileSocials((prev) => ({
             ...prev,
@@ -21,7 +25,7 @@ const SocialMediaLinks = ({ profileSocials, setProfileSocials, activeStep }) => 
                     placeholder="Website"
                     variant="outlined"
                     fullWidth
-                    value={setProfileSocials.website}
+                    value={profileSocials.website || ''}
                     onChange={(e) => setProfileSocials({ ...profileSocials, website: e.target.value })}
                 />
             </Grid>

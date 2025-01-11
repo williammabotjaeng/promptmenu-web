@@ -1,14 +1,17 @@
 import React from 'react';
 import { Box, Typography, Grid } from '@mui/material';
+import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 
-const CompanyReview = ({ contactInfoData, dummyCompanyData, paymentMethods, companySocials }) => {
-    const hasSocialMediaLinks = Object.values(companySocials.social_media_links).some(link => link);
-    const hasContactDetails = contactInfoData.address || contactInfoData.phone_number || contactInfoData.whatsapp_number;
+const CompanyReview = () => {
+    const { contactInfo, companyInfo, paymentMethod, socialMediaLinks } = useClientOnboardingStore.getState();
+
+    const hasSocialMediaLinks = Object.values(socialMediaLinks?.social_media_links).some(link => link);
+    const hasContactDetails = contactInfo.address || contactInfo.phone_number || contactInfo.whatsapp_number;
 
     // Create an excerpt of the description
-    const descriptionExcerpt = dummyCompanyData.description.length > 100 
-        ? `${dummyCompanyData.description.substring(0, 100)}...` 
-        : dummyCompanyData.description;
+    const descriptionExcerpt = companyInfo.description.length > 100 
+        ? `${companyInfo.description.substring(0, 100)}...` 
+        : companyInfo.description;
 
     return (
         <Box>
@@ -16,7 +19,7 @@ const CompanyReview = ({ contactInfoData, dummyCompanyData, paymentMethods, comp
             <Grid container mt={2}>
                 <Grid item xs={12} sm={6}>
                     <Typography variant="h6" style={{ color: 'black' }}>Payment Method:</Typography>
-                    <Typography style={{ color: 'black' }}>{paymentMethods.payment_method}</Typography>
+                    <Typography style={{ color: 'black' }}>{paymentMethod.payment_method || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Typography variant="h6" style={{ color: 'black' }}>Social Media:</Typography>
@@ -28,16 +31,16 @@ const CompanyReview = ({ contactInfoData, dummyCompanyData, paymentMethods, comp
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Typography variant="h6" style={{ color: 'black' }}>Company Information:</Typography>
-                    <Typography style={{ color: 'black' }}>Name: {dummyCompanyData.name || 'N/A'}</Typography>
-                    <Typography style={{ color: 'black' }}>Slogan: {dummyCompanyData.slogan || 'N/A'}</Typography>
+                    <Typography style={{ color: 'black' }}>Name: {companyInfo.name || 'N/A'}</Typography>
+                    <Typography style={{ color: 'black' }}>Slogan: {companyInfo.slogan || 'N/A'}</Typography>
                     <Typography style={{ color: 'black' }}>Description: {descriptionExcerpt}</Typography>
-                    <Typography style={{ color: 'black' }}>Website: {companySocials.website || 'N/A'}</Typography>
+                    <Typography style={{ color: 'black' }}>Website: {socialMediaLinks.website || 'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{ marginTop: '-20px' }}>
                     <Typography variant="h6" style={{ color: 'black' }}>Contact Information:</Typography>
-                    <Typography style={{ color: 'black' }}>Address: {contactInfoData.address || 'N/A'}</Typography>
-                    <Typography style={{ color: 'black' }}>Phone Number: {contactInfoData.phone_number || 'N/A'}</Typography>
-                    <Typography style={{ color: 'black' }}>WhatsApp Number: {contactInfoData.whatsapp_number || 'N/A'}</Typography>
+                    <Typography style={{ color: 'black' }}>Address: {contactInfo.address || 'N/A'}</Typography>
+                    <Typography style={{ color: 'black' }}>Phone Number: {contactInfo.phone_number || 'N/A'}</Typography>
+                    <Typography style={{ color: 'black' }}>WhatsApp Number: {contactInfo.whatsapp_number || 'N/A'}</Typography>
                 </Grid>
             </Grid>
         </Box>

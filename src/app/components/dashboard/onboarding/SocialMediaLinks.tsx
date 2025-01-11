@@ -1,9 +1,10 @@
 import React from 'react';
 import { Grid, TextField } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
+import { useStore } from 'zustand';
 
 const SocialMediaLinks = ({ activeStep }) => {
-    const { socialMediaLinks, setSocialMediaLinks } = useClientOnboardingStore();
+    const { socialMediaLinks, setSocialMediaLinks } = useStore(useClientOnboardingStore);
 
     const handleInputChange = (field) => (event) => {
         setSocialMediaLinks((prev) => ({
@@ -57,7 +58,7 @@ const SocialMediaLinks = ({ activeStep }) => {
                     placeholder="Instagram URL"
                     variant="outlined"
                     fullWidth
-                    value={socialMediaLinks.social_media_links.instagram || ''}
+                    value={socialMediaLinks?.social_media_links?.instagram || ''}
                     onChange={handleInputChange('instagram')}
                 />
             </Grid>

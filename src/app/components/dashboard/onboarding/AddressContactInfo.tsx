@@ -1,9 +1,10 @@
 import React from 'react';
 import { Box, TextField, Typography } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
+import { useStore } from 'zustand';
 
 const AddressAndContactInfo = ({ activeStep }) => {
-    const { contactInfo, setContactInfo } = useClientOnboardingStore();
+    const { contactInfo, setContactInfo } = useStore(useClientOnboardingStore);
 
     return (
         <>

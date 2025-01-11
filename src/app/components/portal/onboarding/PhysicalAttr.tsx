@@ -1,46 +1,48 @@
 import React from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
+import { useStore } from 'zustand';
 
-const PhysicalAttributes = ({ physicalAttr, setPhysicalAttr, activeStep }) => {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPhysicalAttr((prev) => ({ ...prev, [name]: value }));
-  };
+const PhysicalAttributes = ({ activeStep }) => {
+    const { physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
 
-  return (
-    <>
-      {activeStep === 2 && (
-        <Box>
-          <Box>
-            <TextField
-              label="Height"
-              name="height"
-              value={physicalAttr.height}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              label="Weight"
-              name="weight"
-              value={physicalAttr.weight}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-            <TextField
-              label="Ethnicity"
-              name="ethnicity"
-              value={physicalAttr.ethnicity}
-              onChange={handleChange}
-              margin="normal"
-              fullWidth
-            />
-          </Box>
-        </Box>
-      )}
-    </>
-  );
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setPhysicalAttributes((prev) => ({ ...prev, [name]: value }));
+    };
+
+    return (
+        <>
+            {activeStep === 2 && (
+                <Box>
+                    <TextField
+                        label="Height"
+                        name="height"
+                        value={physicalAttributes.height || ''}
+                        onChange={handleChange}
+                        margin="normal"
+                        fullWidth
+                    />
+                    <TextField
+                        label="Weight"
+                        name="weight"
+                        value={physicalAttributes.weight || ''}
+                        onChange={handleChange}
+                        margin="normal"
+                        fullWidth
+                    />
+                    <TextField
+                        label="Ethnicity"
+                        name="ethnicity"
+                        value={physicalAttributes.ethnicity || ''}
+                        onChange={handleChange}
+                        margin="normal"
+                        fullWidth
+                    />
+                </Box>
+            )}
+        </>
+    );
 };
 
 export default PhysicalAttributes;
