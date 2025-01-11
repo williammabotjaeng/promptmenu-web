@@ -39,7 +39,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
-  const [setCookie, removeCookie] = useCookies([
+  const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'user_role', 
     'onboarding_presented', 'profile_progress', 
     'profile_completed'
