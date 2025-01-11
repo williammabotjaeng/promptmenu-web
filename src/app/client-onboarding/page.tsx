@@ -66,14 +66,14 @@ const ClientOnboarding: React.FC = () => {
     { title: "Step 1: Basic Information", content: "Please provide your basic information." },
     { title: "Step 2: Business Details", content: "Tell us about your business." },
     { title: "Step 3: Preferences", content: "Set your preferences." },
-    { title: "Step 4: Review", content: "Review your information." },
-    { title: "Step 5: Submit", content: "Submit your information." },
+    { title: "Step 4: Social Medial Links", content: "Your Website & Social Media Links." },
+    { title: "Step 5: Submit", content: "Review & Submit your information." },
   ];
 
   useEffect(() => {
     // Load company data from the onboarding provider or cookies
     const loadCompanyData = async () => {
-      const response = await fetch('/api/company'); // Replace with your API endpoint
+      const response = await fetch('/api/company'); 
       const data = await response.json();
       if (data) {
         setCompanyData(data);

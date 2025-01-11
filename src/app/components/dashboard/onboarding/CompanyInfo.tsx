@@ -1,7 +1,11 @@
 import React from 'react';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField } from '@mui/material';
+import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
+import { useStore } from 'zustand';
 
-const CompanyInfo = ({ activeStep, companyInfo, setCompanyInfo }) => {
+const CompanyInfo = ({ activeStep }) => {
+    const { companyInfo, setCompanyInfo } = useStore(useClientOnboardingStore);
+
     return (
         <>
             {activeStep === 0 && (
@@ -12,7 +16,7 @@ const CompanyInfo = ({ activeStep, companyInfo, setCompanyInfo }) => {
                             label="Company Name"
                             placeholder="Company Name"
                             variant="outlined"
-                            value={companyInfo.name}
+                            value={companyInfo?.name}
                             onChange={(e) => setCompanyInfo({ ...companyInfo, name: e.target.value })}
                         />
                     </Box>
@@ -22,7 +26,7 @@ const CompanyInfo = ({ activeStep, companyInfo, setCompanyInfo }) => {
                             label="Slogan"
                             placeholder="Slogan"
                             variant="outlined"
-                            value={companyInfo.slogan}
+                            value={companyInfo?.slogan}
                             onChange={(e) => setCompanyInfo({ ...companyInfo, slogan: e.target.value })}
                         />
                     </Box>
@@ -34,7 +38,7 @@ const CompanyInfo = ({ activeStep, companyInfo, setCompanyInfo }) => {
                             variant="outlined"
                             multiline
                             rows={4}
-                            value={companyInfo.description}
+                            value={companyInfo?.description}
                             onChange={(e) => setCompanyInfo({ ...companyInfo, description: e.target.value })}
                         />
                     </Box>

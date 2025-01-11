@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid } from '@mui/material';
+import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 
-const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
-    const [paymentMethod, setPaymentMethod] = useState(paymentMethods.payment_method || 'creditCard');
+const PaymentMethod = ({ activeStep }) => {
+    const { paymentMethod, setPaymentMethod } = useClientOnboardingStore();
 
     const handlePaymentMethodChange = (event) => {
         const selectedMethod = event.target.value;
-        setPaymentMethod(selectedMethod);
-        setPaymentMethods((prev) => ({ ...prev, payment_method: selectedMethod }));
+        setPaymentMethod((prev) => ({ ...prev, payment_method: selectedMethod }));
     };
 
     const handleInputChange = (field) => (event) => {
-        setPaymentMethods((prev) => ({ ...prev, [field]: event.target.value }));
+        setPaymentMethod((prev) => ({ ...prev, [field]: event.target.value }));
     };
 
     return (
         <Box className="w-full max-w-2xl mx-auto">
             <Typography variant="h6" className="mb-4" style={{ color: 'black' }}>Preferred Payment Method</Typography>
             <RadioGroup
-                value={paymentMethod}
+                value={paymentMethod?.payment_method || 'creditCard'}
                 onChange={handlePaymentMethodChange}
                 row
             >
@@ -27,7 +27,7 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                 <FormControlLabel value="stripe" control={<Radio />} label={<Typography style={{ color: 'black' }}>Stripe</Typography>} />
             </RadioGroup>
 
-            {paymentMethod === 'creditCard' && (
+            {paymentMethod?.payment_method === 'creditCard' && (
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -36,7 +36,7 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                             placeholder="Card Number"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethods.ccNumber || ''}
+                            value={paymentMethod?.ccNumber || ''}
                             onChange={handleInputChange('ccNumber')}
                         />
                     </Grid>
@@ -47,7 +47,7 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                             placeholder="First Name"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethods.ccFirstName || ''}
+                            value={paymentMethod?.ccFirstName || ''}
                             onChange={handleInputChange('ccFirstName')}
                         />
                     </Grid>
@@ -58,7 +58,7 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                             placeholder="Last Name"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethods.ccLastName || ''}
+                            value={paymentMethod?.ccLastName || ''}
                             onChange={handleInputChange('ccLastName')}
                         />
                     </Grid>
@@ -69,7 +69,7 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                             placeholder="MM/YY"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethods.ccExpiry || ''}
+                            value={paymentMethod?.ccExpiry || ''}
                             onChange={handleInputChange('ccExpiry')}
                         />
                     </Grid>
@@ -80,28 +80,28 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                             placeholder="CVC"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethods.ccCVC || ''}
+                            value={paymentMethod?.ccCVC || ''}
                             onChange={handleInputChange('ccCVC')}
                         />
                     </Grid>
                 </Grid>
             )}
 
-            {paymentMethod === 'paypal' && (
+            {paymentMethod?.payment_method === 'paypal' && (
                 <TextField
                     id="paypalEmail"
                     label="PayPal Email"
                     placeholder="PayPal Email"
                     variant="outlined"
                     fullWidth
-                    value={paymentMethods.paypalEmail || ''}
+                    value={paymentMethod?.paypalEmail || ''}
                     onChange={handleInputChange('paypalEmail')}
                     className="mb-2"
                     InputLabelProps={{ style: { color: 'black' } }} 
                 />
             )}
 
-            {paymentMethod === 'stripe' && (
+            {paymentMethod?.payment_method === 'stripe' && (
                 <TextField
                     id="stripeDetails"
                     label="Stripe Payment Details"
@@ -110,7 +110,7 @@ const PaymentMethod = ({ activeStep, paymentMethods, setPaymentMethods }) => {
                     fullWidth
                     multiline
                     rows={4}
-                    value={paymentMethods.stripeDetails || ''}
+                    value={paymentMethod?.stripeDetails || ''}
                     onChange={handleInputChange('stripeDetails')}
                     className="mb-2"
                     InputLabelProps={{ style: { color: 'black' } }}

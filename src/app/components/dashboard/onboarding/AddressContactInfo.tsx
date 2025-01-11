@@ -1,20 +1,22 @@
 import React from 'react';
 import { Box, TextField, Typography } from '@mui/material';
+import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 
-const AddressAndContactInfo = ({ activeStep, contactInfoData, setContactInfoData }) => {
+const AddressAndContactInfo = ({ activeStep }) => {
+    const { contactInfo, setContactInfo } = useClientOnboardingStore();
+
     return (
         <>
             {activeStep === 1 && (
                 <Box className="w-full max-w-md mx-auto">
-                    <Typography variant="h6" className="mb-4">Address and Contact Information</Typography>
                     <Box className="mb-4">
                         <TextField
                             fullWidth
                             label="Address"
                             placeholder="Address"
                             variant="outlined"
-                            value={contactInfoData.address}
-                            onChange={(e) => setContactInfoData({ ...contactInfoData, address: e.target.value })}
+                            value={contactInfo?.address}
+                            onChange={(e) => setContactInfo({ ...contactInfo, address: e.target.value })}
                         />
                     </Box>
                     <Box className="mb-4">
@@ -23,8 +25,8 @@ const AddressAndContactInfo = ({ activeStep, contactInfoData, setContactInfoData
                             label="Phone Number"
                             placeholder="Phone Number"
                             variant="outlined"
-                            value={contactInfoData.phone_number}
-                            onChange={(e) => setCompanyData({ ...contactInfoData, phone_number: e.target.value })}
+                            value={contactInfo?.phone_number}
+                            onChange={(e) => setContactInfo({ ...contactInfo, phone_number: e.target.value })}
                         />
                     </Box>
                     <Box className="mb-4">
@@ -33,8 +35,8 @@ const AddressAndContactInfo = ({ activeStep, contactInfoData, setContactInfoData
                             label="WhatsApp Number"
                             placeholder="WhatsApp Number"
                             variant="outlined"
-                            value={contactInfoData.whatsapp_number}
-                            onChange={(e) => setContactInfoData({ ...contactInfoData, whatsapp_number: e.target.value })}
+                            value={contactInfo?.whatsapp_number}
+                            onChange={(e) => setContactInfo({ ...contactInfo, whatsapp_number: e.target.value })}
                         />
                     </Box>
                 </Box>
