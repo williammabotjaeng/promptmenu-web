@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 

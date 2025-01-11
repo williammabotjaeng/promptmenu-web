@@ -1,81 +1,95 @@
-import React from 'react';
-import { Grid, TextField } from '@mui/material';
+"use client";
+
+import React, { useRef } from 'react';
+import { Grid, TextField, Box, Button } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 import { useStore } from 'zustand';
 
 const SocialMediaLinks = ({ activeStep }) => {
     const { socialMediaLinks, setSocialMediaLinks } = useStore(useClientOnboardingStore);
 
-    console.log("Payment Details", useClientOnboardingStore.getState().paymentMethod)
+    // Create refs for each input
+    const websiteRef = useRef();
+    const twitterRef = useRef();
+    const facebookRef = useRef();
+    const instagramRef = useRef();
+    const linkedinRef = useRef();
 
-    const handleInputChange = (field) => (event) => {
-        setSocialMediaLinks((prev) => ({
-            ...prev,
+    const handleSave = () => {
+        setSocialMediaLinks({
+            ...socialMediaLinks,
+            website: websiteRef.current.value,
             social_media_links: {
-                ...prev?.social_media_links,
-                [field]: event.target.value,
+                twitter: twitterRef.current.value,
+                facebook: facebookRef.current.value,
+                instagram: instagramRef.current.value,
+                linkedin: linkedinRef.current.value,
             },
-        }));
+        });
     };
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-                <TextField
-                    id="website"
-                    label="Website"
-                    placeholder="Website"
-                    variant="outlined"
-                    fullWidth
-                    value={socialMediaLinks?.website || ''}
-                    onChange={(e) => setSocialMediaLinks({ ...socialMediaLinks, website: e.target.value })}
-                />
+        <Box className="w-full mx-auto">
+            <Grid container spacing={2}>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="website"
+                        label="Website"
+                        placeholder="Website"
+                        variant="outlined"
+                        fullWidth
+                        defaultValue={socialMediaLinks?.website}
+                        inputRef={websiteRef}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="twitter"
+                        label="Twitter"
+                        placeholder="Twitter URL"
+                        variant="outlined"
+                        fullWidth
+                        defaultValue={socialMediaLinks?.social_media_links?.twitter}
+                        inputRef={twitterRef}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="facebook"
+                        label="Facebook"
+                        placeholder="Facebook URL"
+                        variant="outlined"
+                        fullWidth
+                        defaultValue={socialMediaLinks?.social_media_links?.facebook}
+                        inputRef={facebookRef}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="instagram"
+                        label="Instagram"
+                        placeholder="Instagram URL"
+                        variant="outlined"
+                        fullWidth
+                        defaultValue={socialMediaLinks?.social_media_links?.instagram}
+                        inputRef={instagramRef}
+                    />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="linkedin"
+                        label="LinkedIn"
+                        placeholder="LinkedIn URL"
+                        variant="outlined"
+                        fullWidth
+                        defaultValue={socialMediaLinks?.social_media_links?.linkedin}
+                        inputRef={linkedinRef}
+                    />
+                </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextField
-                    id="twitter"
-                    label="Twitter"
-                    placeholder="Twitter URL"
-                    variant="outlined"
-                    fullWidth
-                    value={socialMediaLinks?.social_media_links?.twitter || ''}
-                    onChange={handleInputChange('twitter')}
-                />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextField
-                    id="facebook"
-                    label="Facebook"
-                    placeholder="Facebook URL"
-                    variant="outlined"
-                    fullWidth
-                    value={socialMediaLinks?.social_media_links?.facebook || ''}
-                    onChange={handleInputChange('facebook')}
-                />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextField
-                    id="instagram"
-                    label="Instagram"
-                    placeholder="Instagram URL"
-                    variant="outlined"
-                    fullWidth
-                    value={socialMediaLinks?.social_media_links?.instagram || ''}
-                    onChange={handleInputChange('instagram')}
-                />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <TextField
-                    id="linkedin"
-                    label="LinkedIn"
-                    placeholder="LinkedIn URL"
-                    variant="outlined"
-                    fullWidth
-                    value={socialMediaLinks?.social_media_links?.linkedin || ''}
-                    onChange={handleInputChange('linkedin')}
-                />
-            </Grid>
-        </Grid>
+            <br />
+            <Button onClick={handleSave}>Save</Button>
+        </Box>
     );
 };
 
