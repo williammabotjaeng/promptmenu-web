@@ -1,17 +1,21 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 import { useStore } from 'zustand';
 
 const PaymentMethod = ({ activeStep }) => {
     const { paymentMethod, setPaymentMethod } = useStore(useClientOnboardingStore);
-
-    console.log("Contact Details", useClientOnboardingStore.getState().contactInfo);
+    
+    // Local state for the selected payment method tab
+    const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethod?.payment_method || "creditCard");
 
     const handlePaymentMethodChange = (event) => {
-        let selectedMethod = event.target.value;
+        const selectedMethod = event.target.value;
+        setPaymentMethodTab(selectedMethod); // Update local state
         if (paymentMethod?.payment_method !== selectedMethod) {
-            setPaymentMethod(() => ({ payment_method: selectedMethod }));
+            setPaymentMethod({ payment_method: selectedMethod });
         }
     };
 
@@ -26,7 +30,7 @@ const PaymentMethod = ({ activeStep }) => {
         <Box className="w-full max-w-2xl mx-auto">
             <Typography variant="h6" className="mb-4" style={{ color: 'black' }}>Preferred Payment Method</Typography>
             <RadioGroup
-                value={paymentMethod?.payment_method || 'creditCard'}
+                value={paymentMethodTab}
                 onChange={handlePaymentMethodChange}
                 row
             >
@@ -35,7 +39,7 @@ const PaymentMethod = ({ activeStep }) => {
                 <FormControlLabel value="stripe" control={<Radio />} label={<Typography style={{ color: 'black' }}>Stripe</Typography>} />
             </RadioGroup>
 
-            {paymentMethod?.payment_method === 'creditCard' && (
+            {paymentMethodTab === 'creditCard' && (
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6}>
                         <TextField
@@ -95,7 +99,7 @@ const PaymentMethod = ({ activeStep }) => {
                 </Grid>
             )}
 
-            {paymentMethod?.payment_method === 'paypal' && (
+            {paymentMethodTab === 'paypal' && (
                 <TextField
                     id="paypalEmail"
                     label="PayPal Email"
@@ -109,7 +113,7 @@ const PaymentMethod = ({ activeStep }) => {
                 />
             )}
 
-            {paymentMethod?.payment_method === 'stripe' && (
+            {paymentMethodTab === 'stripe' && (
                 <TextField
                     id="stripeDetails"
                     label="Stripe Payment Details"
