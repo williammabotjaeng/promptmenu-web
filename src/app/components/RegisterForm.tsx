@@ -46,6 +46,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
   const [isInfluencer, setIsInfluencer] = useState('no');
   const [country, setCountry] = useState('');
+  const [hasAccepted, setHasAccepted] = useState(false);
 
   const handleInfluencerChange = (event) => {
     setIsInfluencer(event.target.value);
@@ -55,7 +56,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     setCountry(val);
   };
 
-
+  const handleAcceptance = (val: React.SetStateAction<boolean>) => {
+    setHasAccepted(!hasAccepted);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -348,7 +351,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           {/* Submit Button */}
           <Grid item xs={12}>
             <FormControlLabel
-              control={<Checkbox color="success" sx={{
+              control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
                 color: 'white'
               }} className="custom-input" />}
               label={
