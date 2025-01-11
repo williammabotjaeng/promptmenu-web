@@ -6,7 +6,6 @@ const CompanyInfo = ({ activeStep, companyInfo, setCompanyInfo }) => {
         <>
             {activeStep === 0 && (
                 <Box className="w-full mx-auto">
-                    <Typography variant="h6" className="mb-4">Company Information</Typography>
                     <Box className="mb-4">
                         <TextField
                             fullWidth
