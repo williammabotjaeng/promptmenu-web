@@ -60,15 +60,15 @@ const LoginForm: React.FC = () => {
         
         setTimeout(() => {
           
-          console.log("1. ", cookies['onboarding_presented']);
-          console.log("2. ", cookies['profile_progress']);
-          console.log("3. ", cookies['profile_completed']);
+          console.log("1. ", onboarding_presented);
+          console.log("2. ", profile_progress);
+          console.log("3. ", profile_completed);
 
-          if (cookies['onboarding_presented'] && cookies['profile_progress'] > 0.6) {
+          if (onboarding_presented && profile_progress > 0.6) {
             console.log("Routing option 1");
             const redirectPath = user_role === 'client' ? '/dashboard' : '/portal';
             router.push(redirectPath);
-          } else if (cookies['profile_progress'] < 0.6 && !cookies['profile_completed']) {
+          } else if (profile_progress < 0.6 && !profile_completed) {
             console.log("Routing option 2");
             const onboardingPath = user_role === 'client' ? '/client-onboarding' : '/talent-onboarding';
             router.push(onboardingPath);
