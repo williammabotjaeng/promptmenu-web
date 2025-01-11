@@ -6,6 +6,8 @@ import { useStore } from 'zustand';
 const SocialMediaLinks = ({ activeStep }) => {
     const { socialMediaLinks, setSocialMediaLinks } = useStore(useClientOnboardingStore);
 
+    console.log("Payment Details", useClientOnboardingStore.getState().paymentMethod)
+
     const handleInputChange = (field) => (event) => {
         setSocialMediaLinks((prev) => ({
             ...prev,

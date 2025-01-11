@@ -1,29 +1,58 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid, Button, Snackbar } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 import { useStore } from 'zustand';
 
-const PaymentMethod = ({ activeStep }) => {
+const PaymentMethod = () => {
     const { paymentMethod, setPaymentMethod } = useStore(useClientOnboardingStore);
+
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     
     // Local state for the selected payment method tab
     const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethod?.payment_method || "creditCard");
+    const [paymentDetails, setPaymentDetails] = useState({
+        ccNumber: paymentMethod?.ccNumber || '',
+        ccFirstName: paymentMethod?.ccFirstName || '',
+        ccLastName: paymentMethod?.ccLastName || '',
+        ccExpiry: paymentMethod?.ccExpiry || '',
+        ccCVC: paymentMethod?.ccCVC || '',
+        paypalEmail: paymentMethod?.paypalEmail || '',
+        stripeDetails: paymentMethod?.stripeDetails || ''
+    });
+
+    useEffect(() => {
+        // Update local state if paymentMethod from the store changes
+        if (paymentMethod) {
+            setPaymentMethodTab(paymentMethod.payment_method);
+            setPaymentDetails({
+                ccNumber: paymentMethod.ccNumber || '',
+                ccFirstName: paymentMethod.ccFirstName || '',
+                ccLastName: paymentMethod.ccLastName || '',
+                ccExpiry: paymentMethod.ccExpiry || '',
+                ccCVC: paymentMethod.ccCVC || '',
+                paypalEmail: paymentMethod.paypalEmail || '',
+                stripeDetails: paymentMethod.stripeDetails || ''
+            });
+        }
+    }, [paymentMethod]);
 
     const handlePaymentMethodChange = (event) => {
-        const selectedMethod = event.target.value;
-        setPaymentMethodTab(selectedMethod); // Update local state
-        if (paymentMethod?.payment_method !== selectedMethod) {
-            setPaymentMethod({ payment_method: selectedMethod });
-        }
+        setPaymentMethodTab(event.target.value); 
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false); 
     };
 
     const handleInputChange = (field) => (event) => {
-        const newValue = event.target.value;
-        if (paymentMethod[field] !== newValue) {
-            setPaymentMethod((prev) => ({ ...prev, [field]: newValue }));
-        }
+        setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
+    };
+
+    const handleUpdatePayments = () => {
+        setPaymentMethod({ payment_method: paymentMethodTab, ...paymentDetails });
+        setSnackbarOpen(true);
     };
 
     return (
@@ -48,7 +77,7 @@ const PaymentMethod = ({ activeStep }) => {
                             placeholder="Card Number"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethod?.ccNumber || ''}
+                            value={paymentDetails.ccNumber}
                             onChange={handleInputChange('ccNumber')}
                         />
                     </Grid>
@@ -59,7 +88,7 @@ const PaymentMethod = ({ activeStep }) => {
                             placeholder="First Name"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethod?.ccFirstName || ''}
+                            value={paymentDetails.ccFirstName}
                             onChange={handleInputChange('ccFirstName')}
                         />
                     </Grid>
@@ -70,7 +99,7 @@ const PaymentMethod = ({ activeStep }) => {
                             placeholder="Last Name"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethod?.ccLastName || ''}
+                            value={paymentDetails.ccLastName}
                             onChange={handleInputChange('ccLastName')}
                         />
                     </Grid>
@@ -81,7 +110,7 @@ const PaymentMethod = ({ activeStep }) => {
                             placeholder="MM/YY"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethod?.ccExpiry || ''}
+                            value={paymentDetails.ccExpiry}
                             onChange={handleInputChange('ccExpiry')}
                         />
                     </Grid>
@@ -92,7 +121,7 @@ const PaymentMethod = ({ activeStep }) => {
                             placeholder="CVC"
                             variant="outlined"
                             fullWidth
-                            value={paymentMethod?.ccCVC || ''}
+                            value={paymentDetails.ccCVC}
                             onChange={handleInputChange('ccCVC')}
                         />
                     </Grid>
@@ -106,7 +135,7 @@ const PaymentMethod = ({ activeStep }) => {
                     placeholder="PayPal Email"
                     variant="outlined"
                     fullWidth
-                    value={paymentMethod?.paypalEmail || ''}
+                    value={paymentDetails.paypalEmail}
                     onChange={handleInputChange('paypalEmail')}
                     className="mb-2"
                     InputLabelProps={{ style: { color: 'black' } }} 
@@ -122,12 +151,27 @@ const PaymentMethod = ({ activeStep }) => {
                     fullWidth
                     multiline
                     rows={4}
-                    value={paymentMethod?.stripeDetails || ''}
+                    value={paymentDetails.stripeDetails}
                     onChange={handleInputChange('stripeDetails')}
                     className="mb-2"
                     InputLabelProps={{ style: { color: 'black' } }}
                 />
             )}
+
+            <Button variant="contained" color="primary" onClick={handleUpdatePayments} className="mt-4">
+                Update Payment Details
+            </Button>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message="Payment details updated successfully!"
+                action={
+                    <Button color="inherit" onClick={handleCloseSnackbar}>
+                        Close
+                    </Button>
+                }
+            />
         </Box>
     );
 };
