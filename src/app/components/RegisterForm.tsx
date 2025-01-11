@@ -7,7 +7,7 @@ import { useAuth } from '@/providers/auth-providers';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { redirect } from 'next/navigation';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import useUserStore from "@/state/use-user-store";
 import { useStore } from "zustand";
@@ -38,11 +38,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const [isInfluencer, setIsInfluencer] = useState('no'); 
   const [country, setCountry] = useState('');
   
-    const handleCountryChange = (val: React.SetStateAction<string>) => {
-      setCountry(val);
-    };
+  const handleInfluencerChange = (event) => {
+    setIsInfluencer(event.target.value);
+  };
+
+  const handleCountryChange = (val: React.SetStateAction<string>) => {
+    setCountry(val);
+  };
   
 
 
@@ -287,19 +292,31 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             />
           </Grid>
 
+           {/* Influencer Question */}
+           <Grid item xs={12}>
+            <Typography variant="h5">
+              Are you a Popular influencer?
+            </Typography>
+            <RadioGroup row value={isInfluencer} onChange={handleInfluencerChange}>
+              <FormControlLabel
+                control={<Radio sx={{
+                  color: 'white'
+                }} color="success" />}
+                label="Yes"
+                value="yes"
+              />
+              <FormControlLabel
+                control={<Radio sx={{
+                  color: 'white'
+                }} color="success" />}
+                label="No"
+                value="no"
+              />
+            </RadioGroup>
+          </Grid>
+
           {/* Submit Button */}
           <Grid item xs={12}>
-          <FormControlLabel
-              control={<Checkbox color="success" sx={{
-                color: 'white',
-                display: 'block'
-              }} required />}
-              label={
-                <Typography variant="h5">
-                  Are you a Popular influencer?
-                </Typography>
-              }
-            />
             <FormControlLabel
               control={<Checkbox color="success" sx={{
                 color: 'white'
