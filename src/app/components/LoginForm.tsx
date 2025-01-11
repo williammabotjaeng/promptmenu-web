@@ -75,8 +75,11 @@ const LoginForm: React.FC = () => {
             router.push(redirectPath);
           } else if (profile_progress < 0.6 && !profile_completed) {
             console.log("Routing option 2");
-            const onboardingPath = user_role === 'client' ? '/client-onboarding' : '/talent-onboarding';
-            router.push(onboardingPath);
+            if (user_role === 'client') {
+              router.push('/talent-onboarding');
+            } else {
+              router.push('/client-onboarding');
+            }
           } else {
             console.log("Routing option 3");
             const fallbackPath = user_role === 'client' ? '/dashboard' : '/portal';
