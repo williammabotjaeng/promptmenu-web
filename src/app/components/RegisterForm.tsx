@@ -289,8 +289,19 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Submit Button */}
           <Grid item xs={12}>
+          <FormControlLabel
+              control={<Checkbox color="success" sx={{
+                color: 'white',
+                display: 'block'
+              }} required />}
+              label={
+                <Typography variant="h5">
+                  Are you a Popular influencer?
+                </Typography>
+              }
+            />
             <FormControlLabel
-              control={<Checkbox sx={{
+              control={<Checkbox color="success" sx={{
                 color: 'white'
               }} required />}
               label={
@@ -302,8 +313,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             <Button
               type="submit"
               variant="contained"
-              color="primary"
-              style={{ marginTop: '20px' }}
+              color="success"
+              style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
             >
               <Typography variant="body1">Register</Typography>
             </Button>
