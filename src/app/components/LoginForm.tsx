@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import { useAuth } from "@/providers/auth-providers";
 import { useRouter } from "next/navigation"; 
 import { useCookies } from "react-cookie";
+import { useStore } from "zustand";
+import useUserDataStore from "@/state/use-user-data-store";
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
@@ -26,11 +28,14 @@ const LoginForm: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
   const [cookies] = useCookies(['user_role', 'profile_progress', 'onboarding_presented', 'profile_completed']);
-  console.log('cookies', cookies);
-  const user_role = cookies?.user_role;
-  const profile_progress = cookies?.profile_progress;
-  const onboarding_presented = cookies?.onboarding_presented;
-  const profile_completed = cookies?.profile_completed;
+
+  const { 
+    setUserData,
+    user_role,
+    profile_progress,
+    profile_completed,
+    onboarding_presented
+  } = useStore(useUserDataStore);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -94,6 +99,15 @@ const LoginForm: React.FC = () => {
     }
     setSnackbarOpen(false);
   };
+
+  useEffect(() => {
+    setUserData(
+      user_role,
+      profile_progress,
+      onboarding_presented,
+      profile_completed
+    );
+  }, [cookies]);
 
   return (
     <Box sx={{ maxWidth: "400px", margin: "0 auto", padding: "20px", backgroundColor: "var(--primary-bg)", color: "var(--primary-text)", border: "2px solid #977342", borderRadius: "8px", fontFamily: "Open Sans", outline: "2px solid #977342", outlineOffset: "4px", marginTop: "24px" }}>
