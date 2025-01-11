@@ -5,7 +5,7 @@ import { useStore } from 'zustand';
 
 const AddressAndContactInfo = ({ activeStep }) => {
     const { contactInfo, setContactInfo } = useStore(useClientOnboardingStore);
-
+    console.log("Company Info", useClientOnboardingStore.getState().companyInfo);
     return (
         <>
             {activeStep === 1 && (

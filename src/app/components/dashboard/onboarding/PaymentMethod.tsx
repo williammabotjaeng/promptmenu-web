@@ -6,10 +6,12 @@ import { useStore } from 'zustand';
 const PaymentMethod = ({ activeStep }) => {
     const { paymentMethod, setPaymentMethod } = useStore(useClientOnboardingStore);
 
+    console.log("Contact Details", useClientOnboardingStore.getState().contactInfo);
+
     const handlePaymentMethodChange = (event) => {
-        const selectedMethod = event.target.value;
+        let selectedMethod = event.target.value;
         if (paymentMethod?.payment_method !== selectedMethod) {
-            setPaymentMethod((prev) => ({ ...prev, payment_method: selectedMethod }));
+            setPaymentMethod(() => ({ payment_method: selectedMethod }));
         }
     };
 
