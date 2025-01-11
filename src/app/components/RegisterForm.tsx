@@ -237,7 +237,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               className="custom-input"
             />
             <FormControlLabel
-              control={<Checkbox className="custom-checkbox" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
+              control={<Checkbox color="success" sx={{
+                color: 'white'
+              }} checked={useWhatsApp} onChange={handleWhatsAppChange} />}
               label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
             />
           </Grid>
@@ -288,7 +290,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           {/* Submit Button */}
           <Grid item xs={12}>
             <FormControlLabel
-              control={<Checkbox className="custom-checkbox" required />}
+              control={<Checkbox sx={{
+                color: 'white'
+              }} required />}
               label={
                 <Typography variant="body1">
                   By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.

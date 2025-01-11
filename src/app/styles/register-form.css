@@ -18,6 +18,7 @@
   /* Custom Checkbox Styles */
 .custom-checkbox {
     color: white; 
+    background-color: white;
   }
   
   .custom-checkbox.Mui-checked {
