@@ -11,11 +11,14 @@ import PhysicalAttributes from '@/components/portal/onboarding/PhysicalAttr';
 import IDandCreds from '@/components/portal/onboarding/IDandCreds';
 import ProfileReview from '@/components/portal/onboarding/ProfileReview';
 import SocialMediaLinks from '@/components/portal/onboarding/SocialMediaLinks';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
   const [cookies, setCookie] = useCookies(['talentData']);
   const [activeStep, setActiveStep] = useState(0);
+  const { personalInfo } = useStore(useTalentOnboardingStore);
   const [talentData, setTalentData] = useState<TalentProfileData>({
     user: '',
     headshot: null,
@@ -35,13 +38,6 @@ const TalentOnboarding: React.FC = () => {
     verification_notification_sent: false,
     created_at: '',
     updated_at: '',
-  });
-
-  const [personalInfo, setPersonalInfo] = useState({
-    user: 'Jane Doe',
-    date_of_birth: '1990-01-01',
-    gender: 'Female',
-    phone_number: '+1 (555) 123-4567',
   });
 
   const [physicalAttr, setPhysicalAttr] = useState({
@@ -128,6 +124,7 @@ const TalentOnboarding: React.FC = () => {
     }
   };
 
+  console.log("Personal Info", personalInfo);
   return (
     <Box className="onboarding-container" sx={{ width: '100vw' }}>
       <div className="onboarding-content">
@@ -139,7 +136,7 @@ const TalentOnboarding: React.FC = () => {
         </Typography>
 
         {activeStep === 0 && (
-          <PersonalInformation activeStep={activeStep} personalInfo={personalInfo} setPersonalInfo={setPersonalInfo} />
+          <PersonalInformation activeStep={activeStep} />
         )}
 
         {activeStep === 1 && (
