@@ -29,12 +29,11 @@ const LoginForm: React.FC = () => {
 
   const [cookies] = useCookies(['user_role', 'profile_progress', 'onboarding_presented', 'profile_completed']);
 
-  const { 
-    setUserData,
+  const {
     user_role,
     profile_progress,
-    profile_completed,
-    onboarding_presented
+    onboarding_presented,
+    profile_completed
   } = useStore(useUserDataStore);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,20 +68,18 @@ const LoginForm: React.FC = () => {
           console.log("2. ", profile_progress);
           console.log("3. ", profile_completed);
 
-          if (onboarding_presented && profile_progress > 0.6) {
+          if (useUserDataStore?.getState()?.onboarding_presented && useUserDataStore?.getState()?.profile_progress > 0.6) {
             console.log("Routing option 1");
-            const redirectPath = user_role === 'client' ? '/dashboard' : '/portal';
+            const redirectPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/portal';
             router.push(redirectPath);
-          } else if (profile_progress < 0.6 && !profile_completed) {
+          } else if (useUserDataStore?.getState()?.profile_progress < 0.6 && !useUserDataStore?.getState()?.profile_completed) {
             console.log("Routing option 2");
-            if (user_role === 'client') {
-              router.push('/talent-onboarding');
-            } else {
-              router.push('/client-onboarding');
-            }
+            const onboardingPath = useUserDataStore?.getState()?.user_role === 'client' ? '/client-onboarding' : '/talent-onboarding';
+            console.log("Redirecting to: ", onboardingPath, "with user role", useUserDataStore?.getState()?.user_role); 
+            router.push(onboardingPath);
           } else {
             console.log("Routing option 3");
-            const fallbackPath = user_role === 'client' ? '/dashboard' : '/portal';
+            const fallbackPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/portal';
             router.push(fallbackPath);
           }
         }, 2000);
@@ -102,15 +99,6 @@ const LoginForm: React.FC = () => {
     }
     setSnackbarOpen(false);
   };
-
-  useEffect(() => {
-    setUserData(
-      user_role,
-      profile_progress,
-      onboarding_presented,
-      profile_completed
-    );
-  }, [cookies]);
 
   return (
     <Box sx={{ maxWidth: "400px", margin: "0 auto", padding: "20px", backgroundColor: "var(--primary-bg)", color: "var(--primary-text)", border: "2px solid #977342", borderRadius: "8px", fontFamily: "Open Sans", outline: "2px solid #977342", outlineOffset: "4px", marginTop: "24px" }}>

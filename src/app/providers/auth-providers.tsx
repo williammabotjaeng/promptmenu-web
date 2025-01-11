@@ -14,6 +14,8 @@ import { apiCall } from '@/services/apiCall';
 import setCurrentUser from '@/state/use-user-store';
 import clearCurrentUser from '@/state/use-user-store';
 import { useRouter } from 'next/navigation';
+import { useStore } from 'zustand';
+import useUserDataStore from '@/state/use-user-data-store';
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null; 
   login: (username: string, password: string) => Promise<void>;
@@ -43,6 +45,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     'profile_completed'
   ]); 
 
+  const { 
+    user_role, 
+    onboarding_presented, 
+    profile_progress, 
+    profile_completed, 
+    setUserData, 
+    clearUserData } = useStore(useUserDataStore); 
+
   const router = useRouter();
   
   const loginMutation = useMutation({
@@ -65,6 +75,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('profile_progress', data?.tokens?.profile_progress, { path: '/', maxAge: 604800 });
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
+
+      setUserData(
+        data?.tokens?.user_role,
+        data?.tokens?.profile_progress,
+        data?.tokens?.onboarding_presented,
+        data?.tokens?.profile_completed
+      );
+
     },
     onError: (error: ErrorData) => {
       console.error('Login error: ', error);
@@ -118,6 +136,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeCookie('profile_progress', { path: '/' });
     setUser(null); 
     clearCurrentUser();
+    clearUserData();
   };
 
   const login = async (username: string, password: string) => {
