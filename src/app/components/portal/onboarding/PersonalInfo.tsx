@@ -20,11 +20,21 @@ const PersonalInformation = ({ activeStep }) => {
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
-                                label="Name"
-                                placeholder="Enter your name"
+                                label="Firstname"
+                                placeholder="Enter your Firstname"
                                 variant="outlined"
-                                value={personalInfo?.user}
-                                onChange={(e) => setPersonalInfo((prev) => ({ ...prev, user: e.target.value }))}
+                                value={personalInfo?.firstname}
+                                onChange={(e) => setPersonalInfo((prev) => ({ ...prev, firstname: e.target.value }))}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="Lastname"
+                                placeholder="Enter your Lastname"
+                                variant="outlined"
+                                value={personalInfo?.lastname}
+                                onChange={(e) => setPersonalInfo((prev) => ({ ...prev, lastname: e.target.value }))}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
