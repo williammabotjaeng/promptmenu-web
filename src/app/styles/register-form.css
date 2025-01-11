@@ -42,3 +42,7 @@
     width: 75%;
     padding: 10px;
   }
+
+  .MuiFormLabel-asterisk { 
+    display: none !important; 
+}
