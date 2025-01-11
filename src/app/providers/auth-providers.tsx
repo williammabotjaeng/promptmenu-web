@@ -29,7 +29,10 @@ interface AuthContextType {
      lastname: string,
      gender: string,
      phonenumber: string,
-     nationality: string ) => Promise<void>;
+     nationality: string,
+     has_accepted: boolean,
+     is_influencer: boolean,
+     whatsapp_number: string ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
