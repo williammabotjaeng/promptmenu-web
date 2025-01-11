@@ -21,6 +21,12 @@ interface RegisterFormProps {
   userRole: string;
 }
 
+const inputStyles = {
+  "& .MuiInputLabel-root.Mui-focused": {
+    display: 'none'
+  },
+};
+
 const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [formData, setFormData] = useState({
     user_role: userRole,
@@ -38,9 +44,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-  const [isInfluencer, setIsInfluencer] = useState('no'); 
+  const [isInfluencer, setIsInfluencer] = useState('no');
   const [country, setCountry] = useState('');
-  
+
   const handleInfluencerChange = (event) => {
     setIsInfluencer(event.target.value);
   };
@@ -48,7 +54,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const handleCountryChange = (val: React.SetStateAction<string>) => {
     setCountry(val);
   };
-  
+
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +66,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const { setCurrentUser } = useStore(useUserStore);
 
-  const [useWhatsApp, setUseWhatsApp] = useState(true); 
+  const [useWhatsApp, setUseWhatsApp] = useState(true);
 
   const handleWhatsAppChange = (event: any) => {
     setUseWhatsApp(event.target.checked);
@@ -69,7 +75,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      
+
       await register(
         formData.username,
         formData.password,
@@ -129,6 +135,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               fullWidth
               onChange={handleChange}
               className="custom-input"
+              sx={inputStyles}
             />
           </Grid>
 
@@ -136,7 +143,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           <Grid item xs={12} sm={3}>
             <FormControl fullWidth required>
               <InputLabel id="gender-label">
-                <Typography variant="body1">Gender</Typography>
+                <Typography sx={inputStyles} variant="body1">Gender</Typography>
               </InputLabel>
               <Select
                 labelId="gender-label"
@@ -144,6 +151,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 name="gender"
                 onChange={handleChange}
                 className="custom-input"
+
               >
                 <MenuItem value="male">
                   <Typography variant="body1">Male</Typography>
@@ -182,6 +190,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               fullWidth
               onChange={handleChange}
               className="custom-input"
+              sx={inputStyles}
             />
           </Grid>
 
@@ -195,11 +204,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               fullWidth
               onChange={handleChange}
               className="custom-input"
+              sx={inputStyles}
             />
           </Grid>
 
           {/* Last Name */}
           <Grid item xs={12} sm={6}>
+          <Typography sx={{
+              fontSize: '12px',
+              color: 'transparent',
+            }}>Last Name</Typography>
             <TextField
               label={<Typography variant="body1">Last Name</Typography>}
               name="lastname"
@@ -208,22 +222,35 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               fullWidth
               onChange={handleChange}
               className="custom-input"
+              sx={inputStyles}
             />
           </Grid>
 
           {/* Date of Birth */}
           <Grid item xs={12} sm={6}>
+            <Typography sx={{
+              fontSize: '12px',
+              color: 'white'
+            }}>Date of Birth</Typography>
             <TextField
-              label={<Typography variant="body1">Date of Birth</Typography>}
               type="date"
               name="date_of_birth"
               required
+              placeholder="Date of Birth"
               fullWidth
               InputLabelProps={{
                 shrink: true,
               }}
               onChange={handleChange}
               className="custom-input"
+              sx={{
+                '& input': {
+                  color: '#999', 
+                },
+                '&::placeholder': {
+                  color: '#999', 
+                },
+              }}
             />
           </Grid>
 
@@ -240,6 +267,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               }}
               onChange={handleChange}
               className="custom-input"
+              sx={inputStyles}
             />
             <FormControlLabel
               control={<Checkbox color="success" sx={{
@@ -275,6 +303,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               fullWidth
               onChange={handleChange}
               className="custom-input"
+              sx={inputStyles}
             />
           </Grid>
 
@@ -289,11 +318,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               fullWidth
               onChange={handleChange}
               className="custom-input"
+              sx={inputStyles}
             />
           </Grid>
 
-           {/* Influencer Question */}
-           <Grid item xs={12}>
+          {/* Influencer Question */}
+          <Grid item xs={12}>
             <Typography variant="h5">
               Are you a Popular influencer?
             </Typography>
