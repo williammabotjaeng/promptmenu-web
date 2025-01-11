@@ -7,10 +7,11 @@ import { useAuth } from '@/providers/auth-providers';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { redirect } from 'next/navigation';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import useUserStore from "@/state/use-user-store";
 import { useStore } from "zustand";
+import '@/styles/register-form.css';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -53,6 +54,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const { register } = useAuth();
 
   const { setCurrentUser } = useStore(useUserStore);
+
+  const [useWhatsApp, setUseWhatsApp] = useState(true); 
+
+  const handleWhatsAppChange = (event: any) => {
+    setUseWhatsApp(event.target.checked);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -101,165 +108,203 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   };
 
   return (
-    <div style={{ maxWidth: '900px', margin: '0 auto', padding: '20px' }}>
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit} style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
+    <Box className="container">
+      <Typography variant="h1" gutterBottom>
+        Register
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2}>
+          {/* Username Field */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Username</Typography>}
+              name="username"
+              placeholder="Enter your username"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+            />
+          </Grid>
 
-        {/* Username Field */}
-        <div style={{ gridColumn: 'span 2' }}>
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
+          {/* Gender Field */}
+          <Grid item xs={12} sm={3}>
+            <FormControl fullWidth required>
+              <InputLabel id="gender-label">
+                <Typography variant="body1">Gender</Typography>
+              </InputLabel>
+              <Select
+                labelId="gender-label"
+                id="gender"
+                name="gender"
+                onChange={handleChange}
+                className="custom-input"
+              >
+                <MenuItem value="male">
+                  <Typography variant="body1">Male</Typography>
+                </MenuItem>
+                <MenuItem value="female">
+                  <Typography variant="body1">Female</Typography>
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
 
-        {/* Gender Field */}
-        <div style={{ gridColumn: 'span 1' }}>
-          <label htmlFor="gender">Gender</label>
-          <select onChange={handleChange} id="gender" name="gender" required style={{ width: '100%', padding: '8px', marginTop: '5px' }}>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-        </div>
+          {/* Nationality Field */}
+          <Grid item xs={12} sm={3}>
+            <FormControl fullWidth required>
+              {/* <InputLabel id="nationality-label">
+                <Typography variant="body1">Nationality</Typography>
+              </InputLabel> */}
+              <div className="country-dropdown-container">
+                <CountryDropdown
+                  value={country}
+                  onChange={handleCountryChange}
+                  className="custom-input country-dropdown"
+                />
+              </div>
+            </FormControl>
+          </Grid>
 
-        {/* Nationality Field */}
-        <div style={{ gridColumn: 'span 1' }}>
-          <label htmlFor="nationality">Nationality</label>
-          <CountryDropdown
-            value={country}
-            onChange={handleCountryChange}
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-          />
-        </div>
+          {/* Email Field */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Email</Typography>}
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+            />
+          </Grid>
 
+          {/* First Name */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">First Name</Typography>}
+              name="firstname"
+              placeholder="Enter your first name"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+            />
+          </Grid>
 
+          {/* Last Name */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Last Name</Typography>}
+              name="lastname"
+              placeholder="Enter your last name"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+            />
+          </Grid>
 
-        {/* Email Field */}
-        <div style={{ gridColumn: 'span 2' }}>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
+          {/* Date of Birth */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Date of Birth</Typography>}
+              type="date"
+              name="date_of_birth"
+              required
+              fullWidth
+              InputLabelProps={{
+                shrink: true,
+              }}
+              onChange={handleChange}
+              className="custom-input"
+            />
+          </Grid>
 
-        {/* First Name */}
-        <div>
-          <label htmlFor="firstname">First Name</label>
-          <input
-            type="text"
-            id="firstname"
-            name="firstname"
-            placeholder="Enter your first name"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
+          {/* Phone Number */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Phone Number</Typography>}
+              name="phonenumber"
+              placeholder="Enter a Valid UAE Phone"
+              required
+              fullWidth
+              inputProps={{
+                pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
+              }}
+              onChange={handleChange}
+              className="custom-input"
+            />
+            <FormControlLabel
+              control={<Checkbox className="custom-checkbox" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
+              label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
+            />
+          </Grid>
 
-        {/* Last Name */}
-        <div>
-          <label htmlFor="lastname">Last Name</label>
-          <input
-            type="text"
-            id="lastname"
-            name="lastname"
-            placeholder="Enter your last name"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
+          {/* WhatsApp Number Field (conditional) */}
+          {!useWhatsApp && (
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label={<Typography variant="body1">WhatsApp Number</Typography>}
+                name="whatsappNumber"
+                placeholder="Enter your WhatsApp number"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+              />
+            </Grid>
+          )}
 
-        {/* Date of Birth */}
-        <div>
-          <label htmlFor="date_of_birth">Date of Birth</label>
-          <input
-            type="date"
-            id="date_of_birth"
-            name="date_of_birth"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
+          {/* Password */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Password</Typography>}
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+            />
+          </Grid>
 
-        {/* Phone Number */}
-        <div>
-          <label htmlFor="phonenumber">Phone Number</label>
-          <input
-            type="text"
-            id="phonenumber"
-            name="phonenumber"
-            placeholder="Enter a Valid UAE Phone"
-            pattern="^(?:\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
+          {/* Confirm Password */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Confirm Password</Typography>}
+              type="password"
+              name="confirmPassword"
+              placeholder="Re-enter your password"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+            />
+          </Grid>
 
-
-        {/* Password */}
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Confirm Password */}
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Re-enter your password"
-            required
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            onChange={handleChange}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <div style={{ gridColumn: 'span 4', textAlign: 'center', marginTop: '20px' }}>
-          <span style={{ display: 'flex', flexDirection: 'row' }}>
-            <input style={{ display: 'inline' }} type="checkbox" className='form-check-input' required />
-            &nbsp;&nbsp;<span style={{ display: 'inline', textWrap: 'nowrap' }}>By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.</span>
-          </span>
-          <button
-            type="submit"
-            style={{
-              padding: '10px 20px',
-              marginTop: '4px',
-              backgroundColor: '#977342',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-            }}
-          >
-            Register
-          </button>
-        </div>
+          {/* Submit Button */}
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox className="custom-checkbox" required />}
+              label={
+                <Typography variant="body1">
+                  By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
+                </Typography>
+              }
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ marginTop: '20px' }}
+            >
+              <Typography variant="body1">Register</Typography>
+            </Button>
+          </Grid>
+        </Grid>
       </form>
 
       {/* Snackbar for feedback */}
@@ -269,10 +314,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <Alert severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
+          <Typography variant="body1">{snackbarMessage}</Typography>
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   );
 };
 
