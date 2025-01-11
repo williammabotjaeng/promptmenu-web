@@ -32,7 +32,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [isInfluencer, setIsInfluencer] = useState('no');
   const [country, setCountry] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     user_role: userRole,
     email: '',
@@ -154,9 +154,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Gender Field */}
           <Grid item xs={12} sm={3}>
-            <FormControl fullWidth required>
+            <FormControl fullWidth required sx={inputStyles}>
               <InputLabel id="gender-label">
-                <Typography sx={inputStyles} variant="body1">Gender</Typography>
+                <Typography variant="body1">Gender</Typography>
               </InputLabel>
               <Select
                 labelId="gender-label"
@@ -164,7 +164,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 name="gender"
                 onChange={handleChange}
                 className="custom-input"
-
               >
                 <MenuItem value="male">
                   <Typography variant="body1">Male</Typography>
