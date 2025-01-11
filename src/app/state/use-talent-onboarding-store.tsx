@@ -24,7 +24,8 @@ interface TalentOnboardingState {
 
 const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
     personalInfo: {
-        user: null,
+        firstname: null,
+        lastname: null,
         date_of_birth: null,
         gender: null,
         phone_number: null,
