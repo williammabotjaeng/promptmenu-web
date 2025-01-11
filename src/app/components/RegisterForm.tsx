@@ -350,7 +350,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             <FormControlLabel
               control={<Checkbox color="success" sx={{
                 color: 'white'
-              }} required />}
+              }} className="custom-input" />}
               label={
                 <Typography variant="body1">
                   By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
