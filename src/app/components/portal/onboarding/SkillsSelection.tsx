@@ -24,7 +24,7 @@ const skills = [
 ];
 
 const SkillsSelection = () => {
-    const { setTalentProfileData } = useStore(useTalentOnboardingStore);
+    const { setTalentData } = useStore(useTalentOnboardingStore);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -40,7 +40,7 @@ const SkillsSelection = () => {
 
     const handleSave = () => {
         try {
-            setTalentProfileData((prev) => ({
+            setTalentData((prev) => ({
                 ...prev,
                 skills: selectedSkills,
             }));
