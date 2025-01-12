@@ -44,28 +44,6 @@ const PersonalInformation = ({ activeStep }) => {
                                 onChange={(e) => setPersonalInfo((prev) => ({ ...prev, lastname: e.target.value }))}
                             />
                         </Grid>
-                        {/* Gender Field */}
-                        <Grid item xs={12} sm={3}>
-                            <FormControl fullWidth required>
-                                <InputLabel id="gender-label">
-                                    <Typography variant="body1">Gender</Typography>
-                                </InputLabel>
-                                <Select
-                                    labelId="gender-label"
-                                    id="gender"
-                                    name="gender"
-                                    onChange={handleGenderChange}
-                                    className="custom-input"
-                                >
-                                    <MenuItem value="male">
-                                        <Typography variant="body1">Male</Typography>
-                                    </MenuItem>
-                                    <MenuItem value="female">
-                                        <Typography variant="body1">Female</Typography>
-                                    </MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 fullWidth
@@ -85,6 +63,28 @@ const PersonalInformation = ({ activeStep }) => {
                                 value={personalInfo?.whatsapp_number}
                                 onChange={(e) => setPersonalInfo((prev) => ({ ...prev, whatsapp_number: e.target.value }))}
                             />
+                        </Grid>
+                        {/* Gender Field */}
+                        <Grid item xs={12} sm={3}>
+                            <FormControl fullWidth>
+                                <InputLabel id="gender-label">
+                                    <Typography variant="body1">Gender</Typography>
+                                </InputLabel>
+                                <Select
+                                    labelId="gender-label"
+                                    id="gender"
+                                    name="gender"
+                                    onChange={handleGenderChange}
+                                    className="custom-input"
+                                >
+                                    <MenuItem value="male">
+                                        <Typography variant="body1">Male</Typography>
+                                    </MenuItem>
+                                    <MenuItem value="female">
+                                        <Typography variant="body1">Female</Typography>
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>

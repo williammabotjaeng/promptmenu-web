@@ -1,6 +1,6 @@
 export interface TalentProfileData {
     user: string | null; 
-    headshot?: File | null; 
+    headshot?: string | null; 
     date_of_birth?: string | null; 
     gender?: string | null; 
     phone_number?: string | null; 

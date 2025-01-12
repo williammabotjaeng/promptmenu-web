@@ -13,12 +13,12 @@ import ProfileReview from '@/components/portal/onboarding/ProfileReview';
 import SocialMediaLinks from '@/components/portal/onboarding/SocialMediaLinks';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
+import HeadshotUploader from '@/components/portal/onboarding/HeadshotUploader';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
   const [cookies, setCookie] = useCookies(['talentData']);
   const [activeStep, setActiveStep] = useState(0);
-  const { personalInfo } = useStore(useTalentOnboardingStore);
   const [talentData, setTalentData] = useState<TalentProfileData>({
     user: '',
     headshot: null,
@@ -118,12 +118,6 @@ const TalentOnboarding: React.FC = () => {
     router.push('/portal');
   };
 
-  const handleHeadshotUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      setTalentData((prev) => ({ ...prev, headshot: event.target.files[0] }));
-    }
-  };
-
   return (
     <Box className="onboarding-container" sx={{ width: '100vw' }}>
       <div className="onboarding-content">
@@ -139,16 +133,7 @@ const TalentOnboarding: React.FC = () => {
         )}
 
         {activeStep === 1 && (
-          <Box display="flex" flexDirection="column" alignItems="center">
-            <Avatar
-              src={talentData.headshot ? URL.createObjectURL(talentData.headshot) : ''}
-              sx={{ width: 200, height: 200 }}
-            />
-            <IconButton color="primary" component="label">
-              <AddAPhoto />
-              <input type="file" hidden onChange={handleHeadshotUpload} />
-            </IconButton>
-          </Box>
+          <HeadshotUploader activeStep={activeStep} />
         )}
         {activeStep === 2 && (
           <PhysicalAttributes activeStep={activeStep} physicalAttr={physicalAttr} setPhysicalAttr={setPhysicalAttr} />
