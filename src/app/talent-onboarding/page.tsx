@@ -14,6 +14,7 @@ import SocialMediaLinks from '@/components/portal/onboarding/SocialMediaLinks';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 import HeadshotUploader from '@/components/portal/onboarding/HeadshotUploader';
+import SkillsSelection from '@/components/portal/onboarding/SkillsSelection';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
@@ -67,8 +68,8 @@ const TalentOnboarding: React.FC = () => {
   const steps = [
     { title: 'Step 1: Personal Information', content: 'Please provide your personal details.' },
     { title: 'Step 2: Headshot', content: 'Upload a headshot photo.' },
-    { title: 'Step 3: Physical Attributes', content: 'Provide your physical attributes.' },
-    { title: 'Step 4: Skills', content: 'Select your skills from the list below.' },
+    { title: 'Step 3: Skills', content: 'Select your skills from the list below.' },
+    { title: 'Step 4: Physical Attributes', content: 'Provide your physical attributes.' },
     { title: 'Step 5: Identification and Credentials', content: 'Upload your government ID and banking details.' },
     { title: 'Step 6: Social Media & Online', content: '' },
     { title: 'Step 7: Review', content: 'Review your information.' },
@@ -136,19 +137,24 @@ const TalentOnboarding: React.FC = () => {
         {activeStep === 1 && (
           <HeadshotUploader activeStep={activeStep} />
         )}
+
         {activeStep === 2 && (
-          <PhysicalAttributes activeStep={activeStep} />
+          <SkillsSelection activeStep={activeStep} />
         )}
 
         {activeStep === 3 && (
-          <IDandCreds activeStep={activeStep} />
+          <PhysicalAttributes activeStep={activeStep} />
         )}
 
         {activeStep === 4 && (
-          <SocialMediaLinks activeStep={activeStep} />
+          <IDandCreds activeStep={activeStep} />
         )}
 
         {activeStep === 5 && (
+          <SocialMediaLinks activeStep={activeStep} />
+        )}
+
+        {activeStep === 6 && (
           <ProfileReview talentData={talentData} personalInfo={personalInfo} physicalAttr={physicalAttr} />
         )}
 
