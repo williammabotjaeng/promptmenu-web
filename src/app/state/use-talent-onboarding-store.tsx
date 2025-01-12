@@ -1,3 +1,5 @@
+"use client";
+
 import { create } from 'zustand';
 import { PersonalInfo } from '@/types/Onboarding/Talent/PersonalInfo';
 import { PhysicalAttributes } from '@/types/Onboarding/Talent/PhysicalAttributes';

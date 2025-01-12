@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Chip, Typography, Grid, Button, Snackbar, Alert } from '@mui/material';
+import { useCookies } from 'react-cookie';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
 import { useStore } from 'zustand';
-import { TalentProfileData } from '@/types/TalentProfileData';
 
 const skills = [
     'Event coordinator',
@@ -24,40 +24,40 @@ const skills = [
     'Journalist',
 ];
 
-const SkillsSelection = ({ activeStep }) => {
+const SkillsSelection = () => {
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
-    const [selectedSkills, setSelectedSkills] = useState<string[]>(talentData.skills || []);
+    const [cookies, setCookie] = useCookies(['skills']);
+    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
+    // Load saved skills from cookies when the component mounts
     useEffect(() => {
-        if (talentData.skills) {
-            setSelectedSkills(talentData.skills);
-        }
-    }, [talentData]);
+        const savedSkills = cookies.skills ? Array.from(cookies.skills) : [];
+        setSelectedSkills(savedSkills);
+        setTalentData((prev) => ({
+            ...prev,
+            skills: savedSkills,
+        }));
+    }, [cookies.skills, setTalentData]);
 
     const handleSkillClick = (skill: string) => {
-        console.log("Adding Skill:", skill);
         if (selectedSkills.includes(skill)) {
             setSelectedSkills(selectedSkills.filter((s) => s !== skill));
-            console.log("Selected Skills:", selectedSkills);
         } else {
             setSelectedSkills([...selectedSkills, skill]);
-            console.log("Selected Skills Added:", selectedSkills);
         }
     };
 
     const handleSave = () => {
         try {
-            
+            // Save skills to cookies as a string
+            setCookie('skills', JSON.stringify(selectedSkills), { path: '/' });
             setTalentData((prev) => ({
                 ...prev,
                 skills: [...selectedSkills],
             }));
-    
-            console.log("Talent Data Update:", { ...talentData, skills: [...selectedSkills] });
-    
             setSnackbarMessage('Skills saved successfully!');
             setSnackbarSeverity('success');
         } catch (error) {
