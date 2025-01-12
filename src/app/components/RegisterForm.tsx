@@ -335,7 +335,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           </Grid>
 
           {/* Influencer Question */}
-          <Grid item xs={12}>
+          {userRole === 'talent' && (<Grid item xs={12}>
             <Typography variant="h5">
               Are you a Popular influencer?
             </Typography>
@@ -355,7 +355,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 value="no"
               />
             </RadioGroup>
-          </Grid>
+          </Grid>)}
 
           {/* Submit Button */}
           <Grid item xs={12}>
