@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, TextField, Button, Snackbar, Alert } from '@mui/material';
-import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
-import { useStore } from 'zustand';
+import { useCookies } from 'react-cookie';
 
 const SocialMediaLinks = ({ activeStep }) => {
-    const { profileSocials, setProfileSocials } = useStore(useTalentOnboardingStore);
+    const [cookies, setCookie] = useCookies(['website', 'twitter', 'facebook', 'instagram', 'linkedin']);
     
     // Local state for social media links
     const [localSocials, setLocalSocials] = useState({
@@ -15,19 +14,21 @@ const SocialMediaLinks = ({ activeStep }) => {
         linkedin: '',
     });
 
+    // Snackbar state
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
+    // Effect to initialize local state from cookies
     useEffect(() => {
         setLocalSocials({
-            website: profileSocials?.website || '',
-            twitter: profileSocials?.social_media_links?.twitter || '',
-            facebook: profileSocials?.social_media_links?.facebook || '',
-            instagram: profileSocials?.social_media_links?.instagram || '',
-            linkedin: profileSocials?.social_media_links?.linkedin || '',
+            website: cookies.website || '',
+            twitter: cookies.twitter || '',
+            facebook: cookies.facebook || '',
+            instagram: cookies.instagram || '',
+            linkedin: cookies.linkedin || '',
         });
-    }, [profileSocials]);
+    }, [cookies]);
 
     const handleInputChange = (field) => (event) => {
         setLocalSocials((prev) => ({
@@ -38,21 +39,16 @@ const SocialMediaLinks = ({ activeStep }) => {
 
     const handleSave = () => {
         try {
-            setProfileSocials((prev) => ({
-                ...prev,
-                website: localSocials.website,
-                social_media_links: {
-                    twitter: localSocials.twitter,
-                    facebook: localSocials.facebook,
-                    instagram: localSocials.instagram,
-                    linkedin: localSocials.linkedin,
-                },
-            }));
+            // Save each social media link as a separate cookie
+            setCookie('website', localSocials.website, { path: '/' });
+            setCookie('twitter', localSocials.twitter, { path: '/' });
+            setCookie('facebook', localSocials.facebook, { path: '/' });
+            setCookie('instagram', localSocials.instagram, { path: '/' });
+            setCookie('linkedin', localSocials.linkedin, { path: '/' });
+
             setSnackbarMessage('Social Media Links Saved Successfully');
-            setSnackbarSeverity('success');
         } catch (error) {
             setSnackbarMessage('Error Saving Social Media Links');
-            setSnackbarSeverity('error');
         } finally {
             setSnackbarOpen(true);
         }
@@ -64,7 +60,7 @@ const SocialMediaLinks = ({ activeStep }) => {
 
     return (
         <>
-            {activeStep === 5 && ( 
+            {activeStep === 5 && (
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                         <TextField
