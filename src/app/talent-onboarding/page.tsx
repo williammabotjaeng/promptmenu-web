@@ -68,10 +68,11 @@ const TalentOnboarding: React.FC = () => {
     { title: 'Step 1: Personal Information', content: 'Please provide your personal details.' },
     { title: 'Step 2: Headshot', content: 'Upload a headshot photo.' },
     { title: 'Step 3: Physical Attributes', content: 'Provide your physical attributes.' },
-    { title: 'Step 4: Identification and Credentials', content: 'Upload your government ID and banking details.' },
-    { title: 'Step 5: Social Media & Online', content: '' },
-    { title: 'Step 6: Review', content: 'Review your information.' },
-    { title: 'Step 7: Submit', content: 'Submit your information.' },
+    { title: 'Step 4: Skills', content: 'Select your skills from the list below.' },
+    { title: 'Step 5: Identification and Credentials', content: 'Upload your government ID and banking details.' },
+    { title: 'Step 6: Social Media & Online', content: '' },
+    { title: 'Step 7: Review', content: 'Review your information.' },
+    { title: 'Step 8: Submit', content: 'Submit your information.' },
   ];
 
   useEffect(() => {
@@ -144,7 +145,7 @@ const TalentOnboarding: React.FC = () => {
         )}
 
         {activeStep === 4 && (
-          <SocialMediaLinks profileSocials={profileSocials} setProfileSocials={setProfileSocials} activeStep={activeStep} />
+          <SocialMediaLinks activeStep={activeStep} />
         )}
 
         {activeStep === 5 && (

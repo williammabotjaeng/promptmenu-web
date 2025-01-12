@@ -100,7 +100,7 @@ const PhysicalAttributes = ({ activeStep }) => {
                         onClose={handleSnackbarClose}
                         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     >
-                        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
                             {snackbarMessage}
                         </Alert>
                     </Snackbar>
