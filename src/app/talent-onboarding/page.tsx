@@ -18,52 +18,7 @@ import SkillsSelection from '@/components/portal/onboarding/SkillsSelection';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(['talentData']);
   const [activeStep, setActiveStep] = useState(0);
-  const [talentData, setTalentData] = useState<TalentProfileData>({
-    user: '',
-    headshot: null,
-    date_of_birth: null,
-    gender: null,
-    phone_number: null,
-    nationality: null,
-    skills: [],
-    height: null,
-    weight: null,
-    ethnicity: null,
-    government_id: null,
-    banking_details: null,
-    portfolio_pdf: null,
-    additional_images: null,
-    is_verified: false,
-    verification_notification_sent: false,
-    created_at: '',
-    updated_at: '',
-  });
-
-  const [physicalAttr, setPhysicalAttr] = useState({
-    height: '',
-    weight: '',
-    ethnicity: '',
-  });
-
-  const [governmentID, setGovernmentID] = useState(null);
-  const [bankDetails, setBankDetails] = useState({
-    bankName: '',
-    accountNumber: '',
-    iban: '',
-    accountHolderName: '', 
-  });
-
-  const [profileSocials, setProfileSocials] = useState({
-      website: 'https://example.com',
-      social_media_links: {
-        twitter: 'https://twitter.com/example',
-        facebook: 'https://facebook.com/example',
-        instagram: 'https://instagram.com/example',
-        linkedin: 'https://linkedin.com/company/example',
-      },
-    });
 
   const steps = [
     { title: 'Step 1: Personal Information', content: 'Please provide your personal details.' },
@@ -76,17 +31,6 @@ const TalentOnboarding: React.FC = () => {
     { title: 'Step 8: Submit', content: 'Submit your information.' },
   ];
 
-  useEffect(() => {
-    const loadTalentData = async () => {
-      const response = await fetch('/api/talent');
-      const data = await response.json();
-      if (data) {
-        setTalentData(data);
-      }
-    };
-
-    loadTalentData();
-  }, []);
 
   const handleBack = () => {
     if (activeStep > 0) {
@@ -101,22 +45,10 @@ const TalentOnboarding: React.FC = () => {
   };
 
   const handleSkip = () => {
-    setCookie('talentData', JSON.stringify(talentData), { path: '/' });
     router.push('/dashboard');
   };
 
   const handleSubmit = async () => {
-    const method = talentData.user ? 'PUT' : 'POST';
-    const endpoint = talentData.user ? `/dashboard/talent/${talentData.user}` : '/dashboard/talent';
-
-    await fetch(endpoint, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(talentData),
-    });
-
     router.push('/portal');
   };
 
@@ -155,7 +87,7 @@ const TalentOnboarding: React.FC = () => {
         )}
 
         {activeStep === 6 && (
-          <ProfileReview talentData={talentData} personalInfo={personalInfo} physicalAttr={physicalAttr} />
+          <ProfileReview />
         )}
 
         <div>
