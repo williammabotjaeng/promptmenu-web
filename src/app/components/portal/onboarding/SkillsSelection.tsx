@@ -45,10 +45,8 @@ const SkillsSelection = () => {
                 skills: selectedSkills,
             }));
             setSnackbarMessage('Skills saved successfully!');
-            setSnackbarSeverity('success');
         } catch (error) {
             setSnackbarMessage('Error saving skills.');
-            setSnackbarSeverity('error');
         } finally {
             setSnackbarOpen(true);
         }
@@ -112,7 +110,7 @@ const SkillsSelection = () => {
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', backgroundColor: 'black', color: '#977342' }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>
