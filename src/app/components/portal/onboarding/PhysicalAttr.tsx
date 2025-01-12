@@ -6,7 +6,7 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 
 const PhysicalAttributes = ({ activeStep }) => {
-    const { talentData, physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
+    const { physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
     
     const [formData, setFormData] = useState({
         height: '',

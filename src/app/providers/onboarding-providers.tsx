@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { TalentProfileData } from '@/types/TalentProfileData'; 
 import { CompanyData } from '@/types/CompanyData'; 
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
 
 interface OnboardingContextType {
   createTalentProfile: (data: TalentProfileData) => Promise<void>;
@@ -18,7 +20,25 @@ const OnboardingContext = createContext<OnboardingContextType | null>(null);
 
 export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const [cookies, setCookie, removeCookie] = useCookies(['profile_progress']);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'profile_progress',
+    'governmentIDUrl',
+    'headshotBlobUrl',
+    'website',
+    'facebook',
+    'twitter',
+    'linkedin',
+    'instagram',
+    'skills'
+  ]);
+  const {
+      setPersonalInfo,
+      setBankDetails,
+      personalInfo,
+      bankDetails,
+      physicalAttributes, 
+      setPhysicalAttributes
+  } = useStore(useTalentOnboardingStore);
 
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
