@@ -124,7 +124,6 @@ const TalentOnboarding: React.FC = () => {
     }
   };
 
-  console.log("Personal Info", personalInfo);
   return (
     <Box className="onboarding-container" sx={{ width: '100vw' }}>
       <div className="onboarding-content">

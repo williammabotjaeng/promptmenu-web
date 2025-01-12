@@ -27,7 +27,7 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         firstname: null,
         lastname: null,
         date_of_birth: null,
-        gender: null,
+        gender: 'male',
         phone_number: null,
         whatsapp_number: null,
     },

@@ -11,11 +11,18 @@ import { useStore } from 'zustand';
 const PersonalInformation = ({ activeStep }) => {
     const { personalInfo, setPersonalInfo } = useStore(useTalentOnboardingStore);
 
+    const handleGenderChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+        const { value } = e.target;
+        setPersonalInfo((prev: any) => ({ ...prev, gender: value }));
+      };
+
     return (
         <>
             {activeStep === 0 && (
                 <Box className="w-full mx-auto">
-                    <Typography variant="h6" className="mb-4">Personal Information</Typography>
+                    <Typography variant="h6" sx={{
+                        color: "#888"
+                    }} className="mb-4">Verify your Personal Information</Typography>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -37,18 +44,25 @@ const PersonalInformation = ({ activeStep }) => {
                                 onChange={(e) => setPersonalInfo((prev) => ({ ...prev, lastname: e.target.value }))}
                             />
                         </Grid>
-                        {/* Gender Dropdown */}
-                        <Grid item xs={12} sm={6}>
-                            <FormControl fullWidth variant="outlined">
-                                <InputLabel id="gender-select-label">Gender</InputLabel>
+                        {/* Gender Field */}
+                        <Grid item xs={12} sm={3}>
+                            <FormControl fullWidth required>
+                                <InputLabel id="gender-label">
+                                    <Typography variant="body1">Gender</Typography>
+                                </InputLabel>
                                 <Select
-                                    labelId="gender-select-label"
-                                    value={personalInfo.gender}
-                                    onChange={(e) => setPersonalInfo((prev) => ({ ...prev, gender: e.target.value }))}
-                                    label="Gender"
+                                    labelId="gender-label"
+                                    id="gender"
+                                    name="gender"
+                                    onChange={handleGenderChange}
+                                    className="custom-input"
                                 >
-                                    <MenuItem value="male">Male</MenuItem>
-                                    <MenuItem value="female">Female</MenuItem>
+                                    <MenuItem value="male">
+                                        <Typography variant="body1">Male</Typography>
+                                    </MenuItem>
+                                    <MenuItem value="female">
+                                        <Typography variant="body1">Female</Typography>
+                                    </MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
