@@ -4,8 +4,10 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 
 const IDandCreds = ({ activeStep }) => {
-    const { governmentID, setGovernmentID, bankDetails, setBankDetails } = useStore(useTalentOnboardingStore);
+    const { physicalAttributes, governmentID, setGovernmentID, bankDetails, setBankDetails } = useStore(useTalentOnboardingStore);
     const [fileName, setFileName] = useState('');
+
+    console.log("Physical Attr", physicalAttributes);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -41,7 +43,7 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="Account Holder's Name"
                                 name="accountHolderName"
-                                value={bankDetails.accountHolderName || ''}
+                                value={bankDetails?.accountHolderName}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
@@ -49,7 +51,7 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="Bank Name"
                                 name="bankName"
-                                value={bankDetails.bankName || ''}
+                                value={bankDetails?.bankName}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
@@ -59,7 +61,7 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="Account Number"
                                 name="accountNumber"
-                                value={bankDetails.accountNumber || ''}
+                                value={bankDetails?.accountNumber}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
@@ -67,7 +69,7 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="IBAN"
                                 name="iban"
-                                value={bankDetails.iban || ''}
+                                value={bankDetails?.iban}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth

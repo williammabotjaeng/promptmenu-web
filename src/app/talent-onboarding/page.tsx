@@ -136,7 +136,7 @@ const TalentOnboarding: React.FC = () => {
           <HeadshotUploader activeStep={activeStep} />
         )}
         {activeStep === 2 && (
-          <PhysicalAttributes activeStep={activeStep} physicalAttr={physicalAttr} setPhysicalAttr={setPhysicalAttr} />
+          <PhysicalAttributes activeStep={activeStep} />
         )}
 
         {activeStep === 3 && (

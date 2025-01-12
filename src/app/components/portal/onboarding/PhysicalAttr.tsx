@@ -4,8 +4,8 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 
 const PhysicalAttributes = ({ activeStep }) => {
-    const { physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
-
+    const { talentData, physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
+    console.log("Talent Data", talentData);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPhysicalAttributes((prev) => ({ ...prev, [name]: value }));
