@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Chip, Typography, Grid } from '@mui/material';
+import { Box, Chip, Typography, Grid, Button, Snackbar, Alert } from '@mui/material';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
+import { useStore } from 'zustand';
 
 const skills = [
     'Event coordinator',
@@ -21,8 +23,12 @@ const skills = [
     'Journalist',
 ];
 
-const SkillsSelection = ({ activeStep }) => {
+const SkillsSelection = () => {
+    const { setTalentProfileData } = useStore(useTalentOnboardingStore);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
     const handleSkillClick = (skill: string) => {
         if (selectedSkills.includes(skill)) {
@@ -32,8 +38,28 @@ const SkillsSelection = ({ activeStep }) => {
         }
     };
 
+    const handleSave = () => {
+        try {
+            setTalentProfileData((prev) => ({
+                ...prev,
+                skills: selectedSkills,
+            }));
+            setSnackbarMessage('Skills saved successfully!');
+            setSnackbarSeverity('success');
+        } catch (error) {
+            setSnackbarMessage('Error saving skills.');
+            setSnackbarSeverity('error');
+        } finally {
+            setSnackbarOpen(true);
+        }
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
+
     return (
-        <Box sx={{ padding: 2 }}>
+        <Box classNames="w-full mx-auto" sx={{ padding: 2 }}>
             <Typography variant="h6" gutterBottom>
                 Select Your Skills
             </Typography>
@@ -61,6 +87,35 @@ const SkillsSelection = ({ activeStep }) => {
                     </Grid>
                 ))}
             </Grid>
+            <Button
+                variant="contained"
+                onClick={handleSave}
+                sx={{
+                    backgroundColor: 'black',
+                    color: '#977342',
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    '&:hover': {
+                        backgroundColor: '#CEAB76', 
+                        color: '#000', 
+                    },
+                }}
+            >
+                Save this step
+            </Button>
+
+            {/* Snackbar for notifications */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };

@@ -5,7 +5,7 @@ export interface TalentProfileData {
     gender?: string | null; 
     phone_number?: string | null; 
     nationality?: string | null; 
-    skills?: number[]; 
+    skills?: string[]; 
     height?: number | null; 
     weight?: number | null; 
     ethnicity?: string | null; 
