@@ -14,7 +14,7 @@ const IDandCreds = ({ activeStep }) => {
         bankName: '',
         accountNumber: '',
         iban: '',
-        swift: ''
+        swift: '',
     });
 
     // Snackbar state
@@ -67,7 +67,13 @@ const IDandCreds = ({ activeStep }) => {
     return (
         <>
             {activeStep === 3 && (
-                <Box className="w-full mx-auto">
+                <Box className="w-full">
+                    <Box sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        margin: 'auto 0px'
+                    }}>
                     <Input
                         type="file"
                         accept="image/*"
@@ -84,8 +90,15 @@ const IDandCreds = ({ activeStep }) => {
                             Upload Government ID
                         </Button>
                     </label>
-                    {fileName && <Typography variant="body2" style={{ marginTop: '10px', color: 'black' }}>{fileName}</Typography>} 
-                    
+                    {fileName && <Typography variant="body2" style={{ marginTop: '10px', marginLeft: '10px', color: 'black' }}>{fileName}</Typography>} 
+                    <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        sx={{ margin: '20px 0', marginLeft: '20px', backgroundColor: '#000', color: '#977342' }}
+                    >
+                        Save this step
+                    </Button>
+                    </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -97,16 +110,6 @@ const IDandCreds = ({ activeStep }) => {
                                 fullWidth
                             />
                             <TextField
-                                label="Bank Name"
-                                name="bankName"
-                                value={formData.bankName}
-                                onChange={handleChange}
-                                margin="normal"
-                                fullWidth
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
                                 label="Account Number"
                                 name="accountNumber"
                                 value={formData.accountNumber}
@@ -114,10 +117,12 @@ const IDandCreds = ({ activeStep }) => {
                                 margin="normal"
                                 fullWidth
                             />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
                             <TextField
-                                label="IBAN"
-                                name="iban"
-                                value={formData.iban}
+                                label="Bank Name"
+                                name="bankName"
+                                value={formData.bankName}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
@@ -131,15 +136,17 @@ const IDandCreds = ({ activeStep }) => {
                                 fullWidth
                             />
                         </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                label="IBAN"
+                                name="iban"
+                                value={formData.iban}
+                                onChange={handleChange}
+                                margin="normal"
+                                fullWidth
+                            />
+                        </Grid>
                     </Grid>
-
-                    <Button
-                        variant="contained"
-                        onClick={handleSave}
-                        sx={{ marginTop: 2, backgroundColor: '#000', color: '#977342' }}
-                    >
-                        Save this step
-                    </Button>
 
                     {/* Snackbar for notifications */}
                     <Snackbar
