@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, TextField, Button, Snackbar, Alert } from '@mui/material';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
 import { useStore } from 'zustand';
@@ -8,19 +8,37 @@ import { useStore } from 'zustand';
 const PhysicalAttributes = ({ activeStep }) => {
     const { talentData, physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
     
+    // Local state for form data
+    const [formData, setFormData] = useState({
+        height: '',
+        weight: '',
+        ethnicity: '',
+    });
+
     // Snackbar state
-    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
-    const [snackbarMessage, setSnackbarMessage] = React.useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+    // Effect to initialize local state from the store
+    useEffect(() => {
+        if (physicalAttributes) {
+            setFormData({
+                height: physicalAttributes.height || '',
+                weight: physicalAttributes.weight || '',
+                ethnicity: physicalAttributes.ethnicity || '',
+            });
+        }
+    }, [physicalAttributes]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setPhysicalAttributes((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSave = () => {
         try {
-            setPhysicalAttributes(physicalAttributes);
+            setPhysicalAttributes(formData);
             setSnackbarMessage('Physical Attributes Saved Successfully');
             setSnackbarSeverity('success');
         } catch (error) {
@@ -39,31 +57,6 @@ const PhysicalAttributes = ({ activeStep }) => {
         <>
             {activeStep === 2 && (
                 <Box className="w-full mx-auto">
-                    
-                    <TextField
-                        label="Height"
-                        name="height"
-                        value={physicalAttributes.height || ''}
-                        onChange={handleChange}
-                        margin="normal"
-                        fullWidth
-                    />
-                    <TextField
-                        label="Weight"
-                        name="weight"
-                        value={physicalAttributes.weight || ''}
-                        onChange={handleChange}
-                        margin="normal"
-                        fullWidth
-                    />
-                    <TextField
-                        label="Ethnicity"
-                        name="ethnicity"
-                        value={physicalAttributes.ethnicity || ''}
-                        onChange={handleChange}
-                        margin="normal"
-                        fullWidth
-                    />
                     <Button
                         variant="contained"
                         onClick={handleSave}
@@ -71,6 +64,30 @@ const PhysicalAttributes = ({ activeStep }) => {
                     >
                         Save this step
                     </Button>
+                    <TextField
+                        label="Height"
+                        name="height"
+                        value={formData.height}
+                        onChange={handleChange}
+                        margin="normal"
+                        fullWidth
+                    />
+                    <TextField
+                        label="Weight"
+                        name="weight"
+                        value={formData.weight}
+                        onChange={handleChange}
+                        margin="normal"
+                        fullWidth
+                    />
+                    <TextField
+                        label="Ethnicity"
+                        name="ethnicity"
+                        value={formData.ethnicity}
+                        onChange={handleChange}
+                        margin="normal"
+                        fullWidth
+                    />
 
                     {/* Snackbar for notifications */}
                     <Snackbar
