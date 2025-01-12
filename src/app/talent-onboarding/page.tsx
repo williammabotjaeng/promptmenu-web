@@ -15,10 +15,12 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 import HeadshotUploader from '@/components/portal/onboarding/HeadshotUploader';
 import SkillsSelection from '@/components/portal/onboarding/SkillsSelection';
+import { useOnboarding } from '@/providers/onboarding-providers';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState(0);
+  const { createTalentProfile } = useOnboarding();
 
   const steps = [
     { title: 'Step 1: Personal Information', content: 'Please provide your personal details.' },
@@ -49,6 +51,7 @@ const TalentOnboarding: React.FC = () => {
   };
 
   const handleSubmit = async () => {
+    createTalentProfile();
     router.push('/portal');
   };
 

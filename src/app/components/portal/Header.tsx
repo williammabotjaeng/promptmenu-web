@@ -59,25 +59,6 @@ const Header: React.FC = () => {
           <Box sx={{
             borderLeft: '2px solid black'
           }}>
-          <Link href="/post-offer" passHref>
-            <Button 
-              sx={{ 
-                color: 'black',
-                backgroundColor: '#977342',
-                '&:hover': {
-                  backgroundColor: '#CEAB76',
-                  color: '#000',
-                  fontWeight: '700'
-                },
-              }}
-            >
-              Post an Offer
-            </Button>
-          </Link>
-          </Box>
-          <Box sx={{
-            borderLeft: '2px solid black'
-          }}>
           <Link href="/contact" passHref>
             <Button 
               sx={{ 

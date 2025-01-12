@@ -43,7 +43,22 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
     mutationFn: async (data: TalentProfileData) => {
-      return await apiCall('/talent-profiles/create/', 'POST', data);
+      return await apiCall('/talent-profiles/create/', 'POST',  {
+        username: "testuser",
+        headshot: "data:image/jpeg;base64,<base64_encoded_image>",
+        date_of_birth: "1990-01-01",
+        gender: "Male",
+        phone_number: "123-456-7890",
+        nationality: "American",
+        skills: [1, 2],
+        height: 180.50,
+        weight: 75.00,
+        ethnicity: "Caucasian",
+        government_id: "data:image/jpeg;base64,<base64_encoded_government_id>",
+        banking_details: "Bank Name: XYZ, Account Number: 123456",
+        portfolio_pdf: "data:application/pdf;base64,<base64_encoded_pdf>",
+        additional_images: null
+      });
     },
     onSuccess: () => {
       console.log('Talent profile created successfully');
@@ -99,8 +114,8 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     console.log('Profile progress updated to: ', progress);
   };
 
-  const createTalentProfile = async (data: TalentProfileData) => {
-    await createTalentProfileMutation.mutateAsync(data);
+  const createTalentProfile = async () => {
+    await createTalentProfileMutation.mutateAsync();
   };
 
   const createCompany = async (data: CompanyData) => {
