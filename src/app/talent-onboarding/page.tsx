@@ -140,13 +140,7 @@ const TalentOnboarding: React.FC = () => {
         )}
 
         {activeStep === 3 && (
-          <IDandCreds 
-            activeStep={activeStep} 
-            governmentID={governmentID} 
-            setGovernmentID={setGovernmentID} 
-            bankDetails={bankDetails}
-            setBankDetails={setBankDetails}
-            />
+          <IDandCreds activeStep={activeStep} />
         )}
 
         {activeStep === 4 && (

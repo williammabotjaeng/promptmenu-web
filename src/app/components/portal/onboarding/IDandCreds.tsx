@@ -1,13 +1,38 @@
-import React, { useState } from 'react';
-import { Box, Button, Grid, TextField, Typography, Input } from '@mui/material';
+"use client";
+
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Grid, TextField, Typography, Input, Snackbar, Alert } from '@mui/material';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
 import { useStore } from 'zustand';
 
 const IDandCreds = ({ activeStep }) => {
     const { physicalAttributes, governmentID, setGovernmentID, bankDetails, setBankDetails } = useStore(useTalentOnboardingStore);
+    
+    // Local state for bank details
+    const [formData, setFormData] = useState({
+        accountHolderName: '',
+        bankName: '',
+        accountNumber: '',
+        iban: '',
+    });
+
+    // Snackbar state
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [fileName, setFileName] = useState('');
 
-    console.log("Physical Attr", physicalAttributes);
+    // Effect to initialize local state from the store
+    useEffect(() => {
+        if (bankDetails) {
+            setFormData({
+                accountHolderName: bankDetails.accountHolderName || '',
+                bankName: bankDetails.bankName || '',
+                accountNumber: bankDetails.accountNumber || '',
+                iban: bankDetails.iban || '',
+            });
+        }
+    }, [bankDetails]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -17,13 +42,30 @@ const IDandCreds = ({ activeStep }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setBankDetails((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSave = () => {
+        try {
+            setBankDetails(formData);
+            setSnackbarMessage('Government ID and Bank Details Saved Successfully');
+            setSnackbarSeverity('success');
+        } catch (error) {
+            setSnackbarMessage('Error Saving Government ID and Bank Details');
+            setSnackbarSeverity('error');
+        } finally {
+            setSnackbarOpen(true);
+        }
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
     return (
         <>
             {activeStep === 3 && (
-                <Box>
+                <Box className="w-full mx-auto">
                     <Input
                         type="file"
                         accept="image/*"
@@ -43,7 +85,7 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="Account Holder's Name"
                                 name="accountHolderName"
-                                value={bankDetails?.accountHolderName}
+                                value={formData.accountHolderName}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
@@ -51,7 +93,7 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="Bank Name"
                                 name="bankName"
-                                value={bankDetails?.bankName}
+                                value={formData.bankName}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
@@ -61,7 +103,7 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="Account Number"
                                 name="accountNumber"
-                                value={bankDetails?.accountNumber}
+                                value={formData.accountNumber}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
@@ -69,13 +111,33 @@ const IDandCreds = ({ activeStep }) => {
                             <TextField
                                 label="IBAN"
                                 name="iban"
-                                value={bankDetails?.iban}
+                                value={formData.iban}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth
                             />
                         </Grid>
                     </Grid>
+
+                    <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        sx={{ marginTop: 2, backgroundColor: '#000', color: '#977342' }}
+                    >
+                        Save this step
+                    </Button>
+
+                    {/* Snackbar for notifications */}
+                    <Snackbar
+                        open={snackbarOpen}
+                        autoHideDuration={6000}
+                        onClose={handleSnackbarClose}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    >
+                        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                            {snackbarMessage}
+                        </Alert>
+                    </Snackbar>
                 </Box>
             )}
         </>
