@@ -66,7 +66,7 @@ const IDandCreds = ({ activeStep }) => {
 
     return (
         <>
-            {activeStep === 3 && (
+            {activeStep === 4 && (
                 <Box className="w-full">
                     <Box sx={{
                         display: 'flex',

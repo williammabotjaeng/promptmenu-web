@@ -37,10 +37,8 @@ const PhysicalAttributes = ({ activeStep }) => {
         try {
             setPhysicalAttributes(formData);
             setSnackbarMessage('Physical Attributes Saved Successfully');
-            setSnackbarSeverity('success');
         } catch (error) {
             setSnackbarMessage('Error Saving Physical Attributes');
-            setSnackbarSeverity('error');
         } finally {
             setSnackbarOpen(true);
         }
@@ -52,7 +50,7 @@ const PhysicalAttributes = ({ activeStep }) => {
 
     return (
         <>
-            {activeStep === 2 && (
+            {activeStep === 3 && (
                 <Box className="w-full mx-auto">
                     <Button
                         variant="contained"
