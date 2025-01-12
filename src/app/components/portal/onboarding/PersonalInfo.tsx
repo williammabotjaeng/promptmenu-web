@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material';
+import { Box, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button, Snackbar, Alert, Typography } from '@mui/material';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -69,6 +69,10 @@ const PersonalInformation = ({ activeStep }) => {
         <>
             {activeStep === 0 && (
                 <Box className="w-full mx-auto">
+                    <Typography variant="h6" sx={{
+                        color: 'black'
+                    }}>Verify your Personal Information.</Typography>
+                    <br />
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
                             <TextField
@@ -152,6 +156,10 @@ const PersonalInformation = ({ activeStep }) => {
                             position: 'absolute',
                             top: '16px',
                             right: '16px',
+                            '&:hover': {
+                                backgroundColor: '#CEAB76', 
+                                color: '#000', 
+                            },
                         }}
                     >
                         Save this step
