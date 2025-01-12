@@ -8,19 +8,16 @@ import { useStore } from 'zustand';
 const PhysicalAttributes = ({ activeStep }) => {
     const { talentData, physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
     
-    // Local state for form data
     const [formData, setFormData] = useState({
         height: '',
         weight: '',
         ethnicity: '',
     });
 
-    // Snackbar state
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-    // Effect to initialize local state from the store
     useEffect(() => {
         if (physicalAttributes) {
             setFormData({

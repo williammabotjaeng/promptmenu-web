@@ -24,7 +24,7 @@ const skills = [
     'Journalist',
 ];
 
-const SkillsSelection = () => {
+const SkillsSelection = ({ activeStep }) => {
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
     const [cookies, setCookie] = useCookies(['skills']);
     const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
