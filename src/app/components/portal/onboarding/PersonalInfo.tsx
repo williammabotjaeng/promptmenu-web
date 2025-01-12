@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Box, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button } from '@mui/material';
+import { Box, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -10,7 +10,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 const PersonalInformation = ({ activeStep }) => {
     const { personalInfo, setPersonalInfo } = useStore(useTalentOnboardingStore);
     
-    // Local state to manage form inputs
     const [formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -20,7 +19,10 @@ const PersonalInformation = ({ activeStep }) => {
         date_of_birth: null,
     });
 
-    // Effect to initialize form data from the store
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
     useEffect(() => {
         if (personalInfo) {
             setFormData({
@@ -29,7 +31,7 @@ const PersonalInformation = ({ activeStep }) => {
                 phone_number: personalInfo.phone_number || '',
                 whatsapp_number: personalInfo.whatsapp_number || '',
                 gender: personalInfo.gender || '',
-                date_of_birth: personalInfo.date_of_birth ? new Date(personalInfo.date_of_birth) : new Date(),
+                date_of_birth: personalInfo.date_of_birth ? new Date(personalInfo.date_of_birth) : null,
             });
         }
     }, [personalInfo]);
@@ -47,7 +49,20 @@ const PersonalInformation = ({ activeStep }) => {
     };
 
     const handleSave = () => {
-        setPersonalInfo(formData);
+        try {
+            setPersonalInfo(formData);
+            setSnackbarMessage('Personal Information Saved Successfully');
+            setSnackbarSeverity('success');
+        } catch (error) {
+            setSnackbarMessage('Error Saving your Information');
+            setSnackbarSeverity('error');
+        } finally {
+            setSnackbarOpen(true);
+        }
+    };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
     };
 
     return (
@@ -141,6 +156,18 @@ const PersonalInformation = ({ activeStep }) => {
                     >
                         Save this step
                     </Button>
+
+                    {/* Snackbar for notifications */}
+                    <Snackbar
+                        open={snackbarOpen}
+                        autoHideDuration={6000}
+                        onClose={handleSnackbarClose}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    >
+                        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+                            {snackbarMessage}
+                        </Alert>
+                    </Snackbar>
                 </Box>
             )}
         </>
