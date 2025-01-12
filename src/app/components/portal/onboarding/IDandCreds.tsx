@@ -21,7 +21,7 @@ const IDandCreds = ({ activeStep }) => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [fileName, setFileName] = useState('');
-    const [cookies, setCookie] = useCookies(['governmentIDUrl']);
+    const [cookies, setCookie] = useCookies(['governmentIDUrl', 'governmentIDName']);
 
     useEffect(() => {
         if (bankDetails) {
@@ -37,13 +37,19 @@ const IDandCreds = ({ activeStep }) => {
         if (cookies.governmentIDUrl) {
             setFileName(cookies?.governmentIDUrl);
         }
-    }, [bankDetails, cookies?.governmentIDUrl]);
+
+        if (cookies.governmentIDUrl) {
+            setFileName(cookies.governmentIDName);
+        }
+    }, [bankDetails, cookies?.governmentIDUrl, cookies.governmentIDName]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        const fileURL = URL.createObjectURL(file);
         setGovernmentID(file);
         setFileName(file ? file.name : '');
         setCookie('governmentIDUrl', fileURL, { path: '/' });
+        setCookie('governmentIDName', file.name, { path: '/' });
     };
 
     const handleChange = (e) => {
