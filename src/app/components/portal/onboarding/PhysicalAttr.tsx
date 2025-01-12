@@ -60,7 +60,11 @@ const PhysicalAttributes = ({ activeStep }) => {
                     <Button
                         variant="contained"
                         onClick={handleSave}
-                        sx={{ position: 'absolute', top: 16, right: 16, backgroundColor: '#000', color: '#977342' }}
+                        sx={{ position: 'absolute', top: 16, right: 16, backgroundColor: '#000', color: '#977342', '&:hover': {
+                            backgroundColor: '#CEAB76', 
+                            color: '#000', 
+                            },  
+                        }}
                     >
                         Save this step
                     </Button>
