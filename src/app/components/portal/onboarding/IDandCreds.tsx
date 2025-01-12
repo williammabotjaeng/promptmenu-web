@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, Input, Snackbar, Alert } from '@mui/material';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
+import { useCookies } from 'react-cookie';
 import { useStore } from 'zustand';
 
 const IDandCreds = ({ activeStep }) => {
     const { physicalAttributes, governmentID, setGovernmentID, bankDetails, setBankDetails } = useStore(useTalentOnboardingStore);
     
-    // Local state for bank details
     const [formData, setFormData] = useState({
         accountHolderName: '',
         bankName: '',
@@ -17,13 +17,12 @@ const IDandCreds = ({ activeStep }) => {
         swift: '',
     });
 
-    // Snackbar state
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
     const [fileName, setFileName] = useState('');
+    const [cookies, setCookie] = useCookies(['governmentIDUrl']);
 
-    // Effect to initialize local state from the store
     useEffect(() => {
         if (bankDetails) {
             setFormData({
@@ -34,12 +33,17 @@ const IDandCreds = ({ activeStep }) => {
                 swift: bankDetails.swift || '',
             });
         }
-    }, [bankDetails]);
+
+        if (cookies.governmentIDUrl) {
+            setFileName(cookies?.governmentIDUrl);
+        }
+    }, [bankDetails, cookies?.governmentIDUrl]);
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setGovernmentID(file);
         setFileName(file ? file.name : '');
+        setCookie('governmentIDUrl', fileURL, { path: '/' });
     };
 
     const handleChange = (e) => {
@@ -51,10 +55,8 @@ const IDandCreds = ({ activeStep }) => {
         try {
             setBankDetails(formData);
             setSnackbarMessage('Government ID and Bank Details Saved Successfully');
-            setSnackbarSeverity('success');
         } catch (error) {
             setSnackbarMessage('Error Saving Government ID and Bank Details');
-            setSnackbarSeverity('error');
         } finally {
             setSnackbarOpen(true);
         }
