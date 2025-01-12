@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Chip, Typography, Grid, Button, Snackbar, Alert } from '@mui/material';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
 import { useStore } from 'zustand';
+import { TalentProfileData } from '@/types/TalentProfileData';
 
 const skills = [
     'Event coordinator',
@@ -23,30 +24,46 @@ const skills = [
     'Journalist',
 ];
 
-const SkillsSelection = () => {
-    const { setTalentData } = useStore(useTalentOnboardingStore);
-    const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
+const SkillsSelection = ({ activeStep }) => {
+    const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
+    const [selectedSkills, setSelectedSkills] = useState<string[]>(talentData.skills || []);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
+    useEffect(() => {
+        if (talentData.skills) {
+            setSelectedSkills(talentData.skills);
+        }
+    }, [talentData]);
+
     const handleSkillClick = (skill: string) => {
+        console.log("Adding Skill:", skill);
         if (selectedSkills.includes(skill)) {
             setSelectedSkills(selectedSkills.filter((s) => s !== skill));
+            console.log("Selected Skills:", selectedSkills);
         } else {
             setSelectedSkills([...selectedSkills, skill]);
+            console.log("Selected Skills Added:", selectedSkills);
         }
     };
 
     const handleSave = () => {
         try {
+            
             setTalentData((prev) => ({
                 ...prev,
-                skills: selectedSkills,
+                skills: [...selectedSkills],
             }));
+    
+            console.log("Talent Data Update:", { ...talentData, skills: [...selectedSkills] });
+    
             setSnackbarMessage('Skills saved successfully!');
+            setSnackbarSeverity('success');
         } catch (error) {
+            console.error("Error saving skills:", error);
             setSnackbarMessage('Error saving skills.');
+            setSnackbarSeverity('error');
         } finally {
             setSnackbarOpen(true);
         }
@@ -57,7 +74,7 @@ const SkillsSelection = () => {
     };
 
     return (
-        <Box classNames="w-full mx-auto" sx={{ padding: 2 }}>
+        <Box className="w-full mx-auto" sx={{ padding: 2 }}>
             <Typography variant="h6" gutterBottom>
                 Select Your Skills
             </Typography>
