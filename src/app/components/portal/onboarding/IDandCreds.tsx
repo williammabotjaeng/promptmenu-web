@@ -94,7 +94,11 @@ const IDandCreds = ({ activeStep }) => {
                     <Button
                         variant="contained"
                         onClick={handleSave}
-                        sx={{ margin: '20px 0', marginLeft: '20px', backgroundColor: '#000', color: '#977342' }}
+                        sx={{ margin: '20px 0', marginLeft: '20px', backgroundColor: '#000', color: '#977342', '&:hover': {
+                            backgroundColor: '#CEAB76', 
+                            color: '#000', 
+                            },  
+                        }}
                     >
                         Save this step
                     </Button>
@@ -136,7 +140,10 @@ const IDandCreds = ({ activeStep }) => {
                                 fullWidth
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sx={{
+                            marginTop: '-20px',
+                            marginBottom: '-20px'
+                        }}>
                             <TextField
                                 label="IBAN"
                                 name="iban"

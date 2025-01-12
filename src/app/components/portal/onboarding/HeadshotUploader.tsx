@@ -54,6 +54,8 @@ const HeadshotUploader = ({ activeStep }) => {
   };
 
   return (
+    <>
+    {activeStep === 1 && (
     <Box display="flex" flexDirection="column" alignItems="center">
       <Avatar
         src={headshot || ''}
@@ -87,6 +89,8 @@ const HeadshotUploader = ({ activeStep }) => {
         </Alert>
       </Snackbar>
     </Box>
+    )}
+    </>
   );
 };
 
