@@ -14,6 +14,7 @@ const IDandCreds = ({ activeStep }) => {
         bankName: '',
         accountNumber: '',
         iban: '',
+        swift: ''
     });
 
     // Snackbar state
@@ -30,6 +31,7 @@ const IDandCreds = ({ activeStep }) => {
                 bankName: bankDetails.bankName || '',
                 accountNumber: bankDetails.accountNumber || '',
                 iban: bankDetails.iban || '',
+                swift: bankDetails.swift || '',
             });
         }
     }, [bankDetails]);
@@ -74,7 +76,11 @@ const IDandCreds = ({ activeStep }) => {
                         id="government-id-upload"
                     />
                     <label htmlFor="government-id-upload">
-                        <Button variant="contained" component="span" style={{ margin: '20px 0' }}>
+                        <Button variant="contained" component="span" style={{ 
+                                margin: '20px 0',
+                                backgroundColor: 'black',
+                                color: '#977342'
+                            }}>
                             Upload Government ID
                         </Button>
                     </label>
@@ -112,6 +118,14 @@ const IDandCreds = ({ activeStep }) => {
                                 label="IBAN"
                                 name="iban"
                                 value={formData.iban}
+                                onChange={handleChange}
+                                margin="normal"
+                                fullWidth
+                            />
+                            <TextField
+                                label="SWIFT CODE"
+                                name="swift"
+                                value={formData.swift}
                                 onChange={handleChange}
                                 margin="normal"
                                 fullWidth

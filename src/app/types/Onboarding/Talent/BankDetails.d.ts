@@ -3,4 +3,5 @@ export interface BankDetails {
     accountNumber?: string | null;
     iban?: string | null;
     accountHolderName?: string | null;
+    swift?: string | null;
 }
