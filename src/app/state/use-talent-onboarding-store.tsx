@@ -80,7 +80,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
     setTalentData: (data) => set({ talentData: data }),
     clearOnboardingData: () => set({
         personalInfo: {
-            user: null,
+            firstname: null,
+            lastname: null,
             date_of_birth: null,
             gender: null,
             phone_number: null,
