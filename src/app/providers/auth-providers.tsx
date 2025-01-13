@@ -97,9 +97,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
 
       fetchCompany();
-      console.log('Company', company?.payment_method);
+      console.log('Company', company);
       const paymentMethodJSON = company?.payment_method ? JSON.parse(company?.payment_method) : null;
-      console.log("Payment Methods", paymentMethodJSON);
+      
       if (company) {
 
         setCompanyInfo({
@@ -126,6 +126,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
               stripeDetails: paymentMethodJSON?.stripeDetails || '',
             });
         }
+
+        setSocialMediaLinks({
+          website: company?.website || '',
+          social_media_links: {
+              twitter: company?.social_media_links?.twitter,
+              facebook: company?.social_media_links?.facebook,
+              instagram: company?.social_media_links?.instagram,
+              linkedin: company?.social_media_links?.linkedin,
+          },
+      });
 
 
       }
