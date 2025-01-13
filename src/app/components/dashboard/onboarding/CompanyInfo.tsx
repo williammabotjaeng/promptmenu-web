@@ -8,7 +8,6 @@ import { useCompany } from '@/providers/company-provider';
 
 const CompanyInfo = ({ activeStep }) => {
     const { companyInfo, setCompanyInfo } = useStore(useClientOnboardingStore);
-    const { company, fetchCompany } = useCompany();
 
     return (
         <>

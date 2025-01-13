@@ -16,6 +16,7 @@ import { useStore } from 'zustand';
 import useUserDataStore from '@/state/use-user-data-store';
 import useTokenStore from '@/state/use-token-store';
 import { useCompany } from './company-provider';
+import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null;
   login: (username: string, password: string) => Promise<void>;
@@ -42,6 +43,12 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
   const { setTokens } = useStore(useTokenStore);
+  const {
+    companyInfo, setCompanyInfo,
+    contactInfo, setContactInfo,
+    paymentMethod, setPaymentMethod,
+    socialMediaLinks, setSocialMediaLinks
+  } = useStore(useClientOnboardingStore);
   const { company, fetchCompany } = useCompany();
   const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'user_role',
@@ -72,7 +79,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     onSuccess: (data: LoginSuccessData) => {
       console.log('Login successful: ', data);
-      
+
       const loggedInUser: AuthenticatedUser = {
         refresh: data?.tokens?.refresh,
         access: data?.tokens?.access,
@@ -90,8 +97,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
 
       fetchCompany();
-      console.log('Company', company);
-      
+      console.log('Company', company?.payment_method);
+      const paymentMethodJSON = company?.payment_method ? JSON.parse(company?.payment_method) : null;
+      console.log("Payment Methods", paymentMethodJSON);
+      if (company) {
+
+        setCompanyInfo({
+          name: company.name || '',
+          slogan: company.slogan || '',
+          description: company.description || '',
+        });
+
+        setContactInfo({
+          address: company.address || '',
+          phone_number: company.phone_number || '',
+          whatsapp_number: company.whatsapp_number || '',
+        });
+
+      }
+
       setUserData(
         data?.tokens?.user_role,
         data?.tokens?.profile_progress,
