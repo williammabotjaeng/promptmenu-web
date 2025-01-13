@@ -114,6 +114,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           whatsapp_number: company.whatsapp_number || '',
         });
 
+        if (paymentMethodJSON) {
+            setPaymentMethod({
+              payment_method: paymentMethodJSON.payment_method || '',
+              ccNumber: paymentMethodJSON?.ccNumber || '',
+              ccFirstName: paymentMethodJSON?.ccFirstName || '',
+              ccLastName: paymentMethodJSON?.ccLastName ||  '',
+              ccExpiry: paymentMethodJSON?.ccExpiry || '',
+              ccCVC: paymentMethodJSON?.ccCVC || '',
+              paypalEmail: paymentMethodJSON?.paypalEmail || '',
+              stripeDetails: paymentMethodJSON?.stripeDetails || '',
+            });
+        }
+
+
       }
 
       setUserData(
