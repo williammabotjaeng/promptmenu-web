@@ -90,6 +90,8 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       return await restCall('/portal/talent-profile/create/', 'POST', {
         username: cookies['username'],
         headshot: cookies['headshotBlobUrl'],
+        firstname: personalInfo?.firstname,
+        lastname: personalInfo?.lastname,
         date_of_birth: formattedDate,
         gender: personalInfo?.gender,
         phone_number: personalInfo?.phone_number,
