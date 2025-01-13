@@ -19,8 +19,9 @@ const CompanyContext = createContext<CompanyContextType | null>(null);
 
 export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const [cookies] = useCookies(['access']);
+  const [cookies] = useCookies(['access', 'username']);
   const accessToken = cookies['access'];
+  const userName = cookies['username'];
 
   const {
     setCompanyInfo,
@@ -30,7 +31,7 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const fetchCompanyMutation = useQuery({
     queryKey: ['fetch_company'],
     queryFn: async () => {
-      const response = await restCall('/dashboard/company/retrieve', 'GET', {}, accessToken);
+      const response = await restCall(`/dashboard/company/retrieve/?username=${userName}`, 'GET', {}, accessToken);
       console.log("Company Response", response);
       setCompanyInfo(response);
       return response;
