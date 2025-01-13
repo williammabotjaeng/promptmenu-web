@@ -9,6 +9,7 @@ import { TalentProfileData } from '@/types/TalentProfileData';
 import { CompanyData } from '@/types/CompanyData'; 
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
+import moment from 'moment';
 
 interface OnboardingContextType {
   createTalentProfile: () => Promise<void>;
@@ -46,6 +47,12 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   } = useStore(useTalentOnboardingStore);
 
   const accessToken = cookies['access'];
+
+  const formatDateToYYYYMMDD = (date: string | null | undefined) => {
+      return moment(date).format('YYYY-MM-DD');
+  };
+
+  const formattedDate = formatDateToYYYYMMDD(personalInfo?.date_of_birth)
   
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
@@ -53,7 +60,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       return await restCall('/portal/talent-profile/create/', 'POST',  {
         username: cookies['username'],
         headshot: cookies['headshotBlobUrl'],
-        date_of_birth: personalInfo?.date_of_birth,
+        date_of_birth: formattedDate,
         gender: personalInfo?.gender,
         phone_number: personalInfo?.phone_number,
         nationality: cookies['nationality'],

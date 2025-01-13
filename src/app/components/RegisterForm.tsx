@@ -12,6 +12,7 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import useUserStore from "@/state/use-user-store";
 import { useStore } from "zustand";
 import { useCookies } from 'react-cookie';
+import moment from 'moment';
 import '@/styles/register-form.css';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
@@ -83,19 +84,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     setUseWhatsApp(event.target.checked);
   };
 
-  const formatDateToYYYYMMDD = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-  
-    return `${year}-${month}-${day}`;
+  const formatDateToYYYYMMDD = (date: string) => {
+    return moment(date).format('YYYY-MM-DD');
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formattedDate = formatDateToYYYYMMDD(new Date(formData?.date_of_birth));
-
+    const formattedDate = formatDateToYYYYMMDD(formData?.date_of_birth);
+    
     try {
 
       await register(
