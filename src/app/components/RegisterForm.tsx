@@ -32,24 +32,24 @@ const inputStyles = {
 const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const [isInfluencer, setIsInfluencer] = useState('no');
-  const [country, setCountry] = useState('');
+  const [nationality, setNationality] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
   const [cookies, setCookie] = useCookies(['nationality']);
 
   const [formData, setFormData] = useState({
-    user_role: userRole,
+    username: '',
+    password: '',
     email: '',
+    date_of_birth: '',
+    user_role: userRole,
     firstname: '',
     lastname: '',
-    date_of_birth: '',
-    password: '',
-    username: '',
     gender: 'male',
     phonenumber: '',
     nationality: '',
-    whatsapp_number: '',
     has_accepted: hasAccepted,
     is_influencer: isInfluencer,
+    whatsapp_number: ''
 
   });
 
@@ -62,7 +62,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   };
 
   const handleCountryChange = (val: React.SetStateAction<string>) => {
-    setCountry(val);
+    setNationality(val);
   };
 
   const handleAcceptance = (val: React.SetStateAction<boolean>) => {
@@ -92,7 +92,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     e.preventDefault();
 
     const formattedDate = formatDateToYYYYMMDD(formData?.date_of_birth);
-    
+    console.log("Form Data", formData);
     try {
 
       await register(
@@ -105,15 +105,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         formData.lastname,
         formData.gender,
         formData.phonenumber,
-        formData.whatsapp_number,
-        country,
+        nationality,
+        String(hasAccepted),
         isInfluencer,
-        hasAccepted,
+        formData.whatsapp_number,
 
       );
 
       setCurrentUser(formData.username, '');
-      setCookie('nationality', country);
+      setCookie('nationality', nationality);
 
       // Show success message and redirect to login
       setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
@@ -194,7 +194,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               </InputLabel> */}
               <div className="country-dropdown-container">
                 <CountryDropdown
-                  value={country}
+                  value={nationality}
                   onChange={handleCountryChange}
                   className="custom-input country-dropdown"
                 />
@@ -305,11 +305,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 label={<Typography variant="body1">WhatsApp Number</Typography>}
-                name="whatsappNumber"
+                name="whatsapp_number"
                 placeholder="Enter your WhatsApp number"
                 required
                 fullWidth
                 onChange={handleChange}
+                inputProps={{
+                  pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
+                }}
                 className="custom-input"
               />
             </Grid>

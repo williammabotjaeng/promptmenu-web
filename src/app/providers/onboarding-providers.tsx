@@ -116,6 +116,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const createCompanyMutation = useMutation({
     mutationKey: ['create_company'],
     mutationFn: async () => {
+      console.log("Company Data", companyData);
       return await restCall('/dashboard/company/create/', 'POST', companyData, accessToken);
     },
     onSuccess: () => {

@@ -8,8 +8,8 @@ export interface RegistrationData {
     lastname: string;
     phonenumber: string;
     gender: string;
-    country: string;
-    has_accepted: boolean;
+    nationality: string;
+    has_accepted: string;
     whatsapp_number: string;
-    is_influencer: boolean;
+    is_influencer: string;
   }
