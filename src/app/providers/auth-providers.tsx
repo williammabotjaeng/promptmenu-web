@@ -8,7 +8,7 @@ import { RegistrationSuccessData } from '@/types/RegistrationSuccessData';
 import { RegistrationErrorData } from '@/types/RegistrationErrorData';
 import { ErrorData } from '@/types/ErrorData';
 import { OTPData } from '@/types/OTPData';
-import { useCookies } from 'react-cookie'; 
+import { useCookies } from 'react-cookie';
 import { apiCall } from '@/services/apiCall';
 import clearCurrentUser from '@/state/use-user-store';
 import { useRouter } from 'next/navigation';
@@ -16,24 +16,24 @@ import { useStore } from 'zustand';
 import useUserDataStore from '@/state/use-user-data-store';
 import useTokenStore from '@/state/use-token-store';
 interface AuthContextType {
-  user: AuthenticatedUser | RegistrationSuccessData | null; 
+  user: AuthenticatedUser | RegistrationSuccessData | null;
   login: (username: string, password: string) => Promise<void>;
   verifyOtp: (username: string, otp: string) => Promise<void>;
   logout: () => void;
   register: (
-     username: string,
-     password: string, 
-     email: string,
-     date_of_birth: string,
-     user_role: string,
-     firstname: string,
-     lastname: string,
-     gender: string,
-     phonenumber: string,
-     nationality: string,
-     has_accepted: boolean,
-     is_influencer: boolean,
-     whatsapp_number: string ) => Promise<void>;
+    username: string,
+    password: string,
+    email: string,
+    date_of_birth: string,
+    user_role: string,
+    firstname: string,
+    lastname: string,
+    gender: string,
+    phonenumber: string,
+    nationality: string,
+    has_accepted: boolean,
+    is_influencer: boolean,
+    whatsapp_number: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -42,17 +42,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
   const { setTokens } = useStore(useTokenStore);
   const [cookies, setCookie, removeCookie] = useCookies([
-    'access', 'refresh', 'user_role', 
-    'onboarding_presented', 'profile_progress', 
-    'profile_completed'
-  ]); 
+    'access', 'refresh', 'user_role',
+    'onboarding_presented', 'profile_progress',
+    'profile_completed', 'facebook',
+    'governmentIDName',
+    'governmentIDUrl',
+    'headshotBlobUrl',
+    'instagram',
+    'linkedin',
+    'nationality',
+    'skills',
+    'twitter',
+    'username',
+    'website'
+  ]);
 
-  const { 
-    setUserData, 
-    clearUserData } = useStore(useUserDataStore); 
+  const {
+    setUserData,
+    clearUserData } = useStore(useUserDataStore);
 
   const router = useRouter();
-  
+
   const loginMutation = useMutation({
     mutationKey: ['login_user'],
     mutationFn: async ({ username, password }: LoginData) => {
@@ -67,11 +77,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
 
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
-      
-      setUser(loggedInUser); 
+
+      setUser(loggedInUser);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
-      setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 }); 
-      setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 }); 
+      setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
+      setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
       setCookie('profile_progress', data?.tokens?.profile_progress, { path: '/', maxAge: 604800 });
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
@@ -92,7 +102,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const registerMutation = useMutation({
     mutationKey: ['register_user'],
     mutationFn: async (userData: RegistrationData) => {
-      
+
       return await apiCall('/accounts/register/', 'POST', {
         username: userData.username,
         user_role: userData.user_role,
@@ -131,21 +141,31 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   });
 
   const logout = () => {
-    removeCookie('access', { path: '/' }); 
-    removeCookie('refresh', { path: '/' }); 
+    removeCookie('access', { path: '/' });
+    removeCookie('refresh', { path: '/' });
     removeCookie('user_role', { path: '/' });
     removeCookie('profile_completed', { path: '/' });
     removeCookie('onboarding_presented', { path: '/' });
     removeCookie('profile_progress', { path: '/' });
-    setUser(null); 
+    removeCookie('facebook', { path: '/' });
+    removeCookie('governmentIDName', { path: '/' });
+    removeCookie('governmentIDUrl', { path: '/' });
+    removeCookie('headshotBlobUrl', { path: '/' });
+    removeCookie('instagram', { path: '/' });
+    removeCookie('linkedin', { path: '/' });
+    removeCookie('nationality', { path: '/' });
+    removeCookie('skills', { path: '/' });
+    removeCookie('twitter', { path: '/' });
+    removeCookie('username', { path: '/' });
+    removeCookie('website', { path: '/' });
+    setUser(null);
     clearCurrentUser();
     clearUserData();
   };
 
   const login = async (username: string, password: string) => {
     await loginMutation.mutateAsync({ username, password });
-    if (user)
-    {
+    if (user) {
       router.push('/dashboard')
     }
   };
@@ -155,8 +175,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const register = async (
-    username: string, 
-    password: string, 
+    username: string,
+    password: string,
     email: string,
     user_role: string,
     firstname: string,
@@ -169,15 +189,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     is_influencer: boolean,
     whatsapp_number: string
   ) => {
-    await registerMutation.mutateAsync({ 
-      username: username, 
-      password: password, 
-      email: email, 
-      user_role: user_role, 
-      firstname: firstname, 
-      lastname: lastname, 
-      date_of_birth: date_of_birth, 
-      gender: gender, 
+    await registerMutation.mutateAsync({
+      username: username,
+      password: password,
+      email: email,
+      user_role: user_role,
+      firstname: firstname,
+      lastname: lastname,
+      date_of_birth: date_of_birth,
+      gender: gender,
       phonenumber: phonenumber,
       country: nationality,
       has_accepted: has_accepted,

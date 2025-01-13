@@ -5,11 +5,13 @@ import { useMutation } from '@tanstack/react-query';
 import { restCall } from '@/services/restCall';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
-import { TalentProfileData } from '@/types/TalentProfileData'; 
-import { CompanyData } from '@/types/CompanyData'; 
+import { TalentProfileData } from '@/types/TalentProfileData';
+import { CompanyData } from '@/types/CompanyData';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 import moment from 'moment';
+import CompanyInfo from '@/components/dashboard/onboarding/CompanyInfo';
+import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 
 interface OnboardingContextType {
   createTalentProfile: () => Promise<void>;
@@ -33,31 +35,59 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     'linkedin',
     'instagram',
     'skills',
-    'username', 
+    'username',
     'nationality',
     'access'
   ]);
   const {
-      setPersonalInfo,
-      setBankDetails,
-      personalInfo,
-      bankDetails,
-      physicalAttributes, 
-      setPhysicalAttributes
+    setPersonalInfo,
+    setBankDetails,
+    personalInfo,
+    bankDetails,
+    physicalAttributes,
+    setPhysicalAttributes
   } = useStore(useTalentOnboardingStore);
+
+  const {
+    setCompanyInfo,
+    setContactInfo,
+    setPaymentMethod,
+    setSocialMediaLinks,
+    companyInfo,
+    contactInfo,
+    paymentMethod,
+    socialMediaLinks
+  } = useStore(useClientOnboardingStore);
 
   const accessToken = cookies['access'];
 
   const formatDateToYYYYMMDD = (date: string | null | undefined) => {
-      return moment(date).format('YYYY-MM-DD');
+    return moment(date).format('YYYY-MM-DD');
   };
 
-  const formattedDate = formatDateToYYYYMMDD(personalInfo?.date_of_birth)
-  
+  const formattedDate = formatDateToYYYYMMDD(personalInfo?.date_of_birth);
+
+  const companyData = {
+    username: cookies['username'],
+    name: companyInfo?.name,
+    slogan: companyInfo?.slogan,
+    description: companyInfo?.description,
+    address: contactInfo?.address,
+    phone_number: contactInfo?.phone_number,
+    whatsapp_number: contactInfo?.whatsapp_number,
+    payment_method: JSON.stringify(paymentMethod),
+    website: socialMediaLinks?.website,
+    social_media_links: {
+      facebook: socialMediaLinks?.social_media_links?.facebook,
+      instagram: socialMediaLinks?.social_media_links?.instagram,
+      linkedin: socialMediaLinks?.social_media_links?.linkedin
+    }
+  };
+
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
     mutationFn: async () => {
-      return await restCall('/portal/talent-profile/create/', 'POST',  {
+      return await restCall('/portal/talent-profile/create/', 'POST', {
         username: cookies['username'],
         headshot: cookies['headshotBlobUrl'],
         date_of_birth: formattedDate,
@@ -76,7 +106,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     },
     onSuccess: (data) => {
       console.log('Talent profile created successfully', data);
-      router.push('/dashboard'); 
+      router.push('/dashboard');
     },
     onError: (error) => {
       console.error('Error creating talent profile: ', error);
@@ -85,12 +115,12 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const createCompanyMutation = useMutation({
     mutationKey: ['create_company'],
-    mutationFn: async (data: CompanyData) => {
-      return await restCall('/companies/create/', 'POST', data);
+    mutationFn: async () => {
+      return await restCall('/dashboard/companies/create/', 'POST', companyData, accessToken);
     },
     onSuccess: () => {
       console.log('Company created successfully');
-      router.push('/dashboard'); 
+      router.push('/dashboard');
     },
     onError: (error) => {
       console.error('Error creating company: ', error);
@@ -100,7 +130,9 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const updateCompanyMutation = useMutation({
     mutationKey: ['update_company'],
     mutationFn: async ({ companyId, data }: { companyId: string; data: CompanyData }) => {
-      return await restCall(`/companies/update/${companyId}/`, 'PUT', data);
+      return await restCall(`/dashboard/companies/update/${companyId}/`, 'PUT', {
+
+      }, accessToken);
     },
     onSuccess: () => {
       console.log('Company updated successfully');
