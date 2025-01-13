@@ -15,6 +15,7 @@ import { useRouter } from 'next/navigation';
 import { useStore } from 'zustand';
 import useUserDataStore from '@/state/use-user-data-store';
 import useTokenStore from '@/state/use-token-store';
+import { useCompany } from './company-provider';
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null;
   login: (username: string, password: string) => Promise<void>;
@@ -41,6 +42,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
   const { setTokens } = useStore(useTokenStore);
+  const { company, fetchCompany } = useCompany();
   const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'user_role',
     'onboarding_presented', 'profile_progress',
@@ -70,6 +72,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     onSuccess: (data: LoginSuccessData) => {
       console.log('Login successful: ', data);
+      
       const loggedInUser: AuthenticatedUser = {
         refresh: data?.tokens?.refresh,
         access: data?.tokens?.access,
@@ -86,6 +89,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
 
+      fetchCompany();
+      console.log('Company', company);
+      
       setUserData(
         data?.tokens?.user_role,
         data?.tokens?.profile_progress,

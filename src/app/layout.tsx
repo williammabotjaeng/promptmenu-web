@@ -30,15 +30,15 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <QueryClientProvider client={queryClient}>
+        <CompanyProvider>
           <AuthProvider>
             <ProtectedRoutes>
               <OnboardingProvider>
-                <CompanyProvider>
                   {children}
-                </CompanyProvider>
               </OnboardingProvider>
             </ProtectedRoutes>
           </AuthProvider>
+          </CompanyProvider>
         </QueryClientProvider>
       </body>
     </html>

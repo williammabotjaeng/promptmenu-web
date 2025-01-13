@@ -10,23 +10,6 @@ const CompanyInfo = ({ activeStep }) => {
     const { companyInfo, setCompanyInfo } = useStore(useClientOnboardingStore);
     const { company, fetchCompany } = useCompany();
 
-    React.useEffect(() => {
-        if (company) {
-          console.log("Company", company);
-          setCompanyInfo({
-            name: company.name || '',
-            slogan: company.slogan || '',
-            description: company.description || '',
-          });
-        }
-    }, [company, setCompanyInfo]);
-
-    React.useEffect(() => {
-        fetchCompany();
-    }, []);
-
-    console.log("Company", company);
-
     return (
         <>
             {activeStep === 0 && (
