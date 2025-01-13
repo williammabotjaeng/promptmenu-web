@@ -17,6 +17,7 @@ import useUserDataStore from '@/state/use-user-data-store';
 import useTokenStore from '@/state/use-token-store';
 import { useCompany } from './company-provider';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null;
   login: (username: string, password: string) => Promise<void>;
@@ -49,6 +50,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     paymentMethod, setPaymentMethod,
     socialMediaLinks, setSocialMediaLinks
   } = useStore(useClientOnboardingStore);
+
+  const {
+    personalInfo, setPersonalInfo,
+    physicalAttributes, setPhysicalAttributes,
+    governmentID, setGovernmentID,
+    bankDetails, setBankDetails,
+    profileSocials, setProfileSocials,
+    talentData, setTalentData
+  } = useTalentOnboardingStore();
+
   const { company, fetchCompany } = useCompany();
   const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'user_role',
@@ -99,7 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       fetchCompany();
       console.log('Company', company);
       const paymentMethodJSON = company?.payment_method ? JSON.parse(company?.payment_method) : null;
-      
+
       if (company) {
 
         setCompanyInfo({
@@ -115,29 +126,90 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         if (paymentMethodJSON) {
-            setPaymentMethod({
-              payment_method: paymentMethodJSON.payment_method || '',
-              ccNumber: paymentMethodJSON?.ccNumber || '',
-              ccFirstName: paymentMethodJSON?.ccFirstName || '',
-              ccLastName: paymentMethodJSON?.ccLastName ||  '',
-              ccExpiry: paymentMethodJSON?.ccExpiry || '',
-              ccCVC: paymentMethodJSON?.ccCVC || '',
-              paypalEmail: paymentMethodJSON?.paypalEmail || '',
-              stripeDetails: paymentMethodJSON?.stripeDetails || '',
-            });
+          setPaymentMethod({
+            payment_method: paymentMethodJSON.payment_method || '',
+            ccNumber: paymentMethodJSON?.ccNumber || '',
+            ccFirstName: paymentMethodJSON?.ccFirstName || '',
+            ccLastName: paymentMethodJSON?.ccLastName || '',
+            ccExpiry: paymentMethodJSON?.ccExpiry || '',
+            ccCVC: paymentMethodJSON?.ccCVC || '',
+            paypalEmail: paymentMethodJSON?.paypalEmail || '',
+            stripeDetails: paymentMethodJSON?.stripeDetails || '',
+          });
         }
 
         setSocialMediaLinks({
           website: company?.website || '',
           social_media_links: {
-              twitter: company?.social_media_links?.twitter,
-              facebook: company?.social_media_links?.facebook,
-              instagram: company?.social_media_links?.instagram,
-              linkedin: company?.social_media_links?.linkedin,
+            twitter: company?.social_media_links?.twitter,
+            facebook: company?.social_media_links?.facebook,
+            instagram: company?.social_media_links?.instagram,
+            linkedin: company?.social_media_links?.linkedin,
           },
-      });
+        });
+      }
 
+      if (talentProfile) {
+        // Set personal info
+        setPersonalInfo({
+          firstname: talentProfile.firstname || '',
+          lastname: talentProfile.lastname || '',
+          date_of_birth: talentProfile.date_of_birth || '',
+          gender: talentProfile.gender || 'male',
+          phone_number: talentProfile.phone_number || '',
+          whatsapp_number: talentProfile.whatsapp_number || '',
+        });
 
+        // Set physical attributes
+        setPhysicalAttributes({
+          height: talentProfile.height || '',
+          weight: talentProfile.weight || '',
+          ethnicity: talentProfile.ethnicity || '',
+        });
+
+        // Set government ID if available
+        setGovernmentID(talentProfile.government_id || null);
+
+        // Set bank details if available
+        setBankDetails({
+          bankName: talentProfile.banking_details?.bankName || '',
+          accountNumber: talentProfile.banking_details?.accountNumber || '',
+          iban: talentProfile.banking_details?.iban || '',
+          accountHolderName: talentProfile.banking_details?.accountHolderName || '',
+        });
+
+        // Set profile socials
+        setProfileSocials({
+          website: talentProfile.website || '',
+          social_media_links: {
+            twitter: talentProfile.social_media_links?.twitter || '',
+            facebook: talentProfile.social_media_links?.facebook || '',
+            instagram: talentProfile.social_media_links?.instagram || '',
+            linkedin: talentProfile.social_media_links?.linkedin || '',
+          },
+        });
+
+        // Set talent data
+        setTalentData({
+          user: talentProfile.user || null,
+          headshot: talentProfile.headshot || null,
+          date_of_birth: talentProfile.date_of_birth || null,
+          gender: talentProfile.gender || null,
+          phone_number: talentProfile.phone_number || null,
+          nationality: talentProfile.nationality || null,
+          skills: talentProfile.skills || [],
+          height: talentProfile.height || null,
+          weight: talentProfile.weight || null,
+          ethnicity: talentProfile.ethnicity || null,
+          government_id: talentProfile.government_id || null,
+          banking_details: talentProfile.banking_details || null,
+          portfolio_pdf: talentProfile.portfolio_pdf || null,
+          additional_images: talentProfile.additional_images || null,
+          is_verified: talentProfile.is_verified || false,
+          verification_notification_sent: talentProfile.verification_notification_sent || false,
+          created_at: talentProfile.created_at || '',
+          updated_at: talentProfile.updated_at || '',
+        });
       }
 
       setUserData(
