@@ -5,7 +5,7 @@ import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid, 
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 import { useStore } from 'zustand';
 
-const PaymentMethod = () => {
+const PaymentMethod = ({ activeStep }) => {
     const { paymentMethod, setPaymentMethod } = useStore(useClientOnboardingStore);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);

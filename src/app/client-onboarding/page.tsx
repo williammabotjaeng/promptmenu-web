@@ -11,11 +11,13 @@ import CompanyInfo from '@/components/dashboard/onboarding/CompanyInfo';
 import AddressAndContactInfo from '@/components/dashboard/onboarding/AddressContactInfo';
 import SocialMediaLinks from '@/components/dashboard/onboarding/SocialMediaLinks';
 import CompanyReview from '@/components/dashboard/onboarding/CompanyReview';
+import { useStore } from 'zustand';
 
 const ClientOnboarding: React.FC = () => {
   const router = useRouter();
   const [cookies, setCookie] = useCookies(['companyData']);
   const [activeStep, setActiveStep] = useState(0);
+  const { createCompany } = useOnboarding();
 
   const steps = [
     { title: "Step 1: Basic Information", content: "Please provide your basic information." },
@@ -43,7 +45,7 @@ const ClientOnboarding: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-   
+    createCompany();  
     router.push('/dashboard');
   };
 
