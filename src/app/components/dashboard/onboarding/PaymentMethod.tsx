@@ -10,7 +10,6 @@ const PaymentMethod = ({ activeStep }) => {
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     
-    // Local state for the selected payment method tab
     const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethod?.payment_method || "creditCard");
     const [paymentDetails, setPaymentDetails] = useState({
         ccNumber: paymentMethod?.ccNumber || '',
@@ -23,7 +22,6 @@ const PaymentMethod = ({ activeStep }) => {
     });
 
     useEffect(() => {
-        // Update local state if paymentMethod from the store changes
         if (paymentMethod) {
             setPaymentMethodTab(paymentMethod.payment_method);
             setPaymentDetails({

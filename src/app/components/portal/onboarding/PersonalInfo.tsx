@@ -25,6 +25,7 @@ const PersonalInformation = ({ activeStep }) => {
 
     useEffect(() => {
         if (personalInfo) {
+            console.log("personal info", personalInfo);
             setFormData({
                 firstname: personalInfo.firstname || '',
                 lastname: personalInfo.lastname || '',

@@ -1,9 +1,12 @@
 export interface TalentProfileData {
     user: string | null; 
+    firstname?: string | null;
+    lastname?: string | null;
     headshot?: string | null; 
     date_of_birth?: string | null; 
     gender?: string | null; 
     phone_number?: string | null; 
+    whatsapp_number?: string | null;
     nationality?: string | null; 
     skills?: string[]; 
     height?: number | null; 
