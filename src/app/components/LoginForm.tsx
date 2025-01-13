@@ -27,7 +27,13 @@ const LoginForm: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
 
-  const [cookies] = useCookies(['user_role', 'profile_progress', 'onboarding_presented', 'profile_completed']);
+  const [cookies, setCookie] = useCookies([
+    'user_role', 
+    'profile_progress', 
+    'onboarding_presented', 
+    'profile_completed',
+    'username'
+  ]);
 
   const {
     user_role,
@@ -55,6 +61,7 @@ const LoginForm: React.FC = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
+        setCookie('username', formData?.username);
         await login(formData.username, formData.password);
 
         // Show success message and redirect to dashboard

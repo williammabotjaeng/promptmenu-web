@@ -1,6 +1,8 @@
+"use client";
+
 import React, { createContext, useContext, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
-import { apiCall } from '@/services/apiCall';
+import { restCall } from '@/services/restCall';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { TalentProfileData } from '@/types/TalentProfileData'; 
@@ -9,7 +11,7 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 
 interface OnboardingContextType {
-  createTalentProfile: (data: TalentProfileData) => Promise<void>;
+  createTalentProfile: () => Promise<void>;
   createCompany: (data: CompanyData) => Promise<void>;
   updateCompany: (companyId: string, data: CompanyData) => Promise<void>;
   updateTalentProfile: (profileId: string, data: TalentProfileData) => Promise<void>;
@@ -29,7 +31,10 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     'twitter',
     'linkedin',
     'instagram',
-    'skills'
+    'skills',
+    'username', 
+    'nationality',
+    'access'
   ]);
   const {
       setPersonalInfo,
@@ -40,28 +45,30 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       setPhysicalAttributes
   } = useStore(useTalentOnboardingStore);
 
+  const accessToken = cookies['access'];
+  
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
-    mutationFn: async (data: TalentProfileData) => {
-      return await apiCall('/talent-profiles/create/', 'POST',  {
-        username: "testuser",
-        headshot: "data:image/jpeg;base64,<base64_encoded_image>",
-        date_of_birth: "1990-01-01",
-        gender: "Male",
-        phone_number: "123-456-7890",
-        nationality: "American",
-        skills: [1, 2],
-        height: 180.50,
-        weight: 75.00,
-        ethnicity: "Caucasian",
-        government_id: "data:image/jpeg;base64,<base64_encoded_government_id>",
-        banking_details: "Bank Name: XYZ, Account Number: 123456",
-        portfolio_pdf: "data:application/pdf;base64,<base64_encoded_pdf>",
+    mutationFn: async () => {
+      return await restCall('/portal/talent-profile/create/', 'POST',  {
+        username: cookies['username'],
+        headshot: cookies['headshotBlobUrl'],
+        date_of_birth: personalInfo?.date_of_birth,
+        gender: personalInfo?.gender,
+        phone_number: personalInfo?.phone_number,
+        nationality: cookies['nationality'],
+        skills: cookies['skills'],
+        height: physicalAttributes?.height,
+        weight: physicalAttributes?.weight,
+        ethnicity: physicalAttributes?.ethnicity,
+        government_id: cookies['governmentIDUrl'],
+        banking_details: JSON.stringify(bankDetails),
+        portfolio_pdf: null,
         additional_images: null
-      });
+      }, accessToken);
     },
-    onSuccess: () => {
-      console.log('Talent profile created successfully');
+    onSuccess: (data) => {
+      console.log('Talent profile created successfully', data);
       router.push('/dashboard'); 
     },
     onError: (error) => {
@@ -72,7 +79,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const createCompanyMutation = useMutation({
     mutationKey: ['create_company'],
     mutationFn: async (data: CompanyData) => {
-      return await apiCall('/companies/create/', 'POST', data);
+      return await restCall('/companies/create/', 'POST', data);
     },
     onSuccess: () => {
       console.log('Company created successfully');
@@ -86,7 +93,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const updateCompanyMutation = useMutation({
     mutationKey: ['update_company'],
     mutationFn: async ({ companyId, data }: { companyId: string; data: CompanyData }) => {
-      return await apiCall(`/companies/update/${companyId}/`, 'PUT', data);
+      return await restCall(`/companies/update/${companyId}/`, 'PUT', data);
     },
     onSuccess: () => {
       console.log('Company updated successfully');
@@ -99,7 +106,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const updateTalentProfileMutation = useMutation({
     mutationKey: ['update_talent_profile'],
     mutationFn: async ({ profileId, data }: { profileId: string; data: TalentProfileData }) => {
-      return await apiCall(`/talent-profiles/update/${profileId}/`, 'PUT', data);
+      return await restCall(`/talent-profiles/update/${profileId}/`, 'PUT', data);
     },
     onSuccess: () => {
       console.log('Talent profile updated successfully');

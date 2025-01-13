@@ -11,6 +11,7 @@ import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, InputLabel,
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import useUserStore from "@/state/use-user-store";
 import { useStore } from "zustand";
+import { useCookies } from 'react-cookie';
 import '@/styles/register-form.css';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
@@ -32,6 +33,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [isInfluencer, setIsInfluencer] = useState('no');
   const [country, setCountry] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
+  const [cookies, setCookie] = useCookies(['nationality']);
 
   const [formData, setFormData] = useState({
     user_role: userRole,
@@ -81,15 +83,26 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     setUseWhatsApp(event.target.checked);
   };
 
+  const formatDateToYYYYMMDD = (date: Date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+  
+    return `${year}-${month}-${day}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const formattedDate = formatDateToYYYYMMDD(new Date(formData?.date_of_birth));
+
     try {
 
       await register(
         formData.username,
         formData.password,
         formData.email,
-        formData.date_of_birth,
+        formattedDate,
         userRole,
         formData.firstname,
         formData.lastname,
@@ -103,6 +116,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
       );
 
       setCurrentUser(formData.username, '');
+      setCookie('nationality', country);
 
       // Show success message and redirect to login
       setSnackbarMessage('Registration successful! Redirecting to OTP Page...');

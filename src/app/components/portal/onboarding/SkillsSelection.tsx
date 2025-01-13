@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Box, Chip, Typography, Grid, Button, Snackbar, Alert } from '@mui/material';
 import { useCookies } from 'react-cookie';
@@ -5,23 +7,22 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 
 const skills = [
-    'Event coordinator',
-    'Project manager',
-    'Models',
-    'Event executives',
-    'Ushers',
-    'Extras',
-    'Freelancers',
-    'Photographers',
-    'Influencers',
-    'Sports models',
-    'Security',
-    'Hostesses',
-    'Videographer',
-    'Event manager',
-    'Organizer',
-    'Site manager',
-    'Journalist',
+    'Event Coordination',
+    'Project Management',
+    'Modeling',
+    'Event Executive',
+    'Ushering',
+    'Freelancing',
+    'Photography',
+    'Influencer Marketing',
+    'Sports Modeling',
+    'Security Management',
+    'Hosting',
+    'Videography',
+    'Event Management',
+    'Event Organization',
+    'Site Management',
+    'Journalism',
 ];
 
 const SkillsSelection = ({ activeStep }) => {
@@ -52,7 +53,6 @@ const SkillsSelection = ({ activeStep }) => {
 
     const handleSave = () => {
         try {
-            // Save skills to cookies as a string
             setCookie('skills', JSON.stringify(selectedSkills), { path: '/' });
             setTalentData((prev) => ({
                 ...prev,

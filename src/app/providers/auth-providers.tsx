@@ -14,6 +14,7 @@ import clearCurrentUser from '@/state/use-user-store';
 import { useRouter } from 'next/navigation';
 import { useStore } from 'zustand';
 import useUserDataStore from '@/state/use-user-data-store';
+import useTokenStore from '@/state/use-token-store';
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null; 
   login: (username: string, password: string) => Promise<void>;
@@ -39,6 +40,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
+  const { setTokens } = useStore(useTokenStore);
   const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'user_role', 
     'onboarding_presented', 'profile_progress', 
@@ -63,6 +65,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         access: data?.tokens?.access,
         user_role: data?.tokens?.user_role
       };
+
+      setTokens(data?.tokens?.refresh, data?.tokens?.access);
       
       setUser(loggedInUser); 
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });

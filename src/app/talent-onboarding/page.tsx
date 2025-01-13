@@ -50,10 +50,12 @@ const TalentOnboarding: React.FC = () => {
     router.push('/dashboard');
   };
 
-  const handleSubmit = async () => {
-    createTalentProfile();
-    router.push('/portal');
-  };
+  // const handleSubmit = async () => {
+  //   createTalentProfile();
+  //   router.push('/portal');
+  // };
+
+
 
   return (
     <Box className="onboarding-container" sx={{ width: '100vw' }}>
@@ -106,7 +108,7 @@ const TalentOnboarding: React.FC = () => {
             </Button>
           )}
           {activeStep === steps.length - 1 && (
-            <Button onClick={handleSubmit} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
+            <Button onClick={() => createTalentProfile()} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
               Submit
             </Button>
           )}

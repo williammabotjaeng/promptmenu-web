@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { Box, Typography, Grid, Avatar } from '@mui/material';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 

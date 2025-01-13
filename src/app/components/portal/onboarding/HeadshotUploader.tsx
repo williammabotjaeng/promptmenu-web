@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { Box, Avatar, IconButton, Snackbar, Alert, Button } from '@mui/material';
 import { AddAPhoto } from '@mui/icons-material';
