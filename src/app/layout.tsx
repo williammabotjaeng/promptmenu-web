@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/providers/auth-providers';
 import { OnboardingProvider } from "@/providers/onboarding-providers";
 import { CompanyProvider } from '@/providers/company-provider';
+import { TalentProfileProvider } from "./providers/talent-profile-provider";
 import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
 
@@ -30,14 +31,16 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <QueryClientProvider client={queryClient}>
-        <CompanyProvider>
-          <AuthProvider>
-            <ProtectedRoutes>
-              <OnboardingProvider>
-                  {children}
-              </OnboardingProvider>
-            </ProtectedRoutes>
-          </AuthProvider>
+          <CompanyProvider>
+            <TalentProfileProvider>
+              <AuthProvider>
+                <ProtectedRoutes>
+                  <OnboardingProvider>
+                    {children}
+                  </OnboardingProvider>
+                </ProtectedRoutes>
+              </AuthProvider>
+            </TalentProfileProvider>
           </CompanyProvider>
         </QueryClientProvider>
       </body>

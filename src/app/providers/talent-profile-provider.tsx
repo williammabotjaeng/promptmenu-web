@@ -35,7 +35,7 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchTalentProfileQuery = useQuery({
     queryKey: ['fetch_talent_profile'],
     queryFn: async () => {
-      const response = await restCall(`/dashboard/talent-profile/retrieve/?username=${userName}`, 'GET', {}, accessToken);
+      const response = await restCall(`/portal/talent-profile/retrieve/?username=${userName}`, 'GET', {}, accessToken);
       console.log("Talent Profile Response", response);
       setPersonalInfo({
         firstname: response.firstname,
@@ -65,7 +65,7 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
   const updateTalentProfileMutation = useMutation({
     mutationKey: ['update_talent_profile'],
     mutationFn: async ({ profileId, data }: { profileId: string; data: TalentProfileData }) => {
-      return await restCall(`/dashboard/talent-profile/update/${profileId}/`, 'PUT', data, accessToken);
+      return await restCall(`/portal/talent-profile/update/${profileId}/`, 'PUT', data, accessToken);
     },
     onSuccess: (data) => {
       console.log('Talent profile updated successfully', data);

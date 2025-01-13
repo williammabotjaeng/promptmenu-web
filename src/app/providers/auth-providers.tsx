@@ -16,8 +16,10 @@ import { useStore } from 'zustand';
 import useUserDataStore from '@/state/use-user-data-store';
 import useTokenStore from '@/state/use-token-store';
 import { useCompany } from './company-provider';
+import { useTalentProfile } from './talent-profile-provider';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null;
   login: (username: string, password: string) => Promise<void>;
@@ -61,6 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   } = useTalentOnboardingStore();
 
   const { company, fetchCompany } = useCompany();
+  const { talentProfile, fetchTalentProfile } = useTalentProfile();
   const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'user_role',
     'onboarding_presented', 'profile_progress',
@@ -107,8 +110,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
 
-      fetchCompany();
-      console.log('Company', company);
+      if (data?.tokens?.user_role === 'client') {
+        fetchCompany();
+      }
+
+      if (data?.tokens?.user_role === 'talent') {
+        fetchTalentProfile();
+      }
+      
+      console.log('Talent Profile', talentProfile);
       const paymentMethodJSON = company?.payment_method ? JSON.parse(company?.payment_method) : null;
 
       if (company) {
