@@ -387,7 +387,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               placeholder="Enter a Mobile Phone No."
             />
             <FormControlLabel
-              control={<Checkbox color="success" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
+              control={<Checkbox sx={{
+                color: 'white'
+              }} color="success" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
               label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
             />
           </Grid>
@@ -444,7 +446,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               />
             </Grid>
 
-            {/* Preferred Payment Method */}
             {/* Preferred Payment Method */}
             <Grid item xs={12}>
               <FormControl component="fieldset">
