@@ -12,4 +12,15 @@ export interface RegistrationData {
     has_accepted: string;
     whatsapp_number: string;
     is_influencer: string;
+    preferred_payment_methods: string;
+    vat_certificate: string;
+    trade_license: string;
+    custom_payment_terms: string;
+    accept_std_payment_terms: string;
+    accounts_email: string;
+    mobile_number: string;
+    job_title: string;
+    contact_person: string;
+    state_province_region: string;
+    company_name: string;
   }
