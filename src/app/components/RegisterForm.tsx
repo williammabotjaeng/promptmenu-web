@@ -39,6 +39,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [hasAccepted, setHasAccepted] = useState(false);
   const [cookies, setCookie] = useCookies(['nationality']);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [whatsappNumber, setWhatsappNumber] = useState('');
 
   const [formData, setFormData] = useState({
     username: '',
@@ -80,6 +82,20 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     const { name, value } = e.target || {};
     if (name) {
       setPhoneNumber(value);
+    }
+  };
+
+  const handleMobileChange = (e) => {
+    const { name, value } = e.target || {};
+    if (name) {
+      setMobileNumber(value);
+    }
+  };
+
+  const handleWhatsAppNumberChange = (e) => {
+    const { name, value } = e.target || {};
+    if (name) {
+      setWhatsappNumber(value);
     }
   };
 
@@ -325,72 +341,49 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             />
           </Grid>
 
-          {/* Date of Birth */}
+          {/* Mobile Number */}
           <Grid item xs={12} sm={6}>
-            <Typography sx={{
-              fontSize: '12px',
-              color: 'white'
-            }}>Date of Birth</Typography>
-            <TextField
-              type="date"
-              name="date_of_birth"
-              required
-              placeholder="Date of Birth"
-              fullWidth
-              InputLabelProps={{
-                shrink: true,
+            <PhoneInput
+              country={'ae'} 
+              value={mobileNumber}
+              onChange={handleMobileChange}
+              inputStyle={{
+                width: '100%',
+                height: '56px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                padding: '10px',
               }}
-              onChange={handleChange}
-              className="custom-input"
-              sx={{
-                '& input': {
-                  color: '#999',
-                },
-                '&::placeholder': {
-                  color: '#999',
-                },
+              buttonStyle={{
+                border: '1px solid #ccc',
+                borderRadius: '4px',
               }}
-            />
-          </Grid>
-
-          {/* Phone Number */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Phone Number</Typography>}
-              name="phonenumber"
-              placeholder="Enter a Valid UAE Phone"
-              required
-              fullWidth
-              inputProps={{
-                pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
-              }}
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
+              placeholder="Enter a Mobile Phone No."
             />
             <FormControlLabel
-              control={<Checkbox color="success" sx={{
-                color: 'white'
-              }} checked={useWhatsApp} onChange={handleWhatsAppChange} />}
+              control={<Checkbox color="success" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
               label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
             />
           </Grid>
 
           {/* WhatsApp Number Field (conditional) */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">WhatsApp Number</Typography>}
-              name="whatsapp_number"
+          <Grid item xs={12} sm={6} style={{ display: useWhatsApp ? 'block' : 'none' }}>
+            <PhoneInput
+              country={'ae'} 
+              value={whatsappNumber}
+              onChange={handleWhatsAppNumberChange}
+              inputStyle={{
+                width: '100%',
+                height: '56px',
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                padding: '10px',
+              }}
+              buttonStyle={{
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+              }}
               placeholder="Enter your WhatsApp number"
-              required
-              fullWidth
-              onChange={handleChange}
-              inputProps={{
-                pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
-              }}
-              sx={{
-                display: useWhatsApp ? 'none' : 'inline-block'
-              }}
               className="custom-input"
             />
           </Grid>
