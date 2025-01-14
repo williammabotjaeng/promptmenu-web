@@ -16,11 +16,20 @@ import { useStore } from 'zustand';
 import HeadshotUploader from '@/components/portal/onboarding/HeadshotUploader';
 import SkillsSelection from '@/components/portal/onboarding/SkillsSelection';
 import { useOnboarding } from '@/providers/onboarding-providers';
+import { restCall } from '@/services/restCall';
+import axios from 'axios';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState(0);
   const { createTalentProfile } = useOnboarding();
+  const [cookies] = useCookies([
+    'headshotBlobUrl',
+    'username',
+    'access'
+  ]);
+
+  const accessToken = cookies?.access;
 
   const steps = [
     { title: 'Step 1: Personal Information', content: 'Please provide your personal details.' },
@@ -50,12 +59,82 @@ const TalentOnboarding: React.FC = () => {
     router.push('/dashboard');
   };
 
-  // const handleSubmit = async () => {
-  //   createTalentProfile();
-  //   router.push('/portal');
-  // };
+  const handleSubmit = () => {
+    uploadHeadshot();
+    createTalentProfile();
+  }
 
+  const saveFileMetadata = async (fileName: string, s3Url: string) => {
+    try {
+      const response = await restCall('/portal/save-file-metadata/', 'POST', {
+        file_name: fileName,
+        s3_url: s3Url,
+      }, accessToken);
 
+      if (response.status === 201) {
+        console.log('File metadata saved:', response.data);
+      } else {
+        console.error('Failed to save file metadata:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error saving file metadata:', error);
+    }
+  };
+
+  const uploadToS3 = async (blob: any, fileName: string) => {
+    
+    const fileType = blob.type;
+    try {
+      console.log("Blob s3:", blob);
+      console.log("Filename:", fileName);
+      console.log("File Type:", fileType);
+      const response = await restCall(`/portal/generate-presigned-url/?file_name=${fileName}&file_type=${fileType}`, 'GET', {}, accessToken);
+
+      const { url } = response;
+
+      if (url) {
+        const uploadResponse = await axios.put(url, blob, {
+          headers: {
+            'Content-Type': fileType,
+          },
+        });
+
+        if (uploadResponse.status === 200) {
+          console.log('Upload successful!');
+          const s3Url = url.split('?')[0];
+          await saveFileMetadata(fileName, s3Url);
+        } else {
+          console.error('Upload failed:', uploadResponse.statusText);
+        }
+      } else {
+        console.error('Failed to get presigned URL');
+      }
+    } catch (error) {
+      console.error('Error during upload:', error);
+    }
+  };
+
+  const uploadHeadshot = async () => {
+    const headshotBlobUrl = cookies.headshotBlobUrl;
+
+    if (headshotBlobUrl) {
+      try {
+        const response = await fetch(headshotBlobUrl);
+        const blob = await response.blob();
+
+        const fileName = `headshot_${cookies['username']}_${Date.now()}.png`;
+
+        console.log("Blob:", blob);
+        console.log("Filename:", fileName);
+
+        await uploadToS3(blob, fileName);
+      } catch (error) {
+        console.error('Error uploading headshot:', error);
+      }
+    } else {
+      console.error('No headshot blob URL found in cookies.');
+    }
+  };
 
   return (
     <Box className="onboarding-container" sx={{ width: '100vw' }}>
@@ -108,7 +187,7 @@ const TalentOnboarding: React.FC = () => {
             </Button>
           )}
           {activeStep === steps.length - 1 && (
-            <Button onClick={() => createTalentProfile()} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
+            <Button onClick={handleSubmit} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
               Submit
             </Button>
           )}

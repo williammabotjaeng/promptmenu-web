@@ -87,6 +87,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
     mutationFn: async () => {
+      console.log("personal info", personalInfo);
       return await restCall('/portal/talent-profile/create/', 'POST', {
         username: cookies['username'],
         headshot: cookies['headshotBlobUrl'],
