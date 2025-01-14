@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, Avatar, IconButton, Snackbar, Alert, Button, Card, Typography } from '@mui/material';
-import { AddAPhoto, AddCircle, Close } from '@mui/icons-material';
+import { Box, Card, CardMedia, IconButton, Snackbar, Alert, Button, Typography } from '@mui/material';
+import { AddAPhoto, AddCircle, Close, PictureAsPdf } from '@mui/icons-material';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { TalentProfileData } from '@/types/TalentProfileData';
 import { useStore } from 'zustand';
 import { useCookies } from 'react-cookie';
 import { Document, Page } from 'react-pdf';
 import ReactPlayer from 'react-player';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper-bundle.css'; 
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css'; // Import styles for PDF annotations
 
 const PortfolioMedia = ({ activeStep }) => {
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
@@ -94,7 +92,6 @@ const PortfolioMedia = ({ activeStep }) => {
             width: '90vw'
         }}>
           {/* Images Column */}
-          
           <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
             border: '4px dotted black',
             margin: '4px',
@@ -103,30 +100,29 @@ const PortfolioMedia = ({ activeStep }) => {
             height: '50vh'
           }}>
             <Typography color="black">Additional Images</Typography>
-            {images.length > 0 ? (
-              <Swiper spaceBetween={10} slidesPerView={3} pagination={{ clickable: true }} breakpoints={{
-                1024: { slidesPerView: 3 },
-                600: { slidesPerView: 2 },
-                0: { slidesPerView: 1 },
-              }}>
-                {images.map((img, index) => (
-                  <SwiperSlide key={index}>
-                    <Card sx={{ width: 150, height: 150, margin: 1 }}>
-                      <Avatar src={img} sx={{ width: 100, height: 100 }} />
-                    </Card>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            ) : (
-              <IconButton color="primary" component="label">
-                <AddCircle />
-                <input type="file" hidden accept="image/*" multiple onChange={handleImageUpload} />
-              </IconButton>
-            )}
+            <Box display="flex" flexDirection="column" alignItems="center">
+              {images.length > 0 ? (
+                <Card sx={{ width: 100, height: 100, position: 'relative', marginBottom: 1 }}>
+                  <CardMedia
+                    component="img"
+                    image={images[images.length - 1]} // Show the last uploaded image
+                    alt="Uploaded Image"
+                    sx={{ objectFit: 'cover', height: '100%', width: '100%' }}
+                  />
+                  <Typography variant="caption" sx={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)' }}>
+                    {images.length}/5
+                  </Typography>
+                </Card>
+              ) : (
+                <IconButton color="primary" component="label">
+                  <AddCircle />
+                  <input type="file" hidden accept="image/*" multiple onChange={handleImageUpload} />
+                </IconButton>
+              )}
+            </Box>
           </Box>
 
           {/* PDF Column */}
-          
           <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
             border: '4px dotted black',
             margin: '4px',
@@ -136,11 +132,9 @@ const PortfolioMedia = ({ activeStep }) => {
           }}>
             <Typography color="black">PDF Portfolio</Typography>
             {pdf ? (
-              <Box>
-                <Document file={pdf}>
-                  <Page pageNumber={1} />
-                </Document>
-                <Typography variant="subtitle1">{cookies['portfolioPdf']?.split('/').pop()}</Typography>
+              <Box display="flex" alignItems="center">
+                <PictureAsPdf sx={{ fontSize: 50, color: 'red' }} />
+                <Typography variant="subtitle1" sx={{ marginLeft: 1 }}>{cookies['portfolioPdf']?.split('/').pop()}</Typography>
                 <IconButton color="error" onClick={handleRemovePdf}>
                   <Close />
                 </IconButton>
@@ -154,7 +148,6 @@ const PortfolioMedia = ({ activeStep }) => {
           </Box>
 
           {/* Video Column */}
-          
           <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
             border: '4px dotted black',
             margin: '4px',
