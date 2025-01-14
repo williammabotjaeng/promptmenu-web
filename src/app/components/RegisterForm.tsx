@@ -206,7 +206,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               height: '9.5vh'
             }}>
               <RegionDropdown
-                country={nationality} 
+                country={nationality}
                 value={region}
                 onChange={handleRegionChange}
                 className="custom-input country-dropdown"
@@ -297,12 +297,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             />
           </Grid>
 
-          {/* First Name */}
+          {/* Contact Person */}
           <Grid item xs={12} sm={6}>
             <TextField
-              label={<Typography variant="body1">First Name</Typography>}
-              name="firstname"
-              placeholder="Enter your first name"
+              label={<Typography variant="body1">Contact Person</Typography>}
+              name="contact_person"
+              placeholder="Enter the contact person's name"
               required
               fullWidth
               onChange={handleChange}
@@ -311,16 +311,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             />
           </Grid>
 
-          {/* Last Name */}
+          {/* Job Title */}
           <Grid item xs={12} sm={6}>
-            <Typography sx={{
-              fontSize: '12px',
-              color: 'transparent',
-            }}>Last Name</Typography>
             <TextField
-              label={<Typography variant="body1">Last Name</Typography>}
-              name="lastname"
-              placeholder="Enter your last name"
+              label={<Typography variant="body1">Job Title</Typography>}
+              name="job_title"
+              placeholder="Enter the job title"
               required
               fullWidth
               onChange={handleChange}
