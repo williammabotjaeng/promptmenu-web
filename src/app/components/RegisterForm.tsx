@@ -220,33 +220,37 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   };
 
   const handleVatPdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-          if (event.target.files && event.target.files[0]) {
-              const file = event.target.files[0];
-              const objectUrl = URL.createObjectURL(file);
-              setVatPdf(objectUrl);
-              setCookie('vatPdf', objectUrl);
-              setSnackbarMessage('PDF Uploaded Successfully');
-              setSnackbarSeverity('success');
-              setSnackbarOpen(true);
-          }
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const objectUrl = URL.createObjectURL(file);
+      setVatPdf(objectUrl);
+      setCookie('vatPdf', objectUrl);
+      setSnackbarMessage('PDF Uploaded Successfully');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    }
   };
 
   const handleTradePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
-        const file = event.target.files[0];
-        const objectUrl = URL.createObjectURL(file);
-        setTradePdf(objectUrl);
-        setCookie('tradePdf', objectUrl);
-        setSnackbarMessage('PDF Uploaded Successfully');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
+      const file = event.target.files[0];
+      const objectUrl = URL.createObjectURL(file);
+      setTradePdf(objectUrl);
+      setCookie('tradePdf', objectUrl);
+      setSnackbarMessage('PDF Uploaded Successfully');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
     }
-};
+  };
 
   const handleRemoveTradePdf = () => {
     setTradePdf(null);
     setCookie('tradePdf', null);
   };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+};
 
   return (
     <Box className="container">
@@ -550,7 +554,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                   <Box display="flex" flexDirection={"column"} alignItems="center">
                     <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
                     <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                    <IconButton color="error" onClick={() => handleRemovePdf('tradeLicense')}>
+                    <IconButton color="error" onClick={() => handleRemoveTradePdf()}>
                       <Close />
                     </IconButton>
                   </Box>
@@ -674,14 +678,15 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         </Grid>
       </form>
 
-      {/* Snackbar for feedback */}
+      {/* Snackbar for notifications */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
+        onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity={snackbarSeverity} sx={{ width: '100%' }}>
-          <Typography variant="body1">{snackbarMessage}</Typography>
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+          {snackbarMessage}
         </Alert>
       </Snackbar>
     </Box>
