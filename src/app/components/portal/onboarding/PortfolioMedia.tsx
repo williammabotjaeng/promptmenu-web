@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Box, Avatar, IconButton, Snackbar, Alert, Button, Typography } from '@mui/material';
 import { AddAPhoto, AddCircle, Close, Delete, PictureAsPdf } from '@mui/icons-material';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { TalentProfileData } from '@/types/TalentProfileData';
 import { useStore } from 'zustand';
@@ -126,7 +127,8 @@ const PortfolioMedia = ({ activeStep }) => {
                             <Card sx={{
                                 height: '80%',
                                 justifyContent: 'center',
-                                alignItems: 'center'
+                                alignItems: 'center',
+                                backgroundColor: 'transparent'
                             }}>
                                 {images.length > 0 ? (
                                     <img src={images[currentImageIndex]} style={{ width: '60%', height: '100%', objectFit: 'cover' }} />
@@ -164,16 +166,19 @@ const PortfolioMedia = ({ activeStep }) => {
                     }}>
                         <Typography color="black">PDF Portfolio</Typography>
                         {pdf ? (
-                            <Box display="flex" alignItems="center">
-                                <PictureAsPdf sx={{ fontSize: 50, color: 'red' }} />
-                                <Typography variant="subtitle1" sx={{ marginLeft: 1 }}>{cookies['portfolioPdf']?.split('/').pop()}</Typography>
+                            <Box display="flex" flexDirection={"column"} alignItems="center">
+                                <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                                <Typography variant="subtitle1" sx={{ marginLeft: 1, color: 'black' }}>{'File Uploaded'}</Typography>
                                 <IconButton color="error" onClick={handleRemovePdf}>
                                     <Close />
                                 </IconButton>
                             </Box>
                         ) : (
                             <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                                <AddAPhoto />
+                                <PictureAsPdfIcon sx={{
+                                    height: '30vh',
+                                    fontSize: '80px'
+                                }} />
                                 <input type="file" hidden accept="application/pdf" onChange={handlePdfUpload} />
                             </IconButton>
                         )}
