@@ -393,7 +393,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           </Grid>
 
           {/* WhatsApp Number Field (conditional) */}
-          <Grid item xs={12} sm={6} style={{ display: useWhatsApp ? 'block' : 'none' }}>
+          <Grid item xs={12} sm={6} style={{ display: !useWhatsApp ? 'block' : 'none' }}>
             <Typography variant="body1">WhatsApp Number</Typography>
             <PhoneInput
               country={'ae'}
