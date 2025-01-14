@@ -60,7 +60,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     job_title: '',
     contact_person: '',
     state_province_region: '',
-    company_name: '',
+    company_name: string;
+
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -119,7 +120,17 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         String(hasAccepted),
         isInfluencer,
         formData.whatsapp_number,
-
+        formData.preferred_payment_methods, 
+        formData.vat_certificate, 
+        formData.trade_license, 
+        formData.custom_payment_terms, 
+        formData.accept_std_payment_terms, 
+        formData.accounts_email, 
+        formData.mobile_number, 
+        formData.job_title, 
+        formData.contact_person, 
+        formData.state_province_region, 
+        formData.company_name
       );
 
       setCurrentUser(formData.username, '');

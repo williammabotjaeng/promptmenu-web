@@ -38,7 +38,19 @@ interface AuthContextType {
     nationality: string,
     has_accepted: string,
     is_influencer: string,
-    whatsapp_number: string) => Promise<void>;
+    whatsapp_number: string, 
+    preferred_payment_methods: string, 
+    vat_certificate: string, 
+    trade_license: string, 
+    custom_payment_terms: string, 
+    accept_std_payment_terms: string, 
+    accounts_email: string, 
+    mobile_number: string, 
+    job_title: string, 
+    contact_person: string, 
+    state_province_region: string, 
+    company_name: string
+  ) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
