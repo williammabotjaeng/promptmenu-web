@@ -40,8 +40,9 @@ const TalentOnboarding: React.FC = () => {
     { title: 'Step 4: Physical Attributes', content: 'Provide your physical attributes.' },
     { title: 'Step 5: Identification and Credentials', content: 'Upload your government ID and banking details.' },
     { title: 'Step 6: Social Media & Online', content: '' },
-    { title: 'Step 7: Review', content: 'Review your information.' },
-    { title: 'Step 8: Submit', content: 'Submit your information.' },
+    { title: 'Step 7: Portfolio & Media', content: 'Upload PDF Portfolio, Images and Video' },
+    { title: 'Step 8: Review', content: 'Review your information.' },
+    { title: 'Step 9: Submit', content: 'Submit your information.' },
   ];
 
 
