@@ -10,7 +10,7 @@ const PaymentMethods = ({ activeStep }) => {
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     
-    const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethods?.payment_methods || "creditCard");
+    const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethods?.payment_method || "creditCard");
     const [paymentDetails, setPaymentDetails] = useState({
         ccNumber: paymentMethod?.ccNumber || '',
         ccFirstName: paymentMethod?.ccFirstName || '',

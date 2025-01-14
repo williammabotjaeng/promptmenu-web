@@ -49,8 +49,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     nationality: '',
     has_accepted: hasAccepted,
     is_influencer: isInfluencer,
-    whatsapp_number: ''
-
+    whatsapp_number: '',
+    preferred_payment_methods: '',
+    vat_certificate: '',
+    trade_license: '',
+    custom_payment_terms: '',
+    accept_std_payment_terms: '',
+    accounts_email: '',
+    mobile_number: '',
+    job_title: '',
+    contact_person: '',
+    state_province_region: '',
+    company_name: '',
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
