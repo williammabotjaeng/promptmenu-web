@@ -13,7 +13,7 @@ const PortfolioMedia = ({ activeStep }) => {
   const [images, setImages] = useState<string[]>([]);
   const [pdf, setPdf] = useState<string | null>(null);
   const [video, setVideo] = useState<string | null>(null);
-  const [cookies, setCookie] = useCookies(['portfolioPdf', 'portfolioVideo', 'portfolioImages']);
+  const [cookies, setCookie] = useCookies(['portfolioBlobUrl', 'portfolioVideo', 'portfolioImages']);
   
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -35,7 +35,7 @@ const PortfolioMedia = ({ activeStep }) => {
       const file = event.target.files[0];
       const objectUrl = URL.createObjectURL(file);
       setPdf(objectUrl);
-      setCookie('portfolioPdf', objectUrl);
+      setCookie('portfolioBlobUrl', objectUrl);
       setSnackbarMessage('PDF Uploaded Successfully');
       setSnackbarOpen(true);
     }
@@ -70,7 +70,7 @@ const PortfolioMedia = ({ activeStep }) => {
 
   return (
     <>
-      {activeStep === 2 && (
+      {activeStep === 6 && (
         <Box display="flex" flexDirection="column" alignItems="center">
           <Box display="flex" flexDirection="column" alignItems="center">
             {images.map((img, index) => (
