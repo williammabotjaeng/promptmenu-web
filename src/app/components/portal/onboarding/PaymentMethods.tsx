@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid, Button, Snackbar } from '@mui/material';
-import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
 import { useStore } from 'zustand';
 
-const PaymentMethod = ({ activeStep }) => {
-    const { paymentMethod, setPaymentMethod } = useStore(useClientOnboardingStore);
+const PaymentMethods = ({ activeStep }) => {
+    const { paymentMethods, setPaymentMethods } = useStore(useTalentOnboardingStore);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     
-    const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethod?.payment_method || "creditCard");
+    const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethods?.payment_methods || "creditCard");
     const [paymentDetails, setPaymentDetails] = useState({
         ccNumber: paymentMethod?.ccNumber || '',
         ccFirstName: paymentMethod?.ccFirstName || '',
@@ -22,19 +22,19 @@ const PaymentMethod = ({ activeStep }) => {
     });
 
     useEffect(() => {
-        if (paymentMethod) {
-            setPaymentMethodTab(paymentMethod.payment_method);
+        if (paymentMethods) {
+            setPaymentMethodTab(paymentMethods.payment_method);
             setPaymentDetails({
-                ccNumber: paymentMethod.ccNumber || '',
-                ccFirstName: paymentMethod.ccFirstName || '',
-                ccLastName: paymentMethod.ccLastName || '',
-                ccExpiry: paymentMethod.ccExpiry || '',
-                ccCVC: paymentMethod.ccCVC || '',
-                paypalEmail: paymentMethod.paypalEmail || '',
-                stripeDetails: paymentMethod.stripeDetails || ''
+                ccNumber: paymentMethods.ccNumber || '',
+                ccFirstName: paymentMethods.ccFirstName || '',
+                ccLastName: paymentMethods.ccLastName || '',
+                ccExpiry: paymentMethods.ccExpiry || '',
+                ccCVC: paymentMethods.ccCVC || '',
+                paypalEmail: paymentMethods.paypalEmail || '',
+                stripeDetails: paymentMethods.stripeDetails || ''
             });
         }
-    }, [paymentMethod]);
+    }, [paymentMethods]);
 
     const handlePaymentMethodChange = (event) => {
         setPaymentMethodTab(event.target.value); 
@@ -49,7 +49,7 @@ const PaymentMethod = ({ activeStep }) => {
     };
 
     const handleUpdatePayments = () => {
-        setPaymentMethod({ payment_method: paymentMethodTab, ...paymentDetails });
+        setPaymentMethods({ payment_method: paymentMethodTab, ...paymentDetails });
         setSnackbarOpen(true);
     };
 
@@ -174,4 +174,4 @@ const PaymentMethod = ({ activeStep }) => {
     );
 };
 
-export default PaymentMethod;
+export default PaymentMethods;
