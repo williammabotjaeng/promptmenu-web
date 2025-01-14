@@ -276,6 +276,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Telephone Number Field */}
           <Grid item xs={12} sm={6}>
+          <Typography variant="body1">Telephone Number</Typography>
             <PhoneInput
               country={'ae'}
               onChange={handlePhoneChange}
@@ -294,12 +295,19 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 borderRadius: '4px',
                 color: 'black'
               }}
+              inputProps={{
+                name: 'phone',
+                required: true,
+                autoFocus: true
+              }}
               placeholder="Enter your phone number"
+              inputClass="custom-phone-input"
             />
           </Grid>
 
           {/* Email Field */}
           <Grid item xs={12} sm={6}>
+          <Typography color='black'>Email</Typography>
             <TextField
               label={<Typography variant="body1">Email</Typography>}
               type="email"
@@ -343,6 +351,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Mobile Number */}
           <Grid item xs={12} sm={6}>
+          <Typography variant="body1">Mobile Number</Typography>
             <PhoneInput
               country={'ae'} 
               value={mobileNumber}
@@ -371,6 +380,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* WhatsApp Number Field (conditional) */}
           <Grid item xs={12} sm={6} style={{ display: useWhatsApp ? 'block' : 'none' }}>
+          <Typography variant="body1">WhatsApp Number</Typography>
             <PhoneInput
               country={'ae'} 
               value={whatsappNumber}

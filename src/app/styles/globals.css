@@ -117,3 +117,7 @@ button:hover {
   width: '100vw' !important;
 }
 
+.custom-phone-input::placeholder {
+  color: gray !important;
+  opacity: 1 !important;
+}
