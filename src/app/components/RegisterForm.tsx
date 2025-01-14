@@ -7,7 +7,7 @@ import { useAuth } from '@/providers/auth-providers';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { redirect } from 'next/navigation';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import useUserStore from "@/state/use-user-store";
 import { useStore } from "zustand";
@@ -41,6 +41,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
+  const [customPaymentTerms, setCustomPaymentTerms] = useState('');
+  const [preferredPaymentMethods, setPreferredPaymentMethods] = useState({
+    directTransfer: false,
+    creditCard: false,
+    cash: false,
+  });
 
   const [formData, setFormData] = useState({
     username: '',
@@ -83,6 +89,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     if (name) {
       setPhoneNumber(value);
     }
+  };
+
+  const handlePreferredPaymentMethodChange = (event) => {
+    const { name, checked } = event.target;
+    setPreferredPaymentMethods((prev) => ({
+      ...prev,
+      [name]: checked,
+    }));
   };
 
   const handleMobileChange = (e) => {
@@ -276,7 +290,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Telephone Number Field */}
           <Grid item xs={12} sm={6}>
-          <Typography variant="body1">Telephone Number</Typography>
+            <Typography variant="body1">Telephone Number</Typography>
             <PhoneInput
               country={'ae'}
               onChange={handlePhoneChange}
@@ -307,7 +321,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Email Field */}
           <Grid item xs={12} sm={6}>
-          <Typography color='black'>Email</Typography>
+            <Typography color='black'>Email</Typography>
             <TextField
               label={<Typography variant="body1">Email</Typography>}
               type="email"
@@ -351,9 +365,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Mobile Number */}
           <Grid item xs={12} sm={6}>
-          <Typography variant="body1">Mobile Number</Typography>
+            <Typography variant="body1">Mobile Number</Typography>
             <PhoneInput
-              country={'ae'} 
+              country={'ae'}
               value={mobileNumber}
               onChange={handleMobileChange}
               inputStyle={{
@@ -380,9 +394,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* WhatsApp Number Field (conditional) */}
           <Grid item xs={12} sm={6} style={{ display: useWhatsApp ? 'block' : 'none' }}>
-          <Typography variant="body1">WhatsApp Number</Typography>
+            <Typography variant="body1">WhatsApp Number</Typography>
             <PhoneInput
-              country={'ae'} 
+              country={'ae'}
               value={whatsappNumber}
               onChange={handleWhatsAppNumberChange}
               inputStyle={{
@@ -401,6 +415,67 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               }}
               placeholder="Enter your WhatsApp number"
             />
+          </Grid>
+
+          <Grid container spacing={2}>
+            {/* Terms of Payment */}
+            <Grid item xs={12}>
+              <Typography variant="body1">
+                Terms of payment are 50% advance, 50% on project completion.
+              </Typography>
+            </Grid>
+
+            {/* Custom Payment Terms Field */}
+            <Grid item xs={12}>
+              <TextField
+                label="If you have your own payment terms, please specify (subject to approval)"
+                placeholder="Enter your payment terms"
+                fullWidth
+                name="custom_payment_terms"
+                onChange={handleChange}
+                variant="outlined"
+                multiline
+                rows={4}
+              />
+            </Grid>
+
+            {/* Preferred Payment Method */}
+            {/* Preferred Payment Method */}
+            <Grid item xs={12}>
+              <FormControl component="fieldset">
+                <Typography variant="body1">Preferred Payment Method</Typography>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={preferredPaymentMethods.directTransfer}
+                      onChange={handlePreferredPaymentMethodChange}
+                      name="directTransfer"
+                    />
+                  }
+                  label="Direct Transfer"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={preferredPaymentMethods.creditCard}
+                      onChange={handlePreferredPaymentMethodChange}
+                      name="creditCard"
+                    />
+                  }
+                  label="Credit Card"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={preferredPaymentMethods.cash}
+                      onChange={handlePreferredPaymentMethodChange}
+                      name="cash"
+                    />
+                  }
+                  label="Cash"
+                />
+              </FormControl>
+            </Grid>
           </Grid>
 
           {/* Password */}
