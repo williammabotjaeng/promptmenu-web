@@ -256,7 +256,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           {/* Telephone Number Field */}
           <Grid item xs={12} sm={6}>
             <PhoneInput
-              country={'us'} 
+              country={'ae'} 
               onChange={handlePhoneChange} 
               value={phoneNumber}
               inputStyle={{
