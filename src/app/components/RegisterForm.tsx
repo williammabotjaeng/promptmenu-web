@@ -7,7 +7,8 @@ import { useAuth } from '@/providers/auth-providers';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { redirect } from 'next/navigation';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@mui/material';
+import Typography from '@mui/material/Typography';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import useUserStore from "@/state/use-user-store";
 import { useStore } from "zustand";
@@ -16,6 +17,8 @@ import moment from 'moment';
 import '@/styles/register-form.css';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import PictureAsPdf from '@mui/icons-material/PictureAsPdf';
+import { Close } from '@mui/icons-material';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -37,7 +40,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [nationality, setNationality] = useState('');
   const [region, setRegion] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
-  const [cookies, setCookie] = useCookies(['nationality']);
+  const [cookies, setCookie] = useCookies(['nationality', 'vatPdf', 'tradePdf']);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
@@ -47,6 +50,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     creditCard: false,
     cash: false,
   });
+  const [vatPdf, setVatPdf] = useState('');
+  const [tradePdf, setTradePdf] = useState('');
 
   const [formData, setFormData] = useState({
     username: '',
@@ -207,6 +212,40 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
+  };
+
+  const handleRemoveVatPdf = () => {
+    setVatPdf(null);
+    setCookie('vatPdf', null);
+  };
+
+  const handleVatPdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+          if (event.target.files && event.target.files[0]) {
+              const file = event.target.files[0];
+              const objectUrl = URL.createObjectURL(file);
+              setVatPdf(objectUrl);
+              setCookie('vatPdf', objectUrl);
+              setSnackbarMessage('PDF Uploaded Successfully');
+              setSnackbarSeverity('success');
+              setSnackbarOpen(true);
+          }
+  };
+
+  const handleTradePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        const objectUrl = URL.createObjectURL(file);
+        setTradePdf(objectUrl);
+        setCookie('tradePdf', objectUrl);
+        setSnackbarMessage('PDF Uploaded Successfully');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+    }
+};
+
+  const handleRemoveTradePdf = () => {
+    setTradePdf(null);
+    setCookie('tradePdf', null);
   };
 
   return (
@@ -493,6 +532,68 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                   label="Cash"
                 />
               </FormControl>
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={2}>
+            {/* Trade License Column */}
+            <Grid item xs={6}>
+              <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
+                border: '4px dotted black',
+                margin: '4px',
+                borderRadius: '12px',
+                padding: '4px',
+                height: '50vh'
+              }}>
+                <Typography color="black">Trade License</Typography>
+                {tradePdf ? (
+                  <Box display="flex" flexDirection={"column"} alignItems="center">
+                    <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                    <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
+                    <IconButton color="error" onClick={() => handleRemovePdf('tradeLicense')}>
+                      <Close />
+                    </IconButton>
+                  </Box>
+                ) : (
+                  <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
+                    <PictureAsPdf sx={{
+                      height: '30vh',
+                      fontSize: '80px'
+                    }} />
+                    <input type="file" hidden accept="application/pdf" onChange={(e) => handleTradePdfUpload(e)} />
+                  </IconButton>
+                )}
+              </Box>
+            </Grid>
+
+            {/* VAT Certificate Column */}
+            <Grid item xs={6}>
+              <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
+                border: '4px dotted black',
+                margin: '4px',
+                borderRadius: '12px',
+                padding: '4px',
+                height: '50vh'
+              }}>
+                <Typography color="black">VAT Certificate</Typography>
+                {vatPdf ? (
+                  <Box display="flex" flexDirection={"column"} alignItems="center">
+                    <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                    <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
+                    <IconButton color="error" onClick={() => handleRemoveVatPdf()}>
+                      <Close />
+                    </IconButton>
+                  </Box>
+                ) : (
+                  <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
+                    <PictureAsPdf sx={{
+                      height: '30vh',
+                      fontSize: '80px'
+                    }} />
+                    <input type="file" hidden accept="application/pdf" onChange={(e) => handleVatPdfUpload(e)} />
+                  </IconButton>
+                )}
+              </Box>
             </Grid>
           </Grid>
 
