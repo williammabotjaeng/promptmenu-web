@@ -312,19 +312,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           whatsapp_number: company.whatsapp_number || '',
         });
 
-        if (paymentMethodJSON) {
-          setPaymentMethod({
-            payment_method: paymentMethodJSON.payment_method || '',
-            ccNumber: paymentMethodJSON?.ccNumber || '',
-            ccFirstName: paymentMethodJSON?.ccFirstName || '',
-            ccLastName: paymentMethodJSON?.ccLastName || '',
-            ccExpiry: paymentMethodJSON?.ccExpiry || '',
-            ccCVC: paymentMethodJSON?.ccCVC || '',
-            paypalEmail: paymentMethodJSON?.paypalEmail || '',
-            stripeDetails: paymentMethodJSON?.stripeDetails || '',
-          });
-        }
-
         setSocialMediaLinks({
           website: company?.website || '',
           social_media_links: {
@@ -346,6 +333,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           phone_number: talentProfile.phone_number || '',
           whatsapp_number: talentProfile.whatsapp_number || '',
         });
+
+        // Payment Methods
+        if (paymentMethodJSON) {
+          setPaymentMethods({
+            payment_method: paymentMethodJSON.payment_method || '',
+            ccNumber: paymentMethodJSON?.ccNumber || '',
+            ccFirstName: paymentMethodJSON?.ccFirstName || '',
+            ccLastName: paymentMethodJSON?.ccLastName || '',
+            ccExpiry: paymentMethodJSON?.ccExpiry || '',
+            ccCVC: paymentMethodJSON?.ccCVC || '',
+            paypalEmail: paymentMethodJSON?.paypalEmail || '',
+            stripeDetails: paymentMethodJSON?.stripeDetails || '',
+          });
+        }
 
         // Set physical attributes
         setPhysicalAttributes({

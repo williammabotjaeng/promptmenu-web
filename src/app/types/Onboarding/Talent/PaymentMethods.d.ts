@@ -1,4 +1,4 @@
-export interface PaymentMethod {
+export interface PaymentMethods {
     payment_method?: string | null;
     ccNumber?: string | null;
     ccFirstName?: string | null;

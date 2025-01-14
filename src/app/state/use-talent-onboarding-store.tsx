@@ -5,6 +5,7 @@ import { PersonalInfo } from '@/types/Onboarding/Talent/PersonalInfo';
 import { PhysicalAttributes } from '@/types/Onboarding/Talent/PhysicalAttributes';
 import { GovernmentID } from '@/types/Onboarding/Talent/GovernmentID';
 import { BankDetails } from '@/types/Onboarding/Talent/BankDetails';
+import { PaymentMethods } from '@/types/Onboarding/Talent/PaymentMethods';
 import { ProfileSocials } from '@/types/Onboarding/Talent/ProfileSocials';
 import { TalentProfileData } from '@/types/TalentProfileData';
 
@@ -15,10 +16,12 @@ interface TalentOnboardingState {
     bankDetails: BankDetails;
     profileSocials: ProfileSocials;
     talentData: TalentProfileData;
+    paymentMethods: PaymentMethods;
     setPersonalInfo: (data: PersonalInfo) => void;
     setPhysicalAttributes: (data: PhysicalAttributes) => void;
     setGovernmentID: (data: GovernmentID | null) => void;
     setBankDetails: (data: BankDetails) => void;
+    setPaymentMethods: (data: PaymentMethods) => void;
     setProfileSocials: (data: ProfileSocials) => void;
     setTalentData: (data: TalentProfileData) => void;
     clearOnboardingData: () => void;
@@ -37,6 +40,16 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         height: null,
         weight: null,
         ethnicity: null,
+    },
+    paymentMethods: {
+        payment_method: 'creditCard',
+        ccNumber: '',
+        ccFirstName: '',
+        ccLastName: '',
+        ccExpiry: '',
+        ccCVC: '',
+        paypalEmail: '',
+        stripeDetails: '',
     },
     governmentID: null,
     bankDetails: {
@@ -78,6 +91,7 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
     setPhysicalAttributes: (data) => set({ physicalAttributes: data }),
     setGovernmentID: (data) => set({ governmentID: data }),
     setBankDetails: (data) => set({ bankDetails: data }),
+    setPaymentMethods: (data) => set({ paymentMethods: data }),
     setProfileSocials: (data) => set({ profileSocials: data }),
     setTalentData: (data) => set({ talentData: data }),
     clearOnboardingData: () => set({
