@@ -14,6 +14,8 @@ import { useStore } from "zustand";
 import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import '@/styles/register-form.css';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -35,6 +37,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [nationality, setNationality] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
   const [cookies, setCookie] = useCookies(['nationality']);
+  const [phoneNumber, setPhoneNumber] = useState('');
 
   const [formData, setFormData] = useState({
     username: '',
@@ -46,7 +49,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     lastname: '',
     gender: 'male',
     phonenumber: '',
-    nationality: '',
+    nationality: phoneNumber,
     has_accepted: hasAccepted,
     is_influencer: isInfluencer,
     whatsapp_number: '',
@@ -60,7 +63,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     job_title: '',
     contact_person: '',
     state_province_region: '',
-    company_name: string;
+    company_name: ''
 
   });
 
@@ -70,6 +73,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const handleInfluencerChange = (event) => {
     setIsInfluencer(event.target.value);
+  };
+
+  const handlePhoneChange = (e) => {
+    const { name, value } = e.target || {};
+    if (name) {
+      setPhoneNumber(value);
+    }
   };
 
   const handleCountryChange = (val: React.SetStateAction<string>) => {
@@ -120,16 +130,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         String(hasAccepted),
         isInfluencer,
         formData.whatsapp_number,
-        formData.preferred_payment_methods, 
-        formData.vat_certificate, 
-        formData.trade_license, 
-        formData.custom_payment_terms, 
-        formData.accept_std_payment_terms, 
-        formData.accounts_email, 
-        formData.mobile_number, 
-        formData.job_title, 
-        formData.contact_person, 
-        formData.state_province_region, 
+        formData.preferred_payment_methods,
+        formData.vat_certificate,
+        formData.trade_license,
+        formData.custom_payment_terms,
+        formData.accept_std_payment_terms,
+        formData.accounts_email,
+        formData.mobile_number,
+        formData.job_title,
+        formData.contact_person,
+        formData.state_province_region,
         formData.company_name
       );
 
@@ -165,7 +175,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   return (
     <Box className="container">
-      <Typography variant="h1" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Register
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -184,27 +194,19 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             />
           </Grid>
 
-          {/* Gender Field */}
+          {/* State/Province/Region Field */}
           <Grid item xs={12} sm={3}>
-            <FormControl fullWidth required sx={inputStyles}>
-              <InputLabel id="gender-label">
-                <Typography variant="body1">Gender</Typography>
-              </InputLabel>
-              <Select
-                labelId="gender-label"
-                id="gender"
-                name="gender"
-                onChange={handleChange}
-                className="custom-input"
-              >
-                <MenuItem value="male">
-                  <Typography variant="body1">Male</Typography>
-                </MenuItem>
-                <MenuItem value="female">
-                  <Typography variant="body1">Female</Typography>
-                </MenuItem>
-              </Select>
-            </FormControl>
+            <TextField
+              fullWidth
+              required
+              id="state_province_region"
+              name="state_province_region"
+              label={<Typography variant="body1">State/Province/Region</Typography>}
+              onChange={handleChange}
+              className="custom-input"
+              variant="outlined"
+              sx={inputStyles}
+            />
           </Grid>
 
           {/* Nationality Field */}
@@ -221,6 +223,57 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 />
               </div>
             </FormControl>
+          </Grid>
+
+          {/* Address Field */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Address</Typography>}
+              name="address"
+              placeholder="Enter your address"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+              sx={inputStyles}
+            />
+          </Grid>
+
+          {/* Company Name Field */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">Company Name</Typography>}
+              name="company_name"
+              placeholder="Enter your company name"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+              sx={inputStyles}
+            />
+          </Grid>
+
+          {/* Telephone Number Field */}
+          <Grid item xs={12} sm={6}>
+            <PhoneInput
+              country={'us'} 
+              onChange={handlePhoneChange} 
+              value={phoneNumber}
+              inputStyle={{
+                width: '100%',
+                height: '56px', 
+                borderRadius: '4px',
+                border: '1px solid #ccc',
+                padding: '10px',
+              }}
+              buttonStyle={{
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+              }}
+              placeholder="Enter your phone number"
+              required
+              className="custom-input"
+            />
           </Grid>
 
           {/* Email Field */}
@@ -254,7 +307,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Last Name */}
           <Grid item xs={12} sm={6}>
-          <Typography sx={{
+            <Typography sx={{
               fontSize: '12px',
               color: 'transparent',
             }}>Last Name</Typography>
@@ -289,10 +342,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               className="custom-input"
               sx={{
                 '& input': {
-                  color: '#999', 
+                  color: '#999',
                 },
                 '&::placeholder': {
-                  color: '#999', 
+                  color: '#999',
                 },
               }}
             />
@@ -322,23 +375,23 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           </Grid>
 
           {/* WhatsApp Number Field (conditional) */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label={<Typography variant="body1">WhatsApp Number</Typography>}
-                name="whatsapp_number"
-                placeholder="Enter your WhatsApp number"
-                required
-                fullWidth
-                onChange={handleChange}
-                inputProps={{
-                  pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
-                }}
-                sx={{
-                  display: useWhatsApp ? 'none' : 'inline-block'
-                }}
-                className="custom-input"
-              />
-            </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              label={<Typography variant="body1">WhatsApp Number</Typography>}
+              name="whatsapp_number"
+              placeholder="Enter your WhatsApp number"
+              required
+              fullWidth
+              onChange={handleChange}
+              inputProps={{
+                pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
+              }}
+              sx={{
+                display: useWhatsApp ? 'none' : 'inline-block'
+              }}
+              className="custom-input"
+            />
+          </Grid>
 
           {/* Password */}
           <Grid item xs={12} sm={6}>
