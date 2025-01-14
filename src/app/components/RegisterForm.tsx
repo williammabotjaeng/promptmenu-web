@@ -436,6 +436,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 variant="outlined"
                 multiline
                 rows={4}
+                sx={{
+                  border: '1px solid #977342',
+                  borderRadius: '12px'
+                }}
+                color="warning"
               />
             </Grid>
 
@@ -447,6 +452,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      sx={{
+                        color: 'white'
+                      }}
+                      color="success"
                       checked={preferredPaymentMethods.directTransfer}
                       onChange={handlePreferredPaymentMethodChange}
                       name="directTransfer"
@@ -457,6 +466,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      sx={{
+                        color: 'white'
+                      }}
+                      color="success"
                       checked={preferredPaymentMethods.creditCard}
                       onChange={handlePreferredPaymentMethodChange}
                       name="creditCard"
@@ -467,6 +480,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 <FormControlLabel
                   control={
                     <Checkbox
+                      sx={{
+                        color: 'white'
+                      }}
+                      color="success"
                       checked={preferredPaymentMethods.cash}
                       onChange={handlePreferredPaymentMethodChange}
                       name="cash"
