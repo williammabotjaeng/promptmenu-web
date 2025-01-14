@@ -171,8 +171,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Set physical attributes
         setPhysicalAttributes({
-          height: talentProfile.height || '',
-          weight: talentProfile.weight || '',
+          height: String(talentProfile.height) || '',
+          weight: String(talentProfile.weight) || '',
           ethnicity: talentProfile.ethnicity || '',
         });
 

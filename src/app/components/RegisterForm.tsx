@@ -301,7 +301,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           </Grid>
 
           {/* WhatsApp Number Field (conditional) */}
-          {!useWhatsApp && (
             <Grid item xs={12} sm={6}>
               <TextField
                 label={<Typography variant="body1">WhatsApp Number</Typography>}
@@ -313,10 +312,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 inputProps={{
                   pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
                 }}
+                sx={{
+                  display: useWhatsApp ? 'none' : 'inline-block'
+                }}
                 className="custom-input"
               />
             </Grid>
-          )}
 
           {/* Password */}
           <Grid item xs={12} sm={6}>
