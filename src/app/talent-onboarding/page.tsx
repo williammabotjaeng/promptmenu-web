@@ -26,7 +26,9 @@ const TalentOnboarding: React.FC = () => {
   const [cookies] = useCookies([
     'headshotBlobUrl',
     'username',
-    'access'
+    'access',
+    'governmentIDUrl',
+    'portfolioBlobUrl'
   ]);
 
   const accessToken = cookies?.access;
@@ -74,7 +76,7 @@ const TalentOnboarding: React.FC = () => {
       if (response.status === 201) {
         console.log('File metadata saved:', response.data);
       } else {
-        console.error('Failed to save file metadata:', response.statusText);
+        console.error('Failed to save file metadata:', response);
       }
     } catch (error) {
       console.error('Error saving file metadata:', error);
@@ -82,7 +84,7 @@ const TalentOnboarding: React.FC = () => {
   };
 
   const uploadToS3 = async (blob: any, fileName: string) => {
-    
+
     const fileType = blob.type;
     try {
       console.log("Blob s3:", blob);
@@ -111,6 +113,49 @@ const TalentOnboarding: React.FC = () => {
       }
     } catch (error) {
       console.error('Error during upload:', error);
+    }
+  };
+  const uploadPortfolio = async () => {
+    const portfolioBlobUrl = cookies.portfolioBlobUrl;
+
+    if (portfolioBlobUrl) {
+      try {
+        const response = await fetch(portfolioBlobUrl);
+        const blob = await response.blob();
+
+        const fileName = `portfolio_${cookies['username']}_${Date.now()}.pdf`; 
+
+        console.log("Blob:", blob);
+        console.log("Filename:", fileName);
+
+        await uploadToS3(blob, fileName);
+      } catch (error) {
+        console.error('Error uploading portfolio:', error);
+      }
+    } else {
+      console.error('No portfolio blob URL found in cookies.');
+    }
+  };
+
+  const uploadID = async () => {
+    const idBlobUrl = cookies.governmentIDUrl;
+
+    if (idBlobUrl) {
+      try {
+        const response = await fetch(idBlobUrl);
+        const blob = await response.blob();
+
+        const fileName = `id_${cookies['username']}_${Date.now()}.png`; 
+
+        console.log("Blob:", blob);
+        console.log("Filename:", fileName);
+
+        await uploadToS3(blob, fileName);
+      } catch (error) {
+        console.error('Error uploading ID:', error);
+      }
+    } else {
+      console.error('No ID blob URL found in cookies.');
     }
   };
 
