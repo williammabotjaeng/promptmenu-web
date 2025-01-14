@@ -123,6 +123,16 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
                 linkedin: null,
             },
         },
+        paymentMethods: {
+            payment_method: 'creditCard',
+            ccNumber: '',
+            ccFirstName: '',
+            ccLastName: '',
+            ccExpiry: '',
+            ccCVC: '',
+            paypalEmail: '',
+            stripeDetails: '',
+        },
         talentData: {
             user: null,
             headshot: null,
