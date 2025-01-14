@@ -123,10 +123,14 @@ const PortfolioMedia = ({ activeStep }) => {
                     }}>
                         <Typography color="black">Additional Images</Typography>
                         <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-                            <Card>
-                                {images.length > 0 && (
+                            <Card sx={{
+                                height: '80%',
+                                justifyContent: 'center',
+                                alignItems: 'center'
+                            }}>
+                                {images.length > 0 ? (
                                     <img src={images[currentImageIndex]} style={{ width: '60%', height: '100%', objectFit: 'cover' }} />
-                                )}
+                                ) : <Typography sx={{ marginTop: '60px' }}>No Images uploaded</Typography>}
                             </Card>
                             <IconButton onClick={prevImage} sx={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}>
                                 <AddCircle />
