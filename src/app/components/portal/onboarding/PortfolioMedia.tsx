@@ -194,9 +194,12 @@ const PortfolioMedia = ({ activeStep }) => {
                     }}>
                         <Typography color="black">Promo Video</Typography>
                         {video ? (
-                            <Box>
-                                <ReactPlayer url={video} controls width="100%" height="auto" />
-                                <Typography variant="subtitle1">{cookies['portfolioVideo']?.split('/').pop()}</Typography>
+                            <Box sx={{
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderRadius: '12px'
+                            }}>
+                                <ReactPlayer url={video} controls width="100%" height="80%" />
                                 <IconButton color="error" onClick={handleRemoveVideo}>
                                     <Close />
                                 </IconButton>

@@ -70,10 +70,7 @@ const LoginForm: React.FC = () => {
         setSnackbarOpen(true);
         
         setTimeout(() => {
-          
-          console.log("1. ", onboarding_presented);
-          console.log("2. ", profile_progress);
-          console.log("3. ", profile_completed);
+        
 
           if (useUserDataStore?.getState()?.onboarding_presented && useUserDataStore?.getState()?.profile_progress > 0.6) {
             console.log("Routing option 1");
@@ -81,7 +78,7 @@ const LoginForm: React.FC = () => {
             router.push(redirectPath);
           } else if (useUserDataStore?.getState()?.profile_progress < 0.6 && !useUserDataStore?.getState()?.profile_completed) {
             console.log("Routing option 2");
-            const onboardingPath = useUserDataStore?.getState()?.user_role === 'client' ? '/client-onboarding' : '/talent-onboarding';
+            const onboardingPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/talent-onboarding';
             console.log("Redirecting to: ", onboardingPath, "with user role", useUserDataStore?.getState()?.user_role); 
             router.push(onboardingPath);
           } else {
