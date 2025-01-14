@@ -36,6 +36,15 @@ const PortfolioMedia = ({ activeStep }) => {
         }
     };
 
+    const handleRemoveImage = () => {
+        const updatedImages = images.filter((_, i) => i !== currentImageIndex);
+        setImages(updatedImages);
+        setCookie('portfolioImages', updatedImages);
+        setSnackbarMessage('Image Deleted Successfully');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+      };
+
     const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
@@ -133,9 +142,10 @@ const PortfolioMedia = ({ activeStep }) => {
                                     <AddCircle />
                                     <input type="file" hidden accept="image/*" multiple onChange={handleImageUpload} />
                                 </IconButton>
-                                <IconButton onClick={prevImage} sx={{ position: 'relative', left: 0, top: '50%', transform: 'translateY(-50%)', marginTop: '20px' }}>
+
+                                {images?.length > 0 && (<IconButton onClick={handleRemoveImage} sx={{ position: 'relative', left: 0, top: '50%', transform: 'translateY(-50%)', marginTop: '20px' }}>
                                     <Delete color="error" />
-                                </IconButton>
+                                </IconButton>)}
                             </Box>
                         </Box>
                     </Box>
