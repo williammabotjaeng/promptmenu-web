@@ -63,10 +63,22 @@ const TalentOnboarding: React.FC = () => {
 
   const handleSubmit = () => {
     uploadHeadshot();
+    uploadID();
     createTalentProfile();
   }
 
-  const saveFileMetadata = async (fileName: string, s3Url: string) => {
+  const fileTypeMapping = {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'application/pdf': 'pdf',
+    'image/gif': 'gif'
+  };
+
+  const getFileExtension = (blob) => {
+    return fileTypeMapping[blob.type] || 'bin';
+  };
+
+  const saveFileMetadata = async (fileName, s3Url) => {
     try {
       const response = await restCall('/portal/save-file-metadata/', 'POST', {
         file_name: fileName,
@@ -83,13 +95,9 @@ const TalentOnboarding: React.FC = () => {
     }
   };
 
-  const uploadToS3 = async (blob: any, fileName: string) => {
-
+  const uploadToS3 = async (blob, fileName) => {
     const fileType = blob.type;
     try {
-      console.log("Blob s3:", blob);
-      console.log("Filename:", fileName);
-      console.log("File Type:", fileType);
       const response = await restCall(`/portal/generate-presigned-url/?file_name=${fileName}&file_type=${fileType}`, 'GET', {}, accessToken);
 
       const { url } = response;
@@ -115,71 +123,31 @@ const TalentOnboarding: React.FC = () => {
       console.error('Error during upload:', error);
     }
   };
-  const uploadPortfolio = async () => {
-    const portfolioBlobUrl = cookies.portfolioBlobUrl;
 
-    if (portfolioBlobUrl) {
-      try {
-        const response = await fetch(portfolioBlobUrl);
-        const blob = await response.blob();
+  const uploadFiles = async (blobUrl, filePrefix) => {
+    if (!blobUrl) {
+      console.error(`No ${filePrefix} blob URL found in cookies.`);
+      return;
+    }
 
-        const fileName = `portfolio_${cookies['username']}_${Date.now()}.pdf`; 
+    try {
+      const response = await fetch(blobUrl);
+      const blob = await response.blob();
+      const fileExtension = getFileExtension(blob);
+      const fileName = `${filePrefix}_${cookies['username']}_${Date.now()}.${fileExtension}`;
 
-        console.log("Blob:", blob);
-        console.log("Filename:", fileName);
+      console.log("Blob:", blob);
+      console.log("Filename:", fileName);
 
-        await uploadToS3(blob, fileName);
-      } catch (error) {
-        console.error('Error uploading portfolio:', error);
-      }
-    } else {
-      console.error('No portfolio blob URL found in cookies.');
+      await uploadToS3(blob, fileName);
+    } catch (error) {
+      console.error(`Error uploading ${filePrefix}:`, error);
     }
   };
 
-  const uploadID = async () => {
-    const idBlobUrl = cookies.governmentIDUrl;
-
-    if (idBlobUrl) {
-      try {
-        const response = await fetch(idBlobUrl);
-        const blob = await response.blob();
-
-        const fileName = `id_${cookies['username']}_${Date.now()}.png`; 
-
-        console.log("Blob:", blob);
-        console.log("Filename:", fileName);
-
-        await uploadToS3(blob, fileName);
-      } catch (error) {
-        console.error('Error uploading ID:', error);
-      }
-    } else {
-      console.error('No ID blob URL found in cookies.');
-    }
-  };
-
-  const uploadHeadshot = async () => {
-    const headshotBlobUrl = cookies.headshotBlobUrl;
-
-    if (headshotBlobUrl) {
-      try {
-        const response = await fetch(headshotBlobUrl);
-        const blob = await response.blob();
-
-        const fileName = `headshot_${cookies['username']}_${Date.now()}.png`;
-
-        console.log("Blob:", blob);
-        console.log("Filename:", fileName);
-
-        await uploadToS3(blob, fileName);
-      } catch (error) {
-        console.error('Error uploading headshot:', error);
-      }
-    } else {
-      console.error('No headshot blob URL found in cookies.');
-    }
-  };
+  const uploadPortfolio = () => uploadFiles(cookies.portfolioBlobUrl, 'portfolio');
+  const uploadID = () => uploadFiles(cookies.governmentIDUrl, 'id');
+  const uploadHeadshot = () => uploadFiles(cookies.headshotBlobUrl, 'headshot');
 
   return (
     <Box className="onboarding-container" sx={{ width: '100vw' }}>
