@@ -13,7 +13,7 @@ const PortfolioMedia = ({ activeStep }) => {
   const [images, setImages] = useState<string[]>([]);
   const [pdf, setPdf] = useState<string | null>(null);
   const [video, setVideo] = useState<string | null>(null);
-  const [cookies, setCookie] = useCookies(['portfolioBlobUrl', 'portfolioVideo', 'portfolioImages']);
+  const [cookies, setCookie] = useCookies(['portfolioVideo', 'portfolioImages', 'portfolioPdf']);
   
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -26,6 +26,7 @@ const PortfolioMedia = ({ activeStep }) => {
       setImages(prev => [...prev, ...newImages]);
       setCookie('portfolioImages', [...images, ...newImages]);
       setSnackbarMessage('Images Uploaded Successfully');
+      setSnackbarSeverity('success');
       setSnackbarOpen(true);
     }
   };
@@ -35,8 +36,9 @@ const PortfolioMedia = ({ activeStep }) => {
       const file = event.target.files[0];
       const objectUrl = URL.createObjectURL(file);
       setPdf(objectUrl);
-      setCookie('portfolioBlobUrl', objectUrl);
+      setCookie('portfolioPdf', objectUrl);
       setSnackbarMessage('PDF Uploaded Successfully');
+      setSnackbarSeverity('success');
       setSnackbarOpen(true);
     }
   };
@@ -48,6 +50,7 @@ const PortfolioMedia = ({ activeStep }) => {
       setVideo(objectUrl);
       setCookie('portfolioVideo', objectUrl);
       setSnackbarMessage('Video Uploaded Successfully');
+      setSnackbarSeverity('success');
       setSnackbarOpen(true);
     }
   };

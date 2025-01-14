@@ -29,7 +29,9 @@ const TalentOnboarding: React.FC = () => {
     'username',
     'access',
     'governmentIDUrl',
-    'portfolioBlobUrl'
+    'portfolioVideo',
+    'portfolioImages',
+    'portfolioPdf'
   ]);
 
   const accessToken = cookies?.access;
@@ -64,7 +66,9 @@ const TalentOnboarding: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    uploadPortfolio();
+    uploadPortfolioPDF();
+    uploadPortfolioImages();
+    uploadPortfolioVideo();
     uploadHeadshot();
     uploadID();
     createTalentProfile();
@@ -74,7 +78,8 @@ const TalentOnboarding: React.FC = () => {
     'image/png': 'png',
     'image/jpeg': 'jpg',
     'application/pdf': 'pdf',
-    'image/gif': 'gif'
+    'image/gif': 'gif', 
+    'video/mp4': 'mp4', 
   };
 
   const getFileExtension = (blob) => {
@@ -127,30 +132,34 @@ const TalentOnboarding: React.FC = () => {
     }
   };
 
-  const uploadFiles = async (blobUrl, filePrefix) => {
-    if (!blobUrl) {
-      console.error(`No ${filePrefix} blob URL found in cookies.`);
+  const uploadFiles = async (blobUrls, filePrefix) => {
+    if (!blobUrls || blobUrls.length === 0) {
+      console.error(`No ${filePrefix} blob URLs found.`);
       return;
     }
 
     try {
-      const response = await fetch(blobUrl);
-      const blob = await response.blob();
-      const fileExtension = getFileExtension(blob);
-      const fileName = `${filePrefix}_${cookies['username']}_${Date.now()}.${fileExtension}`;
+      for (const blobUrl of blobUrls) {
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+        const fileExtension = getFileExtension(blob);
+        const fileName = `${filePrefix}_${cookies['username']}_${Date.now()}.${fileExtension}`;
 
-      console.log("Blob:", blob);
-      console.log("Filename:", fileName);
+        console.log("Blob:", blob);
+        console.log("Filename:", fileName);
 
-      await uploadToS3(blob, fileName);
+        await uploadToS3(blob, fileName);
+      }
     } catch (error) {
       console.error(`Error uploading ${filePrefix}:`, error);
     }
   };
 
-  const uploadPortfolio = () => uploadFiles(cookies.portfolioBlobUrl, 'portfolio');
-  const uploadID = () => uploadFiles(cookies.governmentIDUrl, 'id');
-  const uploadHeadshot = () => uploadFiles(cookies.headshotBlobUrl, 'headshot');
+  const uploadPortfolioVideo = () => uploadFiles([cookies.portfolioVideo], 'portfolioVideo');
+  const uploadPortfolioImages = () => uploadFiles(Array.from(cookies.portfolioImages), 'portfolioImages');
+  const uploadPortfolioPDF = () => uploadFiles([cookies.portfolioPdf], 'portfolioPDF');
+  const uploadID = () => uploadFiles([cookies.governmentIDUrl], 'id');
+  const uploadHeadshot = () => uploadFiles([cookies.headshotBlobUrl], 'headshot');
 
   return (
     <Box className="onboarding-container" sx={{ width: '100vw' }}>
