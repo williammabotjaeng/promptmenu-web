@@ -264,15 +264,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 height: '56px', 
                 borderRadius: '4px',
                 border: '1px solid #ccc',
+                color: 'black',
                 padding: '10px',
+                paddingLeft: '50px'
               }}
               buttonStyle={{
                 border: '1px solid #ccc',
                 borderRadius: '4px',
+                color: 'black'
               }}
               placeholder="Enter your phone number"
-              required
-              className="custom-input"
             />
           </Grid>
 
