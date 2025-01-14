@@ -35,6 +35,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const [isInfluencer, setIsInfluencer] = useState('no');
   const [nationality, setNationality] = useState('');
+  const [region, setRegion] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
   const [cookies, setCookie] = useCookies(['nationality']);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -84,6 +85,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const handleCountryChange = (val: React.SetStateAction<string>) => {
     setNationality(val);
+    setRegion('');
+  };
+
+  const handleRegionChange = (val) => {
+    setRegion(val);
   };
 
   const handleAcceptance = (val: React.SetStateAction<boolean>) => {
@@ -196,25 +202,24 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* State/Province/Region Field */}
           <Grid item xs={12} sm={3}>
-            <TextField
-              fullWidth
-              required
-              id="state_province_region"
-              name="state_province_region"
-              label={<Typography variant="body1">State/Province/Region</Typography>}
-              onChange={handleChange}
-              className="custom-input"
-              variant="outlined"
-              sx={inputStyles}
-            />
+            <FormControl fullWidth required sx={{
+              height: '9.5vh'
+            }}>
+              <RegionDropdown
+                country={nationality} 
+                value={region}
+                onChange={handleRegionChange}
+                className="custom-input country-dropdown"
+                style={{
+                  width: '19vw'
+                }}
+              />
+            </FormControl>
           </Grid>
 
           {/* Nationality Field */}
           <Grid item xs={12} sm={3}>
             <FormControl fullWidth required>
-              {/* <InputLabel id="nationality-label">
-                <Typography variant="body1">Nationality</Typography>
-              </InputLabel> */}
               <div className="country-dropdown-container">
                 <CountryDropdown
                   value={nationality}
@@ -256,12 +261,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           {/* Telephone Number Field */}
           <Grid item xs={12} sm={6}>
             <PhoneInput
-              country={'ae'} 
-              onChange={handlePhoneChange} 
+              country={'ae'}
+              onChange={handlePhoneChange}
               value={phoneNumber}
               inputStyle={{
                 width: '100%',
-                height: '56px', 
+                height: '56px',
                 borderRadius: '4px',
                 border: '1px solid #ccc',
                 color: 'black',
