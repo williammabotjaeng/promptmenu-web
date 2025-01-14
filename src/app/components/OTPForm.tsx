@@ -5,7 +5,9 @@ import { Box, Button, TextField } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { useAuth } from '@/providers/auth-providers';
+import { useRouter } from 'next/navigation';
 import { redirect } from 'next/navigation';
+import useUserDataStore from '@/state/use-user-data-store';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -17,6 +19,8 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOtp(e.target.value);
@@ -30,9 +34,28 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
       
-      setTimeout(() => {     
-            redirect('/login');
-      }, 2000); 
+      setSnackbarMessage("Login successful! Redirecting...");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+       
+      setTimeout(() => {
+       
+
+      if (useUserDataStore?.getState()?.onboarding_presented && useUserDataStore?.getState()?.profile_progress > 0.6) {
+           console.log("Routing option 1");
+           const redirectPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/portal';
+           router.push(redirectPath);
+      } else if (useUserDataStore?.getState()?.profile_progress < 0.6 && !useUserDataStore?.getState()?.profile_completed) {
+           console.log("Routing option 2");
+           const onboardingPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/talent-onboarding';
+           console.log("Redirecting to: ", onboardingPath, "with user role", useUserDataStore?.getState()?.user_role); 
+           router.push(onboardingPath);
+      } else {
+           console.log("Routing option 3");
+           const fallbackPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/portal';
+           router.push(fallbackPath);
+         }
+       }, 2000);
     } catch (error) {
       console.error('OTP verification failed:', error);
       setSnackbarMessage('OTP verification failed. Please try again.');

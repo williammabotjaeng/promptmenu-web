@@ -269,8 +269,143 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     mutationFn: async (data: OTPData) => {
       return await apiCall('/accounts/verify_otp/', 'POST', data);
     },
-    onSuccess: (data) => {
-      console.log('OTP verification successful: ', data);
+    onSuccess: (data: LoginSuccessData) => {
+    
+      const loggedInUser: AuthenticatedUser = {
+        refresh: data?.tokens?.refresh,
+        access: data?.tokens?.access,
+        user_role: data?.tokens?.user_role
+      };
+
+      setTokens(data?.tokens?.refresh, data?.tokens?.access);
+
+      setUser(loggedInUser);
+      setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
+      setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
+      setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
+      setCookie('profile_progress', data?.tokens?.profile_progress, { path: '/', maxAge: 604800 });
+      setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
+      setCookie('profile_completed', data?.tokens?.profile_completed, { path: '/', maxAge: 604800 });
+
+      if (data?.tokens?.user_role === 'client') {
+        fetchCompany();
+      }
+
+      if (data?.tokens?.user_role === 'talent') {
+        fetchTalentProfile();
+      }
+      
+      console.log('Talent Profile', talentProfile);
+      const paymentMethodJSON = company?.payment_method ? JSON.parse(company?.payment_method) : null;
+
+      if (company) {
+
+        setCompanyInfo({
+          name: company.name || '',
+          slogan: company.slogan || '',
+          description: company.description || '',
+        });
+
+        setContactInfo({
+          address: company.address || '',
+          phone_number: company.phone_number || '',
+          whatsapp_number: company.whatsapp_number || '',
+        });
+
+        if (paymentMethodJSON) {
+          setPaymentMethod({
+            payment_method: paymentMethodJSON.payment_method || '',
+            ccNumber: paymentMethodJSON?.ccNumber || '',
+            ccFirstName: paymentMethodJSON?.ccFirstName || '',
+            ccLastName: paymentMethodJSON?.ccLastName || '',
+            ccExpiry: paymentMethodJSON?.ccExpiry || '',
+            ccCVC: paymentMethodJSON?.ccCVC || '',
+            paypalEmail: paymentMethodJSON?.paypalEmail || '',
+            stripeDetails: paymentMethodJSON?.stripeDetails || '',
+          });
+        }
+
+        setSocialMediaLinks({
+          website: company?.website || '',
+          social_media_links: {
+            twitter: company?.social_media_links?.twitter,
+            facebook: company?.social_media_links?.facebook,
+            instagram: company?.social_media_links?.instagram,
+            linkedin: company?.social_media_links?.linkedin,
+          },
+        });
+      }
+
+      if (talentProfile) {
+        // Set personal info
+        setPersonalInfo({
+          firstname: talentProfile.firstname || '',
+          lastname: talentProfile.lastname || '',
+          date_of_birth: talentProfile.date_of_birth || '',
+          gender: talentProfile.gender || 'male',
+          phone_number: talentProfile.phone_number || '',
+          whatsapp_number: talentProfile.whatsapp_number || '',
+        });
+
+        // Set physical attributes
+        setPhysicalAttributes({
+          height: String(talentProfile.height) || '',
+          weight: String(talentProfile.weight) || '',
+          ethnicity: talentProfile.ethnicity || '',
+        });
+
+        // Set government ID if available
+        setGovernmentID(talentProfile.government_id || null);
+
+        // Set bank details if available
+        setBankDetails({
+          bankName: talentProfile.banking_details?.bankName || '',
+          accountNumber: talentProfile.banking_details?.accountNumber || '',
+          iban: talentProfile.banking_details?.iban || '',
+          accountHolderName: talentProfile.banking_details?.accountHolderName || '',
+        });
+
+        // Set profile socials
+        setProfileSocials({
+          website: talentProfile.website || '',
+          social_media_links: {
+            twitter: talentProfile.social_media_links?.twitter || '',
+            facebook: talentProfile.social_media_links?.facebook || '',
+            instagram: talentProfile.social_media_links?.instagram || '',
+            linkedin: talentProfile.social_media_links?.linkedin || '',
+          },
+        });
+
+        // Set talent data
+        setTalentData({
+          user: talentProfile.user || null,
+          headshot: talentProfile.headshot || null,
+          date_of_birth: talentProfile.date_of_birth || null,
+          gender: talentProfile.gender || null,
+          phone_number: talentProfile.phone_number || null,
+          nationality: talentProfile.nationality || null,
+          skills: talentProfile.skills || [],
+          height: talentProfile.height || null,
+          weight: talentProfile.weight || null,
+          ethnicity: talentProfile.ethnicity || null,
+          government_id: talentProfile.government_id || null,
+          banking_details: talentProfile.banking_details || null,
+          portfolio_pdf: talentProfile.portfolio_pdf || null,
+          additional_images: talentProfile.additional_images || null,
+          is_verified: talentProfile.is_verified || false,
+          verification_notification_sent: talentProfile.verification_notification_sent || false,
+          created_at: talentProfile.created_at || '',
+          updated_at: talentProfile.updated_at || '',
+        });
+      }
+
+      setUserData(
+        data?.tokens?.user_role,
+        data?.tokens?.profile_progress,
+        data?.tokens?.onboarding_presented,
+        data?.tokens?.profile_completed
+      );
+
     },
     onError: (error) => {
       console.error('OTP verification error: ', error);
