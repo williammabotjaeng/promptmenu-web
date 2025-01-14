@@ -133,8 +133,8 @@ const PortfolioMedia = ({ activeStep }) => {
                                     <AddCircle />
                                     <input type="file" hidden accept="image/*" multiple onChange={handleImageUpload} />
                                 </IconButton>
-                                <IconButton onClick={prevImage} sx={{ position: 'relative', left: 0, top: '50%', transform: 'translateY(-50%)' }}>
-                                    <Delete />
+                                <IconButton onClick={prevImage} sx={{ position: 'relative', left: 0, top: '50%', transform: 'translateY(-50%)', marginTop: '20px' }}>
+                                    <Delete color="error" />
                                 </IconButton>
                             </Box>
                         </Box>
