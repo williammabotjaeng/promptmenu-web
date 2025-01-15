@@ -35,7 +35,7 @@ const inputStyles = {
     display: 'none'
   },
   "& .MuiInputLabel-root.Mui-shrink": {
-  display: 'none',
+    display: 'none',
   },
 };
 
@@ -50,6 +50,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
   const [customPaymentTerms, setCustomPaymentTerms] = useState('');
+  const [agreement, setAgreement] = useState('yes');
   const [preferredPaymentMethods, setPreferredPaymentMethods] = useState({
     directTransfer: false,
     creditCard: false,
@@ -106,6 +107,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     } else {
       setAddressOptions([]);
     }
+  };
+
+  const handleAgreementChange = (event) => {
+    setAgreement(event?.target?.value);
   };
 
   const handleInfluencerChange = (event) => {
@@ -276,6 +281,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   };
 
   return (
+    <>
     <Box className="container">
       <Typography variant="h4" gutterBottom>
         Register
@@ -503,258 +509,266 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             />
           </Grid>
 
-          <Grid container spacing={2}>
+        
             {/* Terms of Payment */}
             <Grid item xs={12}>
               <Typography variant="body1">
                 Terms of payment are 50% advance, 50% on project completion.
               </Typography>
             </Grid>
-
-            {/* Custom Payment Terms Field */}
-            <Grid item xs={12}>
-              <TextField
-                label="If you have your own payment terms, please specify (subject to approval)"
-                placeholder="Enter your payment terms"
-                fullWidth
-                name="custom_payment_terms"
-                onChange={handleChange}
-                variant="outlined"
-                multiline
-                rows={4}
-                sx={{
-                  border: '1px solid #977342',
-                  borderRadius: '12px',
-                  color: 'white'
-                }}
-                color="warning"
-                className='custom-input'
-              />
+            <Grid item xs={12} container alignItems="center">
+              <RadioGroup row value={agreement} onChange={handleAgreementChange}>
+                <FormControlLabel value="yes" control={<Radio />} label="Agree" />
+                <FormControlLabel value="no" control={<Radio />} label="I do not Agree" />
+              </RadioGroup>
             </Grid>
+        
 
-            {/* Preferred Payment Method */}
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <Typography variant="body1">Preferred Payment Method</Typography>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: 'white'
-                      }}
-                      color="success"
-                      checked={preferredPaymentMethods.directTransfer}
-                      onChange={handlePreferredPaymentMethodChange}
-                      name="directTransfer"
-                    />
-                  }
-                  label="Direct Transfer"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: 'white'
-                      }}
-                      color="success"
-                      checked={preferredPaymentMethods.creditCard}
-                      onChange={handlePreferredPaymentMethodChange}
-                      name="creditCard"
-                    />
-                  }
-                  label="Credit Card"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: 'white'
-                      }}
-                      color="success"
-                      checked={preferredPaymentMethods.cash}
-                      onChange={handlePreferredPaymentMethodChange}
-                      name="cash"
-                    />
-                  }
-                  label="Cash"
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-
-          {/* Email Field */}
-          <Grid item xs={12} sm={6}>
-            <Typography variant='body1'>Accounts Department Email</Typography>
-            <TextField
-              label={<Typography variant="body1">Accounts Department Email</Typography>}
-              type="email"
-              name="accounts_email"
-              placeholder="Enter your accounts email"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
-
-          <Grid container spacing={2}>
-            {/* Trade License Column */}
-            <Grid item xs={6}>
-              <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-                border: '4px dotted black',
-                margin: '4px',
-                borderRadius: '12px',
-                padding: '4px',
-                height: '50vh'
-              }}>
-                <Typography variant="body1">Trade License</Typography>
-                {tradePdf ? (
-                  <Box display="flex" flexDirection={"column"} alignItems="center">
-                    <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                    <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                    <IconButton color="error" onClick={() => handleRemoveTradePdf()}>
-                      <Close />
-                    </IconButton>
-                  </Box>
-                ) : (
-                  <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                    <PictureAsPdf sx={{
-                      height: '30vh',
-                      fontSize: '80px'
-                    }} />
-                    <input type="file" hidden accept="application/pdf" onChange={(e) => handleTradePdfUpload(e)} />
-                  </IconButton>
-                )}
-              </Box>
-            </Grid>
-
-            {/* VAT Certificate Column */}
-            <Grid item xs={6}>
-              <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-                border: '4px dotted black',
-                margin: '4px',
-                borderRadius: '12px',
-                padding: '4px',
-                height: '50vh'
-              }}>
-                <Typography variant="body1">VAT Certificate</Typography>
-                {vatPdf ? (
-                  <Box display="flex" flexDirection={"column"} alignItems="center">
-                    <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                    <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                    <IconButton color="error" onClick={() => handleRemoveVatPdf()}>
-                      <Close />
-                    </IconButton>
-                  </Box>
-                ) : (
-                  <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                    <PictureAsPdf sx={{
-                      height: '30vh',
-                      fontSize: '80px'
-                    }} />
-                    <input type="file" hidden accept="application/pdf" onChange={(e) => handleVatPdfUpload(e)} />
-                  </IconButton>
-                )}
-              </Box>
-            </Grid>
-            <Typography variant="body1" sx={{
-              fontStyle: 'italic', 
-              width: '100%',
-              textAlign: 'center',
-              fontSize: '10px'
-            }}>Only Image and PDF Files allowed.</Typography>
-          </Grid>
-
-          {/* Password */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Password</Typography>}
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
-
-          {/* Confirm Password */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Confirm Password</Typography>}
-              type="password"
-              name="confirmPassword"
-              placeholder="Re-enter your password"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
-
-          {/* Influencer Question */}
-          {userRole === 'talent' && (<Grid item xs={12}>
-            <Typography variant="h5">
-              Are you a Popular influencer?
-            </Typography>
-            <RadioGroup row value={isInfluencer} onChange={handleInfluencerChange}>
-              <FormControlLabel
-                control={<Radio sx={{
-                  color: 'white'
-                }} color="success" />}
-                label="Yes"
-                value="yes"
-              />
-              <FormControlLabel
-                control={<Radio sx={{
-                  color: 'white'
-                }} color="success" />}
-                label="No"
-                value="no"
-              />
-            </RadioGroup>
-          </Grid>)}
-
-          {/* Submit Button */}
+          {/* Custom Payment Terms Field */}
           <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
+            <TextField
+              label="If you have your own payment terms, please specify (subject to approval)"
+              placeholder="Enter your payment terms"
+              fullWidth
+              name="custom_payment_terms"
+              onChange={handleChange}
+              variant="outlined"
+              multiline
+              rows={4}
+              sx={{
+                border: '1px solid #977342',
+                borderRadius: '12px',
                 color: 'white'
-              }} className="custom-input" />}
-              label={
-                <Typography variant="body1">
-                  By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
-                </Typography>
-              }
+              }}
+              color="warning"
+              className='custom-input'
             />
-            <Button
-              type="submit"
-              variant="contained"
-              color="success"
-              style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
-            >
-              <Typography variant="body1">Register</Typography>
-            </Button>
           </Grid>
-        </Grid>
-      </form>
 
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
+          {/* Preferred Payment Method */}
+          <Grid item xs={12}>
+            <FormControl component="fieldset">
+              <Typography variant="body1">Preferred Payment Method</Typography>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{
+                      color: 'white'
+                    }}
+                    color="success"
+                    checked={preferredPaymentMethods.directTransfer}
+                    onChange={handlePreferredPaymentMethodChange}
+                    name="directTransfer"
+                  />
+                }
+                label="Direct Transfer"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{
+                      color: 'white'
+                    }}
+                    color="success"
+                    checked={preferredPaymentMethods.creditCard}
+                    onChange={handlePreferredPaymentMethodChange}
+                    name="creditCard"
+                  />
+                }
+                label="Credit Card"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    sx={{
+                      color: 'white'
+                    }}
+                    color="success"
+                    checked={preferredPaymentMethods.cash}
+                    onChange={handlePreferredPaymentMethodChange}
+                    name="cash"
+                  />
+                }
+                label="Cash"
+              />
+            </FormControl>
+          </Grid>
+      
+
+        {/* Email Field */}
+        <Grid item xs={12} sm={6}>
+          <Typography variant='body1'>Accounts Department Email</Typography>
+          <TextField
+            label={<Typography variant="body1">Accounts Department Email</Typography>}
+            type="email"
+            name="accounts_email"
+            placeholder="Enter your accounts email"
+            required
+            fullWidth
+            onChange={handleChange}
+            className="custom-input"
+            sx={inputStyles}
+          />
+        </Grid>
+
+        <Grid container spacing={2}>
+          {/* Trade License Column */}
+          <Grid item xs={6}>
+            <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
+              border: '4px dotted black',
+              margin: '4px',
+              borderRadius: '12px',
+              padding: '4px',
+              height: '50vh'
+            }}>
+              <Typography variant="body1">Trade License</Typography>
+              {tradePdf ? (
+                <Box display="flex" flexDirection={"column"} alignItems="center">
+                  <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                  <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
+                  <IconButton color="error" onClick={() => handleRemoveTradePdf()}>
+                    <Close />
+                  </IconButton>
+                </Box>
+              ) : (
+                <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
+                  <PictureAsPdf sx={{
+                    height: '30vh',
+                    fontSize: '80px'
+                  }} />
+                  <input type="file" hidden accept="application/pdf" onChange={(e) => handleTradePdfUpload(e)} />
+                </IconButton>
+              )}
+            </Box>
+          </Grid>
+
+          {/* VAT Certificate Column */}
+          <Grid item xs={6}>
+            <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
+              border: '4px dotted black',
+              margin: '4px',
+              borderRadius: '12px',
+              padding: '4px',
+              height: '50vh'
+            }}>
+              <Typography variant="body1">VAT Certificate</Typography>
+              {vatPdf ? (
+                <Box display="flex" flexDirection={"column"} alignItems="center">
+                  <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                  <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
+                  <IconButton color="error" onClick={() => handleRemoveVatPdf()}>
+                    <Close />
+                  </IconButton>
+                </Box>
+              ) : (
+                <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
+                  <PictureAsPdf sx={{
+                    height: '30vh',
+                    fontSize: '80px'
+                  }} />
+                  <input type="file" hidden accept="application/pdf" onChange={(e) => handleVatPdfUpload(e)} />
+                </IconButton>
+              )}
+            </Box>
+          </Grid>
+          <Typography variant="body1" sx={{
+            fontStyle: 'italic',
+            width: '100%',
+            textAlign: 'center',
+            fontSize: '10px'
+          }}>Only Image and PDF Files allowed.</Typography>
+        </Grid>
+
+        {/* Password */}
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label={<Typography variant="body1">Password</Typography>}
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+            fullWidth
+            onChange={handleChange}
+            className="custom-input"
+            sx={inputStyles}
+          />
+        </Grid>
+
+        {/* Confirm Password */}
+        <Grid item xs={12} sm={6}>
+          <TextField
+            label={<Typography variant="body1">Confirm Password</Typography>}
+            type="password"
+            name="confirmPassword"
+            placeholder="Re-enter your password"
+            required
+            fullWidth
+            onChange={handleChange}
+            className="custom-input"
+            sx={inputStyles}
+          />
+        </Grid>
+
+        {/* Influencer Question */}
+        {userRole === 'talent' && (<Grid item xs={12}>
+          <Typography variant="h5">
+            Are you a Popular influencer?
+          </Typography>
+          <RadioGroup row value={isInfluencer} onChange={handleInfluencerChange}>
+            <FormControlLabel
+              control={<Radio sx={{
+                color: 'white'
+              }} color="success" />}
+              label="Yes"
+              value="yes"
+            />
+            <FormControlLabel
+              control={<Radio sx={{
+                color: 'white'
+              }} color="success" />}
+              label="No"
+              value="no"
+            />
+          </RadioGroup>
+        </Grid>)}
+
+        {/* Submit Button */}
+        <Grid item xs={12}>
+          <FormControlLabel
+            control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
+              color: 'white'
+            }} className="custom-input" />}
+            label={
+              <Typography variant="body1">
+                By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
+              </Typography>
+            }
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            color="success"
+            style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
+          >
+            <Typography variant="body1">Register</Typography>
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
+
+      {/* Snackbar for notifications */ }
+  <Snackbar
+    open={snackbarOpen}
+    autoHideDuration={6000}
+    onClose={handleSnackbarClose}
+    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+  >
+    <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+      {snackbarMessage}
+    </Alert>
+  </Snackbar>
     </Box>
+    </>
   );
 };
 
