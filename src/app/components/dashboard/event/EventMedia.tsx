@@ -11,6 +11,7 @@ import { useCookies } from 'react-cookie';
 import Card from '@mui/material/Card';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { Document, Page } from 'react-pdf';
 import ReactPlayer from 'react-player';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -157,7 +158,7 @@ const EventMedia = ({ activeStep }) => {
                         </Box>
                     </Box>
 
-                    {/* PDF Column */}
+                    {/* Event Poster */}
                     <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
                         border: '4px dotted black',
                         margin: '4px',
@@ -165,7 +166,7 @@ const EventMedia = ({ activeStep }) => {
                         padding: '4px',
                         height: '50vh'
                     }}>
-                        <Typography color="black">PDF Portfolio</Typography>
+                        <Typography color="black">Event Poster</Typography>
                         {pdf ? (
                             <Box display="flex" flexDirection={"column"} alignItems="center">
                                 <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
@@ -176,11 +177,12 @@ const EventMedia = ({ activeStep }) => {
                             </Box>
                         ) : (
                             <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                                <PictureAsPdfIcon sx={{
+                                <AddAPhotoIcon sx={{
                                     height: '30vh',
-                                    fontSize: '80px'
+                                    fontSize: '80px',
+                                    color: 'black'
                                 }} />
-                                <input type="file" hidden accept="application/pdf" onChange={handlePdfUpload} />
+                                <input type="file" hidden accept="image/jpeg;image/png;image/gif" onChange={handlePdfUpload} />
                             </IconButton>
                         )}
                     </Box>
