@@ -34,6 +34,9 @@ const inputStyles = {
   "& .MuiInputLabel-root.Mui-focused": {
     display: 'none'
   },
+  "& .MuiInputLabel-root.Mui-shrink": {
+  display: 'none',
+  },
 };
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
