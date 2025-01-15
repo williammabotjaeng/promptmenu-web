@@ -483,9 +483,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 rows={4}
                 sx={{
                   border: '1px solid #977342',
-                  borderRadius: '12px'
+                  borderRadius: '12px',
+                  color: 'white'
                 }}
                 color="warning"
+                className='custom-input'
               />
             </Grid>
 
