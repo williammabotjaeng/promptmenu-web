@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Autocomplete, Box, Grid, TextField, Typography } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 import axios from 'axios';
@@ -25,10 +25,11 @@ const EventInfo = ({ activeStep }) => {
     const [eventTitle, setEventTitle] = useState(cookies['eventTitle'] || '');
     const [eventDescription, setEventDescription] = useState(cookies['eventDescription'] || '');
 
-    const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target; 
+    const handleAddressChange = (event: React.SyntheticEvent, value: any, reason: string) => {
+        console.log("Event:", event);
+        console.log("Addy Value", value);
         setCookie('eventAddress', value);
-        setAddressInputValue(value); 
+        setAddressInputValue(value);
     };
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +59,10 @@ const EventInfo = ({ activeStep }) => {
           setAddressOptions([]);
         }
       };
+
+    useEffect(() => {
+        console.log("Address Input", addressInputValue);
+    }, [addressInputValue])
 
     return (
         <>
@@ -114,6 +119,7 @@ const EventInfo = ({ activeStep }) => {
                                 border: '1px solid black',
                                 color: 'black'
                             }}
+                            value={addressInputValue}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -121,7 +127,6 @@ const EventInfo = ({ activeStep }) => {
                                     label={<Typography variant="body1">Address</Typography>}
                                     required
                                     fullWidth
-                                    value={handleAddressChange}
                                     variant="outlined"
                                     className="custom-input"
                                     sx={inputStyles}
