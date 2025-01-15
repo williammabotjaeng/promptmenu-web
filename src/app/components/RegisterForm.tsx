@@ -582,6 +582,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             </Grid>
           </Grid>
 
+          {/* Email Field */}
+          <Grid item xs={12} sm={6}>
+            <Typography variant='body1'>Accounts Department Email</Typography>
+            <TextField
+              label={<Typography variant="body1">Accounts Department Email</Typography>}
+              type="email"
+              name="accounts_email"
+              placeholder="Enter your accounts email"
+              required
+              fullWidth
+              onChange={handleChange}
+              className="custom-input"
+              sx={inputStyles}
+            />
+          </Grid>
+
           <Grid container spacing={2}>
             {/* Trade License Column */}
             <Grid item xs={6}>
