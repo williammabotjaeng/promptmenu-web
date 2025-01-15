@@ -347,8 +347,10 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
           </Grid>
 
           {/* WhatsApp Number Field (conditional) */}
-          <Grid item xs={12} sm={6} style={{ display: !useWhatsApp ? 'block' : 'none' }}>
-            <Typography variant="body1">WhatsApp Number</Typography>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1" sx={{
+              display: !useWhatsApp ? 'block' : 'none'
+            }}>WhatsApp Number</Typography>
             <PhoneInput
               country={'ae'}
               value={whatsappNumber}
@@ -358,11 +360,13 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
                 height: '56px',
                 borderRadius: '4px',
                 border: '1px solid #ccc',
+                display: !useWhatsApp ? 'block' : 'none',
                 color: 'black',
                 padding: '10px',
                 paddingLeft: '50px'
               }}
               buttonStyle={{
+                display: !useWhatsApp ? 'block' : 'none',
                 border: '1px solid #ccc',
                 borderRadius: '4px',
                 color: 'black'
