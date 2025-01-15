@@ -62,7 +62,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [addressInputValue, setAddressInputValue] = useState('');
 
   const [formData, setFormData] = useState({
-    accept_std_payment_terms: '',
+    accept_std_payment_terms: JSON.stringify(preferredPaymentMethods),
     accounts_email: '',
     address: '',
     company_name: '',
@@ -126,11 +126,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     }
   };
 
-  const handlePreferredPaymentMethodChange = (event) => {
-    const { name, checked } = event.target;
+  const handlePreferredPaymentMethodChange = (event: React.ChangeEvent, value: any) => {
+    console.log("Payment Method:", value);
+    console.log("Event Value:", event.target.name);
+    let name = event.target.name;
+    console.log("Payment Values", {...preferredPaymentMethods})
     setPreferredPaymentMethods((prev) => ({
       ...prev,
-      [name]: checked,
+      [name]: value,
     }));
   };
 

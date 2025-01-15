@@ -496,34 +496,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     company_name: string,
     telephone: string
   ) => {
-    await registerMutation.mutateAsync({
-      username: username,
-      password: password,
-      email: email,
-      user_role: user_role,
-      firstname: firstname,
-      lastname: lastname,
-      date_of_birth: date_of_birth,
-      gender: gender,
-      phonenumber: phonenumber,
-      nationality: nationality,
-      has_accepted: has_accepted,
-      is_influencer: is_influencer,
-      whatsapp_number: whatsapp_number,
-      address: address,
-      preferred_payment_methods: preferred_payment_methods,
-      vat_certificate: vat_certificate,
-      trade_license: trade_license,
-      custom_payment_terms: custom_payment_terms,
-      accept_std_payment_terms: accept_std_payment_terms,
-      accounts_email: accounts_email,
-      mobile_number: mobile_number,
-      job_title: job_title,
-      contact_person: contact_person,
-      state_province_region: state_province_region,
-      company_name: company_name,
-      telephone: telephone
-    });
+    const registrationData = {
+      username,
+      password,
+      email,
+      user_role,
+      firstname,
+      lastname,
+      date_of_birth,
+      gender,
+      phonenumber,
+      nationality,
+      has_accepted,
+      is_influencer,
+      whatsapp_number,
+      address,
+      preferred_payment_methods,
+      vat_certificate,
+      trade_license,
+      custom_payment_terms,
+      accept_std_payment_terms,
+      accounts_email,
+      mobile_number,
+      job_title,
+      contact_person,
+      state_province_region,
+      company_name,
+      telephone
+    };
+
+    await registerMutation.mutateAsync(registrationData);
   };
 
   return (
