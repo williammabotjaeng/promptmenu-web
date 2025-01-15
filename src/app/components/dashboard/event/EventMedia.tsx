@@ -9,7 +9,8 @@ import { TalentProfileData } from '@/types/TalentProfileData';
 import { useStore } from 'zustand';
 import { useCookies } from 'react-cookie';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import { Document, Page } from 'react-pdf';
 import ReactPlayer from 'react-player';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -134,17 +135,17 @@ const EventMedia = ({ activeStep }) => {
                                     <img src={images[currentImageIndex]} style={{ width: '60%', height: '100%', objectFit: 'cover' }} />
                                 ) : <Typography sx={{ marginTop: '60px' }}>No Images uploaded</Typography>}
                             </Card>
-                            <IconButton onClick={prevImage} sx={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}>
-                                <AddCircle />
+                            <IconButton onClick={prevImage} sx={{ color: 'black', position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}>
+                                <ArrowCircleLeftIcon />
                             </IconButton>
-                            <IconButton onClick={nextImage} sx={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
-                                <AddCircle />
+                            <IconButton onClick={nextImage} sx={{ color: 'black', position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}>
+                                <ArrowCircleRightIcon />
                             </IconButton>
                             <Box sx={{
                                 display: 'flex',
                                 flexDirection: 'row'
                             }}>
-                                <IconButton color="primary" component="label" sx={{ position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)', marginTop: '10px' }}>
+                                <IconButton component="label" sx={{ color: 'black', position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)' }}>
                                     <AddCircle />
                                     <input type="file" hidden accept="image/*" multiple onChange={handleImageUpload} />
                                 </IconButton>
