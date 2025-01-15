@@ -349,6 +349,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                   fullWidth
                   variant="outlined"
                   className="custom-input"
+                  sx={inputStyles}
                 />
               )}
             />
