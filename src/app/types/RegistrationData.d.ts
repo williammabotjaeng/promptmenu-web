@@ -23,4 +23,6 @@ export interface RegistrationData {
     contact_person: string;
     state_province_region: string;
     company_name: string;
+    address: string;
+    telephone: string;
   }

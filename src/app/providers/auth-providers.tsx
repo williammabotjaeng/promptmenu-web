@@ -38,18 +38,20 @@ interface AuthContextType {
     nationality: string,
     has_accepted: string,
     is_influencer: string,
-    whatsapp_number: string, 
-    preferred_payment_methods: string, 
-    vat_certificate: string, 
-    trade_license: string, 
-    custom_payment_terms: string, 
-    accept_std_payment_terms: string, 
-    accounts_email: string, 
-    mobile_number: string, 
-    job_title: string, 
-    contact_person: string, 
-    state_province_region: string, 
-    company_name: string
+    whatsapp_number: string,
+    preferred_payment_methods: string,
+    vat_certificate: string,
+    trade_license: string,
+    custom_payment_terms: string,
+    accept_std_payment_terms: string,
+    accounts_email: string,
+    mobile_number: string,
+    job_title: string,
+    contact_person: string,
+    state_province_region: string,
+    company_name: string,
+    address: string,
+    telephone: string
   ) => Promise<void>;
 }
 
@@ -104,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return await apiCall('/accounts/login/', 'POST', { username, password });
     },
     onSuccess: (data: LoginSuccessData) => {
-    
+
       const loggedInUser: AuthenticatedUser = {
         refresh: data?.tokens?.refresh,
         access: data?.tokens?.access,
@@ -128,7 +130,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (data?.tokens?.user_role === 'talent') {
         fetchTalentProfile();
       }
-      
+
       console.log('Talent Profile', talentProfile);
       const paymentMethodJSON = company?.payment_method ? JSON.parse(company?.payment_method) : null;
 
@@ -230,6 +232,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           verification_notification_sent: talentProfile.verification_notification_sent || false,
           created_at: talentProfile.created_at || '',
           updated_at: talentProfile.updated_at || '',
+          website: talentProfile.website || '',
+          social_media_links: talentProfile.social_media_links || ''
         });
       }
 
@@ -265,7 +269,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         nationality: userData.nationality,
         has_accepted: Boolean(userData.has_accepted),
         is_influencer: userData.is_influencer,
-        whatsapp_number: String(userData.whatsapp_number)
+        whatsapp_number: String(userData.whatsapp_number),
+        address: userData.address,
+        telephone: userData.address,
       });
     },
     onSuccess: (data: RegistrationSuccessData) => {
@@ -282,7 +288,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return await apiCall('/accounts/verify_otp/', 'POST', data);
     },
     onSuccess: (data: LoginSuccessData) => {
-    
+
       const loggedInUser: AuthenticatedUser = {
         refresh: data?.tokens?.refresh,
         access: data?.tokens?.access,
@@ -306,7 +312,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (data?.tokens?.user_role === 'talent') {
         fetchTalentProfile();
       }
-      
+
       console.log('Talent Profile', talentProfile);
       const paymentMethodJSON = company?.payment_method ? JSON.parse(company?.payment_method) : null;
 
@@ -407,6 +413,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           additional_images: talentProfile.additional_images || null,
           is_verified: talentProfile.is_verified || false,
           verification_notification_sent: talentProfile.verification_notification_sent || false,
+          website: talentProfile.website || '',
+          social_media_links: talentProfile.social_media_links || '',
           created_at: talentProfile.created_at || '',
           updated_at: talentProfile.updated_at || '',
         });
@@ -473,7 +481,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     nationality: string,
     has_accepted: string,
     is_influencer: string,
-    whatsapp_number: string
+    whatsapp_number: string,
+    address: string,
+    preferred_payment_methods: string,
+    vat_certificate: string,
+    trade_license: string,
+    custom_payment_terms: string,
+    accept_std_payment_terms: string,
+    accounts_email: string,
+    mobile_number: string,
+    job_title: string,
+    contact_person: string,
+    state_province_region: string,
+    company_name: string,
+    telephone: string
   ) => {
     await registerMutation.mutateAsync({
       username: username,
@@ -488,7 +509,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       nationality: nationality,
       has_accepted: has_accepted,
       is_influencer: is_influencer,
-      whatsapp_number: whatsapp_number
+      whatsapp_number: whatsapp_number,
+      address: address,
+      preferred_payment_methods: preferred_payment_methods,
+      vat_certificate: vat_certificate,
+      trade_license: trade_license,
+      custom_payment_terms: custom_payment_terms,
+      accept_std_payment_terms: accept_std_payment_terms,
+      accounts_email: accounts_email,
+      mobile_number: mobile_number,
+      job_title: job_title,
+      contact_person: contact_person,
+      state_province_region: state_province_region,
+      company_name: company_name,
+      telephone: telephone
     });
   };
 

@@ -1,4 +1,6 @@
 export interface TalentProfileData {
+    website: string;
+    social_media_links: any;
     user: string | null; 
     firstname?: string | null;
     lastname?: string | null;

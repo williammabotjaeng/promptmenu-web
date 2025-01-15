@@ -62,31 +62,32 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [addressInputValue, setAddressInputValue] = useState('');
 
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    email: '',
-    date_of_birth: '',
-    user_role: userRole,
-    firstname: '',
-    lastname: '',
-    gender: 'male',
-    phonenumber: '',
-    nationality: phoneNumber,
-    has_accepted: hasAccepted,
-    is_influencer: isInfluencer,
-    whatsapp_number: '',
-    preferred_payment_methods: '',
-    vat_certificate: '',
-    trade_license: '',
-    custom_payment_terms: '',
     accept_std_payment_terms: '',
     accounts_email: '',
-    mobile_number: '',
-    job_title: '',
+    address: '',
+    company_name: '',
     contact_person: '',
+    custom_payment_terms: '',
+    date_of_birth: '',
+    email: '',
+    firstname: '',
+    gender: 'male',
+    has_accepted: hasAccepted,
+    is_influencer: isInfluencer,
+    job_title: '',
+    lastname: '',
+    mobile_number: '',
+    nationality: '',
+    password: '',
+    phonenumber: '',
+    preferred_payment_methods: '',
     state_province_region: '',
-    company_name: ''
-
+    telephone: phoneNumber,
+    trade_license: '',
+    user_role: userRole,
+    username: '',
+    vat_certificate: '',
+    whatsapp_number: ''
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -109,8 +110,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     }
   };
 
-  const handleAgreementChange = (event) => {
-    setAgreement(event?.target?.value);
+  const handleAgreementChange = (event: React.ChangeEvent, value: any) => {
+    console.log("Agreement Value:", value);
+    setAgreement(value);
   };
 
   const handleInfluencerChange = (event) => {
@@ -161,6 +163,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("Field:", name, value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -209,7 +212,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         formData.job_title,
         formData.contact_person,
         formData.state_province_region,
-        formData.company_name
+        formData.company_name,
+        formData.address,
+        formData.telephone
       );
 
       setCurrentUser(formData.username, '');
@@ -282,234 +287,234 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   return (
     <>
-    <Box className="container">
-      <Typography variant="h4" gutterBottom>
-        Register
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          {/* Username Field */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Username</Typography>}
-              name="username"
-              placeholder="Enter your username"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
-
-          {/* State/Province/Region Field */}
-          <Grid item xs={12} sm={3}>
-            <FormControl fullWidth required sx={{
-              height: '9.5vh'
-            }}>
-              <RegionDropdown
-                country={nationality}
-                value={region}
-                onChange={handleRegionChange}
-                className="custom-input country-dropdown"
-                style={{
-                  width: '19vw'
-                }}
+      <Box className="container">
+        <Typography variant="h4" gutterBottom>
+          Register
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+            {/* Username Field */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label={<Typography variant="body1">Username</Typography>}
+                name="username"
+                placeholder="Enter your username"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
               />
-            </FormControl>
-          </Grid>
+            </Grid>
 
-          {/* Nationality Field */}
-          <Grid item xs={12} sm={3}>
-            <FormControl fullWidth required>
-              <div className="country-dropdown-container">
-                <CountryDropdown
-                  value={nationality}
-                  onChange={handleCountryChange}
+            {/* State/Province/Region Field */}
+            <Grid item xs={12} sm={3}>
+              <FormControl fullWidth required sx={{
+                height: '9.5vh'
+              }}>
+                <RegionDropdown
+                  country={nationality}
+                  value={region}
+                  onChange={handleRegionChange}
                   className="custom-input country-dropdown"
+                  style={{
+                    width: '19vw'
+                  }}
                 />
-              </div>
-            </FormControl>
-          </Grid>
+              </FormControl>
+            </Grid>
 
-          {/* Address Field */}
-          <Grid item xs={12} sm={6}>
-            <Autocomplete
-              freeSolo
-              options={addressOptions.map(option => option?.display_name)}
-              onInputChange={(event, newInputValue) => {
-                setAddressInputValue(newInputValue);
-                fetchAddressSuggestions(newInputValue);
-              }}
-              onChange={(event, newValue) => {
-                setAddressInputValue(newValue);
-                handleChange({ target: { name: 'address', value: newValue } });
-              }}
-              sx={{
-                backgroundColor: 'white',
-                color: 'black'
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder="Enter your address"
-                  label={<Typography variant="body1">Address</Typography>}
-                  required
-                  fullWidth
-                  variant="outlined"
-                  className="custom-input"
-                  sx={inputStyles}
-                />
-              )}
-            />
-          </Grid>
+            {/* Nationality Field */}
+            <Grid item xs={12} sm={3}>
+              <FormControl fullWidth required>
+                <div className="country-dropdown-container">
+                  <CountryDropdown
+                    value={nationality}
+                    onChange={handleCountryChange}
+                    className="custom-input country-dropdown"
+                  />
+                </div>
+              </FormControl>
+            </Grid>
 
-          {/* Company Name Field */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Company Name</Typography>}
-              name="company_name"
-              placeholder="Enter your company name"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
+            {/* Address Field */}
+            <Grid item xs={12} sm={6}>
+              <Autocomplete
+                freeSolo
+                options={addressOptions.map(option => option?.display_name)}
+                onInputChange={(event, newInputValue) => {
+                  setAddressInputValue(newInputValue);
+                  fetchAddressSuggestions(newInputValue);
+                }}
+                onChange={(event, newValue) => {
+                  setAddressInputValue(newValue);
+                  handleChange({ target: { name: 'address', value: newValue } });
+                }}
+                sx={{
+                  backgroundColor: 'white',
+                  color: 'black'
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    placeholder="Enter your address"
+                    label={<Typography variant="body1">Address</Typography>}
+                    required
+                    fullWidth
+                    variant="outlined"
+                    className="custom-input"
+                    sx={inputStyles}
+                  />
+                )}
+              />
+            </Grid>
 
-          {/* Telephone Number Field */}
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Telephone Number</Typography>
-            <PhoneInput
-              country={'ae'}
-              onChange={handlePhoneChange}
-              value={phoneNumber}
-              inputStyle={{
-                width: '100%',
-                height: '56px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                color: 'black',
-                padding: '10px',
-                paddingLeft: '50px'
-              }}
-              buttonStyle={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                color: 'black'
-              }}
-              inputProps={{
-                name: 'phone',
-                required: true,
-                autoFocus: true
-              }}
-              placeholder="Enter your phone number"
-              inputClass="custom-phone-input"
-            />
-          </Grid>
+            {/* Company Name Field */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label={<Typography variant="body1">Company Name</Typography>}
+                name="company_name"
+                placeholder="Enter your company name"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
+              />
+            </Grid>
 
-          {/* Email Field */}
-          <Grid item xs={12} sm={6}>
-            <Typography color='black'>Email</Typography>
-            <TextField
-              label={<Typography variant="body1">Email</Typography>}
-              type="email"
-              name="email"
-              placeholder="Enter your email"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
+            {/* Telephone Number Field */}
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body1">Telephone Number</Typography>
+              <PhoneInput
+                country={'ae'}
+                onChange={handlePhoneChange}
+                value={phoneNumber}
+                inputStyle={{
+                  width: '100%',
+                  height: '56px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                  color: 'black',
+                  padding: '10px',
+                  paddingLeft: '50px'
+                }}
+                buttonStyle={{
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  color: 'black'
+                }}
+                inputProps={{
+                  name: 'phone',
+                  required: true,
+                  autoFocus: true
+                }}
+                placeholder="Enter your phone number"
+                inputClass="custom-phone-input"
+              />
+            </Grid>
 
-          {/* Contact Person */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Contact Person</Typography>}
-              name="contact_person"
-              placeholder="Enter the contact person's name"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
+            {/* Email Field */}
+            <Grid item xs={12} sm={6}>
+              <Typography color='black'>Email</Typography>
+              <TextField
+                label={<Typography variant="body1">Email</Typography>}
+                type="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
+              />
+            </Grid>
 
-          {/* Job Title */}
-          <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Job Title</Typography>}
-              name="job_title"
-              placeholder="Enter the job title"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
-            />
-          </Grid>
+            {/* Contact Person */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label={<Typography variant="body1">Contact Person</Typography>}
+                name="contact_person"
+                placeholder="Enter the contact person's name"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
+              />
+            </Grid>
 
-          {/* Mobile Number */}
-          <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Mobile Number</Typography>
-            <PhoneInput
-              country={'ae'}
-              value={mobileNumber}
-              onChange={handleMobileChange}
-              inputStyle={{
-                width: '100%',
-                height: '56px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                color: 'black',
-                padding: '10px',
-                paddingLeft: '50px'
-              }}
-              buttonStyle={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                color: 'black'
-              }}
-              placeholder="Enter a Mobile Phone No."
-            />
-            <FormControlLabel
-              control={<Checkbox sx={{
-                color: 'white'
-              }} color="success" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
-              label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
-            />
-          </Grid>
+            {/* Job Title */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label={<Typography variant="body1">Job Title</Typography>}
+                name="job_title"
+                placeholder="Enter the job title"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
+              />
+            </Grid>
 
-          {/* WhatsApp Number Field (conditional) */}
-          <Grid item xs={12} sm={6} style={{ display: !useWhatsApp ? 'block' : 'none' }}>
-            <Typography variant="body1">WhatsApp Number</Typography>
-            <PhoneInput
-              country={'ae'}
-              value={whatsappNumber}
-              onChange={handleWhatsAppNumberChange}
-              inputStyle={{
-                width: '100%',
-                height: '56px',
-                borderRadius: '4px',
-                border: '1px solid #ccc',
-                color: 'black',
-                padding: '10px',
-                paddingLeft: '50px'
-              }}
-              buttonStyle={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                color: 'black'
-              }}
-              placeholder="Enter your WhatsApp number"
-            />
-          </Grid>
+            {/* Mobile Number */}
+            <Grid item xs={12} sm={6}>
+              <Typography variant="body1">Mobile Number</Typography>
+              <PhoneInput
+                country={'ae'}
+                value={mobileNumber}
+                onChange={handleMobileChange}
+                inputStyle={{
+                  width: '100%',
+                  height: '56px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                  color: 'black',
+                  padding: '10px',
+                  paddingLeft: '50px'
+                }}
+                buttonStyle={{
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  color: 'black'
+                }}
+                placeholder="Enter a Mobile Phone No."
+              />
+              <FormControlLabel
+                control={<Checkbox sx={{
+                  color: 'white'
+                }} color="success" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
+                label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
+              />
+            </Grid>
 
-        
+            {/* WhatsApp Number Field (conditional) */}
+            <Grid item xs={12} sm={6} style={{ display: !useWhatsApp ? 'block' : 'none' }}>
+              <Typography variant="body1">WhatsApp Number</Typography>
+              <PhoneInput
+                country={'ae'}
+                value={whatsappNumber}
+                onChange={handleWhatsAppNumberChange}
+                inputStyle={{
+                  width: '100%',
+                  height: '56px',
+                  borderRadius: '4px',
+                  border: '1px solid #ccc',
+                  color: 'black',
+                  padding: '10px',
+                  paddingLeft: '50px'
+                }}
+                buttonStyle={{
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  color: 'black'
+                }}
+                placeholder="Enter your WhatsApp number"
+              />
+            </Grid>
+
+
             {/* Terms of Payment */}
             <Grid item xs={12}>
               <Typography variant="body1">
@@ -526,253 +531,253 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 }} />} label="I do not Agree" />
               </RadioGroup>
             </Grid>
-        
 
-          {/* Custom Payment Terms Field */}
-          <Grid item xs={12}>
-            <TextField
-              label="If you have your own payment terms, please specify (subject to approval)"
-              placeholder="Enter your payment terms"
-              fullWidth
-              disabled={agreement === 'yes' ? true : false}
-              name="custom_payment_terms"
-              onChange={handleChange}
-              variant="outlined"
-              multiline
-              rows={4}
-              sx={{
-                border: '1px solid #977342',
-                borderRadius: '12px',
-                color: 'white'
-              }}
-              color="warning"
-              className='custom-input'
-            />
-          </Grid>
 
-          {/* Preferred Payment Method */}
-          <Grid item xs={12}>
-            <FormControl component="fieldset">
-              <Typography variant="body1">Preferred Payment Method</Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    sx={{
-                      color: 'white'
-                    }}
-                    color="success"
-                    checked={preferredPaymentMethods.directTransfer}
-                    onChange={handlePreferredPaymentMethodChange}
-                    name="directTransfer"
-                  />
-                }
-                label="Direct Transfer"
+            {/* Custom Payment Terms Field */}
+            <Grid item xs={12}>
+              <TextField
+                label="If you have your own payment terms, please specify (subject to approval)"
+                placeholder="Enter your payment terms"
+                fullWidth
+                disabled={agreement === 'yes' ? true : false}
+                name="custom_payment_terms"
+                onChange={handleChange}
+                variant="outlined"
+                multiline
+                rows={4}
+                sx={{
+                  border: '1px solid #977342',
+                  borderRadius: '12px',
+                  color: 'white'
+                }}
+                color="warning"
+                className='custom-input'
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    sx={{
-                      color: 'white'
-                    }}
-                    color="success"
-                    checked={preferredPaymentMethods.creditCard}
-                    onChange={handlePreferredPaymentMethodChange}
-                    name="creditCard"
-                  />
-                }
-                label="Credit Card"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    sx={{
-                      color: 'white'
-                    }}
-                    color="success"
-                    checked={preferredPaymentMethods.cash}
-                    onChange={handlePreferredPaymentMethodChange}
-                    name="cash"
-                  />
-                }
-                label="Cash"
-              />
-            </FormControl>
-          </Grid>
-      
+            </Grid>
 
-        {/* Email Field */}
-        <Grid item xs={12} sm={6}>
-          <Typography variant='body1'>Accounts Department Email</Typography>
-          <TextField
-            label={<Typography variant="body1">Accounts Department Email</Typography>}
-            type="email"
-            name="accounts_email"
-            placeholder="Enter your accounts email"
-            required
-            fullWidth
-            onChange={handleChange}
-            className="custom-input"
-            sx={inputStyles}
-          />
-        </Grid>
+            {/* Preferred Payment Method */}
+            <Grid item xs={12}>
+              <FormControl component="fieldset">
+                <Typography variant="body1">Preferred Payment Method</Typography>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: 'white'
+                      }}
+                      color="success"
+                      checked={preferredPaymentMethods.directTransfer}
+                      onChange={handlePreferredPaymentMethodChange}
+                      name="directTransfer"
+                    />
+                  }
+                  label="Direct Transfer"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: 'white'
+                      }}
+                      color="success"
+                      checked={preferredPaymentMethods.creditCard}
+                      onChange={handlePreferredPaymentMethodChange}
+                      name="creditCard"
+                    />
+                  }
+                  label="Credit Card"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: 'white'
+                      }}
+                      color="success"
+                      checked={preferredPaymentMethods.cash}
+                      onChange={handlePreferredPaymentMethodChange}
+                      name="cash"
+                    />
+                  }
+                  label="Cash"
+                />
+              </FormControl>
+            </Grid>
 
-        <Grid container spacing={2}>
-          {/* Trade License Column */}
-          <Grid item xs={6}>
-            <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-              border: '4px dotted black',
-              margin: '4px',
-              borderRadius: '12px',
-              padding: '4px',
-              height: '50vh'
-            }}>
-              <Typography variant="body1">Trade License</Typography>
-              {tradePdf ? (
-                <Box display="flex" flexDirection={"column"} alignItems="center">
-                  <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                  <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                  <IconButton color="error" onClick={() => handleRemoveTradePdf()}>
-                    <Close />
-                  </IconButton>
+
+            {/* Email Field */}
+            <Grid item xs={12} sm={6}>
+              <Typography variant='body1'>Accounts Department Email</Typography>
+              <TextField
+                label={<Typography variant="body1">Accounts Department Email</Typography>}
+                type="email"
+                name="accounts_email"
+                placeholder="Enter your accounts email"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
+              />
+            </Grid>
+
+            <Grid container spacing={2}>
+              {/* Trade License Column */}
+              <Grid item xs={6}>
+                <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
+                  border: '4px dotted black',
+                  margin: '4px',
+                  borderRadius: '12px',
+                  padding: '4px',
+                  height: '50vh'
+                }}>
+                  <Typography variant="body1">Trade License</Typography>
+                  {tradePdf ? (
+                    <Box display="flex" flexDirection={"column"} alignItems="center">
+                      <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                      <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
+                      <IconButton color="error" onClick={() => handleRemoveTradePdf()}>
+                        <Close />
+                      </IconButton>
+                    </Box>
+                  ) : (
+                    <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
+                      <PictureAsPdf sx={{
+                        height: '30vh',
+                        fontSize: '80px'
+                      }} />
+                      <input type="file" hidden accept="application/pdf" onChange={(e) => handleTradePdfUpload(e)} />
+                    </IconButton>
+                  )}
                 </Box>
-              ) : (
-                <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                  <PictureAsPdf sx={{
-                    height: '30vh',
-                    fontSize: '80px'
-                  }} />
-                  <input type="file" hidden accept="application/pdf" onChange={(e) => handleTradePdfUpload(e)} />
-                </IconButton>
-              )}
-            </Box>
-          </Grid>
+              </Grid>
 
-          {/* VAT Certificate Column */}
-          <Grid item xs={6}>
-            <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-              border: '4px dotted black',
-              margin: '4px',
-              borderRadius: '12px',
-              padding: '4px',
-              height: '50vh'
-            }}>
-              <Typography variant="body1">VAT Certificate</Typography>
-              {vatPdf ? (
-                <Box display="flex" flexDirection={"column"} alignItems="center">
-                  <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                  <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                  <IconButton color="error" onClick={() => handleRemoveVatPdf()}>
-                    <Close />
-                  </IconButton>
+              {/* VAT Certificate Column */}
+              <Grid item xs={6}>
+                <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
+                  border: '4px dotted black',
+                  margin: '4px',
+                  borderRadius: '12px',
+                  padding: '4px',
+                  height: '50vh'
+                }}>
+                  <Typography variant="body1">VAT Certificate</Typography>
+                  {vatPdf ? (
+                    <Box display="flex" flexDirection={"column"} alignItems="center">
+                      <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                      <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
+                      <IconButton color="error" onClick={() => handleRemoveVatPdf()}>
+                        <Close />
+                      </IconButton>
+                    </Box>
+                  ) : (
+                    <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
+                      <PictureAsPdf sx={{
+                        height: '30vh',
+                        fontSize: '80px'
+                      }} />
+                      <input type="file" hidden accept="application/pdf" onChange={(e) => handleVatPdfUpload(e)} />
+                    </IconButton>
+                  )}
                 </Box>
-              ) : (
-                <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                  <PictureAsPdf sx={{
-                    height: '30vh',
-                    fontSize: '80px'
-                  }} />
-                  <input type="file" hidden accept="application/pdf" onChange={(e) => handleVatPdfUpload(e)} />
-                </IconButton>
-              )}
-            </Box>
-          </Grid>
-          <Typography variant="body1" sx={{
-            fontStyle: 'italic',
-            width: '100%',
-            textAlign: 'center',
-            fontSize: '10px'
-          }}>Only Image and PDF Files allowed.</Typography>
-        </Grid>
+              </Grid>
+              <Typography variant="body1" sx={{
+                fontStyle: 'italic',
+                width: '100%',
+                textAlign: 'center',
+                fontSize: '10px'
+              }}>Only Image and PDF Files allowed.</Typography>
+            </Grid>
 
-        {/* Password */}
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label={<Typography variant="body1">Password</Typography>}
-            type="password"
-            name="password"
-            placeholder="Enter your password"
-            required
-            fullWidth
-            onChange={handleChange}
-            className="custom-input"
-            sx={inputStyles}
-          />
-        </Grid>
+            {/* Password */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label={<Typography variant="body1">Password</Typography>}
+                type="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
+              />
+            </Grid>
 
-        {/* Confirm Password */}
-        <Grid item xs={12} sm={6}>
-          <TextField
-            label={<Typography variant="body1">Confirm Password</Typography>}
-            type="password"
-            name="confirmPassword"
-            placeholder="Re-enter your password"
-            required
-            fullWidth
-            onChange={handleChange}
-            className="custom-input"
-            sx={inputStyles}
-          />
-        </Grid>
+            {/* Confirm Password */}
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label={<Typography variant="body1">Confirm Password</Typography>}
+                type="password"
+                name="confirmPassword"
+                placeholder="Re-enter your password"
+                required
+                fullWidth
+                onChange={handleChange}
+                className="custom-input"
+                sx={inputStyles}
+              />
+            </Grid>
 
-        {/* Influencer Question */}
-        {userRole === 'talent' && (<Grid item xs={12}>
-          <Typography variant="h5">
-            Are you a Popular influencer?
-          </Typography>
-          <RadioGroup row value={isInfluencer} onChange={handleInfluencerChange}>
-            <FormControlLabel
-              control={<Radio sx={{
-                color: 'white'
-              }} color="success" />}
-              label="Yes"
-              value="yes"
-            />
-            <FormControlLabel
-              control={<Radio sx={{
-                color: 'white'
-              }} color="success" />}
-              label="No"
-              value="no"
-            />
-          </RadioGroup>
-        </Grid>)}
-
-        {/* Submit Button */}
-        <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
-              color: 'white'
-            }} className="custom-input" />}
-            label={
-              <Typography variant="body1">
-                By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
+            {/* Influencer Question */}
+            {userRole === 'talent' && (<Grid item xs={12}>
+              <Typography variant="h5">
+                Are you a Popular influencer?
               </Typography>
-            }
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="success"
-            style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
-          >
-            <Typography variant="body1">Register</Typography>
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
+              <RadioGroup row value={isInfluencer} onChange={handleInfluencerChange}>
+                <FormControlLabel
+                  control={<Radio sx={{
+                    color: 'white'
+                  }} color="success" />}
+                  label="Yes"
+                  value="yes"
+                />
+                <FormControlLabel
+                  control={<Radio sx={{
+                    color: 'white'
+                  }} color="success" />}
+                  label="No"
+                  value="no"
+                />
+              </RadioGroup>
+            </Grid>)}
 
-      {/* Snackbar for notifications */ }
-  <Snackbar
-    open={snackbarOpen}
-    autoHideDuration={6000}
-    onClose={handleSnackbarClose}
-    anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-  >
-    <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
-      {snackbarMessage}
-    </Alert>
-  </Snackbar>
-    </Box>
+            {/* Submit Button */}
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
+                  color: 'white'
+                }} className="custom-input" />}
+                label={
+                  <Typography variant="body1">
+                    By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
+                  </Typography>
+                }
+              />
+              <Button
+                type="submit"
+                variant="contained"
+                color="success"
+                style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
+              >
+                <Typography variant="body1">Register</Typography>
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
     </>
   );
 };
