@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Box, Avatar, IconButton, Snackbar, Alert, Button, Typography } from '@mui/material';
+import { Box, Avatar, IconButton, Snackbar, Alert, Button, Typography, ImageListItem, ImageList } from '@mui/material';
 import { AddAPhoto, AddCircle, Close, Delete, PictureAsPdf } from '@mui/icons-material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
@@ -21,8 +21,9 @@ const EventMedia = ({ activeStep }) => {
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
     const [images, setImages] = useState<string[]>([]);
     const [pdf, setPdf] = useState<string | null>(null);
+    const [posterImage, setPosterImage] = useState('');
     const [video, setVideo] = useState<string | null>(null);
-    const [cookies, setCookie] = useCookies(['portfolioBlobUrl', 'portfolioVideo', 'portfolioImages', 'portfolioPdf']);
+    const [cookies, setCookie] = useCookies(['portfolioBlobUrl', 'portfolioVideo', 'portfolioImages', 'posterImage']);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -40,6 +41,23 @@ const EventMedia = ({ activeStep }) => {
         }
     };
 
+    const handlePosterImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            const file = event.target.files[0];
+            const imageUrl = URL.createObjectURL(file);
+            setPosterImage(imageUrl);
+            setCookie('posterImage', imageUrl); 
+            setSnackbarMessage('Image Uploaded Successfully');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+        }
+    };
+
+    const handleRemovePosterImage = () => {
+        setPosterImage(null);
+        setCookie('posterImage', '');
+    };
+
     const handleRemoveImage = () => {
         const updatedImages = images.filter((_, i) => i !== currentImageIndex);
         setImages(updatedImages);
@@ -47,7 +65,7 @@ const EventMedia = ({ activeStep }) => {
         setSnackbarMessage('Image Deleted Successfully');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
-      };
+    };
 
     const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
@@ -71,11 +89,6 @@ const EventMedia = ({ activeStep }) => {
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
         }
-    };
-
-    const handleRemovePdf = () => {
-        setPdf(null);
-        setCookie('portfolioPdf', null);
     };
 
     const handleRemoveVideo = () => {
@@ -125,7 +138,10 @@ const EventMedia = ({ activeStep }) => {
                         padding: '4px',
                         height: '50vh'
                     }}>
-                        <Typography color="black">Additional Images</Typography>
+                        <Typography color="white" sx={{
+                            backgroundColor: 'black',
+                            width: '100%'
+                        }}>Additional Images</Typography>
                         <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
                             <Card sx={{
                                 height: '80%',
@@ -147,7 +163,7 @@ const EventMedia = ({ activeStep }) => {
                                 display: 'flex',
                                 flexDirection: 'row'
                             }}>
-                                <IconButton component="label" sx={{ color: 'black', position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)' }}>
+                                <IconButton component="label" sx={{ color: 'black', position: 'absolute', bottom: 15, left: '50%', transform: 'translateX(-50%)' }}>
                                     <AddCircle />
                                     <input type="file" hidden accept="image/*" multiple onChange={handleImageUpload} />
                                 </IconButton>
@@ -167,33 +183,45 @@ const EventMedia = ({ activeStep }) => {
                         padding: '4px',
                         height: '50vh'
                     }}>
-                        <Typography color="black">Event Poster</Typography>
-                        {pdf ? (
-                            <Box display="flex" flexDirection={"column"} alignItems="center">
-                                <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                                <Typography variant="subtitle1" sx={{ marginLeft: 1, color: 'black' }}>{'File Uploaded'}</Typography>
-                                <IconButton color="error" onClick={handleRemovePdf}>
+                        <Typography color="white" sx={{
+                            backgroundColor: 'black',
+                            width: '100%'
+                        }}>Event Poster</Typography>
+                        {posterImage ? (
+                            <Box display="flex" flexDirection="column" alignItems="center">
+                                <ImageList sx={{ width: '80%', height: '60%', overflow: 'hidden' }} cols={1}>
+                                    <ImageListItem>
+                                        <img
+                                            src={posterImage}
+                                            alt="Uploaded"
+                                            style={{ borderRadius: '8px', objectFit: 'cover', height: '100%', width: '100%' }}
+                                        />
+                                    </ImageListItem>
+                                </ImageList>
+                                <IconButton color="error" sx={{
+                                    marginTop: '-10px'
+                                }} onClick={handleRemovePosterImage}>
                                     <Close />
                                 </IconButton>
                             </Box>
                         ) : (
                             <IconButton color="primary" component="label" sx={{ marginTop: 4 }}>
-                                <AddAPhotoIcon 
+                                <AddAPhotoIcon
                                     sx={{
                                         height: '20vh',
                                         width: '20vh',
                                         fontSize: '80px',
                                         color: 'black',
-                                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)', 
+                                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)',
                                         borderRadius: '8px',
-                                        backgroundColor: 'transparent', 
-                                        transition: 'transform 0.3s', 
+                                        backgroundColor: 'transparent',
+                                        transition: 'transform 0.3s',
                                         '&:hover': {
-                                            transform: 'scale(1.05)', 
+                                            transform: 'scale(1.05)',
                                         },
-                                    }}  
+                                    }}
                                 />
-                                <input type="file" hidden accept="image/jpeg;image/png;image/gif" onChange={handlePdfUpload} />
+                                <input type="file" hidden accept="image/jpeg, image/png, image/gif" onChange={handlePosterImageUpload} />
                             </IconButton>
                         )}
                     </Box>
@@ -206,32 +234,39 @@ const EventMedia = ({ activeStep }) => {
                         padding: '4px',
                         height: '50vh'
                     }}>
-                        <Typography color="black">Promo Video</Typography>
+                        <Typography color="white" sx={{
+                            backgroundColor: 'black',
+                            width: '100%'
+                        }}>Promo Video</Typography>
                         {video ? (
                             <Box sx={{
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                borderRadius: '12px'
+                                borderRadius: '12px',
                             }}>
-                                <ReactPlayer url={video} controls width="100%" height="80%" />
+                                <ReactPlayer url={video} style={{
+                                    borderRadius: '32px',
+                                    boxShadow: '0px 8px 25px rgba(0, 0, 0, 0.3)',
+                                    marginTop: '10px'
+                                }} controls width="100%" height="80%" />
                                 <IconButton color="error" onClick={handleRemoveVideo}>
                                     <Close />
                                 </IconButton>
                             </Box>
                         ) : (
-                            <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                                <VideoCallIcon 
+                            <IconButton color="primary" component="label" sx={{ marginTop: 4 }}>
+                                <VideoCallIcon
                                     sx={{
                                         height: '20vh',
                                         width: '20vh',
                                         fontSize: '80px',
                                         color: 'black',
-                                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)', 
+                                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)',
                                         borderRadius: '8px',
-                                        backgroundColor: 'transparent', 
-                                        transition: 'transform 0.3s', 
+                                        backgroundColor: 'transparent',
+                                        transition: 'transform 0.3s',
                                         '&:hover': {
-                                            transform: 'scale(1.05)', 
+                                            transform: 'scale(1.05)',
                                         },
                                     }}
                                 />
