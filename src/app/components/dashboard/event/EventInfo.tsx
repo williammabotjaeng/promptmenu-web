@@ -5,6 +5,7 @@ import { Autocomplete, Box, Grid, TextField, Typography } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 import axios from 'axios';
 import { useStore } from 'zustand';
+import { useCookies } from 'react-cookie';
 
 const inputStyles = {
     "& .MuiInputLabel-root.Mui-focused": {
@@ -16,13 +17,30 @@ const inputStyles = {
 };
 
 const EventInfo = ({ activeStep }) => {
-    const { eventInfo, setEventInfo } = useStore(useClientOnboardingStore);
     const [addressOptions, setAddressOptions] = useState([]);
-    const [addressInputValue, setAddressInputValue] = useState('');
+    const [cookies, setCookie] = useCookies([
+        'eventTitle', 'eventAddress', 'eventDescription'
+    ]);
+    const [addressInputValue, setAddressInputValue] = useState(cookies['eventAddress'] || '');
+    const [eventTitle, setEventTitle] = useState(cookies['eventTitle'] || '');
+    const [eventDescription, setEventDescription] = useState(cookies['eventDescription'] || '');
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target; 
+        setCookie('eventAddress', value);
+        setAddressInputValue(value); 
+    };
+
+    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target; 
+        setCookie('eventTitle', value);
+        setEventTitle(value); 
+    };
+
+    const handleDescChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target; 
+        setCookie('eventDescription', value);
+        setEventDescription(value); 
     };
     
     const fetchAddressSuggestions = async (value) => {
@@ -58,7 +76,7 @@ const EventInfo = ({ activeStep }) => {
                             label="Event Title"
                             placeholder="Event Title"
                             variant="outlined"
-                            value={eventInfo?.title}
+                            value={eventTitle}
                             sx={{
                                 "& .MuiOutlinedInput-root": {
                                     "& fieldset": {
@@ -78,7 +96,7 @@ const EventInfo = ({ activeStep }) => {
                                     color: 'black',
                                 },
                             }}
-                            onChange={(e) => setEventInfo({ ...eventInfo, title: e.target.value })}
+                            onChange={handleTitleChange}
                         />
                     </Box>
                     {/* Address Field */}
@@ -90,10 +108,7 @@ const EventInfo = ({ activeStep }) => {
                                 setAddressInputValue(newInputValue);
                                 fetchAddressSuggestions(newInputValue);
                             }}
-                            onChange={(event, newValue) => {
-                                setAddressInputValue(newValue);
-                                handleChange({ target: { name: 'address', value: newValue } });
-                            }}
+                            onChange={handleAddressChange}
                             sx={{
                                 backgroundColor: 'transparent',
                                 border: '1px solid black',
@@ -106,6 +121,7 @@ const EventInfo = ({ activeStep }) => {
                                     label={<Typography variant="body1">Address</Typography>}
                                     required
                                     fullWidth
+                                    value={handleAddressChange}
                                     variant="outlined"
                                     className="custom-input"
                                     sx={inputStyles}
@@ -122,7 +138,7 @@ const EventInfo = ({ activeStep }) => {
                             variant="outlined"
                             multiline
                             rows={4}
-                            value={eventInfo?.description}
+                            value={eventDescription}
                             sx={{
                                 "& .MuiOutlinedInput-root": {
                                     "& fieldset": {
@@ -142,7 +158,7 @@ const EventInfo = ({ activeStep }) => {
                                     color: 'black',
                                 },
                             }}
-                            onChange={(e) => setEventInfo({ ...eventInfo, description: e.target.value })}
+                            onChange={handleDescChange}
                         />
                     </Box>
                 </Box>
