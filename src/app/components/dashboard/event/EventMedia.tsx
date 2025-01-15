@@ -12,6 +12,7 @@ import Card from '@mui/material/Card';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import VideoCallIcon from '@mui/icons-material/VideoCall';
 import { Document, Page } from 'react-pdf';
 import ReactPlayer from 'react-player';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -176,12 +177,22 @@ const EventMedia = ({ activeStep }) => {
                                 </IconButton>
                             </Box>
                         ) : (
-                            <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                                <AddAPhotoIcon sx={{
-                                    height: '30vh',
-                                    fontSize: '80px',
-                                    color: 'black'
-                                }} />
+                            <IconButton color="primary" component="label" sx={{ marginTop: 4 }}>
+                                <AddAPhotoIcon 
+                                    sx={{
+                                        height: '20vh',
+                                        width: '20vh',
+                                        fontSize: '80px',
+                                        color: 'black',
+                                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)', 
+                                        borderRadius: '8px',
+                                        backgroundColor: 'transparent', 
+                                        transition: 'transform 0.3s', 
+                                        '&:hover': {
+                                            transform: 'scale(1.05)', 
+                                        },
+                                    }}  
+                                />
                                 <input type="file" hidden accept="image/jpeg;image/png;image/gif" onChange={handlePdfUpload} />
                             </IconButton>
                         )}
@@ -209,7 +220,21 @@ const EventMedia = ({ activeStep }) => {
                             </Box>
                         ) : (
                             <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                                <AddAPhoto />
+                                <VideoCallIcon 
+                                    sx={{
+                                        height: '20vh',
+                                        width: '20vh',
+                                        fontSize: '80px',
+                                        color: 'black',
+                                        boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.3)', 
+                                        borderRadius: '8px',
+                                        backgroundColor: 'transparent', 
+                                        transition: 'transform 0.3s', 
+                                        '&:hover': {
+                                            transform: 'scale(1.05)', 
+                                        },
+                                    }}
+                                />
                                 <input type="file" hidden accept="video/mp4" onChange={handleVideoUpload} />
                             </IconButton>
                         )}
