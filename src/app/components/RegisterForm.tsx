@@ -16,9 +16,11 @@ import { useCookies } from 'react-cookie';
 import moment from 'moment';
 import '@/styles/register-form.css';
 import PhoneInput from 'react-phone-input-2';
+import axios from 'axios';
 import 'react-phone-input-2/lib/style.css';
 import PictureAsPdf from '@mui/icons-material/PictureAsPdf';
 import { Close } from '@mui/icons-material';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -52,6 +54,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   });
   const [vatPdf, setVatPdf] = useState('');
   const [tradePdf, setTradePdf] = useState('');
+  const [addressOptions, setAddressOptions] = useState([]);
+  const [addressInputValue, setAddressInputValue] = useState('');
 
   const [formData, setFormData] = useState({
     username: '',
@@ -84,6 +88,22 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+  const fetchAddressSuggestions = async (value) => {
+    if (value.length > 2) {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
+        params: {
+          q: value,
+          format: 'json',
+          addressdetails: 1,
+          limit: 5,
+        },
+      });
+      setAddressOptions(response.data);
+    } else {
+      setAddressOptions([]);
+    }
+  };
 
   const handleInfluencerChange = (event) => {
     setIsInfluencer(event.target.value);
@@ -250,7 +270,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
-};
+  };
 
   return (
     <Box className="container">
@@ -305,15 +325,30 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
           {/* Address Field */}
           <Grid item xs={12} sm={6}>
-            <TextField
-              label={<Typography variant="body1">Address</Typography>}
-              name="address"
-              placeholder="Enter your address"
-              required
-              fullWidth
-              onChange={handleChange}
-              className="custom-input"
-              sx={inputStyles}
+            <Autocomplete
+              freeSolo
+              options={addressOptions.map(option => option?.display_name)}
+              onInputChange={(event, newInputValue) => {
+                setAddressInputValue(newInputValue);
+                fetchAddressSuggestions(newInputValue);
+              }}
+              onChange={(event, newValue) => {
+                setAddressInputValue(newValue);
+                handleChange({ target: { name: 'address', value: newValue } });
+              }}
+              sx={{
+                backgroundColor: 'white',
+                color: 'black'
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Enter your address"
+                  required
+                  fullWidth
+                  variant="outlined"
+                />
+              )}
             />
           </Grid>
 
