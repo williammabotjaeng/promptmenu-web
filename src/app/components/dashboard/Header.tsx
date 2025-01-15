@@ -41,7 +41,7 @@ const Header: React.FC = () => {
         <Box sx={{ display: 'flex', gap: '20px' }}>
           <NotificationDropdown />
           <ProfileDropdown />
-          <Link href="/create-project" passHref>
+          <Link href="/post-event" passHref>
             <Button 
               sx={{ 
                 color: 'black',
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
                 },
               }}
             >
-              Create a Project
+              Post Event
             </Button>
           </Link>
           <Box sx={{
