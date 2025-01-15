@@ -26,6 +26,25 @@ const EventInfo = ({ activeStep }) => {
                             placeholder="Event Title"
                             variant="outlined"
                             value={eventInfo?.title}
+                            sx={{
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                },
+                                "& .MuiInputLabel-root": {
+                                    color: 'black', 
+                                },
+                                "& .MuiInputLabel-root.Mui-focused": {
+                                    color: 'black', 
+                                },
+                            }}
                             onChange={(e) => setEventInfo({ ...eventInfo, title: e.target.value })}
                         />
                     </Box>
@@ -36,6 +55,25 @@ const EventInfo = ({ activeStep }) => {
                             placeholder="Location"
                             variant="outlined"
                             value={eventInfo?.location}
+                            sx={{
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                },
+                                "& .MuiInputLabel-root": {
+                                    color: 'black', 
+                                },
+                                "& .MuiInputLabel-root.Mui-focused": {
+                                    color: 'black', 
+                                },
+                            }}
                             onChange={(e) => setEventInfo({ ...eventInfo, location: e.target.value })}
                         />
                     </Box>
@@ -48,6 +86,25 @@ const EventInfo = ({ activeStep }) => {
                             multiline
                             rows={4}
                             value={eventInfo?.description}
+                            sx={{
+                                "& .MuiOutlinedInput-root": {
+                                    "& fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                    "&:hover fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                    "&.Mui-focused fieldset": {
+                                        borderColor: 'black', 
+                                    },
+                                },
+                                "& .MuiInputLabel-root": {
+                                    color: 'black', 
+                                },
+                                "& .MuiInputLabel-root.Mui-focused": {
+                                    color: 'black', 
+                                },
+                            }}
                             onChange={(e) => setEventInfo({ ...eventInfo, description: e.target.value })}
                         />
                     </Box>
