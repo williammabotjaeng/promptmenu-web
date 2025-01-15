@@ -45,7 +45,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [nationality, setNationality] = useState('');
   const [region, setRegion] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
-  const [cookies, setCookie] = useCookies(['nationality', 'vatPdf', 'tradePdf']);
+  const [cookies, setCookie] = useCookies(['nationality', 'vatPdf', 'tradePdf', 'std_payment_terms']);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
@@ -62,7 +62,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [addressInputValue, setAddressInputValue] = useState('');
 
   const [formData, setFormData] = useState({
-    accept_std_payment_terms: agreement,
+    accept_std_payment_terms: cookies.std_payment_terms,
     accounts_email: '',
     address: '',
     company_name: '',
@@ -111,6 +111,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
 
   const handleAgreementChange = (event: React.ChangeEvent, value: any) => {
     console.log("Agreement Value:", value);
+    setCookie('std_payment_terms', value);
+    console.log(cookies['std_payment_terms']);
     setAgreement(value);
   };
 
