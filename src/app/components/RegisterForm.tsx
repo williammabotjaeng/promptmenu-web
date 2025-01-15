@@ -518,8 +518,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             </Grid>
             <Grid item xs={12} container alignItems="center">
               <RadioGroup row value={agreement} onChange={handleAgreementChange}>
-                <FormControlLabel value="yes" control={<Radio />} label="Agree" />
-                <FormControlLabel value="no" control={<Radio />} label="I do not Agree" />
+                <FormControlLabel value="yes" control={<Radio sx={{
+                  color: '#977342'
+                }} />} label="Agree" />
+                <FormControlLabel value="no" control={<Radio sx={{
+                  color: '#977342'
+                }} />} label="I do not Agree" />
               </RadioGroup>
             </Grid>
         
@@ -530,6 +534,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
               label="If you have your own payment terms, please specify (subject to approval)"
               placeholder="Enter your payment terms"
               fullWidth
+              disabled={agreement === 'yes' ? true : false}
               name="custom_payment_terms"
               onChange={handleChange}
               variant="outlined"
