@@ -32,11 +32,16 @@ const PostEvent: React.FC = () => {
   const handleSubmit = async () => {
     // Implement your submit logic here
     console.log("Event submitted!");
-    router.push('/dashboard'); // Redirect after submission
+    router.push('/dashboard'); 
   };
 
   return (
-    <Box className="event-creation-container" sx={{ width: '100vw' }}>
+    <Box className="event-creation-container" sx={{
+        background: 'linear-gradient(135deg, #977342 0%, #b89a5a 50%, #d1c1a0 100%)',
+        padding: '20px',
+        borderRadius: '8px',
+        height: '100vh'
+    }}>
       <div className="event-creation-content">
         <h2 style={{ color: 'black' }}>{steps[activeStep].title}</h2>
         <p style={{ color: 'black' }}>{steps[activeStep].content}</p>
