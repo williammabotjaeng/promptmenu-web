@@ -344,9 +344,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 <TextField
                   {...params}
                   placeholder="Enter your address"
+                  label={<Typography variant="body1">Address</Typography>}
                   required
                   fullWidth
                   variant="outlined"
+                  className="custom-input"
                 />
               )}
             />
