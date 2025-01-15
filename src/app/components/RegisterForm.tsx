@@ -62,7 +62,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   const [addressInputValue, setAddressInputValue] = useState('');
 
   const [formData, setFormData] = useState({
-    accept_std_payment_terms: JSON.stringify(preferredPaymentMethods),
+    accept_std_payment_terms: '',
     accounts_email: '',
     address: '',
     company_name: '',
@@ -80,7 +80,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
     nationality: '',
     password: '',
     phonenumber: '',
-    preferred_payment_methods: '',
+    preferred_payment_methods: JSON.stringify(preferredPaymentMethods),
     state_province_region: '',
     telephone: phoneNumber,
     trade_license: '',
