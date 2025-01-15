@@ -49,7 +49,18 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
     nationality: '',
     has_accepted: hasAccepted,
     is_influencer: isInfluencer,
-    whatsapp_number: ''
+    whatsapp_number: '',
+    preferred_payment_methods: '',
+    vat_certificate: '',
+    trade_license: '',
+    custom_payment_terms: '',
+    accept_std_payment_terms: '',
+    accounts_email: '',
+    mobile_number: '',
+    job_title: '',
+    contact_person: '',
+    state_province_region: '',
+    company_name: ''
 
   });
 
@@ -109,7 +120,17 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
         String(hasAccepted),
         isInfluencer,
         formData.whatsapp_number,
-
+        formData.preferred_payment_methods,
+        formData.vat_certificate,
+        formData.trade_license,
+        formData.custom_payment_terms,
+        formData.accept_std_payment_terms,
+        formData.accounts_email,
+        formData.mobile_number,
+        formData.job_title,
+        formData.contact_person,
+        formData.state_province_region,
+        formData.company_name
       );
 
       setCurrentUser(formData.username, '');
@@ -144,7 +165,7 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
 
   return (
     <Box className="container">
-      <Typography variant="h1" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Register
       </Typography>
       <form onSubmit={handleSubmit}>
@@ -280,9 +301,9 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
           {/* Phone Number */}
           <Grid item xs={12} sm={6}>
             <TextField
-              label={<Typography variant="body1">Phone Number</Typography>}
+              label={<Typography variant="body1">Moble Number</Typography>}
               name="phonenumber"
-              placeholder="Enter a Valid UAE Phone"
+              placeholder="Enter Mobile Number"
               required
               fullWidth
               inputProps={{
@@ -301,7 +322,6 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
           </Grid>
 
           {/* WhatsApp Number Field (conditional) */}
-          {!useWhatsApp && (
             <Grid item xs={12} sm={6}>
               <TextField
                 label={<Typography variant="body1">WhatsApp Number</Typography>}
@@ -313,10 +333,13 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
                 inputProps={{
                   pattern: "^(?:\\+971|00971|0)(?!2)((?:2|3|4|5|6|7|9|50|51|52|55|56)[0-9]{7,})$"
                 }}
+                sx={{
+                  display: useWhatsApp ? 'none' : 'inline-block'
+                }}
                 className="custom-input"
               />
             </Grid>
-          )}
+          
 
           {/* Password */}
           <Grid item xs={12} sm={6}>
