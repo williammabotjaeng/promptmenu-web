@@ -592,7 +592,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 padding: '4px',
                 height: '50vh'
               }}>
-                <Typography color="black">Trade License</Typography>
+                <Typography variant="body1">Trade License</Typography>
                 {tradePdf ? (
                   <Box display="flex" flexDirection={"column"} alignItems="center">
                     <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
@@ -622,7 +622,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 padding: '4px',
                 height: '50vh'
               }}>
-                <Typography color="black">VAT Certificate</Typography>
+                <Typography variant="body1">VAT Certificate</Typography>
                 {vatPdf ? (
                   <Box display="flex" flexDirection={"column"} alignItems="center">
                     <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
@@ -642,6 +642,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 )}
               </Box>
             </Grid>
+            <Typography variant="body1" sx={{
+              fontStyle: 'italic', 
+              width: '100%',
+              textAlign: 'center',
+              fontSize: '10px'
+            }}>Only Image and PDF Files allowed.</Typography>
           </Grid>
 
           {/* Password */}
