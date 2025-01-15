@@ -1,18 +1,51 @@
 "use client";
 
-import React from 'react';
-import { Box, TextField } from '@mui/material';
-import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
+import React, { useState } from 'react';
+import { Autocomplete, Box, Grid, TextField, Typography } from '@mui/material';
+import useClientOnboardingStore from '@/state/use-client-onboarding-store';
+import axios from 'axios';
 import { useStore } from 'zustand';
+
+const inputStyles = {
+    "& .MuiInputLabel-root.Mui-focused": {
+      display: 'none'
+    },
+    "& .MuiInputLabel-root.Mui-shrink": {
+      display: 'none',
+    },
+};
 
 const EventInfo = ({ activeStep }) => {
     const { eventInfo, setEventInfo } = useStore(useClientOnboardingStore);
+    const [addressOptions, setAddressOptions] = useState([]);
+    const [addressInputValue, setAddressInputValue] = useState('');
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({ ...prevData, [name]: value }));
+    };
+    
+    const fetchAddressSuggestions = async (value) => {
+        if (value.length > 2) {
+          const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
+            params: {
+              q: value,
+              format: 'json',
+              addressdetails: 1,
+              limit: 5,
+            },
+          });
+          setAddressOptions(response.data);
+        } else {
+          setAddressOptions([]);
+        }
+      };
 
     return (
         <>
             {activeStep === 0 && (
-                <Box 
-                    className="w-75 mx-auto" 
+                <Box
+                    className="w-75 mx-auto"
                     sx={{
                         background: 'linear-gradient(135deg, #977342 0%, #b89a5a 50%, #d1c1a0 100%)',
                         padding: '20px',
@@ -29,54 +62,58 @@ const EventInfo = ({ activeStep }) => {
                             sx={{
                                 "& .MuiOutlinedInput-root": {
                                     "& fieldset": {
-                                        borderColor: 'black', 
+                                        borderColor: 'black',
                                     },
                                     "&:hover fieldset": {
-                                        borderColor: 'black', 
+                                        borderColor: 'black',
                                     },
                                     "&.Mui-focused fieldset": {
-                                        borderColor: 'black', 
+                                        borderColor: 'black',
                                     },
                                 },
                                 "& .MuiInputLabel-root": {
-                                    color: 'black', 
+                                    color: 'black',
                                 },
                                 "& .MuiInputLabel-root.Mui-focused": {
-                                    color: 'black', 
+                                    color: 'black',
                                 },
                             }}
                             onChange={(e) => setEventInfo({ ...eventInfo, title: e.target.value })}
                         />
                     </Box>
-                    <Box className="mb-4">
-                        <TextField
-                            fullWidth
-                            label="Location"
-                            placeholder="Location"
-                            variant="outlined"
-                            value={eventInfo?.location}
-                            sx={{
-                                "& .MuiOutlinedInput-root": {
-                                    "& fieldset": {
-                                        borderColor: 'black', 
-                                    },
-                                    "&:hover fieldset": {
-                                        borderColor: 'black', 
-                                    },
-                                    "&.Mui-focused fieldset": {
-                                        borderColor: 'black', 
-                                    },
-                                },
-                                "& .MuiInputLabel-root": {
-                                    color: 'black', 
-                                },
-                                "& .MuiInputLabel-root.Mui-focused": {
-                                    color: 'black', 
-                                },
+                    {/* Address Field */}
+                    <Grid item xs={12} sm={6}>
+                        <Autocomplete
+                            freeSolo
+                            options={addressOptions.map(option => option?.display_name)}
+                            onInputChange={(event, newInputValue) => {
+                                setAddressInputValue(newInputValue);
+                                fetchAddressSuggestions(newInputValue);
                             }}
-                            onChange={(e) => setEventInfo({ ...eventInfo, location: e.target.value })}
+                            onChange={(event, newValue) => {
+                                setAddressInputValue(newValue);
+                                handleChange({ target: { name: 'address', value: newValue } });
+                            }}
+                            sx={{
+                                backgroundColor: 'transparent',
+                                border: '1px solid black',
+                                color: 'black'
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    placeholder="Enter your address"
+                                    label={<Typography variant="body1">Address</Typography>}
+                                    required
+                                    fullWidth
+                                    variant="outlined"
+                                    className="custom-input"
+                                    sx={inputStyles}
+                                />
+                            )}
                         />
-                    </Box>
+                    </Grid>
+                    <br />
                     <Box className="mb-4">
                         <TextField
                             fullWidth
@@ -89,20 +126,20 @@ const EventInfo = ({ activeStep }) => {
                             sx={{
                                 "& .MuiOutlinedInput-root": {
                                     "& fieldset": {
-                                        borderColor: 'black', 
+                                        borderColor: 'black',
                                     },
                                     "&:hover fieldset": {
-                                        borderColor: 'black', 
+                                        borderColor: 'black',
                                     },
                                     "&.Mui-focused fieldset": {
-                                        borderColor: 'black', 
+                                        borderColor: 'black',
                                     },
                                 },
                                 "& .MuiInputLabel-root": {
-                                    color: 'black', 
+                                    color: 'black',
                                 },
                                 "& .MuiInputLabel-root.Mui-focused": {
-                                    color: 'black', 
+                                    color: 'black',
                                 },
                             }}
                             onChange={(e) => setEventInfo({ ...eventInfo, description: e.target.value })}
