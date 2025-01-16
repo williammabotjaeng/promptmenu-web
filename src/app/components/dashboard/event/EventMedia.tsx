@@ -116,7 +116,6 @@ const EventMedia = ({ activeStep }) => {
     };
 
     
-
     return (
         <>
             {activeStep === 1 && (

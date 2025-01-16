@@ -31,7 +31,7 @@ const PostEvent: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        // Implement your submit logic here
+        
         console.log("Event submitted!");
         router.push('/dashboard');
     };
