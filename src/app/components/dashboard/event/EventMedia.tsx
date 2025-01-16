@@ -31,6 +31,8 @@ const EventMedia = ({ activeStep }) => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
+    
+
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
             const files = Array.from(event.target.files);
@@ -113,10 +115,8 @@ const EventMedia = ({ activeStep }) => {
         setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     };
 
-    useEffect(() => {
-        
-    }, [cookies]);
     
+
     return (
         <>
             {activeStep === 1 && (
@@ -143,9 +143,9 @@ const EventMedia = ({ activeStep }) => {
                                 alignItems: 'center',
                                 backgroundColor: 'transparent'
                             }}>
-                                {images.length > 0 ? (
+                                {(images.length > 0 && images[currentImageIndex]  !== '') ? (
                                     <img src={images[currentImageIndex]} style={{ width: '60%', height: '100%', objectFit: 'cover' }} />
-                                ) : <Typography sx={{ marginTop: '60px' }}>No Images uploaded</Typography>}
+                                ) : images.length > 0 ?  (<Typography sx={{ marginTop: '60px' }}>Saved Images Loaded</Typography>) : (<Typography sx={{ marginTop: '60px' }}>No Images uploaded</Typography>)}
                             </Card>
                             <IconButton onClick={prevImage} sx={{ color: 'black', position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)' }}>
                                 <ArrowCircleLeftIcon />
