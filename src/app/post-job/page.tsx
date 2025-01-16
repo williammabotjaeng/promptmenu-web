@@ -1,34 +1,97 @@
 "use client";
 
-import React, { useEffect } from 'react';
-import Header from '@/components/dashboard/Header'; 
-import Footer from '@/components/dashboard/Footer'; 
-import '@/styles/globals.css';
-import DashboardContent from '@/components/dashboard/DashboardContent';
-import { useCookies } from 'react-cookie';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Box } from '@mui/material';
+import EventInfo from '@/components/dashboard/event/EventInfo';
+import EventMedia from '@/components/dashboard/event/EventMedia';
+import EventReview from '@/components/dashboard/event/EventReview';
 
-const PostJob: React.FC = () => {
+const PostEvent: React.FC = () => {
+    const router = useRouter();
+    const [activeStep, setActiveStep] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
 
-  const router = useRouter();
-  const [cookies] = useCookies(['user_role']);
-  
-  const user_role = cookies?.user_role;
+    const steps = [
+        { title: "Step 1: Event Information", content: "Please provide your event information." },
+        { title: "Step 2: Event Media", content: "Upload media related to your event." },
+        { title: "Step 3: Review & Submit", content: "Review your event details and submit." },
+    ];
 
-  useEffect(() => {
-   
-    if (user_role === 'talent') router.push('/portal');
-  }, [])
+    const handleBack = () => {
+        if (activeStep > 0) {
+            setActiveStep(activeStep - 1);
+        }
+    };
 
-  return (
-    <div>
-      <Header />
-      <main style={{ padding: '10px' }}>
-        <DashboardContent />
-      </main>
-      <Footer />
-    </div>
-  );
+    const handleNext = () => {
+        if (activeStep < steps.length - 1) {
+            setActiveStep(activeStep + 1);
+        }
+    };
+
+    const handleSubmit = async () => {
+        
+        console.log("Event submitted!");
+        router.push('/dashboard');
+    };
+
+    return (
+        <Box className="event-creation-container" sx={{
+            background: 'linear-gradient(135deg, #977342 0%, #b89a5a 50%, #d1c1a0 100%)',
+            padding: '20px',
+            borderRadius: '8px',
+            height: '100vh'
+        }}>
+            <div className="event-creation-content">
+                <h2 style={{ color: 'black' }}>{steps[activeStep].title}</h2>
+                <p style={{ color: 'black' }}>{steps[activeStep].content}</p>
+
+                {/* Render input fields based on the active step */}
+                {activeStep === 0 && (
+                    <EventInfo activeStep={activeStep} />
+                )}
+                {activeStep === 1 && (
+                    <EventMedia activeStep={activeStep} />
+                )}
+                {activeStep === 2 && (
+                    <EventReview />
+                )}
+                <br />
+                <br />
+                <div>
+                    {activeStep > 0 && (
+                        <button onClick={handleBack} style={{ marginRight: '10px', backgroundColor: '#000', color: '#977342', borderRadius: '12px' }}>
+                            Back
+                        </button>
+                    )}
+                    {activeStep < steps.length - 1 && (
+                        <button
+                            onClick={handleNext}
+                            onMouseEnter={() => setIsHovered(true)}
+                            onMouseLeave={() => setIsHovered(false)}
+                            style={{
+                                backgroundColor: isHovered ? 'black' : '#977342',
+                                color: isHovered ? '#977342' : '#fff',
+                                borderRadius: '12px',
+                                padding: '10px 20px',
+                                border: 'none',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.3s, color 0.3s',
+                            }}
+                        >
+                            Next
+                        </button>
+                    )}
+                    {activeStep === steps.length - 1 && (
+                        <button onClick={handleSubmit} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
+                            Submit
+                        </button>
+                    )}
+                </div>
+            </div>
+        </Box>
+    );
 };
 
-export default PostJob;
+export default PostEvent;
