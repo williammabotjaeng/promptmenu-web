@@ -60,10 +60,6 @@ const EventInfo = ({ activeStep }) => {
         }
       };
 
-    useEffect(() => {
-        console.log("Address Input", addressInputValue);
-    }, [addressInputValue])
-
     return (
         <>
             {activeStep === 0 && (

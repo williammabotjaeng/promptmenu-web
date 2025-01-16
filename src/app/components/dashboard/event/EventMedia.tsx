@@ -19,11 +19,12 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 const EventMedia = ({ activeStep }) => {
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
-    const [images, setImages] = useState<string[]>([]);
-    const [pdf, setPdf] = useState<string | null>(null);
-    const [posterImage, setPosterImage] = useState('');
-    const [video, setVideo] = useState<string | null>(null);
-    const [cookies, setCookie] = useCookies(['portfolioBlobUrl', 'portfolioVideo', 'portfolioImages', 'posterImage']);
+    
+    const [cookies, setCookie] = useCookies(['eventVideo', 'portfolioImages', 'posterImage']);
+
+    const [images, setImages] = useState<string[]>(Array.from(cookies?.portfolioImages) || ['']);
+    const [posterImage, setPosterImage] = useState(cookies['posterImage'] || '');
+    const [video, setVideo] = useState(cookies?.eventVideo || '');
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -67,24 +68,12 @@ const EventMedia = ({ activeStep }) => {
         setSnackbarOpen(true);
     };
 
-    const handlePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            const file = event.target.files[0];
-            const objectUrl = URL.createObjectURL(file);
-            setPdf(objectUrl);
-            setCookie('portfolioPdf', objectUrl);
-            setSnackbarMessage('PDF Uploaded Successfully');
-            setSnackbarSeverity('success');
-            setSnackbarOpen(true);
-        }
-    };
-
     const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];
             const objectUrl = URL.createObjectURL(file);
             setVideo(objectUrl);
-            setCookie('portfolioVideo', objectUrl);
+            setCookie('eventVideo', objectUrl);
             setSnackbarMessage('Video Uploaded Successfully');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
