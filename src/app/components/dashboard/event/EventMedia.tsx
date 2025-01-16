@@ -141,7 +141,7 @@ const EventMedia = ({ activeStep }) => {
                         <Typography color="white" sx={{
                             backgroundColor: 'black',
                             width: '100%'
-                        }}>Additional Images</Typography>
+                        }}>Event Images</Typography>
                         <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
                             <Card sx={{
                                 height: '80%',
