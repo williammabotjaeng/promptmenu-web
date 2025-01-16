@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Avatar, IconButton, Snackbar, Alert, Button, Typography, ImageListItem, ImageList } from '@mui/material';
 import { AddAPhoto, AddCircle, Close, Delete, PictureAsPdf } from '@mui/icons-material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
@@ -20,11 +20,12 @@ import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 const EventMedia = ({ activeStep }) => {
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
     
-    const [cookies, setCookie] = useCookies(['eventVideo', 'portfolioImages', 'posterImage']);
+    const [cookies, setCookie] = useCookies(['eventVideo', 'eventImages', 'posterImage']);
 
-    const [images, setImages] = useState<string[]>(Array.from(cookies?.portfolioImages) || ['']);
+    const [images, setImages] = useState<string[]>(cookies['eventImages'] ? Array.from(cookies?.eventImages) : ['']);
     const [posterImage, setPosterImage] = useState(cookies['posterImage'] || '');
     const [video, setVideo] = useState(cookies?.eventVideo || '');
+    
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -35,7 +36,7 @@ const EventMedia = ({ activeStep }) => {
             const files = Array.from(event.target.files);
             const newImages = files.map(file => URL.createObjectURL(file));
             setImages(prev => [...prev, ...newImages]);
-            setCookie('portfolioImages', [...images, ...newImages]);
+            setCookie('eventImages', [...images, ...newImages]);
             setSnackbarMessage('Images Uploaded Successfully');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
@@ -62,7 +63,7 @@ const EventMedia = ({ activeStep }) => {
     const handleRemoveImage = () => {
         const updatedImages = images.filter((_, i) => i !== currentImageIndex);
         setImages(updatedImages);
-        setCookie('portfolioImages', updatedImages);
+        setCookie('eventImages', updatedImages);
         setSnackbarMessage('Image Deleted Successfully');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
@@ -82,7 +83,7 @@ const EventMedia = ({ activeStep }) => {
 
     const handleRemoveVideo = () => {
         setVideo(null);
-        setCookie('portfolioVideo', null);
+        setCookie('eventVideo', null);
     };
 
     const handleSave = async () => {
@@ -92,7 +93,7 @@ const EventMedia = ({ activeStep }) => {
             portfolioPdf: pdf,
             portfolioVideo: video,
         }));
-        setSnackbarMessage('Portfolio Saved Successfully');
+        setSnackbarMessage('Event Saved Successfully');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
     };
@@ -112,6 +113,10 @@ const EventMedia = ({ activeStep }) => {
         setCurrentImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     };
 
+    useEffect(() => {
+        
+    }, [cookies]);
+    
     return (
         <>
             {activeStep === 1 && (
