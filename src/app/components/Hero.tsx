@@ -11,7 +11,7 @@ const Hero: React.FC = () => {
         position: 'relative',
         height: '90vh',
         overflow: 'hidden',
-        fontFamily: 'Open Sans',
+        fontFamily: 'Inter',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

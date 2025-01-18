@@ -2,9 +2,8 @@
 @import "@fontsource/raleway/400.css"; 
 @import "@fontsource/raleway/400-italic.css"; 
 
-@import "@fontsource/open-sans";
-@import "@fontsource/open-sans/400.css";
-@import "@fontsource/open-sans/400-italic.css"; 
+@import "@fontsource/inter/400.css"; 
+@import "@fontsource/inter/400-italic.css";
 
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -21,7 +20,7 @@
 
 body {
   margin: 0;
-  font-family: "Open Sans", "Raleway", Arial, sans-serif !important;
+  font-family: "Inter", "Raleway", Arial, sans-serif !important;
   background-color: var(--primary-bg); 
   color: var(--primary-text); 
 }

@@ -173,7 +173,7 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
   };
 
   return (
-    <Box sx={{ maxWidth: '400px', margin: '0 auto', padding: '20px', backgroundColor: 'var(--primary-bg)', color: 'var(--primary-text)', border: '2px solid #977342', borderRadius: '8px', fontFamily: 'Open Sans', outline: '2px solid #977342', outlineOffset: '4px', marginTop: '24px' }}>
+    <Box sx={{ maxWidth: '400px', margin: '0 auto', padding: '20px', backgroundColor: 'var(--primary-bg)', color: 'var(--primary-text)', border: '2px solid #977342', borderRadius: '8px', fontFamily: 'Inter', outline: '2px solid #977342', outlineOffset: '4px', marginTop: '24px' }}>
       <h1 style={{ textAlign: 'center', color: 'var(--dark-gold)' }}>Verify OTP</h1>
       <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '20px' }}>
         <TextField
