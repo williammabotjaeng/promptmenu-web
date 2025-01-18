@@ -37,7 +37,8 @@ const FeaturedTalent: React.FC = () => {
           borderRadius: '20px',
           '&:hover': {
             backgroundColor: '#000',
-            color: '#977342' 
+            color: '#977342',
+            border: '1px solid #977342'
           },
         }}
       >
