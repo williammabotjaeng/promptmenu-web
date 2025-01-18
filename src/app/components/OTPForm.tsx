@@ -85,7 +85,7 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
     setSnackbarOpen(false);
   };
 
-  const saveFileMetadata = async (fileName, s3Url) => {
+  const saveFileMetadata = async (fileName: any, s3Url: any) => {
     try {
       const response = await restCall('/portal/save-file-metadata/', 'POST', {
         file_name: fileName,
