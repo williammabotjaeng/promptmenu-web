@@ -10,7 +10,7 @@ export const Header: React.FC = () => {
   const accessToken = cookies['access'];
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#000', padding: '10px 0', borderBottom: '8px solid #977342' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#000', padding: '10px 0' }}>
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         {/* Logo and Title Section */}
         <Box sx={{ display: 'flex', alignItems: 'center' }}>

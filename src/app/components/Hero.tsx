@@ -1,153 +1,38 @@
 "use client";
 
 import React from 'react';
-import { Box, Button, Grid } from '@mui/material';
-import { motion } from 'framer-motion';
-import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined';
-import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
-import { useRouter } from 'next/navigation';
+import { Box } from '@mui/material';
+import heroBanner from '@/assets/hero-banner.png'; 
 
 const Hero: React.FC = () => {
-  const router = useRouter();
-
-  const handleButtonClick = (type: string) => {
-    router.push(`/register?type=${type}`); 
-  };
-
   return (
     <Box
       sx={{
         position: 'relative',
-        height: '60vh',
+        height: '90vh',
         overflow: 'hidden',
         fontFamily: 'Open Sans',
-        borderBottom: '8px solid #977342',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundImage: `url(${heroBanner.src})`, 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
-      <Grid container sx={{ height: '100%' }}>
-        {/* Left Section */}
-        <Grid item xs={6} sx={{ position: 'relative', overflow: 'hidden' }}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: "linear-gradient(to bottom, #977342, #CEAB76)",
-              zIndex: 1,
-            }}
-          />
-          <Box
-            sx={{
-              position: 'relative',
-              zIndex: 2,
-              padding: '20px',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.2 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
-            >
-              <PersonSearchOutlinedIcon sx={{ fontSize: '172px', color: '#000' }} />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5 }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: '#000',
-                  color: '#977342',
-                  border: '4px solid #977342',
-                  fontSize: '32px',
-                  fontFamily: 'Open Sans',
-                  marginTop: '10px',
-                  fontWeight: '700',
-                  '&:hover': {
-                    backgroundColor: '#CEAB76',
-                    color: '#000',
-                  },
-                }}
-                onClick={() => handleButtonClick('client')} 
-              >
-                Find Talent
-              </Button>
-            </motion.div>
-          </Box>
-        </Grid>
-
-        {/* Right Section */}
-        <Grid item xs={6} sx={{ position: 'relative', overflow: 'hidden' }}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: "linear-gradient(to bottom, #977342, #CEAB76)",
-              zIndex: 1,
-              borderLeft: '4px solid black'
-            }}
-          />
-          <Box
-            sx={{
-              position: 'relative',
-              zIndex: 2,
-              padding: '20px',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.2 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <ContentPasteSearchIcon sx={{ fontSize: '172px', color: '#000' }} />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: '#000',
-                  color: '#977342',
-                  border: '4px solid #977342',
-                  fontSize: '32px',
-                  fontFamily: 'Open Sans',
-                  fontWeight: '700',
-                  marginTop: '10px',
-                  '&:hover': {
-                    backgroundColor: '#CEAB76',
-                    color: '#000',
-                  },
-                }}
-                onClick={() => handleButtonClick('talent')} 
-              >
-                Job Calls
-              </Button>
-            </motion.div>
-          </Box>
-        </Grid>
-      </Grid>
+      {/* Black overlay */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+          zIndex: 1,
+        }}
+      />
+      {/* Content can be added here if needed */}
     </Box>
   );
 };
