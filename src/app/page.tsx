@@ -2,8 +2,9 @@
 
 import { Header } from '@/components/Header';
 import FeaturedTalent from '@/components/FeaturedTalent';
-import ServicesSection from './components/ServicesSection';
-import StatisticsSection from './components/StatisticsSection';
+import ServicesSection from '@/components/ServicesSection';
+import StatisticsSection from '@/components/StatisticsSection';
+import JourneySection from '@/components/JourneySection';
 import { useEffect } from 'react';
 import Hero from '@/components/Hero';
 import '@/styles/globals.css';
@@ -49,6 +50,7 @@ const Home: React.FC = () => {
       <FeaturedTalent />
       <ServicesSection services={services} />
       <StatisticsSection statistics={statistics} />
+      <JourneySection />
       <br />
       <p style={{
         textAlign: 'center'
