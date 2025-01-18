@@ -72,7 +72,7 @@ const Home: React.FC = () => {
       <ServicesSection services={services} />
       <StatisticsSection statistics={statistics} />
       <JourneySection />
-      <Footer quickLinks={quickLinks} contactInfo={contactInfo} socialLinks={socialLinks} />
+      <Footer />
     </>
   );
 };
