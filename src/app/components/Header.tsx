@@ -17,7 +17,7 @@ export const Header: React.FC = () => {
           <Link href={accessToken ? '/dashboard' : '/'} passHref>
             <Image src={SSHGoldLogo} alt="Logo" width={60} height={60} style={{ cursor: 'pointer' }} />
           </Link>
-          <Typography variant="h6" sx={{ color: '#977342', marginLeft: '10px' }}>
+          <Typography variant="h6" sx={{ color: '#977342', marginLeft: '10px', fontWeight: 'bold' }}>
             Staffing Solutions Hub
           </Typography>
         </Box>
