@@ -55,11 +55,11 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
       setTimeout(() => {
 
 
-        if (useUserDataStore?.getState()?.onboarding_presented && useUserDataStore?.getState()?.profile_progress > 0.6) {
+        if (useUserDataStore?.getState()?.onboarding_presented) {
           console.log("Routing option 1");
           const redirectPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/portal';
           router.push(redirectPath);
-        } else if (useUserDataStore?.getState()?.profile_progress < 0.6 && !useUserDataStore?.getState()?.profile_completed) {
+        } else if (useUserDataStore?.getState()?.profile_completed) {
           console.log("Routing option 2");
           const onboardingPath = useUserDataStore?.getState()?.user_role === 'client' ? '/dashboard' : '/talent-onboarding';
           console.log("Redirecting to: ", onboardingPath, "with user role", useUserDataStore?.getState()?.user_role);
