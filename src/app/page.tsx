@@ -5,11 +5,15 @@ import FeaturedTalent from '@/components/FeaturedTalent';
 import ServicesSection from '@/components/ServicesSection';
 import StatisticsSection from '@/components/StatisticsSection';
 import JourneySection from '@/components/JourneySection';
+import Footer from '@/components/Footer';
 import { useEffect } from 'react';
 import Hero from '@/components/Hero';
 import '@/styles/globals.css';
 import { ServiceCardProps } from '@/types/Props/ServiceCardProps';
-import { StatisticProps } from './types/Props/StatisticProps';
+import { StatisticProps } from '@/types/Props/StatisticProps';
+import { SocialLinkProps } from '@/types/Props/SocialLinkProps';
+import { ContactInfoProps } from '@/types/Props/ContactInfoProps';
+import { QuickLinkProps } from '@/types/Props/QuickLinkProps';
 
 const services: ServiceCardProps[] = [
     {
@@ -35,6 +39,23 @@ const statistics: StatisticProps[] = [
   { value: "10+", label: "Years Experience" }
 ];
 
+const quickLinks: QuickLinkProps[] = [
+  { label: "About Us", url: "/about" },
+  { label: "Services", url: "/services" },
+  { label: "Talents", url: "/talents" },
+  { label: "Contact", url: "/contact" }
+];
+
+const contactInfo: ContactInfoProps[] = [
+  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/bd9218bddf10ff4202f017f0da0dd77b751fff6efa58c75c2f7f1d8195f2464e?apiKey=7fae980a988640eea8add1e49a5d542e&", text: "Dubai Media City, UAE", alt: "Location icon" },
+  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/848db9fc87c68681b29840fb17094f6e480c9d600bd326929935bbef800e9af0?apiKey=7fae980a988640eea8add1e49a5d542e&", text: "+971 4 123 4567", alt: "Phone icon" },
+  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/4fa58bbacc4d342ef6cfc871e5d077eac587efbf1733a329c80d04f593df603f?apiKey=7fae980a988640eea8add1e49a5d542e&", text: "info@solutionsstaffinghub.com", alt: "Email icon" }
+];
+
+const socialLinks: SocialLinkProps[] = [
+  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/54b48ce2587af5184710fbdfd924c8c960f07e7e104fa0112c85e634e4d7143c?apiKey=7fae980a988640eea8add1e49a5d542e&", url: "#", alt: "Social media icons" }
+];
+
 const Home: React.FC = () => {
   useEffect(() => {
     const textElement = document.querySelector('.slide-in-text');
@@ -44,18 +65,15 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <Header />
       <Hero />
       <FeaturedTalent />
       <ServicesSection services={services} />
       <StatisticsSection statistics={statistics} />
       <JourneySection />
-      <br />
-      <p style={{
-        textAlign: 'center'
-      }}>&copy; 2025 Staffing Solutions Hub</p>
-    </div>
+      <Footer quickLinks={quickLinks} contactInfo={contactInfo} socialLinks={socialLinks} />
+    </>
   );
 };
 
