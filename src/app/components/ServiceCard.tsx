@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@mui/material';
-import { ServiceCardProps } from '../types';
+import { ServiceCardProps } from '@/types/Props/ServiceCardProps';
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ icon, title, description }) => {
   return (
