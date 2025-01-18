@@ -62,7 +62,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const {
     companyInfo, setCompanyInfo,
     contactInfo, setContactInfo,
-    paymentMethod, setPaymentMethod,
     socialMediaLinks, setSocialMediaLinks
   } = useStore(useClientOnboardingStore);
 
@@ -148,16 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         if (paymentMethodJSON) {
-          setPaymentMethod({
-            payment_method: paymentMethodJSON.payment_method || '',
-            ccNumber: paymentMethodJSON?.ccNumber || '',
-            ccFirstName: paymentMethodJSON?.ccFirstName || '',
-            ccLastName: paymentMethodJSON?.ccLastName || '',
-            ccExpiry: paymentMethodJSON?.ccExpiry || '',
-            ccCVC: paymentMethodJSON?.ccCVC || '',
-            paypalEmail: paymentMethodJSON?.paypalEmail || '',
-            stripeDetails: paymentMethodJSON?.stripeDetails || '',
-          });
+          
         }
 
         setSocialMediaLinks({
@@ -190,15 +180,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         // Set government ID if available
-        setGovernmentID(talentProfile.government_id || null);
+        // setGovernmentID(talentProfile.government_id || null);
 
         // Set bank details if available
-        setBankDetails({
-          bankName: talentProfile.banking_details?.bankName || '',
-          accountNumber: talentProfile.banking_details?.accountNumber || '',
-          iban: talentProfile.banking_details?.iban || '',
-          accountHolderName: talentProfile.banking_details?.accountHolderName || '',
-        });
+        // setBankDetails({
+        //   bankName: talentProfile.banking_details?.bankName || '',
+        //   accountNumber: talentProfile.banking_details?.accountNumber || '',
+        //   iban: talentProfile.banking_details?.iban || '',
+        //   accountHolderName: talentProfile.banking_details?.accountHolderName || '',
+        // });
 
         // Set profile socials
         setProfileSocials({
@@ -352,16 +342,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Payment Methods
         if (paymentMethodJSON) {
-          setPaymentMethods({
-            payment_method: paymentMethodJSON.payment_method || '',
-            ccNumber: paymentMethodJSON?.ccNumber || '',
-            ccFirstName: paymentMethodJSON?.ccFirstName || '',
-            ccLastName: paymentMethodJSON?.ccLastName || '',
-            ccExpiry: paymentMethodJSON?.ccExpiry || '',
-            ccCVC: paymentMethodJSON?.ccCVC || '',
-            paypalEmail: paymentMethodJSON?.paypalEmail || '',
-            stripeDetails: paymentMethodJSON?.stripeDetails || '',
-          });
+          
         }
 
         // Set physical attributes
@@ -372,15 +353,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         // Set government ID if available
-        setGovernmentID(talentProfile.government_id || null);
+        // setGovernmentID(talentProfile.government_id || null);
 
         // Set bank details if available
-        setBankDetails({
-          bankName: talentProfile.banking_details?.bankName || '',
-          accountNumber: talentProfile.banking_details?.accountNumber || '',
-          iban: talentProfile.banking_details?.iban || '',
-          accountHolderName: talentProfile.banking_details?.accountHolderName || '',
-        });
+        // setBankDetails({
+        //   bankName: talentProfile.banking_details?.bankName || '',
+        //   accountNumber: talentProfile.banking_details?.accountNumber || '',
+        //   iban: talentProfile.banking_details?.iban || '',
+        //   accountHolderName: talentProfile.banking_details?.accountHolderName || '',
+        // });
 
         // Set profile socials
         setProfileSocials({

@@ -141,9 +141,6 @@ const PersonalInformation = ({ activeStep }) => {
                                     label="Date of Birth"
                                     value={formData.date_of_birth}
                                     onChange={handleDateChange}
-                                    renderInput={(params) => (
-                                        <TextField {...params} fullWidth variant="outlined" />
-                                    )}
                                 />
                             </LocalizationProvider>
                         </Grid>
@@ -173,7 +170,7 @@ const PersonalInformation = ({ activeStep }) => {
                         onClose={handleSnackbarClose}
                         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                     >
-                        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+                        <Alert onClose={handleSnackbarClose} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
                             {snackbarMessage}
                         </Alert>
                     </Snackbar>

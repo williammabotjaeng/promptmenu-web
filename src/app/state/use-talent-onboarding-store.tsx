@@ -86,6 +86,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         verification_notification_sent: false,
         created_at: '',
         updated_at: '',
+        website: '',
+        social_media_links: undefined
     },
     setPersonalInfo: (data) => set({ personalInfo: data }),
     setPhysicalAttributes: (data) => set({ physicalAttributes: data }),
@@ -152,6 +154,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
             verification_notification_sent: false,
             created_at: '',
             updated_at: '',
+            website: '',
+            social_media_links: undefined
         },
     }),
 }));

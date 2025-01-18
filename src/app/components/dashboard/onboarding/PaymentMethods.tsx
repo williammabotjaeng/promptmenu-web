@@ -12,13 +12,13 @@ const PaymentMethods = ({ activeStep }) => {
     
     const [paymentMethodTab, setPaymentMethodTab] = useState(paymentMethods?.payment_method || "creditCard");
     const [paymentDetails, setPaymentDetails] = useState({
-        ccNumber: paymentMethod?.ccNumber || '',
-        ccFirstName: paymentMethod?.ccFirstName || '',
-        ccLastName: paymentMethod?.ccLastName || '',
-        ccExpiry: paymentMethod?.ccExpiry || '',
-        ccCVC: paymentMethod?.ccCVC || '',
-        paypalEmail: paymentMethod?.paypalEmail || '',
-        stripeDetails: paymentMethod?.stripeDetails || ''
+        ccNumber: paymentMethods?.ccNumber || '',
+        ccFirstName: paymentMethods?.ccFirstName || '',
+        ccLastName: paymentMethods?.ccLastName || '',
+        ccExpiry: paymentMethods?.ccExpiry || '',
+        ccCVC: paymentMethods?.ccCVC || '',
+        paypalEmail: paymentMethods?.paypalEmail || '',
+        stripeDetails: paymentMethods?.stripeDetails || ''
     });
 
     useEffect(() => {

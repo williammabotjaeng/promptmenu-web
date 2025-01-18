@@ -32,7 +32,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     <NextShield
       isAuth={!!accessToken} 
       isLoading={false} 
-      router={router}
+      router={null}
       privateRoutes={['/dashboard', '/portal', '/client-onboarding', '/talent-onboarding']} 
       publicRoutes={['/', '/login', '/register', '/otp']}
       hybridRoutes={['/contact']} 

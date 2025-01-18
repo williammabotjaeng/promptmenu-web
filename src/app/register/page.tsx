@@ -12,14 +12,16 @@ import '@/styles/globals.css';
 
 const Register: React.FC = () => {
   const { register } = useAuth();
-  const router = useRouter();
+  // const router = useRouter();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
   // Extract user_role from query parameters
-  const searchParams = useSearchParams();
-  const userRole = searchParams?.get('type');
+  // const searchParams = useSearchParams();
+  // const userRole = searchParams?.get('type');
+
+  const userRole = 'client';
 
   useEffect(() => {
     const textElement = document.querySelector('.slide-in-text');
@@ -35,7 +37,7 @@ const Register: React.FC = () => {
   return (
     <div>
       <Header />
-      {userRole === 'talent' ? (
+      {userRole === 'client' ? (
         <RegisterFormTalent userRole={userRole} />
       ) : (
         <RegisterForm userRole={userRole} />
@@ -50,7 +52,7 @@ const Register: React.FC = () => {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+        <Alert onClose={handleSnackbarClose}  sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

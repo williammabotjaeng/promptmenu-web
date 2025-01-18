@@ -128,14 +128,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   };
 
   const handlePreferredPaymentMethodChange = (event: React.ChangeEvent, value: any) => {
-    console.log("Payment Method:", value);
-    console.log("Event Value:", event.target.name);
-    let name = event.target.name;
-    console.log("Payment Values", {...preferredPaymentMethods})
-    setPreferredPaymentMethods((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    
   };
 
   const handleMobileChange = (e) => {
@@ -172,8 +165,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
   };
 
   const { register } = useAuth();
-
-  const { setCurrentUser } = useStore(useUserStore);
 
   const [useWhatsApp, setUseWhatsApp] = useState(true);
 
@@ -220,7 +211,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
         formData.telephone
       );
 
-      setCurrentUser(formData.username, '');
       setCookie('nationality', nationality);
 
       // Show success message and redirect to login
@@ -351,7 +341,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
                 }}
                 onChange={(event, newValue) => {
                   setAddressInputValue(newValue);
-                  handleChange({ target: { name: 'address', value: newValue } });
                 }}
                 sx={{
                   backgroundColor: 'white',
@@ -748,7 +737,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
             {/* Submit Button */}
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
+                control={<Checkbox value={hasAccepted} color="success" sx={{
                   color: 'white'
                 }} className="custom-input" />}
                 label={
@@ -776,7 +765,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
           onClose={handleSnackbarClose}
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         >
-          <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+          <Alert onClose={handleSnackbarClose}  sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
             {snackbarMessage}
           </Alert>
         </Snackbar>

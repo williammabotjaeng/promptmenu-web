@@ -9,11 +9,11 @@ const SocialMediaLinks = ({ activeStep }) => {
     const { socialMediaLinks, setSocialMediaLinks } = useStore(useClientOnboardingStore);
 
     // Create refs for each input
-    const websiteRef = useRef();
-    const twitterRef = useRef();
-    const facebookRef = useRef();
-    const instagramRef = useRef();
-    const linkedinRef = useRef();
+    const websiteRef = useRef(null);
+    const twitterRef = useRef(null);
+    const facebookRef = useRef(null);
+    const instagramRef = useRef(null);
+    const linkedinRef = useRef(null);
 
     const handleSave = () => {
         setSocialMediaLinks({

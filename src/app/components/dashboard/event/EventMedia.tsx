@@ -88,18 +88,7 @@ const EventMedia = ({ activeStep }) => {
         setCookie('eventVideo', null);
     };
 
-    const handleSave = async () => {
-        setTalentData((prev: TalentProfileData) => ({
-            ...prev,
-            portfolioImages: images,
-            portfolioPdf: pdf,
-            portfolioVideo: video,
-        }));
-        setSnackbarMessage('Event Saved Successfully');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
-    };
-
+    
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
     };
@@ -272,7 +261,7 @@ const EventMedia = ({ activeStep }) => {
 
             <Button
                 variant="contained"
-                onClick={handleSave}
+                onClick={() => console.log("Button clicked!")}
                 sx={{
                     marginTop: 2, backgroundColor: '#000', color: '#977342', position: 'absolute',
                     top: '16px',
@@ -293,7 +282,7 @@ const EventMedia = ({ activeStep }) => {
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+                <Alert onClose={handleSnackbarClose} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>

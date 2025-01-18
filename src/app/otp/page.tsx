@@ -39,7 +39,7 @@ const OTP: React.FC = () => {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+        <Alert onClose={handleSnackbarClose}  sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

@@ -72,7 +72,7 @@ const EventReview = () => {
                             <>
                                 <Card sx={{ width: { xs: '100%', sm: '80%', md: '60%' }, height: '300px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                                     <img
-                                        src={eventImages[currentImageIndex]}
+                                        src={String(eventImages[currentImageIndex])}
                                         alt={`Event Image ${currentImageIndex + 1}`}
                                         style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
                                     />

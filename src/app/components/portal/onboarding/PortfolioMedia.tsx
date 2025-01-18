@@ -80,17 +80,6 @@ const PortfolioMedia = ({ activeStep }) => {
         setCookie('portfolioVideo', null);
     };
 
-    const handleSave = async () => {
-        setTalentData((prev: TalentProfileData) => ({
-            ...prev,
-            portfolioImages: images,
-            portfolioPdf: pdf,
-            portfolioVideo: video,
-        }));
-        setSnackbarMessage('Portfolio Saved Successfully');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
-    };
 
     const handleSnackbarClose = () => {
         setSnackbarOpen(false);
@@ -216,7 +205,7 @@ const PortfolioMedia = ({ activeStep }) => {
 
             <Button
                 variant="contained"
-                onClick={handleSave}
+                onClick={() => console.log("upload")}
                 sx={{
                     marginTop: 2, backgroundColor: '#000', color: '#977342', position: 'absolute',
                     top: '16px',
@@ -237,7 +226,7 @@ const PortfolioMedia = ({ activeStep }) => {
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+                <Alert onClose={handleSnackbarClose}  sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>

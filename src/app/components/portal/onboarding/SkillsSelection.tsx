@@ -33,39 +33,11 @@ const SkillsSelection = ({ activeStep }) => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
-    // Load saved skills from cookies when the component mounts
-    useEffect(() => {
-        const savedSkills = cookies.skills ? Array.from(cookies.skills) : [];
-        setSelectedSkills(savedSkills);
-        setTalentData((prev) => ({
-            ...prev,
-            skills: savedSkills,
-        }));
-    }, [cookies.skills, setTalentData]);
-
     const handleSkillClick = (skill: string) => {
         if (selectedSkills.includes(skill)) {
             setSelectedSkills(selectedSkills.filter((s) => s !== skill));
         } else {
             setSelectedSkills([...selectedSkills, skill]);
-        }
-    };
-
-    const handleSave = () => {
-        try {
-            setCookie('skills', JSON.stringify(selectedSkills), { path: '/' });
-            setTalentData((prev) => ({
-                ...prev,
-                skills: [...selectedSkills],
-            }));
-            setSnackbarMessage('Skills saved successfully!');
-            setSnackbarSeverity('success');
-        } catch (error) {
-            console.error("Error saving skills:", error);
-            setSnackbarMessage('Error saving skills.');
-            setSnackbarSeverity('error');
-        } finally {
-            setSnackbarOpen(true);
         }
     };
 
@@ -104,7 +76,7 @@ const SkillsSelection = ({ activeStep }) => {
             </Grid>
             <Button
                 variant="contained"
-                onClick={handleSave}
+                onClick={() => console.log("upload")}
                 sx={{
                     backgroundColor: 'black',
                     color: '#977342',
@@ -127,7 +99,7 @@ const SkillsSelection = ({ activeStep }) => {
                 onClose={handleSnackbarClose}
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             >
-                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', backgroundColor: 'black', color: '#977342' }}>
+                <Alert onClose={handleSnackbarClose}  sx={{ width: '100%', backgroundColor: 'black', color: '#977342' }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>

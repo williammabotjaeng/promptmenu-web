@@ -38,19 +38,6 @@ const HeadshotUploader = ({ activeStep }) => {
     }
   };
 
-  const handleSave = () => {
-    if (headshot) {
-      setTalentData((prev: TalentProfileData) => ({ ...prev, headshot: headshot }));
-      console.log("Headshot Value", {...talentData});
-      setSnackbarMessage('Headshot Saved Successfully');
-      setSnackbarSeverity('success');
-    } else {
-      setSnackbarMessage('No Headshot to Save');
-      setSnackbarSeverity('error');
-    }
-    setSnackbarOpen(true);
-  };
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -69,7 +56,7 @@ const HeadshotUploader = ({ activeStep }) => {
       </IconButton>
       <Button
         variant="contained"
-        onClick={handleSave}
+        onClick={() => console.log("upload")}
         sx={{ marginTop: 2, backgroundColor: '#000', color: '#977342', '&:hover': {
                   backgroundColor: '#CEAB76', 
                   color: '#000', 
@@ -86,7 +73,7 @@ const HeadshotUploader = ({ activeStep }) => {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+        <Alert onClose={handleSnackbarClose} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

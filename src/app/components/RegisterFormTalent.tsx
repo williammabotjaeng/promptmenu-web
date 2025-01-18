@@ -104,8 +104,6 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
 
   const { register } = useAuth();
 
-  const { setCurrentUser } = useStore(useUserStore);
-
   const [useWhatsApp, setUseWhatsApp] = useState(true);
 
   const handleWhatsAppChange = (event: any) => {
@@ -128,6 +126,7 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
         formData.password,
         formData.email,
         formattedDate,
+        null,
         userRole,
         formData.firstname,
         formData.lastname,
@@ -150,7 +149,6 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
         formData.company_name
       );
 
-      setCurrentUser(formData.username, '');
       setCookie('nationality', nationality);
 
       // Show success message and redirect to login
@@ -432,7 +430,7 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
           {/* Submit Button */}
           <Grid item xs={12}>
             <FormControlLabel
-              control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
+              control={<Checkbox value={hasAccepted} color="success" sx={{
                 color: 'white'
               }} className="custom-input" />}
               label={
@@ -459,7 +457,7 @@ const RegisterFormTalent: React.FC<RegisterFormTalentProps> = ({ userRole }) => 
         autoHideDuration={6000}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity={snackbarSeverity} sx={{ width: '100%' }}>
+        <Alert  sx={{ width: '100%' }}>
           <Typography variant="body1">{snackbarMessage}</Typography>
         </Alert>
       </Snackbar>

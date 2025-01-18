@@ -102,7 +102,7 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
     }
   };
 
-  const uploadToS3 = async (blob, fileName) => {
+  const uploadToS3 = async (blob: Blob, fileName: string) => {
     const fileType = blob.type;
     try {
       const response = await restCall(`/portal/generate-presigned-url/?file_name=${fileName}&file_type=${fileType}`, 'GET', {}, accessToken);
@@ -236,7 +236,7 @@ const OTPForm: React.FC<{ username: string }> = ({ username }) => {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+        <Alert onClose={handleSnackbarClose}  sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>

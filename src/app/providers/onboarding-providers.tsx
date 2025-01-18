@@ -51,11 +51,11 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const {
     setCompanyInfo,
     setContactInfo,
-    setPaymentMethod,
+    // setPaymentMethod,
     setSocialMediaLinks,
     companyInfo,
     contactInfo,
-    paymentMethod,
+    // paymentMethod,
     socialMediaLinks
   } = useStore(useClientOnboardingStore);
 
@@ -75,7 +75,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     address: contactInfo?.address,
     phone_number: contactInfo?.phone_number,
     whatsapp_number: contactInfo?.whatsapp_number,
-    payment_method: JSON.stringify(paymentMethod),
+    // payment_method: JSON.stringify(paymentMethod),
     website: socialMediaLinks?.website,
     social_media_links: {
       facebook: socialMediaLinks?.social_media_links?.facebook,

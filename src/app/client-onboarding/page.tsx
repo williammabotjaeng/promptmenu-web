@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie';
 import { useOnboarding } from '@/providers/onboarding-providers';
 import { Box } from '@mui/material';
 import { Grid, TextField } from '@mui/material';
-import PaymentMethod from '@/components/portal/onboarding/PaymentMethods';
+import PaymentMethod from '@/components/dashboard/onboarding/PaymentMethods';
 import CompanyInfo from '@/components/dashboard/onboarding/CompanyInfo';
 import AddressAndContactInfo from '@/components/dashboard/onboarding/AddressContactInfo';
 import SocialMediaLinks from '@/components/dashboard/onboarding/SocialMediaLinks';

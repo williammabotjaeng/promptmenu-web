@@ -7,7 +7,6 @@ import { OnboardingProvider } from "@/providers/onboarding-providers";
 import { CompanyProvider } from '@/providers/company-provider';
 import { TalentProfileProvider } from "@/providers/talent-profile-provider";
 import { EventProvider } from "@/providers/event-provider";
-import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -36,11 +35,9 @@ export default function RootLayout({
             <EventProvider>
               <TalentProfileProvider>
                 <AuthProvider>
-                  <ProtectedRoutes>
                     <OnboardingProvider>
                       {children}
                     </OnboardingProvider>
-                  </ProtectedRoutes>
                 </AuthProvider>
               </TalentProfileProvider>
             </EventProvider>

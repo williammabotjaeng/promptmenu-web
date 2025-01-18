@@ -3,9 +3,10 @@
 import React from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
+import { useStore } from 'zustand';
 
 const CompanyReview = () => {
-    const { contactInfo, companyInfo, paymentMethod, socialMediaLinks } = useClientOnboardingStore.getState();
+    const { contactInfo, companyInfo, socialMediaLinks } = useStore(useClientOnboardingStore);
 
     const hasSocialMediaLinks = Object.values(socialMediaLinks?.social_media_links).some(link => link);
     const hasContactDetails = contactInfo.address || contactInfo.phone_number || contactInfo.whatsapp_number;
@@ -21,7 +22,7 @@ const CompanyReview = () => {
             <Grid container mt={2}>
                 <Grid item xs={12} sm={6}>
                     <Typography variant="h6" style={{ color: 'black' }}>Payment Method:</Typography>
-                    <Typography style={{ color: 'black' }}>{paymentMethod.payment_method || 'N/A'}</Typography>
+                    <Typography style={{ color: 'black' }}>{'N/A'}</Typography>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Typography variant="h6" style={{ color: 'black' }}>Social Media:</Typography>
