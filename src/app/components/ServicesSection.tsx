@@ -28,10 +28,10 @@ const ServicesSection = ({ services }) => {
         }}
       >
         <Box sx={{ zIndex: 10, textAlign: 'center' }}>
-          <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: 'white' }}>
+          <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: 'white', fontSize: '36px' }}>
             Our
-          </Typography>&nbsp;
-          <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: 'stone.500' }}>
+          </Typography>&nbsp;&nbsp;
+          <Typography variant="h4" component="span" sx={{ fontWeight: 'bold', color: 'stone.500', fontSize: '36px' }}>
             Services
           </Typography>
         </Box>
