@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import Header from '@/components/Header';
+import { Header } from '@/components/Header';
 import OTPForm from '@/components/OTPForm';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 

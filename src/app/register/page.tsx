@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Header from '@/components/Header';
+import { Header } from '@/components/Header';
 import RegisterForm from '@/components/RegisterForm';
 import RegisterFormTalent from '@/components/RegisterFormTalent';
 import Snackbar from '@mui/material/Snackbar'; 

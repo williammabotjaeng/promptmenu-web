@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import Header from '@/components/dashboard/Header'; 
+import { Header } from '@/components/dashboard/Header'; 
 import Footer from '@/components/dashboard/Footer'; 
 import '@/styles/globals.css';
 import DashboardContent from '@/components/dashboard/DashboardContent';
