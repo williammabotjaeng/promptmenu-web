@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from 'react';
-import { Header } from '@/components/portal/Header'; 
+import Header from '@/components/portal/Header'; 
 import Footer from '@/components/portal/Footer'; 
 import '@/styles/globals.css';
 import PortalContent from '@/components/portal/PortalContent';
