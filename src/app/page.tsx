@@ -3,10 +3,12 @@
 import { Header } from '@/components/Header';
 import FeaturedTalent from '@/components/FeaturedTalent';
 import ServicesSection from './components/ServicesSection';
+import StatisticsSection from './components/StatisticsSection';
 import { useEffect } from 'react';
 import Hero from '@/components/Hero';
 import '@/styles/globals.css';
 import { ServiceCardProps } from '@/types/Props/ServiceCardProps';
+import { StatisticProps } from './types/Props/StatisticProps';
 
 const services: ServiceCardProps[] = [
     {
@@ -26,6 +28,12 @@ const services: ServiceCardProps[] = [
     }
 ];
 
+const statistics: StatisticProps[] = [
+  { value: "500+", label: "Active Talents" },
+  { value: "1000+", label: "Projects Completed" },
+  { value: "10+", label: "Years Experience" }
+];
+
 const Home: React.FC = () => {
   useEffect(() => {
     const textElement = document.querySelector('.slide-in-text');
@@ -40,6 +48,7 @@ const Home: React.FC = () => {
       <Hero />
       <FeaturedTalent />
       <ServicesSection services={services} />
+      <StatisticsSection statistics={statistics} />
       <br />
       <p style={{
         textAlign: 'center'
