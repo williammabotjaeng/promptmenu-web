@@ -8,7 +8,7 @@ const JourneySection = () => {
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
-        padding: 10, 
+        padding: 12, 
         marginTop: 3, 
         width: '100%', 
         textAlign: 'center', 
