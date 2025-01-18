@@ -3,21 +3,20 @@
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import Image from 'next/image';
-
-const featuredTalent = '@/assets/featured-talent.png';
+import featuredTalent from '@/assets/featured-talent.png'; 
 
 const FeaturedTalent: React.FC = () => {
   return (
-    <Box sx={{ textAlign: 'center', mt: { xs: 10, md: 20 } }}>
-      <Typography variant="h2" sx={{ fontWeight: 'bold', color: '#6B7280' }}>
+    <Box sx={{ textAlign: 'center', mt: { xs: 2, md: 6 } }}>
+      <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342' }}>
         Featured
         <span style={{ color: '#fff' }}> Talents</span>
       </Typography>
 
-      <Box sx={{ mt: 4 }}>
+      <Box>
         <Image
           loading="lazy"
-          src={featuredTalent?.src}
+          src={featuredTalent} 
           alt="Featured talents showcase"
           layout="responsive"
           width={1248}
@@ -34,10 +33,11 @@ const FeaturedTalent: React.FC = () => {
           py: 2,
           fontSize: '1rem',
           color: '#fff',
-          backgroundColor: '#6B7280',
+          backgroundColor: '#977342',
           borderRadius: '20px',
           '&:hover': {
-            backgroundColor: '#4B5563', 
+            backgroundColor: '#000',
+            color: '#977342' 
           },
         }}
       >
