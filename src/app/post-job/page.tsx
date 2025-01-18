@@ -7,7 +7,7 @@ import EventInfo from '@/components/dashboard/event/EventInfo';
 import EventMedia from '@/components/dashboard/event/EventMedia';
 import EventReview from '@/components/dashboard/event/EventReview';
 
-const PostEvent: React.FC = () => {
+const PostJob: React.FC = () => {
     const router = useRouter();
     const [activeStep, setActiveStep] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
@@ -94,4 +94,4 @@ const PostEvent: React.FC = () => {
     );
 };
 
-export default PostEvent;
+export default PostJob;
