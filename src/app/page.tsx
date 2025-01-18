@@ -1,6 +1,7 @@
 "use client";
 
 import { Header } from '@/components/Header';
+import FeaturedTalent from '@/components/FeaturedTalent';
 import { useEffect } from 'react';
 import Hero from '@/components/Hero';
 import '@/styles/globals.css';
@@ -17,6 +18,7 @@ const Home: React.FC = () => {
     <div>
       <Header />
       <Hero />
+      <FeaturedTalent />
       <br />
       <p style={{
         textAlign: 'center'

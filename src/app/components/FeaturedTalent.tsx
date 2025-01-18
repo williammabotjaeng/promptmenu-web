@@ -4,6 +4,8 @@ import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import Image from 'next/image';
 
+const featuredTalent = '@/assets/featured-talent.png';
+
 const FeaturedTalent: React.FC = () => {
   return (
     <Box sx={{ textAlign: 'center', mt: { xs: 10, md: 20 } }}>
@@ -15,7 +17,7 @@ const FeaturedTalent: React.FC = () => {
       <Box sx={{ mt: 4 }}>
         <Image
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/36b1071481b0541035a1d234baa0d2f060981205449c1b10102d41a27cc7dcad?apiKey=7fae980a988640eea8add1e49a5d542e&"
+          src={featuredTalent?.src}
           alt="Featured talents showcase"
           layout="responsive"
           width={1248}
