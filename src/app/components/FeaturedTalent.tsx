@@ -9,12 +9,13 @@ import featuredTalentRight from '@/assets/featured-talent-right.png';
 
 const FeaturedTalent: React.FC = () => {
   return (
-    <Box sx={{ textAlign: 'center', mt: { xs: 2, md: 6 } }}>
+    <Box sx={{ textAlign: 'center', mt: { xs: 2, md: 6 }, height: '100%' }}>
+      <br />
       <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342' }}>
         Featured
         <span style={{ color: '#fff' }}> Talents</span>
       </Typography>
-
+      <br />
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: '32px', flexWrap: 'wrap' }}>
         {/* Image 1 */}
         <Box sx={{ borderRadius: '10px', overflow: 'hidden' }}>
@@ -23,7 +24,7 @@ const FeaturedTalent: React.FC = () => {
             src={featuredTalentLeft}
             alt="Featured talents showcase 1"
             layout="responsive"
-            width={400} 
+            width={450} 
             height={250} 
             style={{ objectFit: 'contain' }}
           />
@@ -36,7 +37,7 @@ const FeaturedTalent: React.FC = () => {
             src={featuredTalentCenter}
             alt="Featured talents showcase 2"
             layout="responsive"
-            width={400}
+            width={450}
             height={250}
             style={{ objectFit: 'contain' }}
           />
@@ -49,13 +50,14 @@ const FeaturedTalent: React.FC = () => {
             src={featuredTalentRight}
             alt="Featured talents showcase 3"
             layout="responsive"
-            width={400}
+            width={450}
             height={250}
             style={{ objectFit: 'contain' }}
           />
         </Box>
       </Box>
-
+      <br />
+      <br />
       <Button
         variant="contained"
         sx={{
@@ -75,6 +77,8 @@ const FeaturedTalent: React.FC = () => {
       >
         View All Talents
       </Button>
+      <br />
+      <br />
     </Box>
   );
 };
