@@ -37,15 +37,14 @@ const TalentOnboarding: React.FC = () => {
   const accessToken = cookies?.access;
 
   const steps = [
-    { title: 'Step 1: Personal Information', content: 'Please provide your personal details.' },
-    { title: 'Step 2: Headshot', content: 'Upload a headshot photo.' },
-    { title: 'Step 3: Skills', content: 'Select your skills from the list below.' },
-    { title: 'Step 4: Physical Attributes', content: 'Provide your physical attributes.' },
-    { title: 'Step 5: Identification and Credentials', content: 'Upload your government ID and banking details.' },
-    { title: 'Step 6: Social Media & Online', content: '' },
-    { title: 'Step 7: Portfolio & Media', content: 'Upload PDF Portfolio, Images and Video' },
-    { title: 'Step 8: Review', content: 'Review your information.' },
-    { title: 'Step 9: Submit', content: 'Submit your information.' },
+    { title: 'Step 1: Headshot', content: 'Upload a headshot photo.' },
+    { title: 'Step 2: Skills', content: 'Select your skills from the list below.' },
+    { title: 'Step 3: Physical Attributes', content: 'Provide your physical attributes.' },
+    { title: 'Step 4: Identification and Credentials', content: 'Upload your government ID and banking details.' },
+    { title: 'Step 5: Social Media & Online', content: '' },
+    { title: 'Step 6: Portfolio & Media', content: 'Upload PDF Portfolio, Images and Video' },
+    { title: 'Step 7: Review', content: 'Review your information.' },
+    { title: 'Step 8: Submit', content: 'Submit your information.' },
   ];
 
 
@@ -162,69 +161,34 @@ const TalentOnboarding: React.FC = () => {
   const uploadHeadshot = () => uploadFiles([cookies.headshotBlobUrl], 'headshot');
 
   return (
-    <Box className="onboarding-container" sx={{ width: '100vw' }}>
-      <div className="onboarding-content">
-        <Typography variant="h2" style={{ color: 'black' }}>
-          {steps[activeStep].title}
-        </Typography>
-        <Typography variant="body1" style={{ color: 'black' }}>
-          {steps[activeStep].content}
-        </Typography>
-
+    <Box sx={{ width: '100vw', backgroundColor: 'black' }}>
         {activeStep === 0 && (
-          <PersonalInformation activeStep={activeStep} />
+          <HeadshotUploader />
         )}
 
         {activeStep === 1 && (
-          <HeadshotUploader activeStep={activeStep} />
-        )}
-
-        {activeStep === 2 && (
           <SkillsSelection activeStep={activeStep} />
         )}
 
-        {activeStep === 3 && (
+        {activeStep === 2 && (
           <PhysicalAttributes activeStep={activeStep} />
         )}
 
-        {activeStep === 4 && (
+        {activeStep === 3 && (
           <IDandCreds activeStep={activeStep} />
         )}
 
-        {activeStep === 5 && (
+        {activeStep === 4 && (
           <SocialMediaLinks activeStep={activeStep} />
         )}
 
-        {activeStep === 6 && (
+        {activeStep === 5 && (
           <PortfolioMedia activeStep={activeStep} />
         )}
 
-        {activeStep === 7 && (
+        {activeStep === 6 && (
           <ProfileReview />
         )}
-
-        <div>
-          <br /><br />
-          {activeStep > 0 && (
-            <Button onClick={handleBack} style={{ marginRight: '10px', backgroundColor: '#000', color: '#977342', borderRadius: '12px' }}>
-              Back
-            </Button>
-          )}
-          {activeStep < steps.length - 1 && (
-            <Button onClick={handleNext} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
-              Next
-            </Button>
-          )}
-          {activeStep === steps.length - 1 && (
-            <Button onClick={handleSubmit} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
-              Submit
-            </Button>
-          )}
-          <Button onClick={handleSkip} style={{ marginLeft: '10px', backgroundColor: '#000', color: '#977342', borderRadius: '12px' }}>
-            Skip this for now
-          </Button>
-        </div>
-      </div>
     </Box>
   );
 };
