@@ -110,7 +110,7 @@ const Portal = () => {
                 <StatCard key={index} {...stat} />
               ))}
             </Box>
-
+           
             <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
@@ -124,7 +124,7 @@ const Portal = () => {
                 </Button>
               </CardContent>
             </Card>
-
+            
             <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Upcoming Auditions</Typography>
