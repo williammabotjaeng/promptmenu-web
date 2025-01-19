@@ -64,7 +64,7 @@ const Portal = () => {
     <Box className=".boundary" sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
         <Sticky boundaryElement=".boundary">
-          <Box sx={{ width: '21%', backgroundColor: 'transparent' }}>
+          <Box sx={{ width: '21vw', backgroundColor: 'transparent' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 2, backgroundColor: '#000' }}>
               <img
                 loading="lazy"
