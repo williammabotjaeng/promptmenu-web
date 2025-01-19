@@ -16,10 +16,10 @@ export const OTPForm: React.FC = () => {
           />
           <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 16 }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
-              Forgot your Password?
+              Verify One Time Pin
             </Typography>
             <Typography variant="body1" sx={{ color: 'gray', marginBottom: 4 }}>
-            Enter your email address to reset.
+            Enter OTP sent to your email
             </Typography>
             <form>
               {/* Styled Input Fields */}
