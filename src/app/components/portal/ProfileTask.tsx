@@ -9,7 +9,9 @@ import TheatersIcon from '@mui/icons-material/Theaters';
 import PersonIcon from '@mui/icons-material/Person';
 import PortfolioIcon from '@mui/icons-material/AccountBox'; 
 import SettingsIcon from '@mui/icons-material/Settings';
-
+import DoneIcon from '@mui/icons-material/Done';
+import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import { Box, Typography } from '@mui/material';
 import { ProfileTaskProps } from '@/types/Props/ProfileTaskProps';
 
 export const ProfileTask: React.FC<ProfileTaskProps> = ({ icon, label, completed }) => {
@@ -31,19 +33,40 @@ export const ProfileTask: React.FC<ProfileTaskProps> = ({ icon, label, completed
         return <PortfolioIcon sx={{ fontSize: '18px', color: 'gray.500' }} />;
       case 'settings':
         return <SettingsIcon sx={{ fontSize: '18px', color: 'gray.500' }} />;
+      case 'done':
+        return <DoneIcon sx={{ fontSize: '18px', color: '#22C55E' }} />;
+      case 'circle':
+        return <PanoramaFishEyeIcon sx={{ fontSize: '18px', color: '#9CA3AF' }} />;
       default:
         return null; 
     }
   };
 
   return (
-    <div className="flex flex-wrap gap-2 py-0.5 w-full bg-black bg-opacity-0 max-md:max-w-full">
-      <div className="flex overflow-hidden justify-center items-center self-start min-h-[14px]">
+    <Box 
+      display="flex" 
+      alignItems="center" 
+      sx={{ 
+        padding: 1, 
+        backgroundColor: 'white', 
+        borderRadius: '4px', 
+        width: '100%', 
+        marginBottom: 1 
+      }}
+    >
+      <Box display="flex" alignItems="center" sx={{ minHeight: '14px' }}>
         {renderIcon(icon)}
-      </div>
-      <div className={`flex-auto text-sm leading-none ${completed ? 'text-black' : 'text-gray-400'} w-[1050px] max-md:max-w-full`}>
+      </Box>
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          flexGrow: 1, 
+          marginLeft: 1, 
+          color: label === 'Video Introduction' ? '#9CA3AF' : 'black' 
+        }}
+      >
         {label}
-      </div>
-    </div>
+      </Typography>
+    </Box>
   );
 };
