@@ -19,13 +19,13 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { useRef } from 'react';
 
 const sidebarItems = [
-  { icon: "dashboard", label: "Dashboard" },
-  { icon: "work", label: "Jobs" },
-  { icon: "theaters", label: "Auditions" },
-  { icon: "person", label: "Profile" },
-  { icon: "portfolio", label: "Portfolio" },
-  { icon: "mail", label: "Messages" },
-  { icon: "settings", label: "Settings" }
+  { icon: "dashboard", label: "Portal", href: '/portal' },
+  { icon: "work", label: "Jobs", href: '/dashboard' },
+  { icon: "theaters", label: "Auditions", href: '/dashboard' },
+  { icon: "person", label: "Profile", href: '/dashboard' },
+  { icon: "portfolio", label: "Portfolio", href: '/dashboard' },
+  { icon: "mail", label: "Messages", href: '/dashboard' },
+  { icon: "settings", label: "Settings", href: '/dashboard' }
 ];
 
 const stats = [
