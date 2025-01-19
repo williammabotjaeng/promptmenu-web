@@ -88,7 +88,7 @@ const Portal = () => {
           </Box>
         </Sticky>
 
-        <Box sx={{ width: '79%', padding: 2, position: 'sticky', left: '300px', overflowX: 'none' }}>
+        <Box sx={{ width: '79%', padding: 2, position: 'sticky', left: '300px' }}>
           <Box sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
