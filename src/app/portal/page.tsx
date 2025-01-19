@@ -45,10 +45,10 @@ const jobs = [
 ];
 
 const profileTasks = [
-  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/e6708e72ba898792aa8d97b89693d8df01ed5b882ad0b2f4c04b92d62e0d28c6?apiKey=7fae980a988640eea8add1e49a5d542e&", label: "Basic Information", completed: true },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/56a6952eabdec6249b6be2017563cc6c03410d2bb01f5157fba143462cb8f184?apiKey=7fae980a988640eea8add1e49a5d542e&", label: "Portfolio Images", completed: true },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/79b861cf8d48e76759d4dc60edd95784f65332d58455e41e197ded115b10f2cd?apiKey=7fae980a988640eea8add1e49a5d542e&", label: "Skills & Experience", completed: true },
-  { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/213094dda2ee946d84f746463516418bc58c28a705b03066612d2f12ff370928?apiKey=7fae980a988640eea8add1e49a5d542e&", label: "Video Introduction", completed: false }
+  { icon: "person", label: "Basic Information", completed: true },
+  { icon: "portfolio", label: "Portfolio Images", completed: true },
+  { icon: "work", label: "Skills & Experience", completed: true },
+  { icon: "visibility", label: "Video Introduction", completed: false }
 ];
 
 
