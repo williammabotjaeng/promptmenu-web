@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import { Facebook, Google, Twitter } from '@mui/icons-material';
 
-export const OTPForm: React.FC = () => {
+export const ForgotForm: React.FC = () => {
   return (
     <Grid container sx={{ height: '125vh', backgroundColor: 'black' }}>
       {/* Left Column */}
@@ -24,9 +24,9 @@ export const OTPForm: React.FC = () => {
             <form>
               {/* Styled Input Fields */}
               <TextField
-                label="OTP"
-                type="text"
-                placeholder="Enter your OTP"
+                label="Email"
+                type="email"
+                placeholder="Enter your Email"
                 fullWidth
                 margin="normal"
                 InputLabelProps={{
@@ -66,11 +66,23 @@ export const OTPForm: React.FC = () => {
                   },
                 }}
               >
-                Verify Email 
+                Send Email
               </Button>
               <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                 <Typography variant="body2" sx={{ color: 'gray' }}>
-                  OTP expires in <span style={{ color: '#977342' }}>{'10:00'}</span>
+                  Don't have an account?{' '}
+                  <Button
+                    variant="text"
+                    sx={{
+                      color: '#977342',
+                      '&:hover': {
+                        backgroundColor: '#977342',
+                        color: 'white', 
+                      },
+                    }}
+                  >
+                    Sign up
+                  </Button>
                 </Typography>
               </Box>
             </form>

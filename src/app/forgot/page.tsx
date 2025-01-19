@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { Header } from '@/components/Header';
-import { OTPForm } from '@/components/OTPForm';
+import { ForgotForm } from '@/components/ForgotForm';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
 import useUserStore from '@/state/use-user-store';
 import '@/styles/globals.css';
 
-const OTP: React.FC = () => {
+const Forgot: React.FC = () => {
   
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -27,7 +27,7 @@ const OTP: React.FC = () => {
 
   return (
     <>
-      <OTPForm />
+      <ForgotForm />
 
       {/* Snackbar for displaying messages */}
       <Snackbar
@@ -44,4 +44,4 @@ const OTP: React.FC = () => {
   );
 };
 
-export default OTP;
+export default Forgot;
