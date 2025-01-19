@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from 'react';
 import { SidebarItem } from '@/components/portal/SidebarItem';
 import { StatCard } from '@/components/portal/StatCard';
@@ -5,6 +7,7 @@ import { JobCard } from '@/components/portal/JobCard';
 import { AuditionCard } from '@/components/portal/AuditionCard';
 import { ProfileTask } from '@/components/portal/ProfileTask';
 import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress } from '@mui/material';
+import Sticky from 'react-sticky-el';
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import WorkIcon from '@mui/icons-material/Work';
@@ -13,6 +16,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import PortfolioIcon from '@mui/icons-material/WorkOutline';
 import MessageIcon from '@mui/icons-material/Message';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { useRef } from 'react';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Dashboard" },
@@ -53,31 +57,36 @@ const profileTasks = [
 
 
 const Portal = () => {
+
+  
+
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+    <Box className=".boundary" sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
-        <Box sx={{ width: '21%', backgroundColor: 'transparent' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 2, backgroundColor: '#000' }}>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/1557d19b22b0cfa5efbb3f91eee577159998e27e492dd95100a6ef5a73d76f46?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt="Logo"
-              style={{ width: '109px', marginBottom: '16px' }}
-            />
-            <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold' }}>Talent Portal</Typography>
-            <Box sx={{ marginTop: 2 }}>
-              {sidebarItems.map((item, index) => (
-                <SidebarItem key={index} {...item} />
-              ))}
+        <Sticky boundaryElement=".boundary">
+          <Box sx={{ width: '21%', backgroundColor: 'transparent' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 2, backgroundColor: '#000' }}>
+              <img
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/1557d19b22b0cfa5efbb3f91eee577159998e27e492dd95100a6ef5a73d76f46?apiKey=7fae980a988640eea8add1e49a5d542e&"
+                alt="Logo"
+                style={{ width: '109px', marginBottom: '16px' }}
+              />
+              <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold' }}>Talent Portal</Typography>
+              <Box sx={{ marginTop: 2 }}>
+                {sidebarItems.map((item, index) => (
+                  <SidebarItem key={index} {...item} />
+                ))}
+              </Box>
+              <img
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/d9eb7e6d3539dd0941272b7c000796180c3cd2e7899fc4d9240ee53189aceeef?apiKey=7fae980a988640eea8add1e49a5d542e&"
+                alt=""
+                style={{ width: '100%', marginTop: '16px' }}
+              />
             </Box>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/d9eb7e6d3539dd0941272b7c000796180c3cd2e7899fc4d9240ee53189aceeef?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt=""
-              style={{ width: '100%', marginTop: '16px' }}
-            />
           </Box>
-        </Box>
+        </Sticky>
 
         <Box sx={{ width: '79%', padding: 2 }}>
           <Box sx={{ padding: 2 }}>
@@ -98,7 +107,7 @@ const Portal = () => {
 
             <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: 2, padding: 2 }}>
               {stats.map((stat, index) => (
-                <StatCard {...stat} />
+                <StatCard key={index} {...stat} />
               ))}
             </Box>
 
@@ -145,7 +154,7 @@ const Portal = () => {
                       borderRadius: '4px',
                       backgroundColor: '#E5E7EB',
                       '& .MuiLinearProgress-bar': {
-                        backgroundColor: '#CEAB76', 
+                        backgroundColor: '#CEAB76',
                       },
                     }}
                   />
