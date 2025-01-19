@@ -25,10 +25,10 @@ const sidebarItems = [
 ];
 
 const stats = [
-  { title: "Profile Views", value: "1,234", icon: "visibility", subtitle: "+12% this week", subtitleColor: "text-green-500" },
-  { title: "Applied Jobs", value: "28", icon: "work", subtitle: "4 pending responses" },
-  { title: "Upcoming Auditions", value: "3", icon: "theaters", subtitle: "Next: March 18", subtitleColor: "text-orange-300" },
-  { title: "Unread Messages", value: "5", icon: "mail", subtitle: "2 urgent", subtitleColor: "text-red-500" }
+  { title: "Profile Views", value: "1,234", icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
+  { title: "Applied Jobs", value: "28", icon: "work", subtitle: "4 pending responses", subtitleColor: "#6B7280" },
+  { title: "Upcoming Auditions", value: "3", icon: "theaters", subtitle: "Next: March 18", subtitleColor: "#CEAB76" },
+  { title: "Unread Messages", value: "5", icon: "mail", subtitle: "2 urgent", subtitleColor: "#EF4444" }
 ];
 
 const jobs = [
