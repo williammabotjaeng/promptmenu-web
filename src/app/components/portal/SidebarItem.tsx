@@ -17,21 +17,21 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label }) => {
   const renderIcon = (iconName: string) => {
     switch (iconName) {
       case 'mail':
-        return <MailIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <MailIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'work':
-        return <WorkIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <WorkIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'visibility':
-        return <VisibilityIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <VisibilityIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'dashboard':
-        return <DashboardIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <DashboardIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'theaters':
-        return <TheatersIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <TheatersIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'person':
-        return <PersonIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <PersonIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'portfolio':
-        return <PortfolioIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <PortfolioIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'settings':
-        return <SettingsIcon sx={{ fontSize: '16px', color: '#fff' }} />;
+        return <SettingsIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       default:
         return null; 
     }
@@ -42,7 +42,7 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label }) => {
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '16px' }}>
         {renderIcon(icon)} 
       </Box>
-      <Typography variant="body1" sx={{ marginLeft: 2, color: '#977342', flexGrow: 1 }}>
+      <Typography variant="body1" sx={{ marginLeft: 2, color: '#D1D5DB', flexGrow: 1 }}>
         {label}
       </Typography>
     </Box>
