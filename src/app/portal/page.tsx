@@ -15,14 +15,15 @@ import MessageIcon from '@mui/icons-material/Message';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 const sidebarItems = [
-  { icon: DashboardIcon, label: "Dashboard" },
-  { icon: WorkIcon, label: "Jobs" },
-  { icon: TheatersIcon, label: "Auditions" },
-  { icon: PersonIcon, label: "Profile" },
-  { icon: PortfolioIcon, label: "Portfolio" },
-  { icon: MessageIcon, label: "Messages" },
-  { icon: SettingsIcon, label: "Settings" }
+  { icon: "dashboard", label: "Dashboard" },
+  { icon: "work", label: "Jobs" },
+  { icon: "theaters", label: "Auditions" },
+  { icon: "person", label: "Profile" },
+  { icon: "portfolio", label: "Portfolio" },
+  { icon: "mail", label: "Messages" },
+  { icon: "settings", label: "Settings" }
 ];
+
 const stats = [
   { title: "Profile Views", value: "1,234", icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/4af4641f7ffd625ea8eb55544a449e62226f00e94c58c3b1deeee0d9093a3b7c?apiKey=7fae980a988640eea8add1e49a5d542e&", subtitle: "+12% this week", subtitleColor: "text-green-500" },
   { title: "Applied Jobs", value: "28", icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c44f8d9d0d4af872564a3a66beac9531b98dc600542dee1bce8b4cf440d416f6?apiKey=7fae980a988640eea8add1e49a5d542e&", subtitle: "4 pending responses" },
