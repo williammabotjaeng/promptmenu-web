@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
-import RegisterForm from '@/components/RegisterForm';
+import { RegisterForm } from '@/components/RegisterForm';
 import RegisterFormTalent from '@/components/RegisterFormTalent';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
@@ -12,14 +12,10 @@ import '@/styles/globals.css';
 
 const Register: React.FC = () => {
   const { register } = useAuth();
-  // const router = useRouter();
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-
-  // Extract user_role from query parameters
-  // const searchParams = useSearchParams();
-  // const userRole = searchParams?.get('type');
 
   const userRole = 'client';
 
@@ -35,28 +31,9 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div>
-      <Header />
-      {userRole === 'client' ? (
-        <RegisterFormTalent userRole={userRole} />
-      ) : (
-        <RegisterForm userRole={userRole} />
-      )}
-      <br />
-      <p style={{ textAlign: 'center' }}>&copy; 2025 Staffing Solutions Hub</p>
-
-      {/* Snackbar for displaying messages */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleSnackbarClose}  sx={{ width: '100%' }}>
-          {snackbarMessage}
-        </Alert>
-      </Snackbar>
-    </div>
+    <>    
+        <RegisterForm />
+    </>
   );
 };
 

@@ -1,777 +1,92 @@
-"use client";
+import * as React from "react";
+import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar } from "@mui/material";
 
-import { RegistrationData } from '@/types/RegistrationData';
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { useAuth } from '@/providers/auth-providers';
-import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { redirect } from 'next/navigation';
-import { Box, Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, IconButton, InputLabel, MenuItem, Radio, RadioGroup, Select, TextField } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
-import useUserStore from "@/state/use-user-store";
-import { useStore } from "zustand";
-import { useCookies } from 'react-cookie';
-import moment from 'moment';
-import '@/styles/register-form.css';
-import PhoneInput from 'react-phone-input-2';
-import axios from 'axios';
-import 'react-phone-input-2/lib/style.css';
-import PictureAsPdf from '@mui/icons-material/PictureAsPdf';
-import { Close } from '@mui/icons-material';
-import Autocomplete from '@mui/material/Autocomplete';
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
-interface RegisterFormProps {
-  userRole: string;
-}
-
-const inputStyles = {
-  "& .MuiInputLabel-root.Mui-focused": {
-    display: 'none'
+const features = [
+  {
+    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/5c5bfd1ec12c04f279f21f2648c74866d0b0282e771fabdd8fe37da008bc7b31?apiKey=7fae980a988640eea8add1e49a5d542e&",
+    text: "Access exclusive casting calls",
+    alt: "Casting calls icon"
   },
-  "& .MuiInputLabel-root.Mui-shrink": {
-    display: 'none',
+  {
+    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c5defcacc66dabe2be6ffd54da4ea88231a7030e6df7a6e3e05df7ad124aaedb?apiKey=7fae980a988640eea8add1e49a5d542e&",
+    text: "Professional portfolio management",
+    alt: "Portfolio management icon"
   },
-};
-
-const RegisterForm: React.FC<RegisterFormProps> = ({ userRole }) => {
-
-  const [isInfluencer, setIsInfluencer] = useState('no');
-  const [nationality, setNationality] = useState('');
-  const [region, setRegion] = useState('');
-  const [hasAccepted, setHasAccepted] = useState(false);
-  const [cookies, setCookie] = useCookies(['nationality', 'vatPdf', 'tradePdf', 'std_payment_terms']);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [whatsappNumber, setWhatsappNumber] = useState('');
-  const [customPaymentTerms, setCustomPaymentTerms] = useState('');
-  const [agreement, setAgreement] = useState('yes');
-  const [preferredPaymentMethods, setPreferredPaymentMethods] = useState({
-    directTransfer: false,
-    creditCard: false,
-    cash: false,
-  });
-  const [vatPdf, setVatPdf] = useState('');
-  const [tradePdf, setTradePdf] = useState('');
-  const [addressOptions, setAddressOptions] = useState([]);
-  const [addressInputValue, setAddressInputValue] = useState('');
-
-  const [formData, setFormData] = useState({
-    accept_std_payment_terms: cookies.std_payment_terms,
-    accounts_email: '',
-    address: '',
-    company_name: '',
-    contact_person: '',
-    custom_payment_terms: '',
-    date_of_birth: '',
-    email: '',
-    firstname: '',
-    gender: 'male',
-    has_accepted: hasAccepted,
-    is_influencer: isInfluencer,
-    job_title: '',
-    lastname: '',
-    mobile_number: '',
-    nationality: '',
-    password: '',
-    preferred_payment_methods: JSON.stringify(preferredPaymentMethods),
-    state_province_region: region,
-    telephone: phoneNumber,
-    trade_license: '',
-    user_role: userRole,
-    username: '',
-    vat_certificate: '',
-    whatsapp_number: ''
-  });
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
-
-  const fetchAddressSuggestions = async (value) => {
-    if (value.length > 2) {
-      const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-        params: {
-          q: value,
-          format: 'json',
-          addressdetails: 1,
-          limit: 5,
-        },
-      });
-      setAddressOptions(response.data);
-    } else {
-      setAddressOptions([]);
-    }
-  };
-
-  const handleAgreementChange = (event: React.ChangeEvent, value: any) => {
-    console.log("Agreement Value:", value);
-    setCookie('std_payment_terms', value);
-    console.log(cookies['std_payment_terms']);
-    setAgreement(value);
-  };
-
-  const handleInfluencerChange = (event) => {
-    setIsInfluencer(event.target.value);
-  };
-
-  const handlePhoneChange = (e) => {
-    const { name, value } = e.target || {};
-    if (name) {
-      setPhoneNumber(value);
-    }
-  };
-
-  const handlePreferredPaymentMethodChange = (event: React.ChangeEvent, value: any) => {
-    
-  };
-
-  const handleMobileChange = (e) => {
-    const { name, value } = e.target || {};
-    if (name) {
-      setMobileNumber(value);
-    }
-  };
-
-  const handleWhatsAppNumberChange = (e) => {
-    const { name, value } = e.target || {};
-    if (name) {
-      setWhatsappNumber(value);
-    }
-  };
-
-  const handleCountryChange = (val: React.SetStateAction<string>) => {
-    setNationality(val);
-    setRegion('');
-  };
-
-  const handleRegionChange = (val) => {
-    setRegion(val);
-  };
-
-  const handleAcceptance = (val: React.SetStateAction<boolean>) => {
-    setHasAccepted(!hasAccepted);
+  {
+    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0cd76d0fce7ef8ee48c4c02ce39a649bf4d2e533f796c4f3db98c8e90fbc7062?apiKey=7fae980a988640eea8add1e49a5d542e&",
+    text: "International opportunities",
+    alt: "International opportunities icon"
   }
+];
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    console.log("Field:", name, value);
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const { register } = useAuth();
-
-  const [useWhatsApp, setUseWhatsApp] = useState(true);
-
-  const handleWhatsAppChange = (event: any) => {
-    setUseWhatsApp(event.target.checked);
-  };
-
-  const formatDateToYYYYMMDD = (date: string) => {
-    return moment(date).format('YYYY-MM-DD');
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const formattedDate = formatDateToYYYYMMDD(formData?.date_of_birth);
-    console.log("Form Data", formData);
-    try {
-
-      await register(
-        formData.username,
-        formData.password,
-        formData.email,
-        formattedDate,
-        userRole,
-        formData.firstname,
-        formData.lastname,
-        formData.gender,
-        nationality,
-        String(hasAccepted),
-        isInfluencer,
-        formData.whatsapp_number,
-        formData.preferred_payment_methods,
-        formData.vat_certificate,
-        formData.trade_license,
-        formData.custom_payment_terms,
-        formData.accept_std_payment_terms,
-        formData.accounts_email,
-        formData.mobile_number,
-        formData.job_title,
-        formData.contact_person,
-        formData.state_province_region,
-        formData.company_name,
-        formData.address,
-        formData.telephone
-      );
-
-      setCookie('nationality', nationality);
-
-      // Show success message and redirect to login
-      setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-
-      // Redirect after a short delay
-      setTimeout(() => {
-        redirect('/otp')
-      }, 2000);
-
-    } catch (error: any) {
-      console.error('Registration failed:', error);
-      let errorMessage = 'Registration failed. Please try again.';
-
-      // Handle specific error messages
-      if (error?.response) {
-        if (error?.response.data.message.includes('unique constraint')) {
-          errorMessage = 'Email or username already exists.';
-        }
-      }
-
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-    }
-  };
-
-  const handleRemoveVatPdf = () => {
-    setVatPdf(null);
-    setCookie('vatPdf', null);
-  };
-
-  const handleVatPdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const objectUrl = URL.createObjectURL(file);
-      setVatPdf(objectUrl);
-      setCookie('vatPdf', objectUrl);
-      setSnackbarMessage('PDF Uploaded Successfully');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    }
-  };
-
-  const handleTradePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      const objectUrl = URL.createObjectURL(file);
-      setTradePdf(objectUrl);
-      setCookie('tradePdf', objectUrl);
-      setSnackbarMessage('PDF Uploaded Successfully');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-    }
-  };
-
-  const handleRemoveTradePdf = () => {
-    setTradePdf(null);
-    setCookie('tradePdf', null);
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
+export const RegisterForm: React.FC = () => {
   return (
-    <>
-      <Box className="container">
-        <Typography variant="h4" gutterBottom>
-          Register
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            {/* Username Field */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label={<Typography variant="body1">Username</Typography>}
-                name="username"
-                placeholder="Enter your username"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            {/* State/Province/Region Field */}
-            <Grid item xs={12} sm={3}>
-              <FormControl fullWidth required sx={{
-                height: '9.5vh'
-              }}>
-                <RegionDropdown
-                  country={nationality}
-                  value={region}
-                  onChange={handleRegionChange}
-                  className="custom-input country-dropdown"
-                  style={{
-                    width: '19vw'
-                  }}
-                />
-              </FormControl>
-            </Grid>
-
-            {/* Nationality Field */}
-            <Grid item xs={12} sm={3}>
-              <FormControl fullWidth required>
-                <div className="country-dropdown-container">
-                  <CountryDropdown
-                    value={nationality}
-                    onChange={handleCountryChange}
-                    className="custom-input country-dropdown"
-                  />
-                </div>
-              </FormControl>
-            </Grid>
-
-            {/* Address Field */}
-            <Grid item xs={12} sm={6}>
-              <Autocomplete
-                freeSolo
-                options={addressOptions.map(option => option?.display_name)}
-                onInputChange={(event, newInputValue) => {
-                  setAddressInputValue(newInputValue);
-                  fetchAddressSuggestions(newInputValue);
-                }}
-                onChange={(event, newValue) => {
-                  setAddressInputValue(newValue);
-                }}
-                sx={{
-                  backgroundColor: 'white',
-                  color: 'black'
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Enter your address"
-                    label={<Typography variant="body1">Address</Typography>}
-                    required
-                    fullWidth
-                    variant="outlined"
-                    className="custom-input"
-                    sx={inputStyles}
-                  />
-                )}
-              />
-            </Grid>
-
-            {/* Company Name Field */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label={<Typography variant="body1">Company Name</Typography>}
-                name="company_name"
-                placeholder="Enter your company name"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            {/* Telephone Number Field */}
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body1">Telephone Number</Typography>
-              <PhoneInput
-                country={'ae'}
-                onChange={handlePhoneChange}
-                value={phoneNumber}
-                inputStyle={{
-                  width: '100%',
-                  height: '56px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  color: 'black',
-                  padding: '10px',
-                  paddingLeft: '50px'
-                }}
-                buttonStyle={{
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  color: 'black'
-                }}
-                inputProps={{
-                  name: 'phone',
-                  required: true,
-                  autoFocus: true
-                }}
-                placeholder="Enter your phone number"
-                inputClass="custom-phone-input"
-              />
-            </Grid>
-
-            {/* Email Field */}
-            <Grid item xs={12} sm={6}>
-              <Typography color='black'>Email</Typography>
-              <TextField
-                label={<Typography variant="body1">Email</Typography>}
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            {/* Contact Person */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label={<Typography variant="body1">Contact Person</Typography>}
-                name="contact_person"
-                placeholder="Enter the contact person's name"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            {/* Job Title */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label={<Typography variant="body1">Job Title</Typography>}
-                name="job_title"
-                placeholder="Enter the job title"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            {/* Mobile Number */}
-            <Grid item xs={12} sm={6}>
-              <Typography variant="body1">Mobile Number</Typography>
-              <PhoneInput
-                country={'ae'}
-                value={mobileNumber}
-                onChange={handleMobileChange}
-                inputStyle={{
-                  width: '100%',
-                  height: '56px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  color: 'black',
-                  padding: '10px',
-                  paddingLeft: '50px'
-                }}
-                buttonStyle={{
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  color: 'black'
-                }}
-                placeholder="Enter a Mobile Phone No."
-              />
-              <FormControlLabel
-                control={<Checkbox sx={{
-                  color: 'white'
-                }} color="success" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
-                label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
-              />
-            </Grid>
-
-            {/* WhatsApp Number Field (conditional) */}
-            <Grid item xs={12} sm={6} style={{ display: !useWhatsApp ? 'block' : 'none' }}>
-              <Typography variant="body1">WhatsApp Number</Typography>
-              <PhoneInput
-                country={'ae'}
-                value={whatsappNumber}
-                onChange={handleWhatsAppNumberChange}
-                inputStyle={{
-                  width: '100%',
-                  height: '56px',
-                  borderRadius: '4px',
-                  border: '1px solid #ccc',
-                  color: 'black',
-                  padding: '10px',
-                  paddingLeft: '50px'
-                }}
-                buttonStyle={{
-                  border: '1px solid #ccc',
-                  borderRadius: '4px',
-                  color: 'black'
-                }}
-                placeholder="Enter your WhatsApp number"
-              />
-            </Grid>
-
-
-            {/* Terms of Payment */}
-            <Grid item xs={12}>
-              <Typography variant="body1">
-                Terms of payment are 50% advance, 50% on project completion.
-              </Typography>
-            </Grid>
-            <Grid item xs={12} container alignItems="center">
-              <RadioGroup row value={agreement} onChange={handleAgreementChange}>
-                <FormControlLabel value="yes" control={<Radio sx={{
-                  color: '#977342'
-                }} />} label="Agree" />
-                <FormControlLabel value="no" control={<Radio sx={{
-                  color: '#977342'
-                }} />} label="I do not Agree" />
-              </RadioGroup>
-            </Grid>
-
-
-            {/* Custom Payment Terms Field */}
-            <Grid item xs={12}>
-              <TextField
-                label="If you have your own payment terms, please specify (subject to approval)"
-                placeholder="Enter your payment terms"
-                fullWidth
-                disabled={agreement === 'yes' ? true : false}
-                name="custom_payment_terms"
-                onChange={handleChange}
-                variant="outlined"
-                multiline
-                rows={4}
-                sx={{
-                  border: '1px solid #977342',
-                  borderRadius: '12px',
-                  color: 'white'
-                }}
-                color="warning"
-                className='custom-input'
-              />
-            </Grid>
-
-            {/* Preferred Payment Method */}
-            <Grid item xs={12}>
-              <FormControl component="fieldset">
-                <Typography variant="body1">Preferred Payment Method</Typography>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: 'white'
-                      }}
-                      color="success"
-                      checked={preferredPaymentMethods.directTransfer}
-                      onChange={handlePreferredPaymentMethodChange}
-                      name="directTransfer"
-                    />
-                  }
-                  label="Direct Transfer"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: 'white'
-                      }}
-                      color="success"
-                      checked={preferredPaymentMethods.creditCard}
-                      onChange={handlePreferredPaymentMethodChange}
-                      name="creditCard"
-                    />
-                  }
-                  label="Credit Card"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: 'white'
-                      }}
-                      color="success"
-                      checked={preferredPaymentMethods.cash}
-                      onChange={handlePreferredPaymentMethodChange}
-                      name="cash"
-                    />
-                  }
-                  label="Cash"
-                />
-              </FormControl>
-            </Grid>
-
-
-            {/* Email Field */}
-            <Grid item xs={12} sm={6}>
-              <Typography variant='body1'>Accounts Department Email</Typography>
-              <TextField
-                label={<Typography variant="body1">Accounts Department Email</Typography>}
-                type="email"
-                name="accounts_email"
-                placeholder="Enter your accounts email"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            <Grid container spacing={2}>
-              {/* Trade License Column */}
-              <Grid item xs={6}>
-                <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-                  border: '4px dotted black',
-                  margin: '4px',
-                  borderRadius: '12px',
-                  padding: '4px',
-                  height: '50vh'
-                }}>
-                  <Typography variant="body1">Trade License</Typography>
-                  {tradePdf ? (
-                    <Box display="flex" flexDirection={"column"} alignItems="center">
-                      <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                      <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                      <IconButton color="error" onClick={() => handleRemoveTradePdf()}>
-                        <Close />
-                      </IconButton>
+    <Box className="flex flex-col bg-black bg-opacity-0" sx={{ padding: 4 }}>
+      <Box className="flex flex-col pr-20 pb-96 w-full bg-black max-md:pr-5 max-md:pb-24 max-md:max-w-full">
+        <Box className="flex flex-col pb-32 bg-black bg-opacity-0 max-md:pb-24 max-md:max-w-full">
+          <Box className="flex flex-col pt-8 mb-0 bg-black bg-opacity-0 max-md:mb-2.5 max-md:max-w-full">
+            <Box className="flex flex-col items-start self-end px-16 max-w-full text-3xl font-bold text-orange-300 bg-black bg-opacity-0 w-[1280px] max-md:px-5">
+              <Box className="flex z-10 flex-wrap gap-10 items-start -mb-3 max-md:mb-2.5">
+                <Box className="flex-auto mt-5">Staffing Solutions Hub</Box>
+                <Box className="flex shrink-0 h-9 bg-black bg-opacity-0 w-[238px]" />
+              </Box>
+            </Box>
+            <Avatar
+              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/2e248f686084c42693cd3ddb966bfe6c73111179b483633b87406237d39077db?apiKey=7fae980a988640eea8add1e49a5d542e&"
+              alt="Staffing Solutions Logo"
+              sx={{ width: 200, height: 'auto', marginTop: 0, boxShadow: '0px 4px 4px rgba(0,0,0,0.25)' }}
+            />
+            <Box className="flex z-10 flex-col px-20 pt-64 mt-0 mb-0 max-md:px-5 max-md:pt-24 max-md:mt-0 max-md:mb-2.5 max-md:max-w-full">
+              <Box className="flex flex-col items-start pt-2 mt-64 max-w-full bg-black bg-opacity-0 w-[616px] max-md:mt-10">
+                <Typography variant="h1" sx={{ fontWeight: 'bold', color: 'white', fontSize: '48px' }}>
+                  Join the Winning <span style={{ display: 'block', color: '#977342' }}>Talent Network</span>
+                </Typography>
+                <Typography variant="body1" sx={{ marginTop: 2, color: 'white', marginBottom: 2 }}>
+                  Connect with top casting directors, agencies, and <span style={{ display: 'block' }}>productions across the Middle East</span>
+                </Typography>
+                <Box className="flex flex-col self-stretch mt-10 w-full bg-black bg-opacity-0 max-md:max-w-full">
+                  {features.map((feature, index) => (
+                    <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 4 }}>
+                      <Avatar src={feature.iconSrc} alt={feature.alt} sx={{ width: 24, height: 24 }} />
+                      <Typography variant="body2" color="white">{feature.text}</Typography>
                     </Box>
-                  ) : (
-                    <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                      <PictureAsPdf sx={{
-                        height: '30vh',
-                        fontSize: '80px'
-                      }} />
-                      <input type="file" hidden accept="application/pdf" onChange={(e) => handleTradePdfUpload(e)} />
-                    </IconButton>
-                  )}
+                  ))}
                 </Box>
-              </Grid>
-
-              {/* VAT Certificate Column */}
-              <Grid item xs={6}>
-                <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-                  border: '4px dotted black',
-                  margin: '4px',
-                  borderRadius: '12px',
-                  padding: '4px',
-                  height: '50vh'
-                }}>
-                  <Typography variant="body1">VAT Certificate</Typography>
-                  {vatPdf ? (
-                    <Box display="flex" flexDirection={"column"} alignItems="center">
-                      <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                      <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                      <IconButton color="error" onClick={() => handleRemoveVatPdf()}>
-                        <Close />
-                      </IconButton>
-                    </Box>
-                  ) : (
-                    <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                      <PictureAsPdf sx={{
-                        height: '30vh',
-                        fontSize: '80px'
-                      }} />
-                      <input type="file" hidden accept="application/pdf" onChange={(e) => handleVatPdfUpload(e)} />
-                    </IconButton>
-                  )}
+              </Box>
+              <form className="flex z-10 flex-col self-end px-10 pt-8 pb-12 mt-0 max-w-full text-white rounded-2xl bg-white bg-opacity-10 w-[624px] max-md:px-5 max-md:mt-0">
+                <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'orange.300' }}>
+                  Create Your Account
+                </Typography>
+                <Box className="flex flex-col pb-14 mt-6 w-full text-sm bg-black bg-opacity-0 max-md:max-w-full">
+                  <Box className="flex flex-wrap gap-4 bg-black bg-opacity-0 max-md:max-w-full">
+                    <TextField label="First Name" id="firstName" variant="outlined" fullWidth margin="normal" />
+                    <TextField label="Last Name" id="lastName" variant="outlined" fullWidth margin="normal" />
+                  </Box>
+                  <TextField label="Email Address" type="email" id="email" variant="outlined" fullWidth margin="normal" />
+                  <TextField label="Phone Number" type="tel" id="phone" variant="outlined" fullWidth margin="normal" />
+                  <TextField label="Password" type="password" id="password" variant="outlined" fullWidth margin="normal" />
+                  <TextField label="Confirm Password" type="password" id="confirmPassword" variant="outlined" fullWidth margin="normal" />
+                  <FormControlLabel
+                    control={<Checkbox id="terms" />}
+                    label="I agree to the Terms of Service and Privacy Policy"
+                    sx={{ color: 'gray.400' }}
+                  />
                 </Box>
-              </Grid>
-              <Typography variant="body1" sx={{
-                fontStyle: 'italic',
-                width: '100%',
-                textAlign: 'center',
-                fontSize: '10px'
-              }}>Only Image and PDF Files allowed.</Typography>
-            </Grid>
-
-            {/* Password */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label={<Typography variant="body1">Password</Typography>}
-                type="password"
-                name="password"
-                placeholder="Enter your password"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            {/* Confirm Password */}
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label={<Typography variant="body1">Confirm Password</Typography>}
-                type="password"
-                name="confirmPassword"
-                placeholder="Re-enter your password"
-                required
-                fullWidth
-                onChange={handleChange}
-                className="custom-input"
-                sx={inputStyles}
-              />
-            </Grid>
-
-            {/* Influencer Question */}
-            {userRole === 'talent' && (<Grid item xs={12}>
-              <Typography variant="h5">
-                Are you a Popular influencer?
-              </Typography>
-              <RadioGroup row value={isInfluencer} onChange={handleInfluencerChange}>
-                <FormControlLabel
-                  control={<Radio sx={{
-                    color: 'white'
-                  }} color="success" />}
-                  label="Yes"
-                  value="yes"
-                />
-                <FormControlLabel
-                  control={<Radio sx={{
-                    color: 'white'
-                  }} color="success" />}
-                  label="No"
-                  value="no"
-                />
-              </RadioGroup>
-            </Grid>)}
-
-            {/* Submit Button */}
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value={hasAccepted} color="success" sx={{
-                  color: 'white'
-                }} className="custom-input" />}
-                label={
-                  <Typography variant="body1">
-                    By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
-                  </Typography>
-                }
-              />
-              <Button
-                type="submit"
-                variant="contained"
-                color="success"
-                style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
-              >
-                <Typography variant="body1">Register</Typography>
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-
-        {/* Snackbar for notifications */}
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <Alert onClose={handleSnackbarClose}  sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
+                <Button variant="contained" color="primary" type="submit" sx={{ padding: '16px', marginTop: 2 }}>
+                  Create Account
+                </Button>
+                <Box className="self-center mt-28 ml-5 text-xs leading-none text-center text-black max-md:mt-10">
+                  <span className="text-sm text-white">Already have an account?</span>
+                  <Button variant="text"  sx={{ padding: 0 }}> Sign in</Button>
+                </Box>
+              </form>
+            </Box>
+          </Box>
+        </Box>
+        <Box className="self-end px-16 py-1 mt-32 mr-8 mb-0 w-full max-w-screen-xl text-sm leading-none text-center text-gray-400 bg-black bg-opacity-0 max-md:px-5 max-md:mt-10 max-md:mr-2.5 max-md:mb-2.5 max-md:max-w-full">
+          © 2025 Casting Dubai. All rights reserved.
+        </Box>
       </Box>
-    </>
+    </Box>
   );
 };
-
-export default RegisterForm;
