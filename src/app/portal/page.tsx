@@ -112,7 +112,7 @@ const Portal = () => {
                     <JobCard key={index} {...job} />
                   ))}
                 </Box>
-                <Button variant="outlined" sx={{ marginTop: 2 }}>
+                <Button sx={{ marginTop: 2, backgroundColor: 'white', color: '#977342' }}>
                   View all opportunities
                 </Button>
               </CardContent>
