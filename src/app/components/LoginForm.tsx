@@ -7,14 +7,14 @@ export const LoginForm: React.FC = () => {
     <Grid container sx={{ height: '125vh', backgroundColor: 'black' }}>
       {/* Left Column */}
       <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', padding: 4 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: 12 }}>
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c3fc10b45272c7c3f40000cb49e896f62fd831f2d1f6075f068d38a771d3152f?apiKey=7fae980a988640eea8add1e49a5d542e&"
             alt="Company logo"
-            style={{ maxWidth: '164px', marginBottom: '20px' }}
+            style={{ maxWidth: '204px', marginBottom: '20px' }}
           />
-          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 16 }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
               Welcome Back
             </Typography>
