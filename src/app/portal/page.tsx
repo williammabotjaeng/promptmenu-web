@@ -61,10 +61,10 @@ const Portal = () => {
   
 
   return (
-    <Box className=".boundary" sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
+    <Box className=".boundary" sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white', position: 'relative' }}>
       <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
         <Sticky boundaryElement=".boundary">
-          <Box sx={{ width: '21vw', backgroundColor: 'transparent' }}>
+          <Box  sx={{ width: '21vw', backgroundColor: 'transparent', zIndex: 1000 }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 2, backgroundColor: '#000' }}>
               <img
                 loading="lazy"
@@ -88,7 +88,7 @@ const Portal = () => {
           </Box>
         </Sticky>
 
-        <Box sx={{ width: '79%', padding: 2 }}>
+        <Box sx={{ width: '79vw', padding: 2, position: 'sticky', left: '300px', overflowX: 'none' }}>
           <Box sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
