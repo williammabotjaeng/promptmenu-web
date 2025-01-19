@@ -71,40 +71,206 @@ export const RegisterForm: React.FC = () => {
           </Box>
         </Grid>
 
-        {/* Right Column */}
-        <Grid item xs={12} md={6}>
-          <Box sx={{ backgroundColor: '#ffffff1a', padding: 4, borderRadius: 2 }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
-              Create Your Account
-            </Typography>
-            <form>
-              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <TextField label="First Name" id="firstName" variant="outlined" fullWidth margin="normal" />
-                  <TextField label="Last Name" id="lastName" variant="outlined" fullWidth margin="normal" />
-                </Box>
-                <TextField label="Email Address" type="email" id="email" variant="outlined" fullWidth margin="normal" />
-                <TextField label="Phone Number" type="tel" id="phone" variant="outlined" fullWidth margin="normal" />
-                <TextField label="Password" type="password" id="password" variant="outlined" fullWidth margin="normal" />
-                <TextField label="Confirm Password" type="password" id="confirmPassword" variant="outlined" fullWidth margin="normal" />
-                <FormControlLabel
-                  control={<Checkbox id="terms" />}
-                  label="I agree to the Terms of Service and Privacy Policy"
-                  sx={{ color: 'gray.400' }}
-                />
-              </Box>
-              <Button variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
-                Create Account
-              </Button>
-              <Box sx={{ textAlign: 'center', marginTop: 2 }}>
-                <Typography variant="body2" color="white">
-                  Already have an account? 
-                  <Button variant="text" sx={{ padding: 0, color: '#977342' }}> Sign in</Button>
-                </Typography>
-              </Box>
-            </form>
-          </Box>
-        </Grid>
+       {/* Right Column */}
+<Grid item xs={12} md={6}>
+  <Box sx={{ backgroundColor: '#ffffff1a', padding: 4, borderRadius: 2 }}>
+    <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
+      Create Your Account
+    </Typography>
+    <form>
+      <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <TextField
+            label="First Name"
+            id="firstName"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              sx: {
+                color: '#977342', // Default label color
+                '&.Mui-focused': {
+                  color: '#977342', // Focused label color
+                },
+              },
+            }}
+            InputProps={{
+              sx: {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#977342', // Border color
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#977342', // Border color on hover
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#977342', // Border color on focus
+                },
+              },
+            }}
+          />
+          <TextField
+            label="Last Name"
+            id="lastName"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+            InputLabelProps={{
+              sx: {
+                color: '#977342',
+                '&.Mui-focused': {
+                  color: '#977342',
+                },
+              },
+            }}
+            InputProps={{
+              sx: {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#977342',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#977342',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#977342',
+                },
+              },
+            }}
+          />
+        </Box>
+        <TextField
+          label="Email Address"
+          type="email"
+          id="email"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            sx: {
+              color: '#977342',
+              '&.Mui-focused': {
+                color: '#977342',
+              },
+            },
+          }}
+          InputProps={{
+            sx: {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+            },
+          }}
+        />
+        <TextField
+          label="Phone Number"
+          type="tel"
+          id="phone"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            sx: {
+              color: '#977342',
+              '&.Mui-focused': {
+                color: '#977342',
+              },
+            },
+          }}
+          InputProps={{
+            sx: {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+            },
+          }}
+        />
+        <TextField
+          label="Password"
+          type="password"
+          id="password"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            sx: {
+              color: '#977342',
+              '&.Mui-focused': {
+                color: '#977342',
+              },
+            },
+          }}
+          InputProps={{
+            sx: {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+            },
+          }}
+        />
+        <TextField
+          label="Confirm Password"
+          type="password"
+          id="confirmPassword"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          InputLabelProps={{
+            sx: {
+              color: '#977342',
+              '&.Mui-focused': {
+                color: '#977342',
+              },
+            },
+          }}
+          InputProps={{
+            sx: {
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#977342',
+              },
+            },
+          }}
+        />
+        <FormControlLabel
+          control={<Checkbox id="terms" />}
+          label="I agree to the Terms of Service and Privacy Policy"
+          sx={{ color: 'gray.400' }}
+        />
+      </Box>
+      <Button variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
+        Create Account
+      </Button>
+      <Box sx={{ textAlign: 'center', marginTop: 2 }}>
+        <Typography variant="body2" color="white">
+          Already have an account? 
+          <Button variant="text" sx={{ padding: 0, color: '#977342' }}> Sign in</Button>
+        </Typography>
+      </Box>
+    </form>
+  </Box>
+</Grid>
       </Grid>
       <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400' }}>
         © 2025 Casting Dubai. All rights reserved.
