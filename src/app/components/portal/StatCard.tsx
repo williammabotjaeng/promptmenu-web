@@ -38,17 +38,17 @@ export const StatCard: React.FC<PortalStatCardProps> = ({ title, value, icon, su
   };
 
   return (
-    <Card sx={{ padding: 3, margin: 'auto', width: '100%', borderRadius: '12px', boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)' }}>
+    <Card sx={{ padding: 1, margin: '8px', width: '60%', borderRadius: '12px', boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)' }}>
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="body1" sx={{ color: 'gray.500' }}>
+          <Typography variant="body1" sx={{ color: 'gray.500', fontSize: '16px' }}>
             {title}
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '16px' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '12px' }}>
             {renderIcon(icon)} {/* Call the renderIcon function */}
           </Box>
         </Box>
-        <Typography variant="h4" sx={{ marginTop: 2, fontWeight: 'bold', color: 'black' }}>
+        <Typography variant="h4" sx={{ marginTop: 2, fontWeight: 'bold', color: 'black', fontSize: '24px' }}>
           {value}
         </Typography>
         {subtitle && (

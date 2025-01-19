@@ -96,13 +96,11 @@ const Portal = () => {
               </Grid>
             </Grid>
 
-            <Grid container spacing={2} sx={{ marginTop: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: 2, padding: 2 }}>
               {stats.map((stat, index) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
                   <StatCard {...stat} />
-                </Grid>
               ))}
-            </Grid>
+            </Box>
 
             <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
