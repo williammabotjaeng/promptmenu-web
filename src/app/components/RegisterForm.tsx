@@ -1,5 +1,8 @@
 import * as React from "react";
-import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar } from "@mui/material";
+import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar, Grid } from "@mui/material";
+
+import SSHGoldLogo from '@/assets/GoldLogo.png';
+import Image from 'next/image';
 
 const features = [
   {
@@ -21,71 +24,90 @@ const features = [
 
 export const RegisterForm: React.FC = () => {
   return (
-    <Box className="flex flex-col bg-black bg-opacity-0" sx={{ padding: 4 }}>
-      <Box className="flex flex-col pr-20 pb-96 w-full bg-black max-md:pr-5 max-md:pb-24 max-md:max-w-full">
-        <Box className="flex flex-col pb-32 bg-black bg-opacity-0 max-md:pb-24 max-md:max-w-full">
-          <Box className="flex flex-col pt-8 mb-0 bg-black bg-opacity-0 max-md:mb-2.5 max-md:max-w-full">
-            <Box className="flex flex-col items-start self-end px-16 max-w-full text-3xl font-bold text-orange-300 bg-black bg-opacity-0 w-[1280px] max-md:px-5">
-              <Box className="flex z-10 flex-wrap gap-10 items-start -mb-3 max-md:mb-2.5">
-                <Box className="flex-auto mt-5">Staffing Solutions Hub</Box>
-                <Box className="flex shrink-0 h-9 bg-black bg-opacity-0 w-[238px]" />
-              </Box>
-            </Box>
-            <Avatar
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/2e248f686084c42693cd3ddb966bfe6c73111179b483633b87406237d39077db?apiKey=7fae980a988640eea8add1e49a5d542e&"
+    <Box sx={{ padding: 4, backgroundColor: 'transparent' }}>
+      <Grid container spacing={4}>
+        {/* Left Column */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', position: 'relative', mb: 2 }}>
+            <Image
+              src={SSHGoldLogo.src}
               alt="Staffing Solutions Logo"
-              sx={{ width: 200, height: 'auto', marginTop: 0, boxShadow: '0px 4px 4px rgba(0,0,0,0.25)' }}
+              width={200} 
+              height={204} 
+              style={{ opacity: 0.5, overflow: 'hidden' }}
             />
-            <Box className="flex z-10 flex-col px-20 pt-64 mt-0 mb-0 max-md:px-5 max-md:pt-24 max-md:mt-0 max-md:mb-2.5 max-md:max-w-full">
-              <Box className="flex flex-col items-start pt-2 mt-64 max-w-full bg-black bg-opacity-0 w-[616px] max-md:mt-10">
-                <Typography variant="h1" sx={{ fontWeight: 'bold', color: 'white', fontSize: '48px' }}>
-                  Join the Winning <span style={{ display: 'block', color: '#977342' }}>Talent Network</span>
-                </Typography>
-                <Typography variant="body1" sx={{ marginTop: 2, color: 'white', marginBottom: 2 }}>
-                  Connect with top casting directors, agencies, and <span style={{ display: 'block' }}>productions across the Middle East</span>
-                </Typography>
-                <Box className="flex flex-col self-stretch mt-10 w-full bg-black bg-opacity-0 max-md:max-w-full">
-                  {features.map((feature, index) => (
-                    <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 4 }}>
-                      <Avatar src={feature.iconSrc} alt={feature.alt} sx={{ width: 24, height: 24 }} />
-                      <Typography variant="body2" color="white">{feature.text}</Typography>
-                    </Box>
-                  ))}
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 'bold',
+                color: '#977342',
+                fontSize: '20px',
+                opacity: 0.3,
+                position: 'absolute',
+                left: '155%',
+                top: '36%', 
+                transform: 'translate(-50%, -100%)',
+                width: '150%'
+              }}
+            >
+              Staffing Solutions Hub
+            </Typography>
+          </Box>
+            <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#fff', fontSize: '48px', mb: 2 }}>
+              Join the Winning <span style={{ display: 'block', color: '#977342' }}>Talent Network</span>
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
+              Connect with top casting directors, agencies, and <span style={{ display: 'block' }}>productions across the Middle East</span>
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
+              {features.map((feature, index) => (
+                <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
+                  <Avatar src={feature.iconSrc} alt={feature.alt} sx={{ width: 24, height: 24 }} />
+                  <Typography variant="body2" color="white">{feature.text}</Typography>
                 </Box>
-              </Box>
-              <form className="flex z-10 flex-col self-end px-10 pt-8 pb-12 mt-0 max-w-full text-white rounded-2xl bg-white bg-opacity-10 w-[624px] max-md:px-5 max-md:mt-0">
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'orange.300' }}>
-                  Create Your Account
-                </Typography>
-                <Box className="flex flex-col pb-14 mt-6 w-full text-sm bg-black bg-opacity-0 max-md:max-w-full">
-                  <Box className="flex flex-wrap gap-4 bg-black bg-opacity-0 max-md:max-w-full">
-                    <TextField label="First Name" id="firstName" variant="outlined" fullWidth margin="normal" />
-                    <TextField label="Last Name" id="lastName" variant="outlined" fullWidth margin="normal" />
-                  </Box>
-                  <TextField label="Email Address" type="email" id="email" variant="outlined" fullWidth margin="normal" />
-                  <TextField label="Phone Number" type="tel" id="phone" variant="outlined" fullWidth margin="normal" />
-                  <TextField label="Password" type="password" id="password" variant="outlined" fullWidth margin="normal" />
-                  <TextField label="Confirm Password" type="password" id="confirmPassword" variant="outlined" fullWidth margin="normal" />
-                  <FormControlLabel
-                    control={<Checkbox id="terms" />}
-                    label="I agree to the Terms of Service and Privacy Policy"
-                    sx={{ color: 'gray.400' }}
-                  />
-                </Box>
-                <Button variant="contained" color="primary" type="submit" sx={{ padding: '16px', marginTop: 2 }}>
-                  Create Account
-                </Button>
-                <Box className="self-center mt-28 ml-5 text-xs leading-none text-center text-black max-md:mt-10">
-                  <span className="text-sm text-white">Already have an account?</span>
-                  <Button variant="text"  sx={{ padding: 0 }}> Sign in</Button>
-                </Box>
-              </form>
+              ))}
             </Box>
           </Box>
-        </Box>
-        <Box className="self-end px-16 py-1 mt-32 mr-8 mb-0 w-full max-w-screen-xl text-sm leading-none text-center text-gray-400 bg-black bg-opacity-0 max-md:px-5 max-md:mt-10 max-md:mr-2.5 max-md:mb-2.5 max-md:max-w-full">
-          © 2025 Casting Dubai. All rights reserved.
-        </Box>
+        </Grid>
+
+        {/* Right Column */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ backgroundColor: '#ffffff1a', padding: 4, borderRadius: 2 }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
+              Create Your Account
+            </Typography>
+            <form>
+              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <TextField label="First Name" id="firstName" variant="outlined" fullWidth margin="normal" />
+                  <TextField label="Last Name" id="lastName" variant="outlined" fullWidth margin="normal" />
+                </Box>
+                <TextField label="Email Address" type="email" id="email" variant="outlined" fullWidth margin="normal" />
+                <TextField label="Phone Number" type="tel" id="phone" variant="outlined" fullWidth margin="normal" />
+                <TextField label="Password" type="password" id="password" variant="outlined" fullWidth margin="normal" />
+                <TextField label="Confirm Password" type="password" id="confirmPassword" variant="outlined" fullWidth margin="normal" />
+                <FormControlLabel
+                  control={<Checkbox id="terms" />}
+                  label="I agree to the Terms of Service and Privacy Policy"
+                  sx={{ color: 'gray.400' }}
+                />
+              </Box>
+              <Button variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
+                Create Account
+              </Button>
+              <Box sx={{ textAlign: 'center', marginTop: 2 }}>
+                <Typography variant="body2" color="white">
+                  Already have an account? 
+                  <Button variant="text" sx={{ padding: 0, color: '#977342' }}> Sign in</Button>
+                </Typography>
+              </Box>
+            </form>
+          </Box>
+        </Grid>
+      </Grid>
+      <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400' }}>
+        © 2025 Casting Dubai. All rights reserved.
       </Box>
     </Box>
   );
