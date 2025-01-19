@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/Header';
-import LoginForm from '@/components/LoginForm';
+import { LoginForm } from '@/components/LoginForm';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
 import { useAuth } from '@/providers/auth-providers'; 
@@ -30,10 +30,7 @@ const Login: React.FC = () => {
 
   return (
     <div>
-      <Header />
       <LoginForm /> {/* Pass the handleLogin function as a prop */}
-      <br />
-      <p style={{ textAlign: 'center' }}>&copy; 2025 Staffing Solutions Hub</p>
 
       {/* Snackbar for displaying messages */}
       <Snackbar
