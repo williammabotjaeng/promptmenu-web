@@ -57,7 +57,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
   };
 
   return (
-    <Paper elevation={3} sx={{ padding: 3, borderRadius: '8px', backgroundColor: 'white' }}>
+    <Paper elevation={3} sx={{ padding: 3, borderRadius: '8px', backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', color: '#CEAB76' }}>
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
 
