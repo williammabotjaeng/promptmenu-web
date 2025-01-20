@@ -189,10 +189,10 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           Back
         </Button>
         <Button
-          sx={{ color: '#000', backgroundColor: '#CEAB76' }}
+          sx={{ color: '#fff', backgroundColor: '#977342' }}
           onClick={handleContinue}
         >
-          Submit Profile
+          Submit for Review
         </Button>
       </Box>
     </Paper>
