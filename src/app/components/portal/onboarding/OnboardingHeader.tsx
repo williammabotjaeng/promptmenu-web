@@ -36,7 +36,7 @@ const OnboardingHeader: React.FC<OnboardingHeaderProps> = ({ steps, onClose }) =
       <Box>
         <CloseIcon 
           onClick={onClose} 
-          sx={{ color: 'white', width: '18px', height: '18px', marginRight: '40px', marginBottom: '50px', fontWeight: 'bold' }} 
+          sx={{ color: 'white', width: '18px', height: '18px', marginRight: '40px', marginBottom: '50px', fontWeight: 'bold', cursor: 'pointer' }} 
         />
       </Box>
     </Box>
