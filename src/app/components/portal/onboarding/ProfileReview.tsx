@@ -29,8 +29,8 @@ const attributes = [
 ];
 
 const socialLinks = [
-  { icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/38506c997067f646e6d884614aa2fc730d0be2b838b56801f26cc8aed6ae9022?apiKey=7fae980a988640eea8add1e49a5d542e&', username: '@talentname' },
-  { icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/48b9bf0392a86eba509cc62f0e16a3170a269a9caf6b80aff8a6b7b21bd58263?apiKey=7fae980a988640eea8add1e49a5d542e&', username: '@talentname' }
+  { icon: 'instagram', username: '@talentname' },
+  { icon: 'tiktok', username: '@talentname' }
 ];
 
 const documents = [
