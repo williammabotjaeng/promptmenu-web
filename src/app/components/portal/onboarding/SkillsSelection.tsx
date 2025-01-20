@@ -49,8 +49,8 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                 <OnboardingHeader steps={steps} onClose={onClose} />
 
                 {/* Skills Section */}
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
-                    <Typography variant="h5" sx={{ textAlign: 'left', color: '#ceab76', paddingBottom: 3 }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
+                    <Typography variant="h5" sx={{ textAlign: 'left', color: '#ceab76', paddingBottom: 1, marginRight: 50 }}>
                         Professional Skills
                     </Typography>
                     <TextField
@@ -58,10 +58,10 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                         placeholder="Click a Skill to added here..."
                         sx={{
                             backgroundColor: 'black',
-                            border: '2px solid #CEAB76',
-                            borderRadius: '12px',
+                            border: '1px solid #CEAB76',
                             color: '#fff',
-                            width: '80vh',
+                            width: '100vh',
+                            borderRadius: '8px',
                             '& .MuiOutlinedInput-input': {
                                 padding: '12px 12px'
                             },
@@ -78,7 +78,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                             <SkillTag key={skill.name} {...skill} />
                         ))}
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, marginLeft: 5, width: '50%', backgroundColor: 'black' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, marginLeft: 5, width: '50%', backgroundColor: 'black' }}>
                         <Button
                             sx={{
                                 color: '#977342',
