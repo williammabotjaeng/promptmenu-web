@@ -61,7 +61,7 @@ const HeadshotUpload: React.FC = () => {
         </Box>
 
         {/* Upload Form Section */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
           <Paper
             elevation={3}
             sx={{
@@ -73,7 +73,7 @@ const HeadshotUpload: React.FC = () => {
               textAlign: 'center', 
             }}
           >
-            <Typography variant="h6" sx={{ color: 'white', marginBottom: 2 }}>
+            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left' }}>
               Upload Your Headshot
             </Typography>
 
