@@ -65,12 +65,12 @@ const HeadshotUpload: React.FC = () => {
           <Paper
             elevation={3}
             sx={{
-              backgroundColor: 'rgba(0, 0, 0, 0.1)',
+              backgroundColor: '#111111',
               padding: 4,
               borderRadius: '8px',
               width: '100%',
               maxWidth: '400px',
-              textAlign: 'center'
+              textAlign: 'center', 
             }}
           >
             <Typography variant="h6" sx={{ color: 'white', marginBottom: 2 }}>

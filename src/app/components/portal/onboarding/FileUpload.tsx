@@ -24,8 +24,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
           px: 5, 
           py: 9, 
           mt: 6, 
-          border: '2px dashed', 
           borderColor: '#4B5563', 
+          border: '2px dashed #977342',
           borderRadius: '8px', 
           backgroundColor: 'transparent' 
         }}
