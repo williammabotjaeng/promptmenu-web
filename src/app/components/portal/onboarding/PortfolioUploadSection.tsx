@@ -2,15 +2,26 @@
 
 import * as React from 'react';
 import { Box, Typography, Button, Paper } from '@mui/material';
+import DescriptionIcon from '@mui/icons-material/Description'; 
+import VideoLibraryIcon from '@mui/icons-material/VideoLibrary'; 
 import { PortfolioUploadSectionProps } from '@/types/Props/PortfolioUploadSectionProps';
 
 export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
   title,
   description,
-  buttonText,
-  iconSrc,
-  iconAlt
+  buttonText
 }) => {
+  const renderIcon = (title: string) => {
+    switch (title.toLowerCase()) {
+      case 'videos':
+        return <VideoLibraryIcon sx={{ fontSize: '36px', color: '#977342' }} />;
+      case 'resume/cv':
+        return <DescriptionIcon sx={{ fontSize: '36px', color: '#977342' }} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Box sx={{ py: 0.5, mt: 2, maxWidth: '100%' }}>
       <Typography variant="h6" sx={{ color: 'orange' }}>
@@ -34,12 +45,7 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '36px', minHeight: '36px' }}>
-            <img
-              loading="lazy"
-              src={iconSrc}
-              alt={iconAlt}
-              style={{ objectFit: 'contain', width: '36px', height: '36px' }}
-            />
+            {renderIcon(title)}
           </Box>
           <Typography variant="body1" sx={{ textAlign: 'center', color: 'orange', mt: 1 }}>
             {description}

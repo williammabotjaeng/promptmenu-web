@@ -20,6 +20,7 @@ import { restCall } from '@/services/restCall';
 import axios from 'axios';
 import PortfolioMedia from '@/components/portal/onboarding/PortfolioMedia';
 import { PaymentSection } from '@/components/portal/onboarding/PaymentSection';
+import { PortfolioBuilder } from '@/components/portal/onboarding/PortfolioBuilder';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
@@ -176,19 +177,19 @@ const TalentOnboarding: React.FC = () => {
       )}
 
       {activeStep === 3 && (
-        <PhysicalAttributes activeStep={activeStep} />
+        <PhysicalAttributes />
       )}
 
       {activeStep === 4 && (
-        <IDandCreds activeStep={activeStep} />
+        <IDandCreds />
       )}
 
       {activeStep === 5 && (
-        <SocialMediaLinks activeStep={activeStep} />
+        <SocialMediaLinks />
       )}
 
       {activeStep === 6 && (
-        <PortfolioMedia activeStep={activeStep} />
+        <PortfolioBuilder />
       )}
 
       {activeStep === 7 && (
