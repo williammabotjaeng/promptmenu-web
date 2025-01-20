@@ -47,7 +47,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
 
         {/* Payment Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
-          <Typography variant="h5" sx={{ color: 'orange', paddingBottom: 3 }}>
+          <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 3 }}>
             Payment Methods
           </Typography>
           <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '100%', maxWidth: '768px' }}>
