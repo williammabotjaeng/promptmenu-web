@@ -163,7 +163,7 @@ const TalentOnboarding: React.FC = () => {
   const uploadHeadshot = () => uploadFiles([cookies.headshotBlobUrl], 'headshot');
 
   return (
-    <Box sx={{ width: '100vw', backgroundColor: 'black' }}>
+    <Box sx={{ width: '100vw', backgroundColor: 'black', border: 'none' }}>
       {activeStep === 0 && (
         <HeadshotUploader activeStep={activeStep} setActiveStep={setActiveStep} />
       )}

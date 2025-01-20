@@ -31,7 +31,7 @@ const SkillsSelection: React.FC<{ activeStep: number; setActiveStep: (step: numb
     }
 
     return (
-    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
+    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />
