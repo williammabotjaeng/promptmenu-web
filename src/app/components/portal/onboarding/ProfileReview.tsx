@@ -14,7 +14,10 @@ import Image from 'next/image';
 import Headshot from '@/assets/headshot.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'; // Importing Play Arrow icon
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import RevImageOne from '@/assets/review_image_one.png';
+import RevImageTwo from '@/assets/review_image_two.png';
+import RevImageThree from '@/assets/review_image_three.png';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -145,9 +148,9 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           Photos
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
-          <Image src="/path/to/photo1.jpg" width={100} height={100} alt="Photo 1" />
-          <Image src="/path/to/photo2.jpg" width={100} height={100} alt="Photo 2" />
-          <Image src="/path/to/photo3.jpg" width={100} height={100} alt="Photo 3" />
+          <Image src={RevImageOne.src} width={250} height={250} alt="Photo 1" />
+          <Image src={RevImageTwo.src} width={250} height={250} alt="Photo 2" />
+          <Image src={RevImageThree.src} width={250} height={250} alt="Photo 3" />
         </Box>
 
         {/* Video Showreel Section */}
@@ -157,15 +160,14 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         <Box sx={{ 
           bgcolor: 'white', 
           borderRadius: '4px', 
-          height: '200px', 
+          height: '400px', 
           display: 'flex', 
           justifyContent: 'center', 
           alignItems: 'center', 
           position: 'relative',
           marginBottom: 2
         }}>
-          <PlayArrowIcon sx={{ color: '#977342', fontSize: '50px', position: 'absolute' }} />
-          <Typography sx={{ color: '#6B7280' }}>Click to Play Video</Typography>
+          <PlayCircleOutlineIcon sx={{ color: '#977342', fontSize: '50px', position: 'absolute' }} />
         </Box>
         {/* ID Document Section */}
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
