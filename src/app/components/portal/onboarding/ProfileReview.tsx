@@ -85,8 +85,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         Social Media Links
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-        {socialLinks.map((link) => (
-          <SocialMediaLink key={link.username} icon={link.icon} username={link.username} />
+        {socialLinks.map((link, index) => (
+          <SocialMediaLink key={index} icon={link.icon} username={link.username} />
         ))}
       </Box>
 

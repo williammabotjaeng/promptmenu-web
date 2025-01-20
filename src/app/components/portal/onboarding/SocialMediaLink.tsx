@@ -40,7 +40,7 @@ export const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({ icon, username
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '16px', marginRight: 2 }}>
         {getIcon(platform)}
       </Box>
-      <Typography variant="body1" sx={{ color: 'text.secondary', flexGrow: 1 }}>
+      <Typography variant="body1" sx={{ color: '#CEAB76', flexGrow: 1 }}>
         {username}
       </Typography>
     </Box>
