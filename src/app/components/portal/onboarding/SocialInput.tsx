@@ -41,17 +41,20 @@ export const SocialInput: React.FC<SocialInputProps> = ({ icon, placeholder, alt
         borderRadius: '8px',
         '& .MuiOutlinedInput-root': {
           '& fieldset': {
-            borderColor: '#4B5563',
+            borderColor: '#977342',
+            color: '#CEAB76'
           },
           '&:hover fieldset': {
             borderColor: '#977342',
+            color: '#CEAB76'
           },
           '&.Mui-focused fieldset': {
             borderColor: '#977342',
+            color: '#CEAB76'
           },
         },
         '& .MuiInputBase-input': {
-          color: 'gray.400',
+          color: '#CEAB76'
         },
       }}
     />
