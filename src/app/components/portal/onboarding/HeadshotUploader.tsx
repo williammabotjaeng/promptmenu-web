@@ -25,7 +25,7 @@ const HeadshotUpload: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '786px', '@media (max-width: 600px)': { paddingBottom: '24px' } }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
         {/* Header Section */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', overflowX: 'none', paddingTop: 2 }}>
           <Box sx={{
