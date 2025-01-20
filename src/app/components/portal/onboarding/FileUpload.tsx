@@ -20,7 +20,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
                 width: '100%',
                 borderRadius: '16px',
                 backgroundColor: 'transparent',
-                width: '100%',
                 paddingX: { xs: 2, md: 5 }
             }}
         >
@@ -37,7 +36,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
                     py: 4,
                     mt: 1,
                     borderColor: '#4B5563',
-                    border: '2px dashed #977342',
+                    border: '2px dashed #CEAB76',
                     borderRadius: '8px',
                     backgroundColor: 'transparent'
                 }}
@@ -48,7 +47,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
                             width: '45px',
                             height: 'auto',
                             objectFit: 'contain',
-                            color: '#977342'
+                            color: '#CEAB76'
                         }}
                         aria-label="Upload icon" 
                     />
@@ -61,7 +60,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
                         variant="contained"
                         sx={{
                             mt: 2,
-                            backgroundColor: '#977342',
+                            backgroundColor: '#CEAB76',
                             color: 'black',
                             '&:hover': { backgroundColor: '#FFA500' }
                         }}

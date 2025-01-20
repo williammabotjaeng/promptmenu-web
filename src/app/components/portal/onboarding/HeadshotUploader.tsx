@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, Button } from '@mui/material';
 import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { ActionButton } from '@/components/portal/onboarding/ActionButton';
 import { FileUpload } from '@/components/portal/onboarding/FileUpload';
@@ -69,11 +69,11 @@ const HeadshotUpload: React.FC = () => {
               padding: 4,
               borderRadius: '8px',
               width: '100%',
-              maxWidth: '400px',
+              maxWidth: '800px',
               textAlign: 'center', 
             }}
           >
-            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left' }}>
+            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left', marginLeft: 5 }}>
               Upload Your Headshot
             </Typography>
 
@@ -83,9 +83,9 @@ const HeadshotUpload: React.FC = () => {
               maxSize="5MB"
               onFileSelect={handleFileSelect}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-              <ActionButton label="Back" variant="secondary" />
-              <ActionButton label="Continue" variant="primary" />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1, marginLeft: 5, width: '90%',  }}>
+              <Button sx={{ color: '#977342', border: '2px solid #977342' }}>Back</Button>
+              <Button sx={{ color: '#000', backgroundColor: '#CEAB76' }}>Continue</Button>
             </Box>
           </Paper>
         </Box>
