@@ -40,7 +40,7 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
 
-      <Paper elevation={3} sx={{ padding: 4, marginTop: 4, backgroundColor: 'rgba(245, 245, 245, 0.1)' }}>
+      <Paper elevation={3} sx={{ padding: 4, marginTop: 4, backgroundColor: 'rgba(151, 115, 66, 0.1)' }}>
         <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2 }}>
           ID Document
         </Typography>

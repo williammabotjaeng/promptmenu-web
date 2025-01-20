@@ -2,17 +2,18 @@
 
 import * as React from 'react';
 import { Box, Typography, Button, Paper } from '@mui/material';
-import DescriptionIcon from '@mui/icons-material/Description'; 
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIdCard as solidIdCard } from '@fortawesome/free-solid-svg-icons'; 
+import { faIdCard as regularIdCard } from '@fortawesome/free-regular-svg-icons'; 
 import { UploadSectionProps } from '@/types/Props/UploadSectionsProps';
 
 export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
   const renderIcon = (title: string) => {
     switch (title.toLowerCase()) {
       case 'front side':
-        return <DescriptionIcon sx={{ fontSize: '40px', color: '#977342' }} />;
+        return <FontAwesomeIcon icon={solidIdCard} style={{ fontSize: '40px', color: '#977342' }} />;
       case 'back side':
-        return <AssignmentTurnedInIcon sx={{ fontSize: '40px', color: '#977342' }} />;
+        return <FontAwesomeIcon icon={regularIdCard} style={{ fontSize: '40px', color: '#977342' }} />;
       default:
         return null;
     }
@@ -29,8 +30,8 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
         px: 4, 
         py: 3, 
         width: '100%', 
-        border: '2px dashed', 
-        borderColor: 'stone.500', 
+        border: '2px dotted', 
+        borderColor: '#CEAB76', 
         bgcolor: 'transparent', 
         borderRadius: '8px', 
         maxWidth: '400px', 
@@ -47,7 +48,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
         </Typography>
         <Button 
           variant="contained" 
-          sx={{ mt: 2, bgcolor: 'stone.500', color: 'white', '&:hover': { bgcolor: '#977342' } }} 
+          sx={{ mt: 2, bgcolor: '#977342', color: 'white', '&:hover': { bgcolor: '#977342' } }} 
           aria-label={`Upload ${title}`}
         >
           Upload
