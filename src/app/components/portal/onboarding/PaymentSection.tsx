@@ -5,6 +5,7 @@ import { PaymentMethod } from '@/components/portal/onboarding/PaymentMethod';
 import { CardInput } from '@/components/portal/onboarding/CardInput';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
+import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -23,7 +24,7 @@ const paymentMethods = [
   { label: "PayPal" }
 ];
 
-export const PaymentSection: React.FC<{ activeStep: number; setActiveStep: (step: number) => void; }> = ({ activeStep, setActiveStep }) => {
+export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
 
   const onClose = () => {
@@ -39,7 +40,7 @@ export const PaymentSection: React.FC<{ activeStep: number; setActiveStep: (step
   };
 
   return (
-    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
+    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />

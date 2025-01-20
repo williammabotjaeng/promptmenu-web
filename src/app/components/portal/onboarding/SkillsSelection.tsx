@@ -32,7 +32,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
     };
     const handleBack = () => {
         if (activeStep > 0) {
-            setActiveStep(activeStep + 1);
+            setActiveStep(activeStep - 1);
         } else {
             router.push('/portal')
         }

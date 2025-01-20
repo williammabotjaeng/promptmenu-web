@@ -6,6 +6,7 @@ import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { PortfolioUploadSection } from '@/components/portal/onboarding/PortfolioUploadSection';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
+import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -18,7 +19,7 @@ const steps = [
   { number: 8, title: 'Review', isActive: false }
 ];
 
-export const PortfolioBuilder: React.FC<{ activeStep: number; setActiveStep: (step: number) => void; }> = ({ activeStep, setActiveStep }) => {
+export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
 
   const onClose = () => {

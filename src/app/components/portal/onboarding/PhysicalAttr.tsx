@@ -5,6 +5,7 @@ import { AttributeInput } from './AttributeInput';
 import { DropdownAttribute } from './DropdownAttribute';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
+import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -17,7 +18,7 @@ const steps = [
   { number: 8, title: 'Review', isActive: false }
 ];
 
-export const PhysicalAttributes: React.FC<{ activeStep: number; setActiveStep: (step: number) => void; }> = ({ activeStep, setActiveStep }) => {
+export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
 
   const onClose = () => {
