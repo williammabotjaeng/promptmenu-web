@@ -169,7 +169,7 @@ const TalentOnboarding: React.FC = () => {
       )}
 
       {activeStep === 1 && (
-        <SkillsSelection />
+        <SkillsSelection activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 2 && (
