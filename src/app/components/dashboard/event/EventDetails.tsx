@@ -15,7 +15,8 @@ export const EventDetails: React.FC = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100%',
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#fff',
+        paddingBottom: '40px'
       }}
     >
       {/* Header with Step Navigation */}
@@ -26,9 +27,9 @@ export const EventDetails: React.FC = () => {
           display: 'flex',
           flexDirection: 'column',
           borderRadius: '8px',
-          border: '2px solid #D1D5DB',
-          width: '40%',
-          padding: 2
+          width: '60%',
+          padding: 2,
+          boxShadow: '0px 4px 10px rgba(156, 163, 175, 0.5)',
         }}
       >
 

@@ -19,12 +19,12 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 interface HeaderWithProgressBarProps {
-  progressValue: number; // Prop to accept the progress value
+  progressValue: number; 
 }
 
 const HeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progressValue }) => {
   return (
-    <Box sx={{ marginBottom: 4, mt: 4, width: '80%', position: 'relative' }}>
+    <Box sx={{ marginBottom: 4, mt: 4, width: '60%', position: 'relative' }}>
       <BorderLinearProgress variant="determinate" value={progressValue} sx={{ marginTop: 1 }} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1 }}>
         <Typography variant="body2" sx={{ color: '#977342' }}>Event Details</Typography>
@@ -32,7 +32,7 @@ const HeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progressV
         <Typography variant="body2" sx={{ color: '#977342', textAlign: 'right' }}>Review & Create</Typography>
       </Box>
       <Link href="/dashboard">
-        <CloseIcon sx={{ color: '#977342', position: 'absolute', top: 0, right: -70, cursor: 'pointer' }} /> 
+        <CloseIcon sx={{ color: '#977342', position: 'absolute', top: 0, right: -90, cursor: 'pointer' }} /> 
       </Link>
     </Box>
   );
