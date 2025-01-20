@@ -1,41 +1,60 @@
 import * as React from 'react';
 import { DateTimePicker } from '@/components/dashboard/event/DateTimePicker';
 import { CheckboxItem } from '@/components/dashboard/event/CheckBoxItem';
-import { TextField, Button, Box, Typography, Paper } from '@mui/material';
+import { TextField, Button, Box, Typography, Paper, Link } from '@mui/material';
+import { mt } from 'date-fns/locale';
+import CloseIcon from '@mui/icons-material/Close';
+import HeaderWithProgressBar from './HeaderWithProgressBar';
 
 export const EventDetails: React.FC = () => {
   return (
-    <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', borderRadius: '8px', border: '2px solid #D1D5DB' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: 2 }}>
-          <Typography variant="h5" sx={{ color: '#4B5563' }}>Create New Event</Typography>
-          <Button 
-            sx={{ color: '#4B5563', fontWeight: 'bold' }} 
-            aria-label="Close form"
-          >
-            X
-          </Button>
-        </Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+        backgroundColor: '#f5f5f5'
+      }}
+    >
+      {/* Header with Step Navigation */}
+      <HeaderWithProgressBar progressValue={33} />
+      <Paper
+        elevation={2}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          borderRadius: '8px',
+          border: '2px solid #D1D5DB',
+          width: '40%',
+          padding: 2
+        }}
+      >
+
+
+        {/* Form Content */}
         <Box sx={{ padding: 2 }}>
-          <TextField 
-            label="Event Title" 
-            variant="outlined" 
-            fullWidth 
-            sx={{ marginBottom: 2 }} 
+          <Typography variant="h5" sx={{ color: '#4B5563', marginBottom: 2 }}>Create New Event</Typography>
+          <TextField
+            label="Event Title"
+            variant="outlined"
+            fullWidth
+            sx={{ marginBottom: 2 }}
           />
           <Typography variant="body1" sx={{ marginBottom: 1 }}>Description</Typography>
-          <TextField 
-            multiline 
-            rows={4} 
-            variant="outlined" 
-            fullWidth 
-            sx={{ marginBottom: 2 }} 
+          <TextField
+            multiline
+            rows={4}
+            variant="outlined"
+            fullWidth
+            sx={{ marginBottom: 2 }}
           />
-          <TextField 
-            label="Location" 
-            variant="outlined" 
-            fullWidth 
-            sx={{ marginBottom: 2 }} 
+          <TextField
+            label="Location"
+            variant="outlined"
+            fullWidth
+            sx={{ marginBottom: 2 }}
           />
           <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
             <DateTimePicker label="Start Date & Time" value="" />
@@ -47,9 +66,11 @@ export const EventDetails: React.FC = () => {
             <CheckboxItem label="Accommodation Provided" />
           </Box>
         </Box>
+
+        {/* Submit Button */}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             sx={{ backgroundColor: '#4B5563', color: 'white', '&:hover': { backgroundColor: '#6B7280' } }}
           >
             Next Step
@@ -61,7 +82,7 @@ export const EventDetails: React.FC = () => {
             />
           </Button>
         </Box>
-      </Box>
-    </Paper>
+      </Paper>
+    </Box>
   );
 };
