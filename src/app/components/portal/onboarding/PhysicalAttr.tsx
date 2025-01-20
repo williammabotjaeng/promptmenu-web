@@ -45,7 +45,7 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
             <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 2 }}>
               Physical Attributes
             </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 4, width: '100%' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 1, width: '100%' }}>
               <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
                 <AttributeInput label="Height" placeholder="cm" />
                 <AttributeInput label="Weight" placeholder="kg" />
