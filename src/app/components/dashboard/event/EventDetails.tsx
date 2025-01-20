@@ -61,8 +61,8 @@ export const EventDetails: React.FC = () => {
             sx={{ marginBottom: 2 }}
           />
           <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
-            <DateTimePicker label="Start Date & Time" value="" />
-            <DateTimePicker label="End Date & Time" value="" />
+            <DateTimePicker label="Start Date & Time" />
+            <DateTimePicker label="End Date & Time" />
           </Box>
           <Box sx={{ marginBottom: 2 }}>
             <CheckboxItem label="Meals Provided" />
