@@ -87,11 +87,9 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         </Box>
       </Box>
 
-      <Divider sx={{ marginY: 2 }} />
-
       <Box sx={{ padding: 4 }}>
 
-        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Skills
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
@@ -100,7 +98,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           ))}
         </Box>
 
-        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Attributes
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2 }}>
@@ -109,7 +107,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           ))}
         </Box>
 
-        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Social Media Links
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
