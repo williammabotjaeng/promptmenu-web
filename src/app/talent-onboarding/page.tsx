@@ -7,7 +7,7 @@ import { Box, Typography, Grid, TextField, Button, Avatar, IconButton } from '@m
 import { AddAPhoto } from '@mui/icons-material';
 import { TalentProfileData } from '@/types/TalentProfileData';
 import PersonalInformation from '@/components/portal/onboarding/PersonalInfo';
-import PhysicalAttributes from '@/components/portal/onboarding/PhysicalAttr';
+import { PhysicalAttributes } from '@/components/portal/onboarding/PhysicalAttr';
 import IDandCreds from '@/components/portal/onboarding/IDandCreds';
 import ProfileReview from '@/components/portal/onboarding/ProfileReview';
 import SocialMediaLinks from '@/components/portal/onboarding/SocialMediaLinks';
@@ -19,6 +19,7 @@ import { useOnboarding } from '@/providers/onboarding-providers';
 import { restCall } from '@/services/restCall';
 import axios from 'axios';
 import PortfolioMedia from '@/components/portal/onboarding/PortfolioMedia';
+import { PaymentSection } from '@/components/portal/onboarding/PaymentSection';
 
 const TalentOnboarding: React.FC = () => {
   const router = useRouter();
@@ -77,8 +78,8 @@ const TalentOnboarding: React.FC = () => {
     'image/png': 'png',
     'image/jpeg': 'jpg',
     'application/pdf': 'pdf',
-    'image/gif': 'gif', 
-    'video/mp4': 'mp4', 
+    'image/gif': 'gif',
+    'video/mp4': 'mp4',
   };
 
   const getFileExtension = (blob) => {
@@ -162,33 +163,37 @@ const TalentOnboarding: React.FC = () => {
 
   return (
     <Box sx={{ width: '100vw', backgroundColor: 'black' }}>
-        {activeStep === 0 && (
-          <HeadshotUploader />
-        )}
+      {activeStep === 0 && (
+        <HeadshotUploader />
+      )}
 
-        {activeStep === 1 && (
-          <SkillsSelection activeStep={activeStep} />
-        )}
+      {activeStep === 1 && (
+        <SkillsSelection />
+      )}
 
-        {activeStep === 2 && (
-          <PhysicalAttributes activeStep={activeStep} />
-        )}
+      {activeStep === 2 && (
+        <PaymentSection />
+      )}
 
-        {activeStep === 3 && (
-          <IDandCreds activeStep={activeStep} />
-        )}
+      {activeStep === 3 && (
+        <PhysicalAttributes activeStep={activeStep} />
+      )}
 
-        {activeStep === 4 && (
-          <SocialMediaLinks activeStep={activeStep} />
-        )}
+      {activeStep === 4 && (
+        <IDandCreds activeStep={activeStep} />
+      )}
 
-        {activeStep === 5 && (
-          <PortfolioMedia activeStep={activeStep} />
-        )}
+      {activeStep === 5 && (
+        <SocialMediaLinks activeStep={activeStep} />
+      )}
 
-        {activeStep === 6 && (
-          <ProfileReview />
-        )}
+      {activeStep === 6 && (
+        <PortfolioMedia activeStep={activeStep} />
+      )}
+
+      {activeStep === 7 && (
+        <ProfileReview />
+      )}
     </Box>
   );
 };
