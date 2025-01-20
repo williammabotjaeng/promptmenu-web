@@ -61,14 +61,6 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
 
-      {steps.map((step) => (
-        <StepItem
-          key={step.number}
-          number={step.number}
-          title={step.title}
-          isActive={step.isActive}
-        />
-      ))}
       <Divider sx={{ marginY: 2 }} />
 
       <Typography variant="h6" sx={{ marginBottom: 2 }}>
@@ -119,7 +111,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
           onClick={handleContinue}
         >
-          Continue
+          SubmitProfile
         </Button>
       </Box>
     </Paper>

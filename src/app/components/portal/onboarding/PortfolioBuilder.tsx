@@ -35,31 +35,10 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
   };
 
   return (
-    <Container maxWidth="lg" sx={{ backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
+    <Container maxWidth="lg" sx={{ backgroundColor: 'black' }}>
       <Box sx={{ paddingBottom: '96px', backgroundColor: 'transparent' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', color: 'orange' }}>
-          <Typography variant="h4">Staffing Solutions Hub</Typography>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/af43027af516aad76123aea989672db17ed5430d09957d312f5d82c3325ed597?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt="Logo"
-            style={{ width: '18px', height: 'auto' }}
-          />
-        </Box>
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', padding: '16px', color: 'white' }}>
-          {steps.map((step) => (
-            <StepItem
-              key={step.number}
-              number={step.number}
-              title={step.title}
-              isActive={step.isActive}
-            />
-          ))}
-        </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
           <Paper elevation={3} sx={{ padding: 4, backgroundColor: 'rgba(245, 245, 245, 0.1)', width: '100%', maxWidth: '768px' }}>
