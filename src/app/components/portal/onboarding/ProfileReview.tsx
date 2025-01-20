@@ -34,8 +34,8 @@ const socialLinks = [
 ];
 
 const documents = [
-  { icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/12f407ed6b023645a996355ce39e48228e016baa6e0324b2bbf68ef509eae08f?apiKey=7fae980a988640eea8add1e49a5d542e&', title: 'Acting_Resume.pdf', date: 'Updated Jan 20, 2025' },
-  { icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/e7473cba9a67bc7bc3694eb2690cdfd25a33e30d7281a5cc0039c79303968bf6?apiKey=7fae980a988640eea8add1e49a5d542e&', title: 'Portfolio_2025.pdf', date: 'Updated Jan 22, 2025' }
+  { title: 'Acting_Resume.pdf', date: 'Updated Jan 20, 2025' },
+  { title: 'Portfolio_2025.pdf', date: 'Updated Jan 22, 2025' }
 ];
 
 export const ProfileReview: React.FC = () => {

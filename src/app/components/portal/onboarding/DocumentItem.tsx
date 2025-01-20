@@ -8,7 +8,7 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import DefaultIcon from '@mui/icons-material/InsertDriveFile'; 
 
-export const DocumentItem: React.FC<DocumentItemProps> = ({ icon, title, date }) => {
+export const DocumentItem: React.FC<DocumentItemProps> = ({ title, date }) => {
   const getIcon = (fileType: string) => {
     switch (fileType) {
       case 'pdf':
@@ -23,9 +23,9 @@ export const DocumentItem: React.FC<DocumentItemProps> = ({ icon, title, date })
     }
   };
 
-  const fileType = icon.includes('.pdf') ? 'pdf' :
-                   icon.includes('.doc') || icon.includes('.docx') ? 'doc' :
-                   icon.includes('video') ? 'video' : 'default';
+  const fileType = title.includes('.pdf') ? 'pdf' :
+                   title.includes('.doc') || title.includes('.docx') ? 'doc' :
+                   title.includes('video') ? 'video' : 'default';
 
   return (
     <Paper 
