@@ -173,27 +173,27 @@ const TalentOnboarding: React.FC = () => {
       )}
 
       {activeStep === 2 && (
-        <PaymentSection />
+        <PaymentSection activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 3 && (
-        <PhysicalAttributes />
+        <PhysicalAttributes activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 4 && (
-        <IDandCreds />
+        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 5 && (
-        <SocialMediaLinks />
+        <SocialMediaLinks activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 6 && (
-        <PortfolioBuilder />
+        <PortfolioBuilder  activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 7 && (
-        <ProfileReview />
+        <ProfileReview activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
     </Box>
   );

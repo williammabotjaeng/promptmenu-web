@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { Box, Typography, Grid, Paper } from '@mui/material';
+import { Box, Typography, Grid, Paper, Button } from '@mui/material';
 import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { PaymentMethod } from '@/components/portal/onboarding/PaymentMethod';
 import { CardInput } from '@/components/portal/onboarding/CardInput';
+import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
+import { useRouter } from 'next/navigation';
 
 const steps = [
-  { number: 1, title: "Headshot" },
-  { number: 2, title: "Skills" },
+  { number: 1, title: "Headshot", isActive: false },
+  { number: 2, title: "Skills", isActive: false },
   { number: 3, title: "Payment", isActive: true },
-  { number: 4, title: "Attributes" },
-  { number: 5, title: "Social" },
-  { number: 6, title: "ID" },
-  { number: 7, title: "Portfolio" },
-  { number: 8, title: "Review" }
+  { number: 4, title: "Attributes", isActive: false },
+  { number: 5, title: "Social", isActive: false },
+  { number: 6, title: "ID", isActive: false },
+  { number: 7, title: "Portfolio", isActive: false },
+  { number: 8, title: "Review", isActive: false }
 ];
 
 const paymentMethods = [
@@ -21,50 +23,39 @@ const paymentMethods = [
   { label: "PayPal" }
 ];
 
-export const PaymentSection: React.FC = () => {
+export const PaymentSection: React.FC<{ activeStep: number; setActiveStep: (step: number) => void; }> = ({ activeStep, setActiveStep }) => {
+  const router = useRouter();
+
+  const onClose = () => {
+    router.push('/portal');
+  };
+
+  const handleContinue = () => {
+    setActiveStep(activeStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+
   return (
-    <Box className="flex overflow-hidden flex-col bg-white rounded-lg border-2 border-gray-300">
-      <Box className="flex flex-col w-full bg-black pb-[786px] max-md:pb-24">
-        <Box className="flex flex-wrap gap-5 justify-between items-start px-6 pt-6 pb-1 w-full text-2xl font-bold text-orange-300">
-          <Typography variant="h5" sx={{ py: 1 }}>
-            Staffing Solutions Hub
+    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
+        {/* Header Section */}
+        <OnboardingHeader steps={steps} onClose={onClose} />
+
+        {/* Payment Section */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
+          <Typography variant="h5" sx={{ color: 'orange', paddingBottom: 3 }}>
+            Payment Methods
           </Typography>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/f2cd4e52e0a4cd669795e18c4d81145abb8e026c073e52d1fcca203b0a305f74?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt=""
-            style={{ objectFit: 'contain', width: '18px' }}
-          />
-        </Box>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/04941e81747f3ecb6811e1684b15614793214440d6dff851abf37ed98ca1961c?apiKey=7fae980a988640eea8add1e49a5d542e&"
-          alt=""
-          style={{ objectFit: 'contain', zIndex: 10, marginTop: '-44px', marginLeft: '128px', maxWidth: '100%', width: '121px' }}
-        />
-        <Box className="flex z-10 flex-col items-center px-16 -mt-24 w-full text-white">
-          <Box className="flex gap-5 justify-between pl-3 ml-6 max-w-full">
-            {steps.map((step) => (
-                        <StepItem
-                          key={step.number}
-                          number={step.number}
-                          title={step.title}
-                          isActive={step.isActive}
-                        />
-                      ))}
-          </Box>
-        </Box>
-        <Box className="flex flex-col items-center self-center px-20 mt-14 ml-3 w-full text-base max-w-[1248px]">
-          <Paper className="flex flex-col p-8 max-w-full rounded-xl bg-[#4B5563]/10 w-[768px]">
-            <Typography variant="h5" sx={{ pt: 0.25, pb: 2.5, color: 'orange' }}>
-              Payment Methods
-            </Typography>
-            <Box className="flex flex-wrap py-0.5 pr-20 mt-6 text-center border-b border-[#4B5563]/20 text-[#4B5563]">
+          <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '100%', maxWidth: '768px' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', py: 0.5, textAlign: 'center', borderBottom: '1px solid rgba(75, 85, 99, 0.2)', color: '#4B5563' }}>
               {paymentMethods.map((method) => (
                 <PaymentMethod key={method.label} {...method} />
               ))}
             </Box>
-            <Box className="flex flex-col mt-6 w-full">
+            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 4, width: '100%' }}>
               <CardInput
                 id="cardNumber"
                 placeholder="Card Number"
@@ -89,8 +80,26 @@ export const PaymentSection: React.FC = () => {
             </Box>
           </Paper>
         </Box>
-        <Typography variant="caption" sx={{ px: 16, py: 7, mt: 20, mb: 0, ml: 5, color: 'gray', textAlign: 'center' }}>
-          Step 3 of 8 - Payment
+
+        {/* Navigation Buttons */}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4 }}>
+          <Button 
+            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+            onClick={handleBack}
+          >
+            Back
+          </Button>
+          <Button 
+            sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+            onClick={handleContinue}
+          >
+            Continue
+          </Button>
+        </Box>
+
+        {/* Step Indicator Section */}
+        <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginTop: 4, color: 'gray', textAlign: 'center' }}>
+          Step {activeStep + 1} of 8 - Payment
         </Typography>
       </Box>
     </Box>

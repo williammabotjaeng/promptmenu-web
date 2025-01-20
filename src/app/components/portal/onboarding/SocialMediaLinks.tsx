@@ -1,20 +1,22 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu'; // Importing Material-UI Menu icon
+import { Box, Typography, Paper, Button } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import { StepItem } from './StepItem';
 import { SocialInput } from './SocialInput';
+import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
+import { useRouter } from 'next/navigation';
 
 const steps = [
-  { number: 1, title: 'Headshot' },
-  { number: 2, title: 'Skills' },
-  { number: 3, title: 'Payment' },
-  { number: 4, title: 'Attributes' },
+  { number: 1, title: 'Headshot', isActive: false },
+  { number: 2, title: 'Skills', isActive: false },
+  { number: 3, title: 'Payment', isActive: false },
+  { number: 4, title: 'Attributes', isActive: false },
   { number: 5, title: 'Social', isActive: true },
-  { number: 6, title: 'ID' },
-  { number: 7, title: 'Portfolio' },
-  { number: 8, title: 'Review' }
+  { number: 6, title: 'ID', isActive: false },
+  { number: 7, title: 'Portfolio', isActive: false },
+  { number: 8, title: 'Review', isActive: false }
 ];
 
 const socialInputs = [
@@ -23,16 +25,34 @@ const socialInputs = [
   { icon: 'website', placeholder: 'Website URL', alt: 'Website icon' }
 ];
 
-export const SocialMediaLinks: React.FC = () => {
+export const SocialMediaLinks: React.FC<{ activeStep: number; setActiveStep: (step: number) => void; }> = ({ activeStep, setActiveStep }) => {
+  const router = useRouter();
+
+  const onClose = () => {
+    router.push('/portal');
+  };
+
+  const handleContinue = () => {
+    setActiveStep(activeStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep(activeStep - 1);
+  };
+
   return (
-    <Box className="flex overflow-hidden flex-col bg-white rounded-lg border-2 border-gray-300">
-      <Box className="flex flex-col w-full bg-black bg-opacity-0">
-        <Box className="flex flex-col w-full bg-black pb-[786px] max-md:pb-24">
-          <Box className="flex flex-wrap gap-5 justify-between items-start px-6 pt-6 pb-1 w-full text-2xl font-bold text-orange-300">
+    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', opacity: 0 }}>
+        {/* Header Section */}
+        <OnboardingHeader steps={steps} onClose={onClose} />
+
+        {/* Social Media Links Section */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', paddingBottom: '24px' }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 5, justifyContent: 'space-between', paddingX: 6, paddingTop: 6, paddingBottom: 1, color: 'orange' }}>
             <Typography variant="h5" sx={{ py: 1 }}>
               Staffing Solutions Hub
             </Typography>
-            <MenuIcon sx={{ color: 'white', width: '18px', height: '18px' }} /> 
+            <MenuIcon sx={{ color: 'white', width: '18px', height: '18px' }} />
           </Box>
           <img
             loading="lazy"
@@ -40,8 +60,8 @@ export const SocialMediaLinks: React.FC = () => {
             alt="Logo"
             style={{ objectFit: 'contain', zIndex: 10, marginTop: '-44px', marginLeft: '128px', maxWidth: '100%', width: '121px' }}
           />
-          <Box className="flex z-10 flex-col items-center px-16 -mt-24 w-full text-white">
-            <Box className="flex flex-wrap gap-5 justify-between items-start ml-5 max-w-full">
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 16, marginTop: '-24px', color: 'white' }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 5, justifyContent: 'space-between', marginLeft: 5, maxWidth: '100%' }}>
               {steps.map((step) => (
                 <StepItem
                   key={step.number}
@@ -52,19 +72,35 @@ export const SocialMediaLinks: React.FC = () => {
               ))}
             </Box>
           </Box>
-          <Paper className="flex flex-col self-center p-8 mt-14 ml-6 max-w-full rounded-xl bg-stone-500 bg-opacity-10 w-[768px]">
+          <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, marginTop: 14, marginLeft: 6, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '768px' }}>
             <Typography variant="h5" sx={{ pt: 0.25, pb: 3, color: 'orange' }}>
               Social Media
             </Typography>
-            <Box className="flex flex-col mt-6 w-full space-y-4">
+            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 6, width: '100%', gap: 4 }}>
               {socialInputs.map((input, index) => (
                 <SocialInput key={index} {...input} />
               ))}
             </Box>
           </Paper>
-          <Typography variant="caption" sx={{ px: 16, py: 7, mt: 24, mb: 0, ml: 5, color: 'gray', textAlign: 'center' }}>
-            Step 5 of 8 - Socials
+          <Typography variant="caption" sx={{ paddingX: 16, paddingY: 7, marginTop: 24, color: 'gray', textAlign: 'center' }}>
+            Step {activeStep + 1} of 8 - Socials
           </Typography>
+        </Box>
+
+        {/* Navigation Buttons */}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4 }}>
+          <Button 
+            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+            onClick={handleBack}
+          >
+            Back
+          </Button>
+          <Button 
+            sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+            onClick={handleContinue}
+          >
+            Continue
+          </Button>
         </Box>
       </Box>
     </Box>
