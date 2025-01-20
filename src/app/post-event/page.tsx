@@ -6,6 +6,7 @@ import { Box } from '@mui/material';
 import EventInfo from '@/components/dashboard/event/EventInfo';
 import EventMedia from '@/components/dashboard/event/EventMedia';
 import EventReview from '@/components/dashboard/event/EventReview';
+import { EventDetails } from '@/components/dashboard/event/EventDetails';
 
 const PostEvent: React.FC = () => {
     const router = useRouter();
@@ -37,19 +38,12 @@ const PostEvent: React.FC = () => {
     };
 
     return (
-        <Box className="event-creation-container" sx={{
-            background: 'linear-gradient(135deg, #977342 0%, #b89a5a 50%, #d1c1a0 100%)',
-            padding: '20px',
-            borderRadius: '8px',
-            height: '100vh'
-        }}>
-            <div className="event-creation-content">
-                <h2 style={{ color: 'black' }}>{steps[activeStep].title}</h2>
-                <p style={{ color: 'black' }}>{steps[activeStep].content}</p>
+        <Box>
+            <div>
 
                 {/* Render input fields based on the active step */}
                 {activeStep === 0 && (
-                    <EventInfo activeStep={activeStep} />
+                    <EventDetails />
                 )}
                 {activeStep === 1 && (
                     <EventMedia activeStep={activeStep} />
@@ -57,38 +51,6 @@ const PostEvent: React.FC = () => {
                 {activeStep === 2 && (
                     <EventReview />
                 )}
-                <br />
-                <br />
-                <div>
-                    {activeStep > 0 && (
-                        <button onClick={handleBack} style={{ marginRight: '10px', backgroundColor: '#000', color: '#977342', borderRadius: '12px' }}>
-                            Back
-                        </button>
-                    )}
-                    {activeStep < steps.length - 1 && (
-                        <button
-                            onClick={handleNext}
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
-                            style={{
-                                backgroundColor: isHovered ? 'black' : '#977342',
-                                color: isHovered ? '#977342' : '#fff',
-                                borderRadius: '12px',
-                                padding: '10px 20px',
-                                border: 'none',
-                                cursor: 'pointer',
-                                transition: 'background-color 0.3s, color 0.3s',
-                            }}
-                        >
-                            Next
-                        </button>
-                    )}
-                    {activeStep === steps.length - 1 && (
-                        <button onClick={handleSubmit} style={{ backgroundColor: '#977342', color: '#fff', borderRadius: '12px' }}>
-                            Submit
-                        </button>
-                    )}
-                </div>
             </div>
         </Box>
     );

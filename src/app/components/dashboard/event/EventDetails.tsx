@@ -3,7 +3,7 @@ import { DateTimePicker } from '@/components/dashboard/event/DateTimePicker';
 import { CheckboxItem } from '@/components/dashboard/event/CheckBoxItem';
 import { TextField, Button, Box, Typography, Paper } from '@mui/material';
 
-export const EventForm: React.FC = () => {
+export const EventDetails: React.FC = () => {
   return (
     <Paper elevation={2} sx={{ display: 'flex', flexDirection: 'column', borderRadius: '8px', border: '2px solid #D1D5DB' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
