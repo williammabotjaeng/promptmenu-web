@@ -55,7 +55,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                     </Typography>
                     <TextField
                         variant="outlined"
-                        placeholder="Add your skills..."
+                        placeholder="Click a Skill to added here..."
                         sx={{
                             backgroundColor: 'black',
                             border: '2px solid #CEAB76',
@@ -64,7 +64,13 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                             width: '80vh',
                             '& .MuiOutlinedInput-input': {
                                 padding: '12px 12px'
-                            }
+                            },
+                            '& .MuiInputBase-input::placeholder': {
+                                color: '#fff', 
+                            },
+                            '& .MuiInputBase-input': {
+                                color: '#fff', 
+                            },
                         }}
                     />
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, marginTop: 2 }}>
@@ -73,25 +79,25 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                         ))}
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, marginLeft: 5, width: '50%', backgroundColor: 'black' }}>
-                    <Button
-                        sx={{
-                            color: '#977342',
-                            border: '2px solid #977342',
-                            '&:hover': { color: '#fff' }
-                        }}
-                        onClick={handleBack}
-                    >
-                        Back
-                    </Button>
-                    <Button
-                        sx={{ color: '#000', backgroundColor: '#CEAB76' }}
-                        onClick={handleContinue}
-                    >
-                        Continue
-                    </Button>
+                        <Button
+                            sx={{
+                                color: '#977342',
+                                border: '2px solid #977342',
+                                '&:hover': { color: '#fff' }
+                            }}
+                            onClick={handleBack}
+                        >
+                            Back
+                        </Button>
+                        <Button
+                            sx={{ color: '#000', backgroundColor: '#CEAB76' }}
+                            onClick={handleContinue}
+                        >
+                            Continue
+                        </Button>
+                    </Box>
                 </Box>
-                </Box>
-                
+
 
                 {/* Step Indicator Section */}
                 <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginTop: 4, color: 'gray', textAlign: 'center' }}>
