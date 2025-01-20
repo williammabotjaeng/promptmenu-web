@@ -25,7 +25,7 @@ const HeadshotUpload: React.FC = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black'}}>
         {/* Header Section */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', overflowX: 'none', paddingTop: 2 }}>
           <Box sx={{
@@ -84,7 +84,9 @@ const HeadshotUpload: React.FC = () => {
               onFileSelect={handleFileSelect}
             />
             <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1, marginLeft: 5, width: '90%',  }}>
-              <Button sx={{ color: '#977342', border: '2px solid #977342' }}>Back</Button>
+              <Button sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { 
+                  color: '#fff' 
+                }}}>Back</Button>
               <Button sx={{ color: '#000', backgroundColor: '#CEAB76' }}>Continue</Button>
             </Box>
           </Paper>
