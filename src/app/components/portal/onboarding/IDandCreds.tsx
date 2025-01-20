@@ -41,7 +41,7 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
       <OnboardingHeader steps={steps} onClose={onClose} />
 
       <Paper elevation={3} sx={{ padding: 4, marginTop: 4, backgroundColor: 'rgba(245, 245, 245, 0.1)' }}>
-        <Typography variant="h5" sx={{ color: 'orange', marginBottom: 2 }}>
+        <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2 }}>
           ID Document
         </Typography>
         <Box sx={{ display: 'flex', gap: 5, flexDirection: { xs: 'column', md: 'row' } }}>

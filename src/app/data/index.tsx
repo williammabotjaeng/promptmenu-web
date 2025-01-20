@@ -91,7 +91,7 @@ export const recentJobs = [
   export const stats = [
     { title: "Profile Views", value: "1,234", icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/4af4641f7ffd625ea8eb55544a449e62226f00e94c58c3b1deeee0d9093a3b7c?apiKey=7fae980a988640eea8add1e49a5d542e&", subtitle: "+12% this week", subtitleColor: "text-green-500" },
     { title: "Applied Jobs", value: "28", icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c44f8d9d0d4af872564a3a66beac9531b98dc600542dee1bce8b4cf440d416f6?apiKey=7fae980a988640eea8add1e49a5d542e&", subtitle: "4 pending responses" },
-    { title: "Upcoming Auditions", value: "3", icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/e414d5392638964fb2b9ea5eb9fbebe5f532b890bfc11efe478fbad69219bcc4?apiKey=7fae980a988640eea8add1e49a5d542e&", subtitle: "Next: March 18", subtitleColor: "text-orange-300" },
+    { title: "Upcoming Auditions", value: "3", icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/e414d5392638964fb2b9ea5eb9fbebe5f532b890bfc11efe478fbad69219bcc4?apiKey=7fae980a988640eea8add1e49a5d542e&", subtitle: "Next: March 18", subtitleColor: "text-#977342-300" },
     { title: "Unread Messages", value: "5", icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/d36b076078d35eaaa214dff9c61497e930479bd22adb723a0616e7beca9bb734?apiKey=7fae980a988640eea8add1e49a5d542e&", subtitle: "2 urgent", subtitleColor: "text-red-500" }
   ] as const;
   

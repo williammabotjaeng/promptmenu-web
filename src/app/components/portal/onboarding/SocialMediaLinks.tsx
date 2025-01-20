@@ -49,7 +49,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
       {/* Social Media Links Section */}
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
         <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, marginLeft: 6, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '768px' }}>
-          <Typography variant="h5" sx={{ pt: 0.25, pb: 3, color: 'orange' }}>
+          <Typography variant="h5" sx={{ pt: 0.25, pb: 3, color: '#977342' }}>
             Social Media
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 4 }}>

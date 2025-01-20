@@ -42,15 +42,15 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
         {/* Physical Attributes Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
           <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '100%', maxWidth: '768px' }}>
-            <Typography variant="h5" sx={{ color: 'orange', paddingBottom: 2 }}>
+            <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 2 }}>
               Physical Attributes
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 4, width: '100%' }}>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
                 <AttributeInput label="Height" placeholder="cm" />
                 <AttributeInput label="Weight" placeholder="kg" />
               </Box>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 4, color: 'orange' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4, color: '#977342' }}>
                 <DropdownAttribute label="Eye Color" value="Brown" />
                 <DropdownAttribute label="Hair Color" value="Black" />
               </Box>

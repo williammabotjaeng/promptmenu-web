@@ -42,11 +42,11 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
 
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
           <Paper elevation={3} sx={{ padding: 4, backgroundColor: 'rgba(245, 245, 245, 0.1)', width: '100%', maxWidth: '768px' }}>
-            <Typography variant="h5" sx={{ color: 'orange', marginBottom: 2 }}>
+            <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2 }}>
               Portfolio
             </Typography>
 
-            <Typography variant="h6" sx={{ color: 'orange', marginBottom: 1 }}>
+            <Typography variant="h6" sx={{ color: '#977342', marginBottom: 1 }}>
               Images
             </Typography>
             <img

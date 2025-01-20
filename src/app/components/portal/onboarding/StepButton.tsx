@@ -13,7 +13,7 @@ export const StepButton: React.FC<StepButtonProps> = ({ number, label, isActive 
           width: '32px', 
           height: '32px', 
           borderRadius: '50%', 
-          backgroundColor: isActive ? 'orange' : 'transparent', 
+          backgroundColor: isActive ? '#977342' : 'transparent', 
           border: isActive ? 'none' : '2px solid #4B5563', 
           color: isActive ? 'white' : '#4B5563', 
           fontSize: '16px',

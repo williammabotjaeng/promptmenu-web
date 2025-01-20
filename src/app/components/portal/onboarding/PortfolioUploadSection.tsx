@@ -24,7 +24,7 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
 
   return (
     <Box sx={{ py: 0.5, mt: 2, maxWidth: '100%' }}>
-      <Typography variant="h6" sx={{ color: 'orange' }}>
+      <Typography variant="h6" sx={{ color: '#977342' }}>
         {title}
       </Typography>
       <Paper 
@@ -47,12 +47,12 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '36px', minHeight: '36px' }}>
             {renderIcon(title)}
           </Box>
-          <Typography variant="body1" sx={{ textAlign: 'center', color: 'orange', mt: 1 }}>
+          <Typography variant="body1" sx={{ textAlign: 'center', color: '#977342', mt: 1 }}>
             {description}
           </Typography>
           <Button 
             variant="contained" 
-            sx={{ mt: 2, bgcolor: 'stone.500', color: 'white', '&:hover': { bgcolor: 'orange' } }} 
+            sx={{ mt: 2, bgcolor: 'stone.500', color: 'white', '&:hover': { bgcolor: '#977342' } }} 
           >
             {buttonText}
           </Button>

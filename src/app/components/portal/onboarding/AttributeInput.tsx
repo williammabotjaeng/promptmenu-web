@@ -4,8 +4,8 @@ import { AttributeInputProps } from '@/types/Props/AttributeInputProps';
 
 export const AttributeInput: React.FC<AttributeInputProps> = ({ label, placeholder }) => {
   return (
-    <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-      <FormLabel htmlFor={`${label.toLowerCase()}-input`} sx={{ color: 'orange' }}>
+    <FormControl variant="outlined" sx={{ mb: 2 }}>
+      <FormLabel htmlFor={`${label.toLowerCase()}-input`} sx={{ color: '#977342' }}>
         {label}
       </FormLabel>
       <TextField
@@ -15,15 +15,16 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({ label, placehold
         sx={{
           bgcolor: 'black',
           borderRadius: '8px',
+          width: '24vw',
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: '#4B5563', // Stone-500
+              borderColor: '#4B5563', 
             },
             '&:hover fieldset': {
-              borderColor: 'orange', // Change border color on hover
+              borderColor: '#977342', 
             },
             '&.Mui-focused fieldset': {
-              borderColor: 'orange', // Change border color when focused
+              borderColor: '#977342', 
             },
           },
           '& .MuiInputBase-input': {

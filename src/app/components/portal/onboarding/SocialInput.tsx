@@ -44,10 +44,10 @@ export const SocialInput: React.FC<SocialInputProps> = ({ icon, placeholder, alt
             borderColor: '#4B5563',
           },
           '&:hover fieldset': {
-            borderColor: 'orange',
+            borderColor: '#977342',
           },
           '&.Mui-focused fieldset': {
-            borderColor: 'orange',
+            borderColor: '#977342',
           },
         },
         '& .MuiInputBase-input': {

@@ -18,7 +18,7 @@ export function JobCard({ title, status, requirements, location, daysAgo, salary
             label={status}
             sx={{
               backgroundColor: status === 'Active' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 193, 7, 0.1)',
-              color: status === 'Active' ? 'green' : 'orange',
+              color: status === 'Active' ? 'green' : '#977342',
               fontSize: '0.75rem',
               borderRadius: '12px',
             }}

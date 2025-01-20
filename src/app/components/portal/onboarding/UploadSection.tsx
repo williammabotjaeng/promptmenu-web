@@ -42,12 +42,12 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '40px', minHeight: '36px' }}>
           {renderIcon(title)}
         </Box>
-        <Typography variant="body1" sx={{ textAlign: 'center', color: 'orange', mt: 1 }}>
+        <Typography variant="body1" sx={{ textAlign: 'center', color: '#977342', mt: 1 }}>
           {title}
         </Typography>
         <Button 
           variant="contained" 
-          sx={{ mt: 2, bgcolor: 'stone.500', color: 'white', '&:hover': { bgcolor: 'orange' } }} 
+          sx={{ mt: 2, bgcolor: 'stone.500', color: 'white', '&:hover': { bgcolor: '#977342' } }} 
           aria-label={`Upload ${title}`}
         >
           Upload

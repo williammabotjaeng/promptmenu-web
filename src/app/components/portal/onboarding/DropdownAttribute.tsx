@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'; 
 import { DropdownAttributeProps } from '@/types/Props/DropdownAttributeProps';
 
 export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, value }) => {
   return (
-    <FormControl fullWidth variant="outlined" sx={{ mb: 2 }}>
-      <InputLabel id={`${label.toLowerCase()}-select-label`} sx={{ color: 'orange' }}>
+    <FormControl variant="outlined" sx={{ mb: 2 }}>
+      <InputLabel id={`${label.toLowerCase()}-select-label`} sx={{ color: '#977342' }}>
         {label}
       </InputLabel>
       <Select
@@ -16,15 +17,16 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
         sx={{
           bgcolor: 'black',
           borderRadius: '8px',
+          width: '24vw',
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
               borderColor: '#4B5563',
             },
             '&:hover fieldset': {
-              borderColor: 'orange', 
+              borderColor: '#977342', 
             },
             '&.Mui-focused fieldset': {
-              borderColor: 'orange', 
+              borderColor: '#977342', 
             },
           },
           '& .MuiSelect-select': {
@@ -33,20 +35,17 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
             alignItems: 'center',
           },
         }}
+        IconComponent={() => (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <KeyboardArrowDownIcon sx={{ color: '#977342', marginRight: 1 }} />
+          </Box>
+        )}
       >
         <MenuItem disabled value="">
           <em>Select an option</em>
         </MenuItem>
         {/* Add MenuItems here for options */}
       </Select>
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b1d9a2cf403e62064d02046da179765a4725882180fad294e23e0ca3dae71c06?apiKey=7fae980a988640eea8add1e49a5d542e&"
-          alt=""
-          style={{ objectFit: 'contain', width: '32px', height: '32px' }}
-        />
-      </Box>
     </FormControl>
   );
 };
