@@ -83,7 +83,7 @@ export const ProfileReview: React.FC = () => {
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
         {documents.map((doc) => (
-          <DocumentItem key={doc.title} icon={doc.icon} title={doc.title} date={doc.date} />
+          <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
         ))}
       </Box>
     </Paper>

@@ -1,5 +1,8 @@
+"use client";
+
 import * as React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu'; // Importing Material-UI Menu icon
 import { StepItem } from './StepItem';
 import { SocialInput } from './SocialInput';
 
@@ -15,9 +18,9 @@ const steps = [
 ];
 
 const socialInputs = [
-  { icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/706f69bc9cd97cf6acc7f31acb4d6bd21124c3b2fc2b056ed0cfa79de9d48bed?apiKey=7fae980a988640eea8add1e49a5d542e&', placeholder: 'Instagram Username', alt: 'Instagram icon' },
-  { icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/a5a482778fb29359dc2ac9e7875b41952a8186eed259e5631ebd9c3d2556312c?apiKey=7fae980a988640eea8add1e49a5d542e&', placeholder: 'TikTok Username', alt: 'TikTok icon' },
-  { icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/f1a37df730715be6b4acf25617d4ceb6f3607892f70193a12bd711185db15a11?apiKey=7fae980a988640eea8add1e49a5d542e&', placeholder: 'Website URL', alt: 'Website icon' }
+  { icon: 'instagram', placeholder: 'Instagram Username', alt: 'Instagram icon' },
+  { icon: 'tiktok', placeholder: 'TikTok Username', alt: 'TikTok icon' },
+  { icon: 'website', placeholder: 'Website URL', alt: 'Website icon' }
 ];
 
 export const SocialMediaLinks: React.FC = () => {
@@ -29,12 +32,7 @@ export const SocialMediaLinks: React.FC = () => {
             <Typography variant="h5" sx={{ py: 1 }}>
               Staffing Solutions Hub
             </Typography>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/aba364a301f04bfd4452f6cae61721b407b1c79bf7b4b5a0309f3d96e6268c8d?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt="Menu icon"
-              style={{ objectFit: 'contain', width: '18px' }}
-            />
+            <MenuIcon sx={{ color: 'white', width: '18px', height: '18px' }} /> 
           </Box>
           <img
             loading="lazy"
@@ -45,7 +43,12 @@ export const SocialMediaLinks: React.FC = () => {
           <Box className="flex z-10 flex-col items-center px-16 -mt-24 w-full text-white">
             <Box className="flex flex-wrap gap-5 justify-between items-start ml-5 max-w-full">
               {steps.map((step) => (
-                <StepItem key={step.number} {...step} />
+                <StepItem
+                  key={step.number}
+                  number={step.number}
+                  title={step.title}
+                  isActive={step.isActive}
+                />
               ))}
             </Box>
           </Box>
