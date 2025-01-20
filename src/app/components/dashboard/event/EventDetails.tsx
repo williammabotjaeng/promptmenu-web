@@ -4,6 +4,7 @@ import { CheckboxItem } from '@/components/dashboard/event/CheckBoxItem';
 import { TextField, Button, Box, Typography, Paper, Link } from '@mui/material';
 import { mt } from 'date-fns/locale';
 import CloseIcon from '@mui/icons-material/Close';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HeaderWithProgressBar from './HeaderWithProgressBar';
 
 export const EventDetails: React.FC = () => {
@@ -72,19 +73,14 @@ export const EventDetails: React.FC = () => {
 
         {/* Submit Button */}
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: '#4B5563', color: 'white', '&:hover': { backgroundColor: '#6B7280' } }}
-          >
-            Next Step
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/ec7cef34f158b960e31afe86385f36976cc9704ea33db3970e7ac38ddcc17d2c?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt=""
-              style={{ width: '14px', marginLeft: '8px' }}
-            />
-          </Button>
-        </Box>
+      <Button
+        variant="contained"
+        sx={{ backgroundColor: '#977342', color: 'white', '&:hover': { backgroundColor: '#fff', border: '1px solid #977342', color: '#977342' } }}
+      >
+        Next Step
+        <ArrowForwardIcon sx={{ marginLeft: '8px' }} />
+      </Button>
+    </Box>
       </Paper>
     </Box>
   );
