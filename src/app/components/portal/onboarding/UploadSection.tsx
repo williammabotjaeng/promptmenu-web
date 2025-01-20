@@ -2,9 +2,22 @@
 
 import * as React from 'react';
 import { Box, Typography, Button, Paper } from '@mui/material';
+import DescriptionIcon from '@mui/icons-material/Description'; 
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn'; 
 import { UploadSectionProps } from '@/types/Props/UploadSectionsProps';
 
-export const UploadSection: React.FC<UploadSectionProps> = ({ title, iconSrc }) => {
+export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
+  const renderIcon = (title: string) => {
+    switch (title.toLowerCase()) {
+      case 'front side':
+        return <DescriptionIcon sx={{ fontSize: '40px', color: '#977342' }} />;
+      case 'back side':
+        return <AssignmentTurnedInIcon sx={{ fontSize: '40px', color: '#977342' }} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Paper 
       elevation={0} 
@@ -27,12 +40,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title, iconSrc }) 
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', maxWidth: '100%' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '40px', minHeight: '36px' }}>
-          <img
-            loading="lazy"
-            src={iconSrc}
-            alt={`${title} upload icon`}
-            style={{ objectFit: 'contain', width: '40px', height: '40px' }}
-          />
+          {renderIcon(title)}
         </Box>
         <Typography variant="body1" sx={{ textAlign: 'center', color: 'orange', mt: 1 }}>
           {title}
