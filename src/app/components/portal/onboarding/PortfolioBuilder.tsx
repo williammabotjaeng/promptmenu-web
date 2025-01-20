@@ -7,6 +7,7 @@ import { PortfolioUploadSection } from '@/components/portal/onboarding/Portfolio
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import PhotoGrid from '@/components/portal/onboarding/PhotoGrid';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -41,20 +42,16 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
         <OnboardingHeader steps={steps} onClose={onClose} />
 
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
-          <Paper elevation={3} sx={{ padding: 4, backgroundColor: 'rgba(245, 245, 245, 0.1)', width: '100%', maxWidth: '768px' }}>
-            <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2 }}>
+          <Paper elevation={3} sx={{ padding: 4, backgroundColor: 'transparent', width: '100%', maxWidth: '768px' }}>
+            <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2, fontWeight: 'bold' }}>
               Portfolio
             </Typography>
 
             <Typography variant="h6" sx={{ color: '#977342', marginBottom: 1 }}>
               Images
             </Typography>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c3e6d3aa45f545140b21248d8faa19f323bec646924e19bb0ed829ca445a648f?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt="Portfolio images grid"
-              style={{ width: '100%', aspectRatio: '3.14', marginBottom: '16px' }}
-            />
+            
+            <PhotoGrid />
 
             <PortfolioUploadSection
               title="Videos"
