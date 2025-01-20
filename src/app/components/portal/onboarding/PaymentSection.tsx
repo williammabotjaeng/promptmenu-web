@@ -46,11 +46,11 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
         <OnboardingHeader steps={steps} onClose={onClose} />
 
         {/* Payment Section */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
-          <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4, alignText: 'left' }}>
+          <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 3, fontWeight: 'bold', alignText: 'left', marginRight: 60 }}>
             Payment Methods
           </Typography>
-          <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '100%', maxWidth: '768px' }}>
+          <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(151, 115, 66, 0.05)', width: '100%', maxWidth: '768px' }}>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', py: 0.5, textAlign: 'center', borderBottom: '1px solid rgba(75, 85, 99, 0.2)', color: '#4B5563' }}>
               {paymentMethods.map((method) => (
                 <PaymentMethod key={method.label} {...method} />
@@ -83,7 +83,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
         </Box>
 
         {/* Navigation Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4, width: '60%', marginLeft: 34 }}>
           <Button 
             sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
             onClick={handleBack}

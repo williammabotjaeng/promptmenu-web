@@ -15,13 +15,13 @@ export const CardInput: React.FC<CardInputProps> = ({ placeholder, type = "text"
         sx: {
           bgcolor: 'black',
           borderRadius: '8px',
-          border: '1px solid #4B5563', 
+          border: '1px solid #977342', 
           color: 'gray.400',
           '&:hover': {
-            borderColor: 'orange', 
+            borderColor: '#977342', 
           },
           '&.Mui-focused': {
-            borderColor: 'orange', 
+            borderColor: '#977342', 
           },
         },
       }}
@@ -34,13 +34,13 @@ export const CardInput: React.FC<CardInputProps> = ({ placeholder, type = "text"
       sx={{
         '& .MuiOutlinedInput-root': {
           '& fieldset': {
-            borderColor: '#4B5563', 
+            borderColor: '#977342', 
           },
           '&:hover fieldset': {
-            borderColor: 'orange', 
+            borderColor: '#977342', 
           },
           '&.Mui-focused fieldset': {
-            borderColor: 'orange', 
+            borderColor: '#977342', 
           },
         },
       }}
