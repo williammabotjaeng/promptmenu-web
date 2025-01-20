@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import { useRouter } from 'next/navigation';
-import { HeadshotUploadProps } from '@/types/Props/HeadshotUploadProps';
+import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: true },
@@ -20,7 +20,7 @@ const steps = [
   { number: 8, title: 'Review' }
 ];
 
-const HeadshotUpload: React.FC<HeadshotUploadProps> = ({ activeStep, setActiveStep }) => {
+const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   
   const router = useRouter();
   

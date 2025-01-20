@@ -1,4 +1,4 @@
-export interface HeadshotUploadProps { 
+export interface OnboardingStepProps { 
     activeStep: number; 
     setActiveStep: (step: number) => void; 
 }
