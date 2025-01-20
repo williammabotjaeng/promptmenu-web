@@ -14,8 +14,8 @@ export const StepItem: React.FC<StepItemProps> = ({ number, title, isActive }) =
           height: '32px', 
           borderRadius: '50%', 
           border: '2px solid', 
-          borderColor: isActive ? 'orange' : '#4B5563', 
-          backgroundColor: isActive ? 'orange' : 'transparent', 
+          borderColor: isActive ? '#977342' : '#4B5563', 
+          backgroundColor: isActive ? '#977342' : 'transparent', 
           color: isActive ? 'white' : '#4B5563', 
           fontSize: '16px',
           fontWeight: 'bold'
