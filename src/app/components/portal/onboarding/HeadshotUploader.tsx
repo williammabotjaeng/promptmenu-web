@@ -31,6 +31,7 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
   const handleContinue = () => {
     setActiveStep(activeStep + 1); 
   };
+  
   const handleBack = () => {
     if (activeStep > 0) {
       setActiveStep(activeStep + 1); 
