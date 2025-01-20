@@ -60,6 +60,13 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
     <Paper elevation={3} sx={{ padding: 3, borderRadius: '8px', backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', color: '#CEAB76' }}>
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
+      <Typography sx={{ fontSize: '30px', color: '#977342', fontWeight: 'bold', textAlign: 'center', width: '100%' }}>
+         Review Your Profile
+      </Typography>
+
+      <Box>
+        <Typography>Headshot</Typography>
+      </Box>
 
       <Divider sx={{ marginY: 2 }} />
 
