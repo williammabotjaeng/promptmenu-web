@@ -20,7 +20,7 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
           width: '24vw',
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: '#4B5563',
+              borderColor: '#977342',
             },
             '&:hover fieldset': {
               borderColor: '#977342', 
@@ -30,7 +30,7 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
             },
           },
           '& .MuiSelect-select': {
-            color: 'gray.400',
+            color: '#977342',
             display: 'flex',
             alignItems: 'center',
           },
@@ -44,7 +44,18 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
         <MenuItem disabled value="">
           <em>Select an option</em>
         </MenuItem>
-        {/* Add MenuItems here for options */}
+        <MenuItem disabled value="black">
+          <em>Black</em>
+        </MenuItem>
+        <MenuItem disabled value="brown">
+          <em>Brown</em>
+        </MenuItem>
+        <MenuItem disabled value="blonde">
+          <em>Blonde</em>
+        </MenuItem>
+        <MenuItem disabled value="brunette">
+          <em>Brunette</em>
+        </MenuItem>
       </Select>
     </FormControl>
   );

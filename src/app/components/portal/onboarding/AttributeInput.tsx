@@ -18,7 +18,7 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({ label, placehold
           width: '24vw',
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              borderColor: '#4B5563', 
+              borderColor: '#977342', 
             },
             '&:hover fieldset': {
               borderColor: '#977342', 
