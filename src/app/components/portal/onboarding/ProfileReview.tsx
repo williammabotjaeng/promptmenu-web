@@ -10,6 +10,10 @@ import { SkillBadge } from '@/components/portal/onboarding/SkillBadge';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import Image from 'next/image';
+import Headshot from '@/assets/headshot.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -61,61 +65,79 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
       <Typography sx={{ fontSize: '30px', color: '#977342', fontWeight: 'bold', textAlign: 'center', width: '100%' }}>
-         Review Your Profile
+        Review Your Profile
       </Typography>
 
-      <Box>
-        <Typography>Headshot</Typography>
+      <Box sx={{ padding: 4 }}>
+        <Typography sx={{ fontSize: '20px', fontWeight: 'semi-bold', mb: 1 }}>Headshot</Typography>
+
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          <Image
+            src={Headshot.src}
+            width={200}
+            height={210}
+            alt="headshot-example"
+          />
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 4 }}>
+            <Typography sx={{ fontSize: '16px', color: '#4B5563' }}>Primary Headshot</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
+              <FontAwesomeIcon icon={faPenToSquare} style={{ color: '#977342', fontSize: '24px' }} />&nbsp;&nbsp;<Typography variant="body1">Edit</Typography>
+            </Box>
+          </Box>
+        </Box>
       </Box>
 
       <Divider sx={{ marginY: 2 }} />
 
-      <Typography variant="h6" sx={{ marginBottom: 2 }}>
-        Skills
-      </Typography>
-      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
-        {skills.map((skill) => (
-          <SkillBadge key={skill} name={skill} />
-        ))}
-      </Box>
+      <Box sx={{ padding: 4 }}>
 
-      <Typography variant="h6" sx={{ marginBottom: 2 }}>
-        Attributes
-      </Typography>
-      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2 }}>
-        {attributes.map((attr) => (
-          <AttributeCard key={attr.label} label={attr.label} value={attr.value} />
-        ))}
-      </Box>
+        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+          Skills
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
+          {skills.map((skill) => (
+            <SkillBadge key={skill} name={skill} />
+          ))}
+        </Box>
 
-      <Typography variant="h6" sx={{ marginBottom: 2 }}>
-        Social Media Links
-      </Typography>
-      <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-        {socialLinks.map((link, index) => (
-          <SocialMediaLink key={index} icon={link.icon} username={link.username} />
-        ))}
-      </Box>
+        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+          Attributes
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2 }}>
+          {attributes.map((attr) => (
+            <AttributeCard key={attr.label} label={attr.label} value={attr.value} />
+          ))}
+        </Box>
 
-      <Typography variant="h6" sx={{ marginBottom: 2 }}>
-        Documents
-      </Typography>
-      <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-        {documents.map((doc) => (
-          <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
-        ))}
+        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+          Social Media Links
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+          {socialLinks.map((link, index) => (
+            <SocialMediaLink key={index} icon={link.icon} username={link.username} />
+          ))}
+        </Box>
+
+        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+          Documents
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+          {documents.map((doc) => (
+            <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
+          ))}
+        </Box>
       </Box>
 
       {/* Navigation Buttons */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-        <Button 
-          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+        <Button
+          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }}
           onClick={handleBack}
         >
           Back
         </Button>
-        <Button 
-          sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+        <Button
+          sx={{ color: '#000', backgroundColor: '#CEAB76' }}
           onClick={handleContinue}
         >
           SubmitProfile
