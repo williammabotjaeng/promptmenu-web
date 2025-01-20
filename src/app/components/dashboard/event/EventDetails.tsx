@@ -6,8 +6,14 @@ import { mt } from 'date-fns/locale';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HeaderWithProgressBar from './HeaderWithProgressBar';
+import { PostTaskStepProps } from '@/types/Props/PostTaskStepProps';
 
-export const EventDetails: React.FC = () => {
+export const EventDetails: React.FC<PostTaskStepProps> = ({ activeStep, setActiveStep}) => {
+
+  const handleContinue = () => {
+    setActiveStep(activeStep + 1);
+  }
+
   return (
     <Box
       sx={{
@@ -76,6 +82,7 @@ export const EventDetails: React.FC = () => {
       <Button
         variant="contained"
         sx={{ backgroundColor: '#977342', color: 'white', '&:hover': { backgroundColor: '#fff', border: '1px solid #977342', color: '#977342' } }}
+        onClick={handleContinue}
       >
         Next Step
         <ArrowForwardIcon sx={{ marginLeft: '8px' }} />
