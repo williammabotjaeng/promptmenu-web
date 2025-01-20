@@ -68,7 +68,7 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
         </Box>
 
         {/* Navigation Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4, width: '66%', ml: 24 }}>
           <Button 
             sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
             onClick={handleBack}

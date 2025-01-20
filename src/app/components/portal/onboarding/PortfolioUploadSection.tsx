@@ -23,7 +23,7 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
   };
 
   return (
-    <Box sx={{ py: 0.5, mt: 2, maxWidth: '100%' }}>
+    <Box sx={{ py: 0.5, mt: 2, maxWidth: '100%', border: '1px dotted #977342', padding: '10px', borderRadius: '12px' }}>
       <Typography variant="h6" sx={{ color: '#977342' }}>
         {title}
       </Typography>
@@ -52,7 +52,7 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
           </Typography>
           <Button 
             variant="contained" 
-            sx={{ mt: 2, bgcolor: 'stone.500', color: 'white', '&:hover': { bgcolor: '#977342' } }} 
+            sx={{ mt: 2, bgcolor: '#CEAB76', color: 'white', '&:hover': { bgcolor: '#977342' } }} 
           >
             {buttonText}
           </Button>
