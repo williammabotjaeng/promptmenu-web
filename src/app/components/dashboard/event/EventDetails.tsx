@@ -36,14 +36,15 @@ export const EventDetails: React.FC = () => {
 
         {/* Form Content */}
         <Box sx={{ padding: 2 }}>
-          <Typography variant="h5" sx={{ color: '#4B5563', marginBottom: 2 }}>Create New Event</Typography>
+          <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2, fontSize: '24px', fontWeight: 'bold' }}>Create New Event</Typography>
+          <Typography variant="body1" sx={{ marginBottom: 1, mt: 2, color: '#374151' }}>Event Title</Typography>
           <TextField
             label="Event Title"
             variant="outlined"
             fullWidth
             sx={{ marginBottom: 2 }}
           />
-          <Typography variant="body1" sx={{ marginBottom: 1 }}>Description</Typography>
+          <Typography variant="body1" sx={{ marginBottom: 1, color: '#374151' }}>Description</Typography>
           <TextField
             multiline
             rows={4}
@@ -51,6 +52,7 @@ export const EventDetails: React.FC = () => {
             fullWidth
             sx={{ marginBottom: 2 }}
           />
+          <Typography variant="body1" sx={{ marginBottom: 1, color: '#374151' }}>Location</Typography>
           <TextField
             label="Location"
             variant="outlined"

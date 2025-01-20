@@ -7,7 +7,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({ label }) => {
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <Typography 
         variant="body2" 
-        sx={{ marginBottom: 1, fontWeight: 'medium', color: '#4B5563' }}
+        sx={{ marginBottom: 1, fontWeight: 'medium', color: '#374151' }}
       >
         {label}
       </Typography>
