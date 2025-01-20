@@ -11,13 +11,13 @@ import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: true },
-  { number: 2, title: 'Skills' },
-  { number: 3, title: 'Payment' },
-  { number: 4, title: 'Attributes' },
-  { number: 5, title: 'Social' },
-  { number: 6, title: 'ID' },
-  { number: 7, title: 'Portfolio' },
-  { number: 8, title: 'Review' }
+  { number: 2, title: 'Skills', isActive: false },
+  { number: 3, title: 'Payment', isActive: false },
+  { number: 4, title: 'Attributes', isActive: false },
+  { number: 5, title: 'Social', isActive: false },
+  { number: 6, title: 'ID', isActive: false },
+  { number: 7, title: 'Portfolio', isActive: false },
+  { number: 8, title: 'Review', isActive: false }
 ];
 
 const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
@@ -31,6 +31,13 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
   const handleContinue = () => {
     setActiveStep(activeStep + 1); 
   };
+  const handleBack = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep + 1); 
+    } else {
+      router.push('/portal')
+    }
+  };
 
   const onClose = () => {
     router.push('/portal');
@@ -40,7 +47,7 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
         {/* Header Section */}
-        <OnboardingHeader steps={steps} oncClose={onClose} />
+        <OnboardingHeader steps={steps} onClose={onClose} />
 
         {/* Upload Form Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
@@ -72,7 +79,7 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
                   border: '2px solid #977342', 
                   '&:hover': { color: '#fff' } 
                 }}
-                onClick={() => setActiveStep(activeStep - 1)} 
+                onClick={handleBack} 
               >
                 Back
               </Button>
