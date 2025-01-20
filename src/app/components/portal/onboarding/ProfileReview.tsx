@@ -14,6 +14,7 @@ import Image from 'next/image';
 import Headshot from '@/assets/headshot.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'; // Importing Play Arrow icon
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -43,6 +44,11 @@ const socialLinks = [
 const documents = [
   { title: 'Acting_Resume.pdf', date: 'Updated Jan 20, 2025' },
   { title: 'Portfolio_2025.pdf', date: 'Updated Jan 22, 2025' }
+];
+
+const idDocs = [
+  { title: 'ID_Doc_front.pdf', date: 'Updated Jan 20, 2025' },
+  { title: 'ID_Doc_back.pdf', date: 'Updated Jan 20, 2025' }
 ];
 
 export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
@@ -88,7 +94,6 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
       </Box>
 
       <Box sx={{ padding: 4 }}>
-
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Skills
         </Typography>
@@ -98,12 +103,31 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           ))}
         </Box>
 
+        {/* Payment Details Section */}
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', color: '#977342', fontWeight: 'semi-bold' }}>
+          Payment Details
+        </Typography>
+        <Box sx={{ bgcolor: 'white', padding: 2, borderRadius: '4px', marginBottom: 2 }}>
+          <Typography sx={{ color: '#6B7280' }}>Credit Card: **** **** **** 1234</Typography>
+          <Typography sx={{ color: '#6B7280' }}>Expires: 12/25</Typography>
+        </Box>
+
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Attributes
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2 }}>
           {attributes.map((attr) => (
             <AttributeCard key={attr.label} label={attr.label} value={attr.value} />
+          ))}
+        </Box>
+
+        {/* ID Document Section */}
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+          ID Document
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+          {idDocs.map((doc) => (
+            <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
           ))}
         </Box>
 
@@ -116,10 +140,38 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           ))}
         </Box>
 
-        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        {/* Photos Section */}
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+          Photos
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
+          <Image src="/path/to/photo1.jpg" width={100} height={100} alt="Photo 1" />
+          <Image src="/path/to/photo2.jpg" width={100} height={100} alt="Photo 2" />
+          <Image src="/path/to/photo3.jpg" width={100} height={100} alt="Photo 3" />
+        </Box>
+
+        {/* Video Showreel Section */}
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+          Video Showreel
+        </Typography>
+        <Box sx={{ 
+          bgcolor: 'white', 
+          borderRadius: '4px', 
+          height: '200px', 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          position: 'relative',
+          marginBottom: 2
+        }}>
+          <PlayArrowIcon sx={{ color: '#977342', fontSize: '50px', position: 'absolute' }} />
+          <Typography sx={{ color: '#6B7280' }}>Click to Play Video</Typography>
+        </Box>
+        {/* ID Document Section */}
+        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Documents
         </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
           {documents.map((doc) => (
             <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
           ))}
@@ -138,7 +190,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           sx={{ color: '#000', backgroundColor: '#CEAB76' }}
           onClick={handleContinue}
         >
-          SubmitProfile
+          Submit Profile
         </Button>
       </Box>
     </Paper>
