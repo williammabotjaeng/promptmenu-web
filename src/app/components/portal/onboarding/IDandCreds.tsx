@@ -6,14 +6,14 @@ import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { UploadSection } from '@/components/portal/onboarding/UploadSection';
 
 const steps = [
-  { number: 1, label: 'Headshot' },
-  { number: 2, label: 'Skills' },
-  { number: 3, label: 'Payment' },
-  { number: 4, label: 'Attributes' },
-  { number: 5, label: 'Social' },
-  { number: 6, label: 'ID', isActive: true },
-  { number: 7, label: 'Portfolio' },
-  { number: 8, label: 'Review' }
+  { number: 1, title: 'Headshot' },
+  { number: 2, title: 'Skills' },
+  { number: 3, title: 'Payment' },
+  { number: 4, title: 'Attributes' },
+  { number: 5, title: 'Social' },
+  { number: 6, title: 'ID', isActive: true },
+  { number: 7, title: 'Portfolio' },
+  { number: 8, title: 'Review' }
 ];
 
 export const IDandCreds: React.FC = () => {
@@ -48,7 +48,7 @@ export const IDandCreds: React.FC = () => {
             <StepItem
               key={step.number}
               number={step.number}
-              label={step.label}
+              title={step.title}
               isActive={step.isActive}
             />
           ))}

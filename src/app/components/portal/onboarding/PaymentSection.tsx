@@ -5,14 +5,14 @@ import { PaymentMethod } from '@/components/portal/onboarding/PaymentMethod';
 import { CardInput } from '@/components/portal/onboarding/CardInput';
 
 const steps = [
-  { number: "1", label: "Headshot" },
-  { number: "2", label: "Skills" },
-  { number: "3", label: "Payment", isActive: true },
-  { number: "4", label: "Attributes" },
-  { number: "5", label: "Social" },
-  { number: "6", label: "ID" },
-  { number: "7", label: "Portfolio" },
-  { number: "8", label: "Review" }
+  { number: 1, title: "Headshot" },
+  { number: 2, title: "Skills" },
+  { number: 3, title: "Payment", isActive: true },
+  { number: 4, title: "Attributes" },
+  { number: 5, title: "Social" },
+  { number: 6, title: "ID" },
+  { number: 7, title: "Portfolio" },
+  { number: 8, title: "Review" }
 ];
 
 const paymentMethods = [
@@ -45,8 +45,13 @@ export const PaymentSection: React.FC = () => {
         <Box className="flex z-10 flex-col items-center px-16 -mt-24 w-full text-white">
           <Box className="flex gap-5 justify-between pl-3 ml-6 max-w-full">
             {steps.map((step) => (
-              <StepItem key={step.number} {...step} />
-            ))}
+                        <StepItem
+                          key={step.number}
+                          number={step.number}
+                          title={step.title}
+                          isActive={step.isActive}
+                        />
+                      ))}
           </Box>
         </Box>
         <Box className="flex flex-col items-center self-center px-20 mt-14 ml-3 w-full text-base max-w-[1248px]">

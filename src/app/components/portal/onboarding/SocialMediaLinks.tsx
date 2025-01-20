@@ -4,14 +4,14 @@ import { StepItem } from './StepItem';
 import { SocialInput } from './SocialInput';
 
 const steps = [
-  { number: 1, label: 'Headshot' },
-  { number: 2, label: 'Skills' },
-  { number: 3, label: 'Payment' },
-  { number: 4, label: 'Attributes' },
-  { number: 5, label: 'Social', isActive: true },
-  { number: 6, label: 'ID' },
-  { number: 7, label: 'Portfolio' },
-  { number: 8, label: 'Review' }
+  { number: 1, title: 'Headshot' },
+  { number: 2, title: 'Skills' },
+  { number: 3, title: 'Payment' },
+  { number: 4, title: 'Attributes' },
+  { number: 5, title: 'Social', isActive: true },
+  { number: 6, title: 'ID' },
+  { number: 7, title: 'Portfolio' },
+  { number: 8, title: 'Review' }
 ];
 
 const socialInputs = [

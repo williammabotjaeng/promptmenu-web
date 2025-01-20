@@ -9,7 +9,7 @@ import { TalentProfileData } from '@/types/TalentProfileData';
 import PersonalInformation from '@/components/portal/onboarding/PersonalInfo';
 import { PhysicalAttributes } from '@/components/portal/onboarding/PhysicalAttr';
 import { IDandCreds } from '@/components/portal/onboarding/IDandCreds';
-import ProfileReview from '@/components/portal/onboarding/ProfileReview';
+import { ProfileReview } from '@/components/portal/onboarding/ProfileReview';
 import { SocialMediaLinks } from '@/components/portal/onboarding/SocialMediaLinks';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';

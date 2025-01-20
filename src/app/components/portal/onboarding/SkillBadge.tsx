@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Chip } from '@mui/material';
-import { SkillBadgeProps } from './types';
+import { SkillBadgeProps } from '@/types/Props/SkillBadgeProps';
 
 export const SkillBadge: React.FC<SkillBadgeProps> = ({ name }) => {
   return (
