@@ -2,9 +2,11 @@ import * as React from 'react';
 import { Box, Typography, Paper, Button } from '@mui/material';
 import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { FileUpload } from '@/components/portal/onboarding/FileUpload';
+import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
+import { useRouter } from 'next/navigation';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: true },
@@ -18,6 +20,9 @@ const steps = [
 ];
 
 const HeadshotUpload: React.FC<{ activeStep: number; setActiveStep: (step: number) => void; }> = ({ activeStep, setActiveStep }) => {
+  
+  const router = useRouter();
+  
   const handleFileSelect = (file: File) => {
     console.log('Selected file:', file);
   };
@@ -26,39 +31,15 @@ const HeadshotUpload: React.FC<{ activeStep: number; setActiveStep: (step: numbe
     setActiveStep(activeStep + 1); 
   };
 
+  const onClose = () => {
+    router.push('/portal');
+  }
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
         {/* Header Section */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 2 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            <Typography variant="h5" sx={{ color: '#977342', fontWeight: 'bold', marginLeft: '20px' }}>
-              <span>Staffing</span> <span style={{ display: 'block' }}>Solutions Hub</span>
-            </Typography>
-            <Image
-              loading="lazy"
-              src={SSHGoldLogo.src}
-              alt="Profile preview"
-              width={100}
-              height={105}
-              style={{ objectFit: 'contain', marginLeft: '-32px', marginTop: '20px' }}
-            />
-            {/* Steps Section */}
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: 2, textAlign: 'center', marginLeft: '80px' }}>
-              {steps.map((step) => (
-                <StepItem
-                  key={step.number}
-                  number={step.number}
-                  title={step.title}
-                  isActive={step.isActive}
-                />
-              ))}
-            </Box>
-          </Box>
-          <Box>
-            <CloseIcon sx={{ color: 'white', width: '18px', height: '18px', marginRight: '40px', marginBottom: '50px', fontWeight: 'bold' }} />
-          </Box>
-        </Box>
+        <OnboardingHeader steps={steps} oncClose={onClose} />
 
         {/* Upload Form Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
