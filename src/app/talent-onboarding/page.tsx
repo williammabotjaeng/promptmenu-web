@@ -181,11 +181,11 @@ const TalentOnboarding: React.FC = () => {
       )}
 
       {activeStep === 4 && (
-        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
+        <SocialMediaLinks activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 5 && (
-        <SocialMediaLinks activeStep={activeStep} setActiveStep={setActiveStep} />
+        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 6 && (

@@ -47,8 +47,8 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
       <OnboardingHeader steps={steps} onClose={onClose} />
 
       {/* Social Media Links Section */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-        <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, marginLeft: 6, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '768px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', justifyContent: 'center' }}>
+        <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, marginLeft: 6, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '50%', ml: 40 }}>
           <Typography variant="h5" sx={{ pt: 0.25, pb: 3, color: '#977342' }}>
             Social Media
           </Typography>
@@ -58,13 +58,10 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
             ))}
           </Box>
         </Paper>
-        <Typography variant="caption" sx={{ paddingX: 16, color: 'gray', textAlign: 'center' }}>
-          Step {activeStep + 1} of 8 - Socials
-        </Typography>
       </Box>
 
       {/* Navigation Buttons */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4, ml: 36, width: '55%' }}>
         <Button 
           sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
           onClick={handleBack}
@@ -78,6 +75,9 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
           Continue
         </Button>
       </Box>
+      <Typography variant="caption" sx={{ paddingX: 16, color: 'gray', textAlign: 'center' }}>
+          Step {activeStep + 1} of 8 - Socials
+      </Typography>
     </Box>
   );
 };
