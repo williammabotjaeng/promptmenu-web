@@ -6,9 +6,9 @@ import { mt } from 'date-fns/locale';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HeaderWithProgressBar from './HeaderWithProgressBar';
-import { PostTaskStepProps } from '@/types/Props/PostTaskStepProps';
+import { PostEventStepProps } from '@/types/Props/PostEventStepProps';
 
-export const EventDetails: React.FC<PostTaskStepProps> = ({ activeStep, setActiveStep}) => {
+export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep}) => {
 
   const handleContinue = () => {
     setActiveStep(activeStep + 1);
