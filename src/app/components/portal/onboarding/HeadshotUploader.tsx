@@ -73,7 +73,7 @@ const HeadshotUpload: React.FC = () => {
               textAlign: 'center', 
             }}
           >
-            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left', marginLeft: 5 }}>
+            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left', marginLeft: 5, marginBottom: '-18px' }}>
               Upload Your Headshot
             </Typography>
 
