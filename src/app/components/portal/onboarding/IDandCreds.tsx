@@ -40,28 +40,6 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
 
-      <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/04941e81747f3ecb6811e1684b15614793214440d6dff851abf37ed98ca1961c?apiKey=7fae980a988640eea8add1e49a5d542e&"
-          alt="Decorative"
-          style={{ width: '121px', marginTop: '-11px' }}
-        />
-      </Box>
-
-      <nav>
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: '20px' }}>
-          {steps.map((step) => (
-            <StepItem
-              key={step.number}
-              number={step.number}
-              title={step.title}
-              isActive={step.isActive}
-            />
-          ))}
-        </Box>
-      </nav>
-
       <Paper elevation={3} sx={{ padding: 4, marginTop: 4, backgroundColor: 'rgba(245, 245, 245, 0.1)' }}>
         <Typography variant="h5" sx={{ color: 'orange', marginBottom: 2 }}>
           ID Document

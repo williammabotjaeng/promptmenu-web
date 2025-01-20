@@ -42,23 +42,23 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
   };
 
   return (
-    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white' }}>
+    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'black' }}>
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
 
       {/* Social Media Links Section */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', paddingBottom: '24px' }}>
-        <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, marginTop: 14, marginLeft: 6, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '768px' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, marginLeft: 6, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '768px' }}>
           <Typography variant="h5" sx={{ pt: 0.25, pb: 3, color: 'orange' }}>
             Social Media
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 6, width: '100%', gap: 4 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 4 }}>
             {socialInputs.map((input, index) => (
               <SocialInput key={index} {...input} />
             ))}
           </Box>
         </Paper>
-        <Typography variant="caption" sx={{ paddingX: 16, paddingY: 7, marginTop: 24, color: 'gray', textAlign: 'center' }}>
+        <Typography variant="caption" sx={{ paddingX: 16, color: 'gray', textAlign: 'center' }}>
           Step {activeStep + 1} of 8 - Socials
         </Typography>
       </Box>
