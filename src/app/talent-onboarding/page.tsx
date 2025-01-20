@@ -165,7 +165,7 @@ const TalentOnboarding: React.FC = () => {
   return (
     <Box sx={{ width: '100vw', backgroundColor: 'black' }}>
       {activeStep === 0 && (
-        <HeadshotUploader />
+        <HeadshotUploader activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 1 && (

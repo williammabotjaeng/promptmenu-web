@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Box, Typography, Paper, Button } from '@mui/material';
 import { StepItem } from '@/components/portal/onboarding/StepItem';
-import { ActionButton } from '@/components/portal/onboarding/ActionButton';
 import { FileUpload } from '@/components/portal/onboarding/FileUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import Image from 'next/image';
-import SSHGoldLogo from '@/assets/GoldLogo.png'
+import SSHGoldLogo from '@/assets/GoldLogo.png';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: true },
@@ -18,20 +17,21 @@ const steps = [
   { number: 8, title: 'Review' }
 ];
 
-const HeadshotUpload: React.FC = () => {
+const HeadshotUpload: React.FC<{ activeStep: number; setActiveStep: (step: number) => void; }> = ({ activeStep, setActiveStep }) => {
   const handleFileSelect = (file: File) => {
     console.log('Selected file:', file);
   };
 
+  const handleContinue = () => {
+    setActiveStep(activeStep + 1); 
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', borderRadius: '8px', border: '2px solid gray' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black'}}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
         {/* Header Section */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', overflowX: 'none', paddingTop: 2 }}>
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'row'
-          }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
             <Typography variant="h5" sx={{ color: '#977342', fontWeight: 'bold', marginLeft: '20px' }}>
               <span>Staffing</span> <span style={{ display: 'block' }}>Solutions Hub</span>
             </Typography>
@@ -70,7 +70,7 @@ const HeadshotUpload: React.FC = () => {
               borderRadius: '8px',
               width: '100%',
               maxWidth: '800px',
-              textAlign: 'center', 
+              textAlign: 'center',
             }}
           >
             <Typography variant="h6" sx={{ color: 'white', textAlign: 'left', marginLeft: 5, marginBottom: '-18px' }}>
@@ -83,18 +83,30 @@ const HeadshotUpload: React.FC = () => {
               maxSize="5MB"
               onFileSelect={handleFileSelect}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1, marginLeft: 5, width: '90%',  }}>
-              <Button sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { 
-                  color: '#fff' 
-                }}}>Back</Button>
-              <Button sx={{ color: '#000', backgroundColor: '#CEAB76' }}>Continue</Button>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1, marginLeft: 5, width: '90%' }}>
+              <Button 
+                sx={{ 
+                  color: '#977342', 
+                  border: '2px solid #977342', 
+                  '&:hover': { color: '#fff' } 
+                }}
+                onClick={() => setActiveStep(activeStep - 1)} 
+              >
+                Back
+              </Button>
+              <Button 
+                sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+                onClick={handleContinue} 
+              >
+                Continue
+              </Button>
             </Box>
           </Paper>
         </Box>
 
         {/* Step Indicator Section */}
         <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginBottom: 0, color: 'gray', textAlign: 'center' }}>
-          Step 1 of 8 - Headshot Upload
+          Step {activeStep + 1} of 8 - Headshot Upload
         </Typography>
       </Box>
     </Box>
