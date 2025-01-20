@@ -4,7 +4,7 @@ import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { SkillTag } from '@/components/portal/onboarding/SkillTag';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
-import { OnboardingHeaderProps } from '@/types/Props/OnboardingHeaderProps';
+import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 
 const steps = [
     { number: 1, title: 'Headshot', isActive: false },
@@ -23,7 +23,7 @@ const skills = [
     { name: 'Dancing' }
 ];
 
-const SkillsSelection: React.FC<OnboardingHeaderProps> = ({ activeStep, setActiveStep }) => {
+const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
     const router = useRouter();
 
