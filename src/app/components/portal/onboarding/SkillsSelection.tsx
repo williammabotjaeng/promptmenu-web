@@ -50,7 +50,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
 
                 {/* Skills Section */}
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
-                    <Typography variant="h5" sx={{ color: 'orange', paddingBottom: 3 }}>
+                    <Typography variant="h5" sx={{ textAlign: 'left', color: '#ceab76', paddingBottom: 3 }}>
                         Professional Skills
                     </Typography>
                     <TextField
@@ -58,10 +58,12 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                         placeholder="Add your skills..."
                         sx={{
                             backgroundColor: 'black',
-                            borderColor: '#4B5563',
-                            color: 'gray',
+                            border: '2px solid #CEAB76',
+                            borderRadius: '12px',
+                            color: '#fff',
+                            width: '80vh',
                             '& .MuiOutlinedInput-input': {
-                                padding: '16px 16px'
+                                padding: '12px 12px'
                             }
                         }}
                     />
