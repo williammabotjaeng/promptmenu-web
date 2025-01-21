@@ -13,6 +13,7 @@ import RoleDemographics from '@/components/dashboard/event/RoleDemographics';
 import { PaymentDetails } from '@/components/dashboard/event/PaymentDetails';
 import Questions from '@/components/dashboard/event/Questions';
 import EventManager from '@/components/dashboard/event/EventManager';
+import EventDeadline from '@/components/dashboard/event/EventDeadline';
 
 const PostEvent: React.FC = () => {
     const router = useRouter();
@@ -45,44 +46,46 @@ const PostEvent: React.FC = () => {
 
     return (
         <Box sx={{ width: '100%' }}>
-                {/* Render input fields based on the active step */}
-                {activeStep === 0 && (
-                    <EventDetails activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
-                {activeStep === 1 && (
-                    <EventMedia activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
-                {activeStep === 2 && (
-                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {/* Render input fields based on the active step */}
+            {activeStep === 0 && (
+                <EventDetails activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
+            {activeStep === 1 && (
+                <EventMedia activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
+            {activeStep === 2 && (
+                <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
 
-                {activeStep === 3 && (
-                    <AddRoleForm activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {activeStep === 3 && (
+                <AddRoleForm activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
 
-                {activeStep === 4 && (
-                    <RoleDetails activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {activeStep === 4 && (
+                <RoleDetails activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
 
-                {activeStep === 5 && (
-                    <RoleDemographics activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {activeStep === 5 && (
+                <RoleDemographics activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
 
-                {activeStep === 6 && (
-                    <PaymentDetails activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {activeStep === 6 && (
+                <PaymentDetails activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
 
-                {activeStep === 7 && (
-                    <Questions activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {activeStep === 7 && (
+                <Questions activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
 
-                {activeStep === 8 && (
-                    <EventManager activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {activeStep === 8 && (
+                <EventDeadline activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
 
-                {activeStep === 9 && (
-                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
-                )}
+            {activeStep === 9 && (
+                <EventManager activeStep={activeStep} setActiveStep={setActiveStep} />
+            )}
+
+
         </Box>
     );
 };
