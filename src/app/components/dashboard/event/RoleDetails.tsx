@@ -28,7 +28,7 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 pb: { xs: 3, md: 4 },
             }}
         >
-            <RoleHeaderWithProgressBar progressValue={14} />
+            <RoleHeaderWithProgressBar progressValue={28} />
             <RoleDetailsForm />
             <Box
                 sx={{
