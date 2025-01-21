@@ -5,4 +5,4 @@ export interface JobCardProps {
     location: string;
     daysAgo: number;
     salary: string;
-  }
+}

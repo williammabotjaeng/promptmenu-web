@@ -53,7 +53,9 @@ const EventOverview: React.FC = () => {
                     <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#000' }}>
                         Roles
                     </Typography>
-                    <Button sx={{ color: '#977342' }}>+ Add Role</Button>
+                    <Button sx={{ color: '#977342', '&:hover':{
+                        color: 'white'
+                    } }}>+ Add Role</Button>
                 </Box>
                 <RoleCard
                     title="Fashion Model for Dubai Mall Campaign"
