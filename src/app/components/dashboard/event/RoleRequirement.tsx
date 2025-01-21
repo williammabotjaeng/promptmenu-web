@@ -35,7 +35,6 @@ const RoleRequirement: React.FC = () => (
           sx={{ 
             pt: 1, 
             pb: 1, 
-            fontWeight: 'medium', 
             color: 'black',
             fontWeight: 'bold' 
           }}
