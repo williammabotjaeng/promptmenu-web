@@ -3,7 +3,7 @@ import SectionTabs from './SectionTabs';
 import RoleRequirement from './RoleRequirement';
 import { Box, Button, Typography } from "@mui/material";
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
-import HeaderWithProgressBar from "./HeaderWithProgressBar";
+import RoleHeaderWithProgressBar from "@/components/dashboard/event/RoleHeaderWithProgressBar";
 
 const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
@@ -16,16 +16,19 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: 'transparent',
-                pb: { xs: 3, md: 72 },
+                backgroundColor: 'white',
+                justifyContent: 'center',
+                paddingLeft: 40,
+                paddingRight: 1,
+                pb: { xs: 3, md: 4 },
             }}
         >
-            <HeaderWithProgressBar progressValue={14} />
+            <RoleHeaderWithProgressBar progressValue={14} />
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    px: { xs: 2, md: 5 },
+                    px: { xs: 2, md: 2 },
                     pt: 2,
                     pb: 9,
                     width: '100%',
@@ -33,17 +36,6 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                     maxWidth: '100%',
                 }}
             >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-start',
-                        width: '100%',
-                        maxWidth: '1188px'
-                    }}
-                >
-                    <SectionTabs sections={["Requirements", "Details", "Demographics", "Payment"]} />
-                </Box>
                 <Typography
                     variant="h4"
                     sx={{
@@ -64,10 +56,10 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                         px: 4,
                         py: 2,
                         mt: 2,
-                        mr: { xs: 1, md: 6 },
-                        backgroundColor: 'stone.500',
+                        mr: { xs: 1, md: 28 },
+                        backgroundColor: '#977342',
                         '&:hover': {
-                            backgroundColor: 'stone.600'
+                            backgroundColor: '#CEAB76'
                         }
                     }}
                     aria-label="Next Step"
