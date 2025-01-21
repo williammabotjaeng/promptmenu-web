@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Typography, Chip } from "@mui/material";
-import { RoleCardProps } from "./types";
+import { RoleCardProps } from "@/types/Props/RoleCardProps";
 
 export const RoleCard: React.FC<RoleCardProps> = ({
   title,
@@ -20,7 +20,6 @@ export const RoleCard: React.FC<RoleCardProps> = ({
         borderRadius: '8px',
         border: '1px solid #E0E0E0',
         backgroundColor: 'white',
-        boxShadow: 1,
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

@@ -40,7 +40,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     pt: 2,
                     pb: 5,
                     mt: 4,
-                    mr: 28,
+                    mr: 32,
                     backgroundColor: 'white',
                 }}
             >
@@ -51,7 +51,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                         mr: 2, 
                         color: '#977342',
                         border: '1px solid #977342',
-                        width: '120px', 
+                        width: '160px', 
                         backgroundColor: 'white',
                         '&:hover': {
                             color: '#CEAB76',
@@ -61,21 +61,21 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     }}
                     aria-label="Go Back"
                 >
-                    Go Back
+                    Save for Later
                 </Button>
                 <Button
                     onClick={handleContinue}
                     variant="contained"
                     sx={{
                         backgroundColor: '#977342',
-                        width: '120px', 
+                        width: '160px', 
                         '&:hover': {
                             backgroundColor: '#CEAB76'
                         }
                     }}
                     aria-label="Next Step"
                 >
-                    Next Step
+                    Publish Event
                 </Button>
             </Box>
         </Box>
