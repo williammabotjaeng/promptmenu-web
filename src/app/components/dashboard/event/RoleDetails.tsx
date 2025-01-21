@@ -33,25 +33,23 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: 'column',
-                    px: { xs: 1, md: 1 },
+                    flexDirection: 'row',
+                    justifyContent: 'flex-end',
+                    px: { xs: 2, md: 3 },
                     pt: 2,
                     pb: 5,
-                    ml: 20,
+                    mt: 4,
                     backgroundColor: 'white',
                 }}
             >
                 <Button
                     onClick={handleBack}
-                    variant="contained"
+                    variant="outlined" 
                     sx={{
-                        alignSelf: 'flex-end',
-                        px: 4,
-                        py: 2,
-                        mt: 2,
-                        mr: { xs: 1, md: 56 },
+                        mr: 2, 
                         color: '#977342',
                         border: '1px solid #977342',
+                        width: '120px', 
                         backgroundColor: 'white',
                         '&:hover': {
                             color: '#CEAB76',
@@ -59,7 +57,7 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                             backgroundColor: 'white'
                         }
                     }}
-                    aria-label="Next Step"
+                    aria-label="Go Back"
                 >
                     Go Back
                 </Button>
@@ -67,12 +65,8 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                     onClick={handleContinue}
                     variant="contained"
                     sx={{
-                        alignSelf: 'flex-end',
-                        px: 4,
-                        py: 2,
-                        mt: 2,
-                        mr: { xs: 1, md: 56 },
                         backgroundColor: '#977342',
+                        width: '120px', 
                         '&:hover': {
                             backgroundColor: '#CEAB76'
                         }
