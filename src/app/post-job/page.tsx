@@ -52,7 +52,7 @@ const PostJob: React.FC = () => {
                     <EventInfo activeStep={activeStep} />
                 )}
                 {activeStep === 1 && (
-                    <EventMedia activeStep={activeStep} />
+                    <EventMedia activeStep={activeStep} setActiveStep={setActiveStep} />
                 )}
                 {activeStep === 2 && (
                     <EventReview />
