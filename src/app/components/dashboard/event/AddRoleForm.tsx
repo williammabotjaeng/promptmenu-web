@@ -21,6 +21,7 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 paddingLeft: 12,
                 paddingRight: 1,
                 pb: { xs: 3, md: 4 },
+                width: '100%'
             }}
         >
             <RoleHeaderWithProgressBar progressValue={14} />
@@ -39,13 +40,12 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    px: { xs: 2, md: 2 },
+                    px: { xs: 1, md: 1 },
                     pt: 2,
                     pb: 5,
                     ml: 20,
-                    width: '100%',
                     backgroundColor: 'white',
-                    maxWidth: '100%',
+                    maxWidth: '90%',
                 }}
             >
                 <RoleRequirement />

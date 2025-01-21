@@ -34,13 +34,11 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    px: { xs: 2, md: 2 },
+                    px: { xs: 1, md: 1 },
                     pt: 2,
                     pb: 5,
                     ml: 20,
-                    width: '100%',
                     backgroundColor: 'white',
-                    maxWidth: '100%',
                 }}
             >
                 <Button

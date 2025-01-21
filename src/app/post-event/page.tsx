@@ -40,8 +40,7 @@ const PostEvent: React.FC = () => {
     };
 
     return (
-        <Box>
-            <div>
+        <Box sx={{ width: '100%' }}>
                 {/* Render input fields based on the active step */}
                 {activeStep === 0 && (
                     <EventDetails activeStep={activeStep} setActiveStep={setActiveStep} />
@@ -80,7 +79,6 @@ const PostEvent: React.FC = () => {
                 {activeStep === 9 && (
                     <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
                 )}
-            </div>
         </Box>
     );
 };
