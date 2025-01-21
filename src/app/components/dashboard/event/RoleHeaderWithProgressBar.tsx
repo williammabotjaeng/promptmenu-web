@@ -24,7 +24,7 @@ interface HeaderWithProgressBarProps {
 
 const RoleHeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progressValue }) => {
   return (
-    <Box sx={{ marginBottom: 4, mt: 4, width: '60%', position: 'relative' }}>
+    <Box sx={{ marginBottom: 4, mt: 4, width: '90%', position: 'relative' }}>
       <BorderLinearProgress variant="determinate" value={progressValue} sx={{ marginTop: 1 }} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1 }}>
         <Typography variant="body2" sx={{ color: '#977342' }}>Requirements</Typography>

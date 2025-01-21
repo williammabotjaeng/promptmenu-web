@@ -18,35 +18,36 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 flexDirection: 'column',
                 backgroundColor: 'white',
                 justifyContent: 'center',
-                paddingLeft: 40,
+                paddingLeft: 12,
                 paddingRight: 1,
                 pb: { xs: 3, md: 4 },
             }}
         >
             <RoleHeaderWithProgressBar progressValue={14} />
+            <Typography
+                    variant="h4"
+                    sx={{
+                        alignSelf: 'flex-start',
+                        mt: 2,
+                        fontWeight: 'bold',
+                        color: '#977342'
+                    }}
+                >
+                    Add a Role
+                </Typography>
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     px: { xs: 2, md: 2 },
                     pt: 2,
-                    pb: 9,
+                    pb: 5,
+                    ml: 20,
                     width: '100%',
                     backgroundColor: 'white',
                     maxWidth: '100%',
                 }}
             >
-                <Typography
-                    variant="h4"
-                    sx={{
-                        alignSelf: 'flex-start',
-                        mt: 2,
-                        fontWeight: 'bold',
-                        color: 'text.secondary'
-                    }}
-                >
-                    Add a Role
-                </Typography>
                 <RoleRequirement />
                 <Button
                     onClick={handleContinue}
@@ -56,7 +57,7 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                         px: 4,
                         py: 2,
                         mt: 2,
-                        mr: { xs: 1, md: 28 },
+                        mr: { xs: 1, md: 56 },
                         backgroundColor: '#977342',
                         '&:hover': {
                             backgroundColor: '#CEAB76'

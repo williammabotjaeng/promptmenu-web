@@ -22,7 +22,7 @@ const RoleRequirement: React.FC = () => (
       sx={{ 
         pb: 2, 
         fontWeight: 'bold', 
-        color: 'text.secondary' 
+        color: '#977342' 
       }}
     >
       Role Requirements
