@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Box } from '@mui/material';
 import EventInfo from '@/components/dashboard/event/EventInfo';
 import { EventMedia } from '@/components/dashboard/event/EventMedia';
-import EventReview from '@/components/dashboard/event/EventReview';
+import { EventReview } from '@/components/dashboard/event/EventReview';
 import { EventDetails } from '@/components/dashboard/event/EventDetails';
 
 const PostEvent: React.FC = () => {
@@ -49,7 +49,7 @@ const PostEvent: React.FC = () => {
                     <EventMedia activeStep={activeStep} setActiveStep={setActiveStep} />
                 )}
                 {activeStep === 2 && (
-                    <EventReview />
+                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
                 )}
             </div>
         </Box>
