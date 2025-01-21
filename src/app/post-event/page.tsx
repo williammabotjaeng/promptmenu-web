@@ -7,6 +7,7 @@ import EventInfo from '@/components/dashboard/event/EventInfo';
 import { EventMedia } from '@/components/dashboard/event/EventMedia';
 import { EventReview } from '@/components/dashboard/event/EventReview';
 import { EventDetails } from '@/components/dashboard/event/EventDetails';
+import AddRoleForm from '@/components/dashboard/event/AddRoleForm';
 
 const PostEvent: React.FC = () => {
     const router = useRouter();
@@ -32,7 +33,7 @@ const PostEvent: React.FC = () => {
     };
 
     const handleSubmit = async () => {
-        
+
         console.log("Event submitted!");
         router.push('/dashboard');
     };
@@ -40,7 +41,6 @@ const PostEvent: React.FC = () => {
     return (
         <Box>
             <div>
-
                 {/* Render input fields based on the active step */}
                 {activeStep === 0 && (
                     <EventDetails activeStep={activeStep} setActiveStep={setActiveStep} />
@@ -49,6 +49,34 @@ const PostEvent: React.FC = () => {
                     <EventMedia activeStep={activeStep} setActiveStep={setActiveStep} />
                 )}
                 {activeStep === 2 && (
+                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+                )}
+
+                {activeStep === 3 && (
+                    <AddRoleForm activeStep={activeStep} setActiveStep={setActiveStep} />
+                )}
+
+                {activeStep === 4 && (
+                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+                )}
+
+                {activeStep === 5 && (
+                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+                )}
+
+                {activeStep === 6 && (
+                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+                )}
+
+                {activeStep === 7 && (
+                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+                )}
+
+                {activeStep === 8 && (
+                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+                )}
+
+                {activeStep === 9 && (
                     <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
                 )}
             </div>
