@@ -3,7 +3,7 @@ import SectionTabs from './SectionTabs';
 import RoleRequirement from './RoleRequirement';
 import { Box, Button, Typography } from "@mui/material";
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
-import RoleHeaderWithProgressBar from "@/components/dashboard/event/RoleHeaderWithProgressBar";
+import OverviewHeaderWithProgressBar from "@/components/dashboard/event/OverviewHeaderWithProgressBar";
 import RoleDetailsForm from "@/components/dashboard/event/RoleDetailsForm";
 import EventOverview from "./EventOverview";
 
@@ -29,7 +29,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                 pb: { xs: 3, md: 4 },
             }}
         >
-            <RoleHeaderWithProgressBar progressValue={28} />
+            <OverviewHeaderWithProgressBar progressValue={100} />
             <EventOverview />
             <Box
                 sx={{
