@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { SearchBarProps, FilterButtonProps } from './types';
+import { SearchBarProps } from '@/types/Props/pages/SearchBarProps';
+import { FilterButtonProps } from '@/types/Props/pages/FilterButtonProps';
 
 const FilterButton: React.FC<FilterButtonProps> = ({ label, onClick }) => (
   <Button
