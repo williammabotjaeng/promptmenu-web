@@ -39,6 +39,7 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                     pt: 2,
                     pb: 5,
                     mt: 4,
+                    mr: 28,
                     backgroundColor: 'white',
                 }}
             >

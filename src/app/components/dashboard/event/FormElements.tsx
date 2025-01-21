@@ -13,7 +13,7 @@ type LabelledTextAreaProps = {
 
 export const LabelledInput: React.FC<LabelledInputProps> = ({ label, id }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', maxWidth: '100%' }}>
-    <Typography variant="body1" sx={{ mb: 1 }}>
+    <Typography variant="body1" sx={{ mb: 1, fontWeight: 'bold' }}>
       {label}
     </Typography>
     <TextField
@@ -28,7 +28,7 @@ export const LabelledInput: React.FC<LabelledInputProps> = ({ label, id }) => (
 
 export const LabelledTextArea: React.FC<LabelledTextAreaProps> = ({ label, id }) => (
   <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, maxWidth: '100%' }}>
-    <Typography variant="body1" sx={{ mb: 1 }}>
+    <Typography variant="body1" sx={{ mb: 1, fontWeight: 'bold' }}>
       {label}
     </Typography>
     <TextField

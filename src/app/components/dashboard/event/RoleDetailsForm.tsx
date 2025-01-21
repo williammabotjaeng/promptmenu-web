@@ -14,7 +14,7 @@ const RoleDetailsForm: React.FC = () => {
         p: 4, 
         mt: 3, 
         ml: 4, 
-        maxWidth: '768px', 
+        width: '60%', 
         borderRadius: '16px' 
       }}
     >
