@@ -57,7 +57,7 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                         px: 4,
                         py: 2,
                         mt: 2,
-                        mr: { xs: 1, md: 56 },
+                        mr: { xs: 1, md: 38 },
                         backgroundColor: '#977342',
                         '&:hover': {
                             backgroundColor: '#CEAB76'
