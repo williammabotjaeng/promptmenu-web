@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Box, Button, Typography } from "@mui/material";
-import { EventDetailItem } from "./EventDetailItem";
-import HeaderWithProgressBar from "./HeaderWithProgressBar";
+import { EventDetailItem } from "@/components/dashboard/event/EventDetailItem";
+import HeaderWithProgressBar from "@/components/dashboard/event/HeaderWithProgressBar";
+import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 
-export const EventReview: React.FC = () => {
+export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
     return (
         <Box
             sx={{
@@ -95,7 +96,7 @@ export const EventReview: React.FC = () => {
                                                         <Typography
                                                             variant="h6"
                                                             sx={{
-                                                                color: 'text.secondary',
+                                                                color: '#977342',
                                                                 fontWeight: 'bold'
                                                             }}
                                                         >
@@ -139,7 +140,7 @@ export const EventReview: React.FC = () => {
                                                         <Typography
                                                             variant="h6"
                                                             sx={{
-                                                                color: 'text.secondary',
+                                                                color: '#977342',
                                                                 fontWeight: 'bold'
                                                             }}
                                                         >
@@ -164,9 +165,26 @@ export const EventReview: React.FC = () => {
                                                 sx={{
                                                     display: 'flex',
                                                     justifyContent: 'center',
-                                                    mt: 4
+                                                    mt: 4,
                                                 }}
                                             >
+                                                <Button
+                                                    variant="contained"
+                                                    sx={{
+                                                        px: 4,
+                                                        py: 2,
+                                                        mr: 4,
+                                                        color: '#977342',
+                                                        backgroundColor: '#fff',
+                                                        '&:hover': {
+                                                            backgroundColor: '#fff',
+                                                            color: '#CEAB76'
+                                                        }
+                                                    }}
+                                                    onClick={() => { }}
+                                                >
+                                                    Go Back
+                                                </Button>
                                                 <Button
                                                     variant="contained"
                                                     sx={{

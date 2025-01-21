@@ -19,7 +19,7 @@ export const EventDetailItem: React.FC<EventDetailProps> = ({ label, value }) =>
       variant="body2" 
       sx={{ 
         mt: 2.5, 
-        color: 'text.secondary' 
+        color: '#977342' 
       }}
     >
       {value}
