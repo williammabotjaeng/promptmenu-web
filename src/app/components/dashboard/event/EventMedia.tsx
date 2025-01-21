@@ -38,13 +38,14 @@ export const EventMedia: React.FC = () => {
       }}
     >
       {/* Header with Step Navigation */}
-      <HeaderWithProgressBar progressValue={33} />
-      <Paper 
+      <HeaderWithProgressBar progressValue={66} />
+      <Box 
         sx={{ 
           display: 'flex', 
           flexDirection: 'column', 
           backgroundColor: 'white', 
           borderRadius: 2, 
+          marginRight: 18
         }}
       >
         <Box sx={{ padding: 3, position: 'relative' }}>
@@ -61,13 +62,14 @@ export const EventMedia: React.FC = () => {
             <Box sx={{ 
               display: 'flex', 
               flexDirection: 'column', 
-             // backgroundColor: 'rgba(151, 115, 66, 0.5)', 
               borderRadius: '50%', 
               padding: 1 
             }}>
               <Box sx={{ marginTop: 4 }}>
-                <EventUploadSection {...uploadSections[0]} />
-                <Box sx={{ display: 'flex', gap: 2, marginTop: 2 }}>
+                <Box sx={{ width: '79%' }}>
+                  <EventUploadSection {...uploadSections[0]} />
+                </Box>
+                <Box sx={{ display: 'flex', gap: 20, marginTop: 2 }}>
                   <Box sx={{ flex: 1 }}>
                     <EventUploadSection {...uploadSections[1]} />
                   </Box>
@@ -78,13 +80,16 @@ export const EventMedia: React.FC = () => {
               </Box>
             </Box>
           </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2, marginRight: '-132px' }}>
             <Button 
               variant="outlined" 
               sx={{ 
                 marginRight: 2, 
                 borderColor: '#977342',
-                color: '#977342' 
+                color: '#977342',
+                '&:hover': {
+                  color: '#fff', 
+                }
               }}
             >
               Go Back
@@ -103,7 +108,7 @@ export const EventMedia: React.FC = () => {
             </Button>
           </Box>
         </Box>
-      </Paper>
+      </Box>
     </Box>
   );
 };

@@ -9,15 +9,14 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
   description
 }) => {
   return (
-    <Paper 
-      elevation={3} 
+    <Box 
       sx={{ 
         display: 'flex', 
         flexDirection: 'column', 
         padding: 3, 
         borderRadius: 2, 
         backgroundColor: 'rgba(151, 115, 66, 0.1)', 
-        maxWidth: '100%',
+        width: '150%',
       }}
     >
       <Typography 
@@ -48,7 +47,7 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
             display: 'flex', 
             flexDirection: 'column', 
             alignItems: 'center', 
-            width: '100%', 
+            width: '150%', 
             maxWidth: '173px' 
           }}
         >
@@ -96,6 +95,6 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
           </Button>
         </Box>
       </Box>
-    </Paper>
+    </Box>
   );
 };
