@@ -36,7 +36,8 @@ const RoleRequirement: React.FC = () => (
             pt: 1, 
             pb: 1, 
             fontWeight: 'medium', 
-            color: 'text.secondary' 
+            color: 'black',
+            fontWeight: 'bold' 
           }}
         >
           Role Skill
@@ -75,7 +76,8 @@ const RoleRequirement: React.FC = () => (
           variant="subtitle2" 
           sx={{ 
             py: 1, 
-            color: 'text.secondary' 
+            color: 'black',
+            fontWeight: 'bold' 
           }}
         >
           Number of People Needed

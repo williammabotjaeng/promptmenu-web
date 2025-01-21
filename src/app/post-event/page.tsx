@@ -9,6 +9,7 @@ import { EventReview } from '@/components/dashboard/event/EventReview';
 import { EventDetails } from '@/components/dashboard/event/EventDetails';
 import AddRoleForm from '@/components/dashboard/event/AddRoleForm';
 import RoleDetails from '@/components/dashboard/event/RoleDetails';
+import RoleDemographics from '@/components/dashboard/event/RoleDemographics';
 
 const PostEvent: React.FC = () => {
     const router = useRouter();
@@ -61,7 +62,7 @@ const PostEvent: React.FC = () => {
                 )}
 
                 {activeStep === 5 && (
-                    <EventReview activeStep={activeStep} setActiveStep={setActiveStep} />
+                    <RoleDemographics activeStep={activeStep} setActiveStep={setActiveStep} />
                 )}
 
                 {activeStep === 6 && (
