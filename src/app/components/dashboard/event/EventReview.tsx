@@ -5,6 +5,11 @@ import HeaderWithProgressBar from "@/components/dashboard/event/HeaderWithProgre
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 
 export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
+
+    const handleContinue = () => {
+        setActiveStep(activeStep + 1);
+    }
+    
     return (
         <Box
             sx={{
@@ -195,7 +200,7 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
                                                             backgroundColor: '#CEAB76'
                                                         }
                                                     }}
-                                                    onClick={() => { }}
+                                                    onClick={handleContinue}
                                                 >
                                                     Submit Event
                                                 </Button>
