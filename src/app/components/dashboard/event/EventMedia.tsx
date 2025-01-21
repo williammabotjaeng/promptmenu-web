@@ -31,6 +31,10 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
         setActiveStep(activeStep + 1);
     }
 
+    const handleBack = () => {
+        setActiveStep(activeStep - 1);
+    }
+
     return (
         <Box
             sx={{
@@ -97,6 +101,7 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                                     color: '#fff',
                                 }
                             }}
+                            onClick={handleBack}
                         >
                             Go Back
                         </Button>

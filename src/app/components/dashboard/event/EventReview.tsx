@@ -9,6 +9,10 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
     const handleContinue = () => {
         setActiveStep(activeStep + 1);
     }
+
+    const handleBack = () => {
+        setActiveStep(activeStep - 1);
+    }
     
     return (
         <Box
@@ -186,7 +190,7 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
                                                             color: '#CEAB76'
                                                         }
                                                     }}
-                                                    onClick={() => { }}
+                                                    onClick={handleBack}
                                                 >
                                                     Go Back
                                                 </Button>
