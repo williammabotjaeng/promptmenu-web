@@ -68,6 +68,7 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                     sx={{
                         backgroundColor: '#977342',
                         width: '120px', 
+                        color: 'white',
                         '&:hover': {
                             backgroundColor: '#CEAB76'
                         }
