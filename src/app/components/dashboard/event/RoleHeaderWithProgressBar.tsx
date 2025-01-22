@@ -76,8 +76,8 @@ const RoleHeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progr
                   variant="body2"
                   sx={{
                     color: '#977342',
-                    fontSize: index === indexValue ? '1.2rem' : '0.875rem', // Change font size based on indexValue
-                    fontWeight: index === indexValue ? 'bold' : 'normal', // Bold the current step
+                    fontSize: index === indexValue ? '1.2rem' : '0.875rem', 
+                    fontWeight: index === indexValue ? 'bold' : 'normal', 
                   }}
                 >
                   {label}

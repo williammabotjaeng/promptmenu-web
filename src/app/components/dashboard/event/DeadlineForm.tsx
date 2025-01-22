@@ -43,8 +43,11 @@ export const DeadlineForm: React.FC<DeadlineFormProps> = ({ onSubmit }) => {
           multiline
           rows={4}
           variant="outlined"
-          fullWidth
-          sx={{ marginTop: 1 }}
+          
+          sx={{ 
+            marginTop: 1,
+            width: { md: '100%', xs: '143%'}
+          }}
         />
       </Box>
 
