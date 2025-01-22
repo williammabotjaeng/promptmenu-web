@@ -39,7 +39,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
   };
 
   return (
-    <Box sx={{ display: 'flex', overflow: 'none', flexDirection: 'column', backgroundColor: 'black' }}>
+    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'black' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />
@@ -52,7 +52,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               color: '#977342',
               paddingBottom: 3,
               fontWeight: 'bold',
-              textAlign: 'center', // Centered for all screen sizes
+              textAlign: 'center',
               marginRight: { xs: 0, md: 60 }
             }}
           >
@@ -92,12 +92,14 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
 
         {/* Navigation Buttons */}
         <Box sx={{
-          display: { xs: 'flex', md: 'flex' }, 
+          display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           justifyContent: { xs: 'flex-start', md: 'space-between' },
           marginTop: 2,
-          width: { xs: '100%', md: '50%' },
-          paddingX: 2
+          width: { xs: '100%', md: '55%' },
+          paddingX: 2,
+          alignItems: { md: 'center' },
+          marginLeft: { md: 40 }
         }}>
           <Button
             sx={{
