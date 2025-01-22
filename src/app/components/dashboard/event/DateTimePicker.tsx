@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { TextField, Box, Typography, InputAdornment } from '@mui/material';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { TextField, Box, Typography } from '@mui/material';
 
 export const DateTimePicker: React.FC<{ label: string }> = ({ label }) => {
   const [selectedDate, setSelectedDate] = React.useState<string>('');
@@ -24,6 +23,9 @@ export const DateTimePicker: React.FC<{ label: string }> = ({ label }) => {
         variant="outlined"
         fullWidth
         sx={{ marginTop: 1 }}
+        InputLabelProps={{
+          shrink: true, 
+        }}
       />
     </Box>
   );

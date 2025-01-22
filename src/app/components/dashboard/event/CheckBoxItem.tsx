@@ -4,7 +4,15 @@ import { CheckboxItemProps } from '@/types/Props/CheckboxItemProps';
 
 export const CheckboxItem: React.FC<CheckboxItemProps> = ({ label }) => {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', paddingY: 1 }}>
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        paddingY: 1, 
+        flexDirection: { xs: 'column', sm: 'row' }, // Stack on small screens, row on larger
+        justifyContent: 'flex-start' 
+      }}
+    >
       <FormControlLabel
         control={
           <Checkbox
@@ -18,7 +26,7 @@ export const CheckboxItem: React.FC<CheckboxItemProps> = ({ label }) => {
           />
         }
         label={label}
-        sx={{ marginLeft: 1 }}
+        sx={{ marginLeft: { xs: 0, sm: 1 }, marginTop: { xs: 1, sm: 0 } }} // Adjust margins for responsiveness
       />
     </Box>
   );
