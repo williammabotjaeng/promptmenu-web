@@ -9,6 +9,7 @@ import Alert from '@mui/material/Alert';
 import { useAuth } from '@/providers/auth-providers'; 
 import '@/styles/globals.css';
 import { LoginData } from '@/types/LoginData'; 
+import { Box } from '@mui/material'; // Import Box for layout
 
 const Login: React.FC = () => {
   const { login } = useAuth(); 
@@ -29,7 +30,16 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
+    <Box 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        height: '100vh', 
+        backgroundColor: '#f5f5f5' 
+      }}
+    >
       <LoginForm /> {/* Pass the handleLogin function as a prop */}
 
       {/* Snackbar for displaying messages */}
@@ -39,11 +49,11 @@ const Login: React.FC = () => {
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert onClose={handleSnackbarClose}  sx={{ width: '100%' }}>
+        <Alert onClose={handleSnackbarClose} sx={{ width: '100%' }}>
           {snackbarMessage}
         </Alert>
       </Snackbar>
-    </div>
+    </Box>
   );
 };
 

@@ -6,15 +6,15 @@ export const LoginForm: React.FC = () => {
   return (
     <Grid container sx={{ height: '125vh', backgroundColor: 'black' }}>
       {/* Left Column */}
-      <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', padding: 4 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: 12 }}>
+      <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', padding: { xs: 1, md: 4 } }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: { xs: 1, md: 12 } }}>
           <img
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c3fc10b45272c7c3f40000cb49e896f62fd831f2d1f6075f068d38a771d3152f?apiKey=7fae980a988640eea8add1e49a5d542e&"
             alt="Company logo"
-            style={{ maxWidth: '204px', marginBottom: '20px' }}
+            style={{ maxWidth: '204px', marginBottom:'20px', marginTop: '1px' }}
           />
-          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: 16 }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16}, alignItems: { md: 'none', xs: 'center' } }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
               Welcome Back
             </Typography>
@@ -138,7 +138,7 @@ export const LoginForm: React.FC = () => {
       </Grid>
 
       {/* Right Column */}
-      <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
+      <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
         <img
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0ca397a6303443cf9ac61c117ae8a3d543e83d9bdce376c072ed0bd5eade2785?apiKey=7fae980a988640eea8add1e49a5d542e&"
