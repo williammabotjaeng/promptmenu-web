@@ -33,7 +33,7 @@ const RoleHeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progr
   };
 
   return (
-    <Box sx={{ marginBottom: 4, mt: 4, width: { xs: '100%', md: '95%' }, position: 'relative' }}>
+    <Box sx={{ marginBottom: 4, mt: 4, width: { xs: '100%', md: '92%' }, position: 'relative' }}>
       {!isLargeScreen && ( 
         <IconButton onClick={toggleDrawer(true)} sx={{ position: 'absolute', top: 0, left: 0 }}>
           <MenuIcon sx={{ color: '#977342' }} />
