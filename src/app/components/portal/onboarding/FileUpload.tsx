@@ -16,14 +16,14 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                padding: 2,
+                padding: { xs: 2, md: 3 },
                 width: '100%',
                 borderRadius: '16px',
                 backgroundColor: 'transparent',
                 paddingX: { xs: 2, md: 5 }
             }}
         >
-            <Typography variant="h5" sx={{ pt: 1, pb: 2.5, color: 'white' }}>
+            <Typography variant="h5" sx={{ pt: 1, pb: 2.5, color: 'white', textAlign: 'center' }}>
                 {title}
             </Typography>
             <Box
@@ -32,12 +32,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    px: 5,
-                    py: 4,
+                    px: { xs: 3, md: 5 }, 
+                    py: { xs: 3, md: 4 }, 
                     borderColor: '#4B5563',
                     border: '2px dashed #CEAB76',
                     borderRadius: '8px',
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
+                    width: '100%', 
+                    maxWidth: '600px', 
+                    margin: '0 auto'
                 }}
             >
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '36px', width: '45px' }}>
@@ -61,7 +64,9 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
                             mt: 2,
                             backgroundColor: '#CEAB76',
                             color: 'black',
-                            '&:hover': { backgroundColor: '#FFA500' }
+                            '&:hover': { backgroundColor: '#FFA500' },
+                            width: '100%', 
+                            maxWidth: '200px' 
                         }}
                     >
                         Choose File
@@ -74,7 +79,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
                     onChange={handleFileChange}
                     inputProps={{ accept: supportedFormats }}
                 />
-                <Typography variant="caption" sx={{ mt: 2, color: 'gray' }}>
+                <Typography variant="caption" sx={{ mt: 2, color: 'gray', textAlign: 'center' }}>
                     {`Supported formats: ${supportedFormats} (Max size: ${maxSize})`}
                 </Typography>
             </Box>

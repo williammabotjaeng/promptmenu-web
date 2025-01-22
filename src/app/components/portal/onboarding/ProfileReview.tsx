@@ -86,17 +86,17 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
       Review Your Profile
     </Typography>
   
-    <Box sx={{ padding: 4 }}>
-      <Typography sx={{ fontSize: '20px', fontWeight: 'semi-bold', mb: 1 }}>Headshot</Typography>
+    <Box sx={{ padding: { xs: 1, md: 4 } }}>
+      <Typography sx={{ fontSize: '20px', fontWeight: 'semi-bold', mb: 1, textAlign: { xs: 'center' } }}>Headshot</Typography>
   
-      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <Box sx={{ display: 'flex', alignItems: { xs: 'center' }, justifyContent: { xs: 'center' }, flexDirection: { xs: 'column', md: 'row' } }}>
         <Image
           src={Headshot.src}
           width={200}
           height={210}
           alt="headshot-example"
         />
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: { xs: 1, md:4 } }}>
           <Typography sx={{ fontSize: '16px', color: '#4B5563' }}>Primary Headshot</Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
             <FontAwesomeIcon icon={faPenToSquare} style={{ color: '#977342', fontSize: '24px' }} />&nbsp;&nbsp;<Typography variant="body1">Edit</Typography>

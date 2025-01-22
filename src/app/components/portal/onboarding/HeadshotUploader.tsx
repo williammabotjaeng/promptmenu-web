@@ -75,8 +75,8 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
                   color: '#977342', 
                   border: '2px solid #977342', 
                   '&:hover': { color: '#fff' },
-                  width: { xs: '100%', md: 'auto' }, // Full width on mobile
-                  marginBottom: { xs: 1, md: 0 } // Margin for mobile
+                  width: { xs: '100%', md: 'auto' }, 
+                  marginBottom: { xs: 1, md: 0 } 
                 }}
                 onClick={handleBack} 
               >
