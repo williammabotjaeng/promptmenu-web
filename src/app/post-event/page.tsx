@@ -45,7 +45,7 @@ const PostEvent: React.FC = () => {
     };
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', overflow: 'hidden' }}>
             {/* Render input fields based on the active step */}
             {activeStep === 0 && (
                 <EventDetails activeStep={activeStep} setActiveStep={setActiveStep} />

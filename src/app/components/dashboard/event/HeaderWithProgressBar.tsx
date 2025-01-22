@@ -27,12 +27,12 @@ const HeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progressV
     <Box sx={{ marginBottom: 4, mt: 4, width: '60%', position: 'relative' }}>
       <BorderLinearProgress variant="determinate" value={progressValue} sx={{ marginTop: 1 }} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1 }}>
-        <Typography variant="body2" sx={{ color: '#977342' }}>Event Details</Typography>
-        <Typography variant="body2" sx={{ color: '#977342', textAlign: 'right' }}>Media Upload</Typography>
-        <Typography variant="body2" sx={{ color: '#977342', textAlign: 'right' }}>Review & Create</Typography>
+        <Typography variant="body2" sx={{ color: '#977342', textAlign: { xs: 'center'} }}>Event Details</Typography>
+        <Typography variant="body2" sx={{ color: '#977342', textAlign: {xs: 'center', md: 'right'} }}>Media Upload</Typography>
+        <Typography variant="body2" sx={{ color: '#977342', textAlign: {xs: 'center', md: 'right'} }}>Review & Create</Typography>
       </Box>
       <Link href="/dashboard">
-        <CloseIcon sx={{ color: '#977342', position: 'absolute', top: 0, right: -90, cursor: 'pointer' }} /> 
+        <CloseIcon sx={{ color: '#977342', position: 'absolute', top: 0, right: { xs: -50, md: -90 }, cursor: 'pointer' }} /> 
       </Link>
     </Box>
   );

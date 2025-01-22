@@ -23,7 +23,8 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
         alignItems: 'center',
         height: '100%',
         backgroundColor: '#fff',
-        paddingBottom: '40px'
+        paddingBottom: '40px',
+        width: '100%'
       }}
     >
       {/* Header with Step Navigation */}
