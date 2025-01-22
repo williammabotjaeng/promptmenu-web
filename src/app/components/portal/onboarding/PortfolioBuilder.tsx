@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import { Box, Typography, Container, Paper, Button } from '@mui/material';
-import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { PortfolioUploadSection } from '@/components/portal/onboarding/PortfolioUploadSection';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
@@ -43,7 +42,7 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
 
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '16px' }}>
           <Paper elevation={3} sx={{ padding: 4, backgroundColor: 'transparent', width: '100%', maxWidth: '768px' }}>
-            <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2, fontWeight: 'bold' }}>
+            <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2, fontWeight: 'bold', textAlign: 'center' }}>
               Portfolio
             </Typography>
 
@@ -68,9 +67,9 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
         </Box>
 
         {/* Navigation Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4, width: '66%', ml: 24 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginTop: 4, width: { xs: '100%', md: '66%' }, marginLeft: { xs: 0, md: 24 } }}>
           <Button 
-            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 } }} 
             onClick={handleBack}
           >
             Back

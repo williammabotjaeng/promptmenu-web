@@ -18,7 +18,7 @@ const PhotoGrid: React.FC = () => {
     <Box 
       sx={{ 
         display: 'grid', 
-        gridTemplateColumns: 'repeat(3, 1fr)', 
+        gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }, 
         gap: 1, 
         border: '1px dotted #977342', 
         padding: 1,
