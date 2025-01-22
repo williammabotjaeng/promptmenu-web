@@ -22,11 +22,11 @@ const EventDeadline: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep
                 flexDirection: 'column',
                 backgroundColor: 'white',
                 justifyContent: 'center',
-                padding: { xs: 2, md: 4 }, // Responsive padding
+                padding: { xs: 2, md: 4 }, 
                 pb: { xs: 3, md: 4 },
-                width: '100%', // Full width
-                maxWidth: '800px', // Max width for larger screens
-                margin: '0 auto', // Center the box
+                width: '100%', 
+                maxWidth: '800px', 
+                margin: '0 auto',
             }}
         >
             <DeadlineHeaderWithProgressBar progressValue={85} indexValue={2 * 2} />

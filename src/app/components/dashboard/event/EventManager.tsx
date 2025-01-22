@@ -24,9 +24,11 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                 flexDirection: 'column',
                 backgroundColor: 'white',
                 justifyContent: 'center',
-                paddingLeft: 12,
-                paddingRight: 1,
+                padding: { xs: 2, md: 4 }, // Responsive padding
                 pb: { xs: 3, md: 4 },
+                width: '100%', // Full width
+                maxWidth: '800px', // Max width for larger screens
+                margin: '0 auto', // Center the box
             }}
         >
             <OverviewHeaderWithProgressBar progressValue={100} />
@@ -40,7 +42,6 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     pt: 2,
                     pb: 5,
                     mt: 4,
-                    mr: 32,
                     backgroundColor: 'white',
                 }}
             >
@@ -51,7 +52,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                         mr: 2, 
                         color: '#977342',
                         border: '1px solid #977342',
-                        width: '160px', 
+                        width: { xs: '120px', md: '160px' }, // Responsive width
                         backgroundColor: 'white',
                         '&:hover': {
                             color: '#CEAB76',
@@ -68,7 +69,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     variant="contained"
                     sx={{
                         backgroundColor: '#977342',
-                        width: '160px', 
+                        width: { xs: '120px', md: '160px' }, 
+                        color: 'white',
                         '&:hover': {
                             backgroundColor: '#CEAB76'
                         }
