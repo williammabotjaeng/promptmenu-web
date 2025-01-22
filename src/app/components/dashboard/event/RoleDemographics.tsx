@@ -1,7 +1,6 @@
 import * as React from "react";
-import SectionTabs from './SectionTabs';
 import RoleRequirement from './RoleRequirement';
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import RoleHeaderWithProgressBar from "@/components/dashboard/event/RoleHeaderWithProgressBar";
 import DemographicsForm from "@/components/dashboard/event/DemographicsForm";
@@ -23,34 +22,33 @@ const RoleDemographics: React.FC<PostEventStepProps> = ({ activeStep, setActiveS
                 flexDirection: 'column',
                 backgroundColor: 'white',
                 justifyContent: 'center',
-                paddingLeft: 12,
-                paddingRight: 1,
+                padding: { xs: 2, md: 4 }, // Responsive padding
                 pb: { xs: 3, md: 4 },
             }}
         >
-            <RoleHeaderWithProgressBar progressValue={42} />
+            <RoleHeaderWithProgressBar progressValue={42} indexValue={2} />
             <DemographicsForm />
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: { xs: 'column', md: 'row' }, 
                     justifyContent: 'flex-end',
                     px: { xs: 2, md: 3 },
                     pt: 2,
                     pb: 5,
                     mt: 4,
-                    mr: 28,
-                    backgroundColor: 'white',
+                    mr: { md: 27 }
                 }}
             >
                 <Button
                     onClick={handleBack}
                     variant="outlined" 
                     sx={{
-                        mr: 2, 
+                        mb: { xs: 2, md: 0 }, 
+                        mr: { xs: 0, md: 2 }, 
                         color: '#977342',
                         border: '1px solid #977342',
-                        width: '120px', 
+                        width: { md: '120px', xs: '100%' }, 
                         backgroundColor: 'white',
                         '&:hover': {
                             color: '#CEAB76',
@@ -67,7 +65,8 @@ const RoleDemographics: React.FC<PostEventStepProps> = ({ activeStep, setActiveS
                     variant="contained"
                     sx={{
                         backgroundColor: '#977342',
-                        width: '120px', 
+                        width: { md: '120px', xs: '100%' }, 
+                        color: 'white',
                         '&:hover': {
                             backgroundColor: '#CEAB76'
                         }

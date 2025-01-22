@@ -11,14 +11,14 @@ const DemographicsForm = () => {
         display: 'flex',
         flexDirection: 'column',
         alignSelf: 'center',
-        padding: 4,
+        padding: { xs: 2, md: 4 },
         marginTop: 3,
-        marginLeft: 4,
+        marginLeft: { xs: 0, md: 4 },
         maxWidth: '100%',
         bgcolor: 'white',
         borderRadius: '16px',
         boxShadow: '0px 4px 6px rgba(0,0,0,0.1)',
-        width: '768px',
+        width: { xs: '100%', md: '768px' }, 
       }}
     >
       <Typography 
@@ -47,7 +47,7 @@ const DemographicsForm = () => {
             flexWrap: 'wrap', 
             gap: 2, 
             marginTop: 2, 
-            fontSize: '0.875rem', // text-sm equivalent
+            fontSize: { xs: '0.75rem', md: '0.875rem' }, 
             fontWeight: 'medium',
           }}
         >
