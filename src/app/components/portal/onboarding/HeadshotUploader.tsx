@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { Box, Typography, Paper, Button } from '@mui/material';
-import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { FileUpload } from '@/components/portal/onboarding/FileUpload';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
-import CloseIcon from '@mui/icons-material/Close';
-import Image from 'next/image';
-import SSHGoldLogo from '@/assets/GoldLogo.png';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 
@@ -34,9 +30,9 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
   
   const handleBack = () => {
     if (activeStep > 0) {
-      setActiveStep(activeStep + 1); 
+      setActiveStep(activeStep - 1); 
     } else {
-      router.push('/portal')
+      router.push('/portal');
     }
   };
 
@@ -45,25 +41,25 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', height: '100vh' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />
 
         {/* Upload Form Section */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: { xs: 2, md: 4 } }}>
           <Paper
             elevation={3}
             sx={{
               backgroundColor: '#111111',
-              padding: 4,
+              padding: { xs: 3, md: 4 },
               borderRadius: '8px',
               width: '100%',
               maxWidth: '800px',
               textAlign: 'center',
             }}
           >
-            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left', marginLeft: 5, marginBottom: '-18px' }}>
+            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left', marginBottom: 2 }}>
               Upload Your Headshot
             </Typography>
 
@@ -73,19 +69,25 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
               maxSize="5MB"
               onFileSelect={handleFileSelect}
             />
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1, marginLeft: 5, width: '90%' }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: 2, width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
               <Button 
                 sx={{ 
                   color: '#977342', 
                   border: '2px solid #977342', 
-                  '&:hover': { color: '#fff' } 
+                  '&:hover': { color: '#fff' },
+                  width: { xs: '100%', md: 'auto' }, // Full width on mobile
+                  marginBottom: { xs: 1, md: 0 } // Margin for mobile
                 }}
                 onClick={handleBack} 
               >
                 Back
               </Button>
               <Button 
-                sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+                sx={{ 
+                  color: '#000', 
+                  backgroundColor: '#CEAB76', 
+                  width: { xs: '100%', md: 'auto' } // Full width on mobile
+                }} 
                 onClick={handleContinue} 
               >
                 Continue
