@@ -139,7 +139,7 @@ const GreyFooter = () => {
                 variant="h6" 
                 sx={{ 
                   fontWeight: 'bold', 
-                  color: 'white', 
+                  color: 'black', 
                   fontSize: '16px' 
                 }}
               >
