@@ -44,7 +44,8 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                 alignItems: 'center',
                 height: '100%',
                 backgroundColor: '#fff',
-                paddingBottom: '40px'
+                paddingBottom: '40px',
+                paddingX: { xs: 2, sm: 4 }, // Responsive horizontal padding
             }}
         >
             {/* Header with Step Navigation */}
@@ -55,7 +56,8 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                     flexDirection: 'column',
                     backgroundColor: 'white',
                     borderRadius: 2,
-                    marginRight: 18
+                    width: { xs: '100%', sm: '80%', md: '60%' }, // Responsive width
+                    margin: '0 auto', // Center the box
                 }}
             >
                 <Box sx={{ padding: 3, position: 'relative' }}>
@@ -63,34 +65,20 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                         variant="h4"
                         sx={{
                             color: '#CEAB76',
-                            marginBottom: 2
+                            marginBottom: 2,
+                            textAlign: 'center', // Center the title
                         }}
                     >
                         Upload Media
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Box sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            borderRadius: '50%',
-                            padding: 1
-                        }}>
-                            <Box sx={{ marginTop: 4 }}>
-                                <Box sx={{ width: '79%' }}>
-                                    <EventUploadSection {...uploadSections[0]} />
-                                </Box>
-                                <Box sx={{ display: 'flex', gap: 20, marginTop: 2 }}>
-                                    <Box sx={{ flex: 1 }}>
-                                        <EventUploadSection {...uploadSections[1]} />
-                                    </Box>
-                                    <Box sx={{ flex: 1 }}>
-                                        <EventUploadSection {...uploadSections[2]} />
-                                    </Box>
-                                </Box>
-                            </Box>
+                        <EventUploadSection {...uploadSections[0]} />
+                        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+                            <EventUploadSection {...uploadSections[1]} />
+                            <EventUploadSection {...uploadSections[2]} />
                         </Box>
                     </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2, marginRight: '-132px' }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
                         <Button
                             variant="outlined"
                             sx={{

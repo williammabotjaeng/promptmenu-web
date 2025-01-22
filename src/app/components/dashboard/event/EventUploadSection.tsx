@@ -13,10 +13,11 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
       sx={{ 
         display: 'flex', 
         flexDirection: 'column', 
-        padding: 3, 
+        padding: { xs: 2, sm: 3 }, 
         borderRadius: 2, 
         backgroundColor: 'rgba(151, 115, 66, 0.1)', 
-        width: '150%',
+        width: { xs: '100%', sm: '80%', md: '60%' }, 
+        margin: '0 auto', 
       }}
     >
       <Typography 
@@ -24,6 +25,7 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
         sx={{ 
           paddingBottom: 1, 
           color: '#977342', 
+          textAlign: 'center', 
         }}
       >
         {title}
@@ -40,6 +42,7 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
           borderColor: 'rgba(151, 115, 66, 0.5)', 
           borderRadius: 2,
           backgroundColor: 'transparent',
+          width: '100%', 
         }}
       >
         <Box 
@@ -47,8 +50,8 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
             display: 'flex', 
             flexDirection: 'column', 
             alignItems: 'center', 
-            width: '150%', 
-            maxWidth: '173px' 
+            width: '100%', 
+            maxWidth: '173px', 
           }}
         >
           <Box 
@@ -76,6 +79,7 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
             sx={{ 
               textAlign: 'center', 
               color: '#CEAB76',
+              marginTop: 1, 
             }}
           >
             {description}
@@ -89,6 +93,7 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
               '&:hover': {
                 backgroundColor: '#CEAB76', 
               },
+              width: '100%', 
             }}
           >
             {buttonText}
