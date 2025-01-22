@@ -29,7 +29,7 @@ export const RegisterForm: React.FC = () => {
         {/* Left Column */}
         <Grid item xs={12} md={6}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <Box sx={{ display: 'flex', alignItems: 'flex-start', position: 'relative', mb: 2 }}>
+          <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
             <Image
               src={SSHGoldLogo.src}
               alt="Staffing Solutions Logo"
@@ -79,7 +79,7 @@ export const RegisterForm: React.FC = () => {
     </Typography>
     <form>
       <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
-        <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
           <TextField
             label="First Name"
             id="firstName"
@@ -254,9 +254,9 @@ export const RegisterForm: React.FC = () => {
           }}
         />
         <FormControlLabel
-          control={<Checkbox id="terms" />}
+          control={<Checkbox sx={{ color: '#977342' }} id="terms" />}
           label="I agree to the Terms of Service and Privacy Policy"
-          sx={{ color: 'gray.400' }}
+          sx={{ fontSize: { xs: '10px' } }}
         />
       </Box>
       <Button variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
