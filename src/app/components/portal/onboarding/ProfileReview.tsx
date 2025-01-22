@@ -172,7 +172,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           position: 'relative',
           marginBottom: 2
         }}>
-          <PlayCircleOutlineIcon sx={{ color: '#977342', fontSize: '50px', position: 'absolute' }} />
+          <PlayCircleOutlineIcon sx={{ color: '#977342', fontSize: { xs: '150px', md: '50px' }, position: 'absolute' }} />
         </Box>
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
