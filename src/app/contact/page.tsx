@@ -43,7 +43,6 @@ const Contact: React.FC = () => {
         borderRadius: 2,
         border: '2px solid #D1D5DB',
         overflow: 'hidden',
-        padding: 2,
       }}
     >
       <WhiteHeader />
