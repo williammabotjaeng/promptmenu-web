@@ -33,7 +33,7 @@ const RoleHeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progr
   };
 
   return (
-    <Box sx={{ marginBottom: 4, mt: 4, width: '100%', position: 'relative' }}>
+    <Box sx={{ marginBottom: 4, mt: 4, width: { xs: '100%', md: '95%' }, position: 'relative' }}>
       {!isLargeScreen && ( 
         <IconButton onClick={toggleDrawer(true)} sx={{ position: 'absolute', top: 0, left: 0 }}>
           <MenuIcon sx={{ color: '#977342' }} />
@@ -60,7 +60,7 @@ const RoleHeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progr
         </>
       )}
       <Link href="/dashboard">
-        <CloseIcon sx={{ color: '#977342', position: 'absolute', top: { xs: 10, md: 0 }, right: 0, cursor: 'pointer' }} /> 
+        <CloseIcon sx={{ color: '#977342', position: 'absolute', top: { xs: 10, md: 0 }, right: { xs: 10, md: -60 }, cursor: 'pointer' }} /> 
       </Link>
 
       {/* Drawer for Progress Bar (only on small screens) */}

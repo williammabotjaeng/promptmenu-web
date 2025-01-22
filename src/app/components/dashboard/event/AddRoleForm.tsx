@@ -18,32 +18,32 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 flexDirection: 'column',
                 backgroundColor: 'white',
                 justifyContent: 'center',
-                paddingLeft: { xs: 2, md: 12 },
-                paddingRight: 1,
-                pb: { xs: 3, md: 4 },
+                padding: { xs: 2, md: 4 }, 
+                pb: 4,
                 width: '100%'
             }}
         >
             <RoleHeaderWithProgressBar progressValue={14} indexValue={0} />
             <Typography
-                    variant="h4"
-                    sx={{
-                        alignSelf: 'flex-start',
-                        mt: 2,
-                        fontWeight: 'bold',
-                        color: '#977342'
-                    }}
-                >
-                    Add a Role
-                </Typography>
+                variant="h4"
+                sx={{
+                    alignSelf: 'flex-start',
+                    mt: 2,
+                    fontWeight: 'bold',
+                    color: '#977342',
+                    fontSize: '24px' // Consistent font size across all screens
+                }}
+            >
+                Add a Role
+            </Typography>
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    px: { xs: 1, md: 1 },
+                    px: 2, // Consistent padding for all screen sizes
                     pt: 2,
                     pb: 5,
-                    ml: 20,
+                    mx: 'auto', // Center the box
                     backgroundColor: 'white',
                     maxWidth: '90%',
                 }}
@@ -57,7 +57,8 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                         px: 4,
                         py: 2,
                         mt: 2,
-                        mr: { xs: 1, md: 38 },
+                        mr: 2, // Consistent margin for all screen sizes
+                        color: 'white',
                         backgroundColor: '#977342',
                         '&:hover': {
                             backgroundColor: '#CEAB76'

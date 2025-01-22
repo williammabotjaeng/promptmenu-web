@@ -7,7 +7,7 @@ const RoleRequirement: React.FC = () => (
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'center', 
-      p: 4, 
+      p: { xs: 2, md: 4 }, // Responsive padding
       mt: 3, 
       maxWidth: '768px', 
       backgroundColor: 'white', 
@@ -22,7 +22,8 @@ const RoleRequirement: React.FC = () => (
       sx={{ 
         pb: 2, 
         fontWeight: 'bold', 
-        color: '#977342' 
+        color: '#977342',
+        fontSize: { xs: '1.5rem', md: '2rem' } // Responsive font size
       }}
     >
       Role Requirements
@@ -62,8 +63,8 @@ const RoleRequirement: React.FC = () => (
             src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/3a544052ff3a223b44b5b722cc0cceac6f027791bf450cb52f3df85844734282?apiKey=7fae980a988640eea8add1e49a5d542e&"
             alt="Role Skill Icon"
             sx={{ 
-              width: '32px', 
-              height: '32px', 
+              width: { xs: '24px', md: '32px' }, // Responsive image size
+              height: { xs: '24px', md: '32px' }, 
               objectFit: 'contain' 
             }}
           />
