@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Box, Typography, Paper, Button } from '@mui/material';
-import { StepItem } from './StepItem';
 import { AttributeInput } from './AttributeInput';
 import { DropdownAttribute } from './DropdownAttribute';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
@@ -34,23 +33,23 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', backgroundOpacity: 0 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', flexGrow: 1 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />
 
         {/* Physical Attributes Section */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: { xs: 2, md: 4 }, paddingTop: 4 }}>
           <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '100%', maxWidth: '768px' }}>
-            <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 2 }}>
+            <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 2, textAlign: 'center' }}>
               Physical Attributes
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 1, width: '100%' }}>
-              <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 4 }}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, flexWrap: 'wrap', gap: 2 }}>
                 <AttributeInput label="Height" placeholder="cm" />
                 <AttributeInput label="Weight" placeholder="kg" />
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 4, color: '#977342' }}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, flexWrap: 'wrap', gap: 2, marginTop: 4, color: '#977342' }}>
                 <DropdownAttribute label="Eye Color" value="Brown" />
                 <DropdownAttribute label="Hair Color" value="Black" />
               </Box>
@@ -59,9 +58,9 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
         </Box>
 
         {/* Navigation Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4, width: '60%', marginLeft: 34 }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginTop: 4, width: { xs: '100%', md: '60%' } }}>
           <Button 
-            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 } }} 
             onClick={handleBack}
           >
             Back
