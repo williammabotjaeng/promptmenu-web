@@ -70,131 +70,135 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
   };
 
   return (
-    <Paper elevation={3} sx={{ padding: 3, borderRadius: '8px', backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', color: '#CEAB76' }}>
-      {/* Header Section */}
-      <OnboardingHeader steps={steps} onClose={onClose} />
-      <Typography sx={{ fontSize: '30px', color: '#977342', fontWeight: 'bold', textAlign: 'center', width: '100%' }}>
-        Review Your Profile
-      </Typography>
-
-      <Box sx={{ padding: 4 }}>
-        <Typography sx={{ fontSize: '20px', fontWeight: 'semi-bold', mb: 1 }}>Headshot</Typography>
-
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <Image
-            src={Headshot.src}
-            width={200}
-            height={210}
-            alt="headshot-example"
-          />
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 4 }}>
-            <Typography sx={{ fontSize: '16px', color: '#4B5563' }}>Primary Headshot</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
-              <FontAwesomeIcon icon={faPenToSquare} style={{ color: '#977342', fontSize: '24px' }} />&nbsp;&nbsp;<Typography variant="body1">Edit</Typography>
-            </Box>
+    <Box sx={{ 
+      backgroundColor: 'black', 
+      justifyContent: 'center', 
+      overflow: 'hidden', 
+      alignItems: 'center', 
+      color: '#CEAB76', 
+      width: '100%', 
+      paddingX: { xs: 2, md: 4 }, 
+      boxSizing: 'border-box' 
+    }}>
+    {/* Header Section */}
+    <OnboardingHeader steps={steps} onClose={onClose} />
+    <Typography sx={{ fontSize: '30px', color: '#977342', fontWeight: 'bold', textAlign: 'center', width: '100%' }}>
+      Review Your Profile
+    </Typography>
+  
+    <Box sx={{ padding: 4 }}>
+      <Typography sx={{ fontSize: '20px', fontWeight: 'semi-bold', mb: 1 }}>Headshot</Typography>
+  
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Image
+          src={Headshot.src}
+          width={200}
+          height={210}
+          alt="headshot-example"
+        />
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 4 }}>
+          <Typography sx={{ fontSize: '16px', color: '#4B5563' }}>Primary Headshot</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
+            <FontAwesomeIcon icon={faPenToSquare} style={{ color: '#977342', fontSize: '24px' }} />&nbsp;&nbsp;<Typography variant="body1">Edit</Typography>
           </Box>
         </Box>
       </Box>
-
-      <Box sx={{ padding: 4 }}>
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
-          Skills
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
-          {skills.map((skill) => (
-            <SkillBadge key={skill} name={skill} />
-          ))}
-        </Box>
-
-        {/* Payment Details Section */}
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', color: '#977342', fontWeight: 'semi-bold' }}>
-          Payment Details
-        </Typography>
-        <Box sx={{ bgcolor: 'white', padding: 2, borderRadius: '4px', marginBottom: 2 }}>
-          <Typography sx={{ color: '#6B7280' }}>Credit Card: **** **** **** 1234</Typography>
-          <Typography sx={{ color: '#6B7280' }}>Expires: 12/25</Typography>
-        </Box>
-
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
-          Attributes
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2 }}>
-          {attributes.map((attr) => (
-            <AttributeCard key={attr.label} label={attr.label} value={attr.value} />
-          ))}
-        </Box>
-
-        {/* ID Document Section */}
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
-          ID Document
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-          {idDocs.map((doc) => (
-            <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
-          ))}
-        </Box>
-
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
-          Social Media Links
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-          {socialLinks.map((link, index) => (
-            <SocialMediaLink key={index} icon={link.icon} username={link.username} />
-          ))}
-        </Box>
-
-        {/* Photos Section */}
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
-          Photos
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
-          <Image src={RevImageOne.src} width={250} height={250} alt="Photo 1" />
-          <Image src={RevImageTwo.src} width={250} height={250} alt="Photo 2" />
-          <Image src={RevImageThree.src} width={250} height={250} alt="Photo 3" />
-        </Box>
-
-        {/* Video Showreel Section */}
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
-          Video Showreel
-        </Typography>
-        <Box sx={{ 
-          bgcolor: 'white', 
-          borderRadius: '4px', 
-          height: '400px', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          position: 'relative',
-          marginBottom: 2
-        }}>
-          <PlayCircleOutlineIcon sx={{ color: '#977342', fontSize: '50px', position: 'absolute' }} />
-        </Box>
-        {/* ID Document Section */}
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
-          Documents
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-          {documents.map((doc) => (
-            <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
-          ))}
-        </Box>
+    </Box>
+  
+    <Box sx={{ padding: 4 }}>
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        Skills
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
+        {skills.map((skill) => (
+          <SkillBadge key={skill} name={skill} />
+        ))}
       </Box>
-
-      {/* Navigation Buttons */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, width: '95%', ml: 4 }}>
-        <Button
-          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }}
-          onClick={handleBack}
-        >
-          Back
-        </Button>
-        <Button
-          sx={{ color: '#fff', backgroundColor: '#977342' }}
-          onClick={handleContinue}
-        >
-          Submit for Review
-        </Button>
+  
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', color: '#977342', fontWeight: 'semi-bold' }}>
+        Payment Details
+      </Typography>
+      <Box sx={{ bgcolor: 'white', padding: 2, borderRadius: '4px', marginBottom: 2 }}>
+        <Typography sx={{ color: '#6B7280' }}>Credit Card: **** **** **** 1234</Typography>
+        <Typography sx={{ color: '#6B7280' }}>Expires: 12/25</Typography>
       </Box>
-    </Paper>
+  
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        Attributes
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2 }}>
+        {attributes.map((attr) => (
+          <AttributeCard key={attr.label} label={attr.label} value={attr.value} />
+        ))}
+      </Box>
+  
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        ID Document
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+        {idDocs.map((doc) => (
+          <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
+        ))}
+      </Box>
+  
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        Social Media Links
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+        {socialLinks.map((link, index) => (
+          <SocialMediaLink key={index} icon={link.icon} username={link.username} />
+        ))}
+      </Box>
+  
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        Photos
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
+        <Image src={RevImageOne.src} width={250} height={250} alt="Photo 1" />
+        <Image src={RevImageTwo.src} width={250} height={250} alt="Photo 2" />
+        <Image src={RevImageThree.src} width={250} height={250} alt="Photo 3" />
+      </Box>
+  
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        Video Showreel
+      </Typography>
+      <Box sx={{
+        bgcolor: 'white',
+        borderRadius: '4px',
+        height: '400px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        marginBottom: 2
+      }}>
+        <PlayCircleOutlineIcon sx={{ color: '#977342', fontSize: '50px', position: 'absolute' }} />
+      </Box>
+  
+      <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        Documents
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+        {documents.map((doc) => (
+          <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
+        ))}
+      </Box>
+    </Box>
+  
+    <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, width: '95%', ml: 4 }}>
+      <Button
+        sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }}
+        onClick={handleBack}
+      >
+        Back
+      </Button>
+      <Button
+        sx={{ color: '#fff', backgroundColor: '#977342' }}
+        onClick={handleContinue}
+      >
+        Submit for Review
+      </Button>
+    </Box>
+  </Box>
   );
 };
