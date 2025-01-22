@@ -185,15 +185,15 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
       </Box>
     </Box>
   
-    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: { xs: 2, md: 4 }, width: '95%', ml: { md: 4} }}>
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: { md: 4 }, width: '95%', ml: { md: 4} }}>
     <Button
-        sx={{ color: '#977342', border: '1px solid #977342', backgroundColor: '#000', mt: { xs: 2 }, mb: { xs: 2 }, '&:hover': { color: 'white' } }}
+        sx={{ color: '#977342', border: '1px solid #977342', backgroundColor: '#000', mt: { xs: 2 }, '&:hover': { color: 'white' } }}
         onClick={handleContinue}
       >
         Go Back
       </Button>
       <Button
-        sx={{ color: '#fff', backgroundColor: '#977342', mt: { xs: 2 }, mb: { xs: 2 } }}
+        sx={{ color: '#fff', backgroundColor: '#977342', mt: { xs: 1 }, mb: { xs: 2 } }}
         onClick={handleContinue}
       >
         Submit for Review
