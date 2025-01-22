@@ -36,12 +36,12 @@ const Header = () => {
           style={{ width: '43px', marginRight: '16px' }}
         />
         <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#000' }}>SSH</Typography>
-        
+
         <IconButton
           edge="start"
           color="secondary"
           aria-label="menu"
-          sx={{ display: { xs: 'block', md: 'none' } }} 
+          sx={{ display: { xs: 'block', md: 'none' } }}
           onClick={toggleDrawer(true)}
         >
           <MenuIcon />
@@ -52,20 +52,31 @@ const Header = () => {
           {menuItems}
         </Drawer>
 
-        <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1 }}>
+        {/* Flex container for menu items and right-side image */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
           <nav>
             {['Dashboard', 'Events', 'Jobs', 'Talents', 'Messages'].map((text) => (
               <Button
                 key={text}
                 sx={{
                   color: 'gray',
-                  '&:hover': { color: 'white' }
+                  '&:hover': { color: 'white' },
+                  marginLeft: '16px' // Add spacing between buttons
                 }}
               >
                 {text}
               </Button>
             ))}
           </nav>
+          {/* Right-side Image */}
+          <Box sx={{ alignItems: 'center', marginLeft: '16px' }}>
+            <img
+              loading="lazy"
+              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
+              alt=""
+              style={{ width: '89px' }}
+            />
+          </Box>
         </Box>
       </Toolbar>
     </AppBar>
