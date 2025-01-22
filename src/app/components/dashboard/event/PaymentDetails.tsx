@@ -23,7 +23,7 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
             backgroundColor: 'white',
             justifyContent: 'center',
             padding: { xs: 2, md: 4 }, 
-            pb: { xs: 3, md: 4 },
+            pb: { xs: 10, md: 4 },
         }}>
             <RoleHeaderWithProgressBar progressValue={72} indexValue={3} />
 

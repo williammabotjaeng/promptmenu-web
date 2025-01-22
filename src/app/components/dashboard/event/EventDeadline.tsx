@@ -23,7 +23,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep
                 backgroundColor: 'white',
                 justifyContent: 'center',
                 padding: { xs: 2, md: 4 }, 
-                pb: { xs: 3, md: 4 },
+                pb: { xs: 9, md: 4 },
                 width: '100%', 
                 maxWidth: '800px', 
                 margin: '0 auto',

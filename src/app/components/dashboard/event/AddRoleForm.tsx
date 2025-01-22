@@ -19,7 +19,7 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 backgroundColor: 'white',
                 justifyContent: 'center',
                 padding: { xs: 2, md: 4 }, 
-                pb: 4,
+                pb: {xs: 0, md: 4},
                 width: '100%', 
                 height: '100%'
             }}
@@ -43,7 +43,7 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                     flexDirection: 'column',
                     px: 2, // Consistent padding for all screen sizes
                     pt: 2,
-                    pb: 5,
+                    pb: { xs: 24, md: 5 },
                     mx: 'auto', // Center the box
                     backgroundColor: 'white',
                     maxWidth: '90%',
@@ -56,9 +56,9 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                     sx={{
                         alignSelf: 'flex-end',
                         px: 4,
-                        py: 2,
-                        mt: 2,
-                        mr: 2, // Consistent margin for all screen sizes
+                        py: { xs: 0, md: 2 },
+                        mt: {xs: 6, md:2 },
+                        mr: 2, 
                         color: 'white',
                         backgroundColor: '#977342',
                         '&:hover': {
