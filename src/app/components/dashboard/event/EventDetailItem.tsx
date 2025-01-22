@@ -3,14 +3,15 @@ import { Box, Typography } from '@mui/material';
 import { EventDetailProps } from '@/types/Props/EventDetailProps';
 
 export const EventDetailItem: React.FC<EventDetailProps> = ({ label, value }) => (
-  <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2.5 }}>
+  <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2.5, width: '100%' }}>
     <Typography 
       variant="body1" 
       sx={{ 
         pt: 0.5, 
-        pb: 2.5, 
+        pb: 1,
         fontWeight: 'medium', 
-        color: 'black' 
+        color: 'black',
+        textAlign: { xs: 'center', sm: 'left' }, 
       }}
     >
       {label}
@@ -18,8 +19,9 @@ export const EventDetailItem: React.FC<EventDetailProps> = ({ label, value }) =>
     <Typography 
       variant="body2" 
       sx={{ 
-        mt: 2.5, 
-        color: '#977342' 
+        mt: 0.5, 
+        color: '#977342',
+        textAlign: { xs: 'center', sm: 'left' }, 
       }}
     >
       {value}
