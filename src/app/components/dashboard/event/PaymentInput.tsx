@@ -10,7 +10,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ label, id }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <Typography 
-        sx={{ paddingY: 1, bgcolor: 'transparent', fontWeight: 'bold' }}
+        sx={{ paddingY: 1, bgcolor: 'transparent', fontWeight: 'bold', fontSize: { xs: '0.875rem', md: '1rem' } }} // Responsive font size
       >
         {label} (AED)
       </Typography>
@@ -23,6 +23,7 @@ export const PaymentInput: React.FC<PaymentInputProps> = ({ label, id }) => {
           bgcolor: 'white',
           borderRadius: '8px',
           height: '50px',
+          width: { xs: '100%', md: 'auto' }, 
           '& .MuiOutlinedInput-root': {
             border: '1px solid',
             borderColor: 'grey.300',

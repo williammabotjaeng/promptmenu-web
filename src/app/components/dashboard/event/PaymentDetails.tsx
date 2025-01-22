@@ -22,13 +22,24 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
             flexDirection: 'column',
             backgroundColor: 'white',
             justifyContent: 'center',
-            paddingLeft: 12,
-            paddingRight: 1,
+            padding: { xs: 2, md: 4 }, // Responsive padding
             pb: { xs: 3, md: 4 },
         }}>
-            <RoleHeaderWithProgressBar progressValue={72} />
+            <RoleHeaderWithProgressBar progressValue={72} indexValue={3} />
 
-            <form style={{ display: 'flex', flexDirection: 'column', alignSelf: 'center', padding: "15px", marginTop: '20px', marginLeft: '15px', backgroundColor: 'white', borderRadius: '16px', boxShadow: '0px 4px 6px rgba(0,0,0,0.1)', width: '60%', maxWidth: '100%' }}>
+            <form style={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                alignSelf: 'center', 
+                padding: "15px", 
+                marginTop: '20px', 
+                marginLeft: '15px', 
+                backgroundColor: 'white', 
+                borderRadius: '16px', 
+                boxShadow: '0px 4px 6px rgba(0,0,0,0.1)', 
+                width: '100%',
+                maxWidth: '100%' 
+            }}>
                 <Typography variant="h4" sx={{ pb: 2, color: '#977342' }}>
                     Payment Details
                 </Typography>
@@ -45,14 +56,22 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
                         </label>
                         <textarea
                             id="paymentTerms"
-                            style={{ marginTop: '8px', height: '128px', backgroundColor: 'white', borderRadius: '8px', border: '1px solid #D1D5DB' }}
+                            style={{ 
+                                marginTop: '8px', 
+                                height: '128px', 
+                                backgroundColor: 'white', 
+                                borderRadius: '8px', 
+                                border: '1px solid #D1D5DB', 
+                                width: '100%', 
+                                resize: 'none' 
+                            }}
                             aria-label="Enter payment terms"
                         />
                     </Box>
                 </Box>
             </form>
 
-            <Box sx={{ display: 'flex', gap: 2, alignSelf: 'flex-end', mt: 4, mr: 32, textAlign: 'center' }}>
+            <Box sx={{ display: 'flex', gap: 2, alignSelf: 'flex-end', mt: 4, mr: { xs: 0, md: 0 }, textAlign: 'center' }}>
                 <Button onClick={handleBack} sx={{ color: '#977342', border: '2px solid #977342'}}>Go Back</Button>
                 <Button onClick={handleContinue} sx={{ color: 'white', backgroundColor: '#977342' }}>Next Step</Button>
             </Box>
