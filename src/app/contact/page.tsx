@@ -40,8 +40,6 @@ const Contact: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#f9f9f9', 
-        borderRadius: 2,
-        border: '2px solid #D1D5DB',
         overflow: 'hidden',
       }}
     >

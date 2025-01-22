@@ -11,9 +11,7 @@ const About: React.FC = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: '#f9f9f9', 
-        borderRadius: 2,
-        border: '2px solid #D1D5DB',
+        backgroundColor: '#f9f9f9',
         overflow: 'hidden',
       }}
     >
