@@ -21,7 +21,7 @@
 body {
   margin: 0;
   font-family: "Inter", "Raleway", Arial, sans-serif !important;
-  background-color: 'white'; 
+  background-color: var(--primary-bg); 
   color: var(--primary-text); 
 }
 
