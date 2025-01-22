@@ -71,7 +71,7 @@ const MainContent: React.FC = () => {
 
 const Jobs: React.FC = () => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'white', borderRadius: 2, border: '2px solid #D1D5DB', overflow: 'hidden' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'white', overflow: 'hidden' }}>
       <SecondaryHeader />
       <MainContent />
       <PrimaryFooter />
