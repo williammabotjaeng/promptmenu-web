@@ -13,7 +13,7 @@ function FilterForm() {
         paddingY: 1,
         marginTop: 3.5,
         width: '100%',
-        maxWidth: 'screen.xl',
+        maxWidth: '600px', 
       }}
     >
       <Box
@@ -28,13 +28,13 @@ function FilterForm() {
           boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
         }}
       >
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
-          <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <FormControl variant="outlined" fullWidth>
             <InputLabel id="skill-label" sx={{ textAlign: 'center' }}>Select Skill</InputLabel>
             <Select
               labelId="skill-label"
               label="Select Skill"
-              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              sx={{ padding: '1px 16px', borderRadius: 2 }}
             >
               <MenuItem value="">
                 <em>Select Skill</em>
@@ -42,12 +42,12 @@ function FilterForm() {
               {/* Add more menu items as needed */}
             </Select>
           </FormControl>
-          <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
+          <FormControl variant="outlined" fullWidth>
             <InputLabel id="location-label" sx={{ textAlign: 'center' }}>Location</InputLabel>
             <Select
               labelId="location-label"
               label="Location"
-              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              sx={{ padding: '1px 16px', borderRadius: 2 }}
             >
               <MenuItem value="">
                 <em>Location</em>
@@ -55,12 +55,12 @@ function FilterForm() {
               {/* Add more menu items as needed */}
             </Select>
           </FormControl>
-          <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
+          <FormControl variant="outlined" fullWidth>
             <InputLabel id="ethnicity-label" sx={{ textAlign: 'center' }}>Ethnicity</InputLabel>
             <Select
               labelId="ethnicity-label"
               label="Ethnicity"
-              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              sx={{ padding: '1px 16px', borderRadius: 2 }}
             >
               <MenuItem value="">
                 <em>Ethnicity</em>
@@ -68,12 +68,12 @@ function FilterForm() {
               {/* Add more menu items as needed */}
             </Select>
           </FormControl>
-          <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
+          <FormControl variant="outlined" fullWidth>
             <InputLabel id="gender-label" sx={{ textAlign: 'center' }}>Gender</InputLabel>
             <Select
               labelId="gender-label"
               label="Gender"
-              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              sx={{ padding: '1px 16px', borderRadius: 2 }}
             >
               <MenuItem value="">
                 <em>Gender</em>
@@ -81,12 +81,12 @@ function FilterForm() {
               {/* Add more menu items as needed */}
             </Select>
           </FormControl>
-          <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
+          <FormControl variant="outlined" fullWidth>
             <InputLabel id="experience-label" sx={{ textAlign: 'center' }}>Experience</InputLabel>
             <Select
               labelId="experience-label"
               label="Experience"
-              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+              sx={{ padding: '1px 16px', borderRadius: 2 }}
             >
               <MenuItem value="">
                 <em>Experience</em>
@@ -103,6 +103,7 @@ function FilterForm() {
               color: 'white',
               borderRadius: 2,
               alignSelf: 'flex-start',
+              marginTop: 2, 
             }}
           >
             Apply Filters
