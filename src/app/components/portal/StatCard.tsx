@@ -38,7 +38,7 @@ export const StatCard: React.FC<PortalStatCardProps> = ({ title, value, icon, su
   };
 
   return (
-    <Card sx={{ padding: 1, margin: '8px', width: '60%', borderRadius: '12px', boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)' }}>
+    <Card sx={{ padding: 1, margin: '8px', width: { xs: '100%', md: '23%' }, borderRadius: '12px', boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)' }}>
       <CardContent>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="body1" sx={{ color: 'gray.500', fontSize: '16px' }}>

@@ -98,12 +98,12 @@ const Portal: React.FC = () => {
           </Box>
         </Drawer>
 
-        <Box sx={{ width: '79%', padding: 2, position: 'sticky', left: '300px' }}>
+        <Box sx={{ width: { xs: '100%', md: '79%' }, padding: 2, position: 'sticky', left: '300px' }}>
           <Box sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
-                <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px'}, marginLeft: { xs: 4 } }}>Welcome, Sarah!</Typography>
-                <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px'}, marginLeft: { xs: 4 }  }}>Last login: March 15, 2025</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px', md: '24px' }, marginLeft: { xs: 4 } }}>Welcome, Sarah!</Typography>
+                <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px', md: '24px'}, marginLeft: { xs: 4 }  }}>Last login: March 15, 2025</Typography>
               </Grid>
               <Grid item xs={4}>
                 <img
