@@ -40,7 +40,7 @@ const Hero: React.FC = () => {
           position: 'absolute',
           left: '5%', 
           color: 'transparent', 
-          fontSize: '72px',
+          fontSize: { xs: '36px', sm: '48px', md: '60px', lg: '72px' }, // Responsive font size
           zIndex: 2,
           display: 'flex',
           flexDirection: 'column',
@@ -48,13 +48,13 @@ const Hero: React.FC = () => {
       >
         <Box sx={{ display: 'flex', flexDirection: 'row', opacity: 0.5 }}>
           <span style={{ color: '#977342', fontWeight: 'bold' }}>Discover</span>&nbsp;
-          <span style={{ color: '#fff', fontWeight: 'bold'  }}> Your </span>
+          <span style={{ color: '#fff', fontWeight: 'bold' }}> Your </span>
         </Box>
         <Box sx={{ display: 'flex', flexDirection: 'row', opacity: 0.5 }}>
-          <span style={{ color: '#977342', fontWeight: 'bold'  }}>Next</span>&nbsp;
-          <span style={{ color: '#fff', fontWeight: 'bold'  }}> Star</span>
+          <span style={{ color: '#977342', fontWeight: 'bold' }}>Next</span>&nbsp;
+          <span style={{ color: '#fff', fontWeight: 'bold' }}> Star</span>
         </Box>
-        <Typography  component={"span"} color="white" sx={{ display: 'block', fontSize: '24', opacity: .6 }}>Staffing Your Success, One Event at a Time.</Typography>
+        <Typography component={"span"} color="white" sx={{ display: 'block', fontSize: { xs: '16px', sm: '20px', md: '24px' }, opacity: .6 }}>Staffing Your Success, One Event at a Time.</Typography>
         
         {/* Buttons */}
         <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: '20px' }}>
