@@ -11,23 +11,33 @@ export const JobCard: React.FC<JobCardProps> = ({
   deadline
 }) => {
   return (
-    <Card sx={{ display: 'flex', flexDirection: 'column', width: '100%', boxShadow: 1 }}>
-      <CardMedia
-        component="img"
-        image={imageUrl}
-        alt={`${title} job opportunity`}
-        sx={{ height: 140, objectFit: 'cover' }}
-      />
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
+    <Card sx={{ display: 'flex', flexDirection: 'column', width: '100%', boxShadow: 1, height: '100%' }}>
+      <Box sx={{ position: 'relative' }}>
+        <CardMedia
+          component="img"
+          image={imageUrl}
+          alt={`${title} job opportunity`}
+          sx={{ height: 140, objectFit: 'cover' }}
+        />
         {isUrgent && (
-          <Box sx={{ backgroundColor: '#977342', borderRadius: '16px', padding: '4px 12px', marginBottom: 2 }}>
+          <Box sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            backgroundColor: '#977342',
+            borderRadius: '16px',
+            padding: '4px 12px',
+            zIndex: 1
+          }}>
             <Typography variant="body2" color="white">Urgent</Typography>
           </Box>
         )}
-        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>
+      </Box>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
+        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', flexGrow: 1 }}>
           {title}
         </Typography>
-        <Typography variant="body2" sx={{ marginTop: 1, color: '#666' }}>
+        <Typography variant="body2" sx={{ marginTop: 1, color: '#666', flexGrow: 1 }}>
           {description}
         </Typography>
         <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
@@ -54,7 +64,7 @@ export const JobCard: React.FC<JobCardProps> = ({
         </Box>
         <Button 
           variant="contained" 
-          sx={{ marginTop: 2, backgroundColor: '#FF9800', color: 'white' }} 
+          sx={{ marginTop: 2, backgroundColor: '#977342', color: 'white' }} 
           aria-label={`Apply for ${title} position`}
         >
           Apply Now

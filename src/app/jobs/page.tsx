@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { SearchSection } from '@/components/SearchSection';
 import { JobCard } from '@/components/JobCard';
+import PrimaryFooter from '@/components/PrimaryFooter';
 
 const jobData = [
   {
@@ -42,19 +43,19 @@ const Header: React.FC = () => {
           style={{ width: '74px', height: 'auto', marginLeft: '16px' }}
         />
         <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-        <Button sx={{  textTransform: 'none', color: '#977342', fontSize: '16px' }}>Home</Button>
-        <Button sx={{  textTransform: 'none', color: '#977342', fontSize: '16px' }}>Messages</Button>
-        <Button sx={{  textTransform: 'none', color: '#977342', fontSize: '16px' }}>Auditions</Button>
-        <Button sx={{  textTransform: 'none', color: '#977342', fontSize: '16px' }}>Settings</Button>
+          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Home</Button>
+          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Messages</Button>
+          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Auditions</Button>
+          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Settings</Button>
+        </Box>
       </Box>
-      </Box>    
       <Box sx={{ alignItems: 'center', m: 4 }}>
-      <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt=""
-            style={{ width: '89px' }}
-          />
+        <img
+          loading="lazy"
+          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
+          alt=""
+          style={{ width: '89px' }}
+        />
       </Box>
     </Box>
   );
@@ -62,7 +63,7 @@ const Header: React.FC = () => {
 
 const MainContent: React.FC = () => {
   return (
-    <Box sx={{ padding: '24px' }}>
+    <Box sx={{ padding: '24px', alignItems: 'center', justifyContent: 'center' }}>
       <SearchSection onSearch={null} />
       <Grid container spacing={5}>
         {jobData.map((job, index) => (
@@ -71,39 +72,36 @@ const MainContent: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-      <Button
-        variant="contained"
-        sx={{
-          alignSelf: 'center',
-          padding: '12px 32px',
-          marginTop: '8px',
-          fontSize: '16px',
-          color: 'white',
-          backgroundColor: '#977342',
-          borderRadius: '24px'
-        }}
-      >
-        Load More Jobs
-      </Button>
+      <Box sx={{ justifyContent: 'center', alignItems: 'center', marginX: 70, marginY: 2}}>
+        <Button
+          variant="contained"
+          sx={{
+            alignSelf: 'center',
+            padding: '12px 32px',
+            marginTop: '8px',
+            fontSize: '16px',
+            color: 'white',
+            backgroundColor: '#977342',
+            borderRadius: '24px',
+            textTransform: 'none',
+            width: '240px'
+          }}
+        >
+          Load More Jobs
+        </Button>
+      </Box>
     </Box>
   );
 };
 
-const Footer: React.FC = () => {
-  return (
-    <Box sx={{ display: 'flex', justifyContent: 'center', padding: '48px 80px', backgroundColor: '#977342', color: 'white' }}>
-      {/* Footer content goes here */}
-      <Typography variant="body1">© 2025 Staffing Solutions Hub. All rights reserved.</Typography>
-    </Box>
-  );
-};
+
 
 const Jobs: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'white', borderRadius: 2, border: '2px solid #D1D5DB', overflow: 'hidden' }}>
       <Header />
       <MainContent />
-      <Footer />
+      <PrimaryFooter />
     </Box>
   );
 };
