@@ -272,8 +272,8 @@ export const RegisterForm: React.FC = () => {
   </Box>
 </Grid>
       </Grid>
-      <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400' }}>
-        © 2025 Casting Dubai. All rights reserved.
+      <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400', fontSize: { xs: '12px' } }}>
+        © 2025 Staffing Solutions Hub. All rights reserved.
       </Box>
     </Box>
   );
