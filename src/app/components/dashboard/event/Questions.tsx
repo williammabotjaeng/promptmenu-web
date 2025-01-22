@@ -28,7 +28,7 @@ const Questions: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) 
                 minHeight: '100vh', 
             }}
         >
-            <RoleHeaderWithProgressBar progressValue={90} />
+            <RoleHeaderWithProgressBar progressValue={90} indexValue={4} />
             <FormSection />
             <Box
                 sx={{
@@ -67,7 +67,8 @@ const Questions: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) 
                     variant="contained"
                     sx={{
                         backgroundColor: '#977342',
-                        width: '120px', 
+                        width: '120px',
+                        color: '#fff', 
                         '&:hover': {
                             backgroundColor: '#CEAB76'
                         }
