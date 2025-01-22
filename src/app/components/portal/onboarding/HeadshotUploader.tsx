@@ -59,7 +59,7 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
               textAlign: 'center',
             }}
           >
-            <Typography variant="h6" sx={{ color: 'white', textAlign: 'left', marginBottom: 2 }}>
+            <Typography variant="h6" sx={{ color: '#CEAB76', textAlign: 'left', marginBottom: 2 }}>
               Upload Your Headshot
             </Typography>
 
