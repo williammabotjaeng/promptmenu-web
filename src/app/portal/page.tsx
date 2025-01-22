@@ -6,17 +6,10 @@ import { StatCard } from '@/components/portal/StatCard';
 import { JobCard } from '@/components/portal/JobCard';
 import { AuditionCard } from '@/components/portal/AuditionCard';
 import { ProfileTask } from '@/components/portal/ProfileTask';
-import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress, IconButton, Drawer } from '@mui/material';
 import Sticky from 'react-sticky-el';
-
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import WorkIcon from '@mui/icons-material/Work';
-import TheatersIcon from '@mui/icons-material/Theaters';
-import PersonIcon from '@mui/icons-material/Person';
-import PortfolioIcon from '@mui/icons-material/WorkOutline';
-import MessageIcon from '@mui/icons-material/Message';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { useRef } from 'react';
+import { useState } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -55,16 +48,19 @@ const profileTasks = [
   { icon: "circle", label: "Video Introduction", completed: false }
 ];
 
+const Portal: React.FC = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-const Portal = () => {
-
-  
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   return (
+    <>
     <Box className=".boundary" sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white', position: 'relative' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, width: '100%' }}>
         <Sticky boundaryElement=".boundary">
-          <Box  sx={{ width: '21vw', backgroundColor: 'transparent', zIndex: 1000, height: '100vh' }}>
+          <Box sx={{ display: { xs: 'none', md: 'block' }, width: '21vw', backgroundColor: 'transparent', zIndex: 1000, height: '100vh' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 2, backgroundColor: '#000' }}>
               <img
                 loading="lazy"
@@ -86,14 +82,28 @@ const Portal = () => {
               />
             </Box>
           </Box>
+          
         </Sticky>
 
-        <Box sx={{ width: '79%', padding: 2, position: 'sticky', left: '300px' }}>
+        <IconButton onClick={toggleDrawer} sx={{ color: '#977342', display: { xs: 'block', md: 'none' }, position: 'absolute', zIndex: '5000', top: 16, left: 16 }}>
+            <MenuIcon />
+        </IconButton>
+
+        <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
+          <Box sx={{ width: 250, padding: 2, backgroundColor: '#000', height: '100%' }}>
+            <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold', marginBottom: 2 }}>Talent Portal</Typography>
+            {sidebarItems.map((item, index) => (
+              <SidebarItem key={index} {...item} />
+            ))}
+          </Box>
+        </Drawer>
+
+        <Box sx={{ width: { xs: '100%', md: '79%' }, padding: 2, position: 'relative' }}>
           <Box sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
-                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>Welcome, Sarah!</Typography>
-                <Typography variant="body1" sx={{ color: 'gray.600' }}>Last login: March 15, 2025</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px'}, marginLeft: { xs: 4 } }}>Welcome, Sarah!</Typography>
+                <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px'}, marginLeft: { xs: 4 }  }}>Last login: March 15, 2025</Typography>
               </Grid>
               <Grid item xs={4}>
                 <img
@@ -105,12 +115,12 @@ const Portal = () => {
               </Grid>
             </Grid>
 
-            <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: 2, padding: 2 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: 2, padding: 2 }}>
               {stats.map((stat, index) => (
                 <StatCard key={index} {...stat} />
               ))}
             </Box>
-           
+
             <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
@@ -124,7 +134,7 @@ const Portal = () => {
                 </Button>
               </CardContent>
             </Card>
-            
+
             <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Upcoming Auditions</Typography>
@@ -170,6 +180,7 @@ const Portal = () => {
         </Box>
       </Box>
     </Box>
+    </>
   );
 };
 
