@@ -33,10 +33,17 @@ const jobData = [
 ];
 
 
-
 const MainContent: React.FC = () => {
   return (
-    <Box sx={{ padding: '24px', alignItems: 'center', justifyContent: 'center' }}>
+    <Box 
+      sx={{ 
+        padding: { xs: '16px', md: '24px' }, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}
+    >
       <SearchSection onSearch={null} />
       <Grid container spacing={5}>
         {jobData.map((job, index) => (
@@ -45,19 +52,25 @@ const MainContent: React.FC = () => {
           </Grid>
         ))}
       </Grid>
-      <Box sx={{ justifyContent: 'center', alignItems: 'center', marginX: 70, marginY: 2}}>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          marginY: 2 
+        }}
+      >
         <Button
           variant="contained"
           sx={{
-            alignSelf: 'center',
             padding: '12px 32px',
             marginTop: '8px',
-            fontSize: '16px',
+            fontSize: { xs: '14px', md: '16px' }, // Responsive font size
             color: 'white',
             backgroundColor: '#977342',
             borderRadius: '24px',
             textTransform: 'none',
-            width: '240px'
+            width: { xs: '100%', sm: '240px' } 
           }}
         >
           Load More Jobs
@@ -66,7 +79,6 @@ const MainContent: React.FC = () => {
     </Box>
   );
 };
-
 
 
 const Jobs: React.FC = () => {
