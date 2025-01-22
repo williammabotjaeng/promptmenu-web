@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Typography, Button, Paper, AppBar, Toolbar, Container } from '@mui/material';
-import { StepItem } from '@/components/portal/onboarding/StepItem';
+import { Box, Typography, Button, Paper, Container } from '@mui/material';
 import { UploadSection } from '@/components/portal/onboarding/UploadSection';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
@@ -27,7 +26,6 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
   };
 
   const handleContinue = () => {
-    console.log("Active step:", activeStep)
     setActiveStep(activeStep + 1);
   };
 
@@ -41,19 +39,19 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
       <OnboardingHeader steps={steps} onClose={onClose} />
 
       <Paper elevation={3} sx={{ padding: 4, marginTop: 4, backgroundColor: 'rgba(151, 115, 66, 0.1)' }}>
-        <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2 }}>
+        <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2, textAlign: 'center' }}>
           ID Document
         </Typography>
-        <Box sx={{ display: 'flex', gap: 5, flexDirection: { xs: 'column', md: 'row' } }}>
+        <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center' }}>
           <UploadSection title="Front Side" />
           <UploadSection title="Back Side" />
         </Box>
       </Paper>
 
       {/* Navigation Buttons */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginTop: 4 }}>
         <Button 
-          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 } }} 
           onClick={handleBack}
         >
           Back
