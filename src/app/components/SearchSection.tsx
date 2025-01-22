@@ -26,20 +26,18 @@ export const SearchSection: React.FC<SearchBarProps> = () => {
   };
 
   return (
-    <Box sx={{ padding: 2, display: 'flex', flexDirection: 'row', mb: 2 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'row', padding: 3, backgroundColor: 'white', borderRadius: 2, boxShadow: 1 }}>
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-          <TextField
-            variant="outlined"
-            placeholder="Search jobs..."
-            aria-label="Search jobs"
-            sx={{ flexGrow: 1, width: '620px' }}
-          />
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <FilterButton label="Filter by skills" onClick={() => {}} />
-            <FilterButton label="Filter by location" onClick={() => {}} />
-            <FilterButton label="Filter by deadline" onClick={() => {}} />
-          </Box>
+    <Box sx={{ padding: 2, display: 'flex', flexDirection: 'column', mb: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, padding: 3, backgroundColor: 'white', borderRadius: 2, boxShadow: 1 }}>
+        <TextField
+          variant="outlined"
+          placeholder="Search jobs..."
+          aria-label="Search jobs"
+          sx={{ flexGrow: 1, width: { xs: '100%', md: '620px' }, mb: { xs: 2, md: 0 }, mr: { md: 2 } }} // Responsive width and margin
+        />
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+          <FilterButton label="Filter by skills" onClick={() => {}} />
+          <FilterButton label="Filter by location" onClick={() => {}} />
+          <FilterButton label="Filter by deadline" onClick={() => {}} />
         </Box>
       </Box>
     </Box>

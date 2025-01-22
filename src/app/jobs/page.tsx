@@ -5,6 +5,7 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import { SearchSection } from '@/components/SearchSection';
 import { JobCard } from '@/components/JobCard';
 import PrimaryFooter from '@/components/PrimaryFooter';
+import SecondaryHeader from '@/components/SecondaryHeader';
 
 const jobData = [
   {
@@ -31,35 +32,7 @@ const jobData = [
   }
 ];
 
-const Header: React.FC = () => {
-  return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', padding: '8px', backgroundColor: 'white', borderBottom: '2px solid #D1D5DB' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
-        <Box sx={{ fontSize: '24px', fontWeight: 'bold', color: '#977342' }}>Staffing<br /> Solutions Hub</Box>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/5b94bb5bbafa47172ac9d071b32e3d505cde4e70fd24ac105bdfe6df97d51c1b?apiKey=7fae980a988640eea8add1e49a5d542e&"
-          alt=""
-          style={{ width: '74px', height: 'auto', marginLeft: '16px' }}
-        />
-        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Home</Button>
-          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Messages</Button>
-          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Auditions</Button>
-          <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Settings</Button>
-        </Box>
-      </Box>
-      <Box sx={{ alignItems: 'center', m: 4 }}>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
-          alt=""
-          style={{ width: '89px' }}
-        />
-      </Box>
-    </Box>
-  );
-};
+
 
 const MainContent: React.FC = () => {
   return (
@@ -99,7 +72,7 @@ const MainContent: React.FC = () => {
 const Jobs: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'white', borderRadius: 2, border: '2px solid #D1D5DB', overflow: 'hidden' }}>
-      <Header />
+      <SecondaryHeader />
       <MainContent />
       <PrimaryFooter />
     </Box>
