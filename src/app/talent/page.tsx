@@ -5,7 +5,7 @@ import { WhiteHeader } from '@/components/WhiteHeader';
 import SidebarProfileCard from '@/components/SidebarProfileCard';
 import FilterForm from '@/components/FilterForm';
 import Pagination from '@/components/Pagination';
-import Footer from '@/components/Footer';
+import GreyFooter from '@/components/GreyFooter';
 import { Box } from '@mui/material';
 
 const Talent: React.FC = () => {
@@ -69,7 +69,7 @@ const Talent: React.FC = () => {
         <Pagination />
       </Box>
       <br />
-      <Footer />
+      <GreyFooter />
     </Box>
   );
 };
