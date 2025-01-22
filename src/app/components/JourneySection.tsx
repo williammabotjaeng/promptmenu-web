@@ -8,8 +8,8 @@ const JourneySection = () => {
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
-        padding: 12, 
-        marginTop: 3, 
+        padding: { xs: 4, md: 12 }, // Responsive padding
+        marginTop: { xs: 2, md: 3 }, // Responsive margin
         width: '100%', 
         textAlign: 'center', 
         color: 'white', 
@@ -30,7 +30,7 @@ const JourneySection = () => {
           sx={{ 
             zIndex: 10, 
             fontWeight: 'bold', 
-            fontSize: '36px', 
+            fontSize: { xs: '28px', md: '36px' }, // Responsive font size
             color: 'white', 
             maxWidth: '100%' 
           }}
@@ -41,7 +41,7 @@ const JourneySection = () => {
           variant="h6" 
           sx={{ 
             marginTop: 3, 
-            fontSize: '20px', 
+            fontSize: { xs: '16px', md: '20px' }, // Responsive font size
             color: 'white', 
             maxWidth: '100%' 
           }}
@@ -62,7 +62,8 @@ const JourneySection = () => {
               display: 'flex', 
               gap: 2, 
               maxWidth: '332px', 
-              width: '100%' 
+              width: '100%', 
+              flexDirection: { xs: 'column', sm: 'row' }, // Stack buttons on small screens
             }}
           >
             <Button 

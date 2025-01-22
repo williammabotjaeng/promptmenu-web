@@ -14,7 +14,7 @@ const Footer = () => {
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
-        paddingX: 2, 
+        paddingX: { xs: 2, md: 4 }, // Responsive padding
         paddingY: 3, 
         width: '100%', 
         backgroundColor: 'black' 
@@ -45,7 +45,7 @@ const Footer = () => {
                   paddingBottom: 1, 
                   fontWeight: 'bold', 
                   color: '#977342', 
-                  fontSize: '24px' 
+                  fontSize: { xs: '20px', md: '24px' } // Responsive font size
                 }}
               >
                 Staffing Solutions Hub
@@ -55,7 +55,7 @@ const Footer = () => {
                 sx={{ 
                   marginTop: 2, 
                   color: 'white', 
-                  fontSize: '14px' 
+                  fontSize: { xs: '12px', md: '14px' } // Responsive font size
                 }}
               >
                 Staffing Your Success, One Event at a Time.
@@ -70,7 +70,7 @@ const Footer = () => {
                 sx={{ 
                   fontWeight: 'bold', 
                   color: 'white', 
-                  fontSize: '16px' 
+                  fontSize: { xs: '16px', md: '16px' } // Responsive font size
                 }}
               >
                 Quick Links
@@ -78,19 +78,19 @@ const Footer = () => {
               <Box sx={{ marginTop: 2 }}>
                 <Typography 
                   component="div" 
-                  sx={{ color: '#9CA3AF', marginTop: 1, fontSize: '16px' }}
+                  sx={{ color: '#9CA3AF', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} // Responsive font size
                 >
                   Link 1
                 </Typography>
                 <Typography 
                   component="div" 
-                  sx={{ color: '#9CA3AF', marginTop: 1, fontSize: '16px' }}
+                  sx={{ color: '#9CA3AF', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} // Responsive font size
                 >
                   Link 2
                 </Typography>
                 <Typography 
                   component="div" 
-                  sx={{ color: '#9CA3AF', marginTop: 1, fontSize: '16px' }}
+                  sx={{ color: '#9CA3AF', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} // Responsive font size
                 >
                   Link 3
                 </Typography>
@@ -105,7 +105,7 @@ const Footer = () => {
                 sx={{ 
                   fontWeight: 'bold', 
                   color: '#fff', 
-                  fontSize: '16px' 
+                  fontSize: { xs: '16px', md: '16px' } // Responsive font size
                 }}
               >
                 Contact
@@ -113,19 +113,19 @@ const Footer = () => {
               <Box sx={{ marginTop: 2 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', color: 'white', marginTop: 1 }}>
                   <LocationOnIcon sx={{ color: '#977342', marginRight: '8px' }} />
-                  <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: '16px' }}>
+                  <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: { xs: '14px', md: '16px' } }}>
                     Dubai Media City, UAE
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', color: 'white', marginTop: 1 }}>
                   <PhoneIcon sx={{ color: '#977342', marginRight: '8px' }} />
-                  <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: '16px' }}>
+                  <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: { xs: '14px', md: '16px' } }}>
                     +971 4 123 4567
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', color: 'white', marginTop: 1 }}>
                   <EmailIcon sx={{ color: '#977342', marginRight: '8px' }} />
-                  <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: '16px' }}>
+                  <Typography variant="body2" sx={{ color: '#9CA3AF', fontSize: { xs: '14px', md: '16px' } }}>
                     info@solutionsstaffinghub.com
                   </Typography>
                 </Box>
@@ -140,7 +140,7 @@ const Footer = () => {
                 sx={{ 
                   fontWeight: 'bold', 
                   color: 'white', 
-                  fontSize: '16px' 
+                  fontSize: { xs: '16px', md: '16px' } // Responsive font size
                 }}
               >
                 Follow Us
@@ -161,7 +161,8 @@ const Footer = () => {
           sx={{ 
             paddingTop: 3, 
             textAlign: 'center', 
-            color: '#9CA3AF' 
+            color: '#9CA3AF', 
+            fontSize: { xs: '12px', md: '14px' } // Responsive font size
           }}
         >
           © 2025 Staffing Solutions Hub. All rights reserved.
