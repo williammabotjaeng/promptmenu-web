@@ -98,7 +98,7 @@ const Portal: React.FC = () => {
           </Box>
         </Drawer>
 
-        <Box sx={{ width: { xs: '100%', md: '79%' }, padding: 2, position: 'relative' }}>
+        <Box sx={{ width: '79%', padding: 2, position: 'sticky', left: '300px' }}>
           <Box sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
