@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import { Box, Typography, Paper, Button } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { StepItem } from './StepItem';
 import { SocialInput } from './SocialInput';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
@@ -42,14 +40,14 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
   };
 
   return (
-    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'black' }}>
+    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'black', paddingX: { xs: 2, md: 4 } }}>
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
 
       {/* Social Media Links Section */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', justifyContent: 'center' }}>
-        <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, marginLeft: 6, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: '50%', ml: 40 }}>
-          <Typography variant="h5" sx={{ pt: 0.25, pb: 3, color: '#977342' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(75, 85, 99, 0.1)', width: { xs: '90%', md: '50%' }, marginTop: 4 }}>
+          <Typography variant="h5" sx={{ pt: 0.25, pb: 3, color: '#977342', textAlign: 'center' }}>
             Social Media
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 4 }}>
@@ -61,22 +59,23 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
       </Box>
 
       {/* Navigation Buttons */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4, ml: 36, width: '55%' }}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginTop: 4, marginLeft: { md: 40 }, width: { xs: '100%', md: '52%' }, alignItems: 'center' }}>
         <Button 
-          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 }, width: { xs: '100%', md: '20%' }  }} 
           onClick={handleBack}
         >
           Back
         </Button>
         <Button 
-          sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+          sx={{ color: '#000', backgroundColor: '#CEAB76', width: { xs: '100%', md: '20%' } }} 
           onClick={handleContinue}
         >
           Continue
         </Button>
       </Box>
-      <Typography variant="caption" sx={{ paddingX: 16, color: 'gray', textAlign: 'center' }}>
-          Step {activeStep + 1} of 8 - Socials
+
+      <Typography variant="caption" sx={{ paddingX: 2, color: 'gray', textAlign: 'center', marginTop: 2 }}>
+        Step {activeStep + 1} of 8 - Socials
       </Typography>
     </Box>
   );
