@@ -1,0 +1,66 @@
+import * as React from 'react';
+import Link from 'next/link';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import Image from 'next/image';
+import SSHGoldLogo from '@/assets/GoldLogo.png';
+import { useCookies } from 'react-cookie';
+
+export const WhiteHeader: React.FC = () => {
+  const [cookies] = useCookies(["access"]);
+  const accessToken = cookies['access'];
+
+  return (
+    <AppBar position="static" sx={{ backgroundColor: '#fff', padding: '10px 0' }}>
+      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* Logo and Title Section */}
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Link href={accessToken ? '/dashboard' : '/'} passHref>
+            <Image src={SSHGoldLogo} alt="Logo" width={60} height={60} style={{ cursor: 'pointer' }} />
+          </Link>
+          <Typography variant="h6" sx={{ color: '#977342', marginLeft: '10px', fontWeight: 'bold' }}>
+            Staffing Solutions Hub
+          </Typography>
+        </Box>
+
+        {/* Navigation Menu */}
+        <Box sx={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+          
+          <Link href="/talents" passHref>
+            <Button sx={{ color: '#4B5563', mb: 2, textTransform: 'none' }}>Talents</Button>
+          </Link>
+          <Link href="/dashboard" passHref>
+            <Button sx={{ color: '#4B5563', mb: 2, mr: 4, textTransform: 'none' }}>Dashboard</Button>
+          </Link>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            <Link href="/services" passHref>
+              <Button sx={{ color: '#977342', textTransform: 'none' }}>Jane Doe</Button>
+            </Link>
+            <img
+            loading="lazy"
+            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
+            alt=""
+            style={{ width: '89px', marginLeft: '16px' }}
+          />
+          </Box>
+          
+          {/* {!accessToken && (
+            <Link href="/login" passHref>
+              <Button 
+                sx={{ 
+                  color: '#977342',
+                  '&:hover': {
+                    backgroundColor: '#CEAB76', 
+                    color: '#fff', 
+                  },
+                }}
+              >
+                Login
+              </Button>
+            </Link>
+          )} */}
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+};
