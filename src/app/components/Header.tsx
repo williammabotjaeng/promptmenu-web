@@ -70,7 +70,7 @@ export const Header: React.FC = () => {
         <IconButton
           size="large"
           edge="end"
-          color="inherit"
+          color="secondary"
           aria-label="menu"
           onClick={toggleDrawer(true)}
           sx={{ display: { xs: 'block', md: 'none' } }} // Show only on mobile
