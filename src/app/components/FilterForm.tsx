@@ -28,13 +28,13 @@ function FilterForm() {
           boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
         }}
       >
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
           <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
-            <InputLabel id="skill-label">Select Skill</InputLabel>
+            <InputLabel id="skill-label" sx={{ textAlign: 'center' }}>Select Skill</InputLabel>
             <Select
               labelId="skill-label"
               label="Select Skill"
-              sx={{ padding: '8px 16px', borderRadius: 2 }}
+              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <MenuItem value="">
                 <em>Select Skill</em>
@@ -43,11 +43,11 @@ function FilterForm() {
             </Select>
           </FormControl>
           <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
-            <InputLabel id="location-label">Location</InputLabel>
+            <InputLabel id="location-label" sx={{ textAlign: 'center' }}>Location</InputLabel>
             <Select
               labelId="location-label"
               label="Location"
-              sx={{ padding: '8px 16px', borderRadius: 2 }}
+              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <MenuItem value="">
                 <em>Location</em>
@@ -56,11 +56,11 @@ function FilterForm() {
             </Select>
           </FormControl>
           <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
-            <InputLabel id="ethnicity-label">Ethnicity</InputLabel>
+            <InputLabel id="ethnicity-label" sx={{ textAlign: 'center' }}>Ethnicity</InputLabel>
             <Select
               labelId="ethnicity-label"
               label="Ethnicity"
-              sx={{ padding: '8px 16px', borderRadius: 2 }}
+              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <MenuItem value="">
                 <em>Ethnicity</em>
@@ -69,11 +69,11 @@ function FilterForm() {
             </Select>
           </FormControl>
           <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
-            <InputLabel id="gender-label">Gender</InputLabel>
+            <InputLabel id="gender-label" sx={{ textAlign: 'center' }}>Gender</InputLabel>
             <Select
               labelId="gender-label"
               label="Gender"
-              sx={{ padding: '8px 16px', borderRadius: 2 }}
+              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <MenuItem value="">
                 <em>Gender</em>
@@ -82,11 +82,11 @@ function FilterForm() {
             </Select>
           </FormControl>
           <FormControl variant="outlined" sx={{ flexGrow: 1 }}>
-            <InputLabel id="experience-label">Experience</InputLabel>
+            <InputLabel id="experience-label" sx={{ textAlign: 'center' }}>Experience</InputLabel>
             <Select
               labelId="experience-label"
               label="Experience"
-              sx={{ padding: '8px 16px', borderRadius: 2 }}
+              sx={{ padding: '1px 16px', borderRadius: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
               <MenuItem value="">
                 <em>Experience</em>

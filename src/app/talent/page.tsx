@@ -68,6 +68,7 @@ const Talent: React.FC = () => {
         </Box>
         <Pagination />
       </Box>
+      <br />
       <Footer />
     </Box>
   );
