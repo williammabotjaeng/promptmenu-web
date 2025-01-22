@@ -85,9 +85,9 @@ const Portal: React.FC = () => {
           
         </Sticky>
 
-        <IconButton onClick={toggleDrawer} sx={{ color: '#977342', display: { xs: 'block', md: 'none' }, position: 'absolute', zIndex: '5000', top: 16, left: 16 }}>
+        {!drawerOpen && (<IconButton onClick={toggleDrawer} sx={{ color: '#977342', display: { xs: 'block', md: 'none' }, position: 'absolute', zIndex: '5000', top: 16, left: 16 }}>
             <MenuIcon />
-        </IconButton>
+        </IconButton>)}
 
         <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
           <Box sx={{ width: 250, padding: 2, backgroundColor: '#000', height: '100%' }}>
