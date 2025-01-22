@@ -31,12 +31,13 @@ const RoleDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: { xs: 'column', md: 'row' }, // Stack buttons on mobile
+                    flexDirection: { xs: 'column', md: 'row' }, 
                     justifyContent: 'flex-end',
                     px: { xs: 2, md: 3 },
                     pt: 2,
                     pb: 5,
                     mt: 4,
+                    mr: { md: 30 }
                 }}
             >
                 <Button

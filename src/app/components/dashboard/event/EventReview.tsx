@@ -200,6 +200,7 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
                                                         px: 4,
                                                         py: 2,
                                                         backgroundColor: '#977342',
+                                                        color: 'white',
                                                         '&:hover': {
                                                             backgroundColor: '#CEAB76'
                                                         }
