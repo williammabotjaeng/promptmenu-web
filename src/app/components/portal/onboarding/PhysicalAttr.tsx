@@ -58,7 +58,7 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
         </Box>
 
         {/* Navigation Buttons */}
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginTop: 4, width: { xs: '100%', md: '60%' } }}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginLeft: { md: 36 }, marginTop: 4, width: { xs: '100%', md: '58%' } }}>
           <Button 
             sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 } }} 
             onClick={handleBack}
