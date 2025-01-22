@@ -1,17 +1,30 @@
-"use item";
+"use client";
 
 import React from 'react';
 import { Box, Typography, Card, CardContent, Chip } from '@mui/material';
 import { Avatar } from '@mui/material';
-
 import { JobCardProps } from '@/types/Props/JobCardProps';
 
 export function JobCard({ title, status, requirements, location, daysAgo, salary }: JobCardProps) {
   return (
-    <Card sx={{ display: 'flex', flexDirection: 'column', padding: 2, borderRadius: '12px', border: '1px solid', borderColor: 'transparent', backgroundColor: 'rgba(0, 0, 0, 0)', width: '100%' }}>
+    <Card 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        padding: 2, 
+        borderRadius: '12px', 
+        border: '1px solid', 
+        borderColor: 'transparent', 
+        backgroundColor: 'rgba(0, 0, 0, 0)', 
+        width: '100%',
+        '@media (max-width: 600px)': {
+          padding: 1,
+        },
+      }}
+    >
       <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black', fontSize: { xs: '1rem', md: '1.25rem' } }}>
             {title}
           </Typography>
           <Chip
@@ -24,7 +37,7 @@ export function JobCard({ title, status, requirements, location, daysAgo, salary
             }}
           />
         </Box>
-        <Typography variant="body2" sx={{ color: 'gray', marginTop: 1 }}>
+        <Typography variant="body2" sx={{ color: 'gray', marginTop: 1, fontSize: { xs: '0.8rem', md: '1rem' } }}>
           {requirements}
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
@@ -35,7 +48,7 @@ export function JobCard({ title, status, requirements, location, daysAgo, salary
                 src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/bfd648982e2202b569290b273b752a8734fbaeed4ed0cf44d433879d7d47fc53?apiKey=7fae980a988640eea8add1e49a5d542e&"
                 sx={{ width: 16, height: 16 }}
               />
-              <Typography variant="body2" sx={{ color: 'gray' }}>
+              <Typography variant="body2" sx={{ color: 'gray', fontSize: { xs: '0.8rem', md: '1rem' } }}>
                 {location}
               </Typography>
             </Box>
@@ -45,12 +58,12 @@ export function JobCard({ title, status, requirements, location, daysAgo, salary
                 src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/38268533ff7e6c03e460a7cb8adde4c43d3657810b778b66e3f42f4017a7a52f?apiKey=7fae980a988640eea8add1e49a5d542e&"
                 sx={{ width: 16, height: 16 }}
               />
-              <Typography variant="body2" sx={{ color: 'gray' }}>
+              <Typography variant="body2" sx={{ color: 'gray', fontSize: { xs: '0.8rem', md: '1rem' } }}>
                 {daysAgo} days ago
               </Typography>
             </Box>
           </Box>
-          <Typography variant="h6" sx={{ color: 'gray' }}>
+          <Typography variant="h6" sx={{ color: 'gray', fontSize: { xs: '1rem', md: '1.25rem' } }}>
             {salary}
           </Typography>
         </Box>
