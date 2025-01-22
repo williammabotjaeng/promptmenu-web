@@ -20,7 +20,8 @@ const AddRoleForm: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }
                 justifyContent: 'center',
                 padding: { xs: 2, md: 4 }, 
                 pb: 4,
-                width: '100%'
+                width: '100%', 
+                height: '100%'
             }}
         >
             <RoleHeaderWithProgressBar progressValue={14} indexValue={0} />

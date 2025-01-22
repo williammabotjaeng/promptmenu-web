@@ -11,10 +11,10 @@ const RoleDetailsForm: React.FC = () => {
         display: 'flex', 
         flexDirection: 'column', 
         alignSelf: 'center', 
-        p: 4, 
+        p: { xs: 2, md: 4 }, 
         mt: 3, 
-        ml: 4, 
-        width: '60%', 
+        mx: { xs: 2, md: 4 }, 
+        width: { xs: '100%', md: '60%' },
         borderRadius: '16px' 
       }}
     >
