@@ -41,7 +41,7 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', height: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', height: '100%' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />
