@@ -255,7 +255,11 @@ export const RegisterForm: React.FC = () => {
         />
         <FormControlLabel
           control={<Checkbox sx={{ color: '#977342' }} id="terms" />}
-          label="I agree to the Terms of Service and Privacy Policy"
+          label={
+            <Typography sx={{ fontSize: { xs: '12px' }, color: { md: '#000', xs: '#ceab76' } }}> 
+              I agree to the Terms of Service and Privacy Policy
+            </Typography>
+          }
           sx={{ fontSize: { xs: '10px' } }}
         />
       </Box>
