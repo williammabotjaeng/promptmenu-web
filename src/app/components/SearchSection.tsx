@@ -10,7 +10,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ label, onClick }) => (
     sx={{ display: 'flex', alignItems: 'center', gap: 1, padding: '8px 16px', borderColor: '#ccc' }}
     aria-label={`Filter by ${label.toLowerCase()}`}
   >
-    <Typography variant="body2">{label}</Typography>
+    <Typography variant="body2" sx={{ textTransform: 'none', color: '#000', fontSize: '16px' }}>{label}</Typography>
     <img
       loading="lazy"
       src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/e289c2de16c80c983332433cba33a0a8b54eac4d0f8a09844283b2d95e9bcd6a?apiKey=7fae980a988640eea8add1e49a5d542e&"
@@ -26,15 +26,14 @@ export const SearchSection: React.FC<SearchBarProps> = () => {
   };
 
   return (
-    <Box sx={{ padding: 2 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', padding: 3, backgroundColor: 'white', borderRadius: 2, boxShadow: 1 }}>
+    <Box sx={{ padding: 2, display: 'flex', flexDirection: 'row', mb: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', padding: 3, backgroundColor: 'white', borderRadius: 2, boxShadow: 1 }}>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
           <TextField
             variant="outlined"
             placeholder="Search jobs..."
             aria-label="Search jobs"
-            fullWidth
-            sx={{ flexGrow: 1 }}
+            sx={{ flexGrow: 1, width: '620px' }}
           />
           <Box sx={{ display: 'flex', gap: 1 }}>
             <FilterButton label="Filter by skills" onClick={() => {}} />
