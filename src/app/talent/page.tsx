@@ -11,19 +11,12 @@ import { Box } from '@mui/material';
 const Talent: React.FC = () => {
   const profiles = [
     {
-      name: "Sarah Ahmed",
-      location: "Dubai, UAE",
-      age: 25,
-      skills: ["Acting", "Modeling"],
-      imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/2220e0ea361c7ae01c99c75a960ae2517cac230fb6b19cea44be914150575b3d?apiKey=7fae980a988640eea8add1e49a5d542e&",
-      isFeatured: true,
-    },
-    {
       name: "James Chen",
       location: "Abu Dhabi, UAE",
       age: 28,
       skills: ["Dancing", "Acting"],
       imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/cda574f70ccd49a7abc97a1663f275bd69d56bce15ee1463e97ba119b97f026d?apiKey=7fae980a988640eea8add1e49a5d542e&",
+      isFeatured: true,
     },
     {
       name: "Emma Wilson",

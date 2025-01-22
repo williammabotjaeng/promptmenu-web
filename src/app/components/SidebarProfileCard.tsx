@@ -28,26 +28,21 @@ function SidebarProfileCard({ profile }: SidebarProfileCardProps) {
         }}
       >
         <Box sx={{ position: 'relative', textAlign: 'center' }}>
+          <img
+            loading="lazy"
+            src={profile.imageUrl}
+            alt={`${profile.name}'s profile`}
+            style={{
+              width: '100%',
+              height: 'auto',
+              objectFit: 'cover',
+             //  paddingBottom: profile.isFeatured ? '60%' : '0', // Adjust padding for featured
+            }}
+          />
           {profile.isFeatured && (
-            <Box sx={{ position: 'relative', paddingBottom: '60%', overflow: 'hidden' }}>
-              <img
-                loading="lazy"
-                src={profile.imageUrl}
-                alt={`${profile.name}'s profile`}
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <Box sx={{ position: 'absolute', top: 10, right: 10, backgroundColor: 'orange', borderRadius: 1, padding: '4px 8px' }}>
-                <Typography variant="body2" color="white">Featured</Typography>
-              </Box>
+            <Box sx={{ position: 'absolute', top: 10, right: 10, backgroundColor: '#977342', borderRadius: 1, padding: '4px 8px' }}>
+              <Typography variant="body2" color="white">Featured</Typography>
             </Box>
-          )}
-          {!profile.isFeatured && (
-            <img
-              loading="lazy"
-              src={profile.imageUrl}
-              alt={`${profile.name}'s profile`}
-              style={{ width: '100%', objectFit: 'contain' }}
-            />
           )}
         </Box>
         <Box sx={{ padding: 2 }}>
