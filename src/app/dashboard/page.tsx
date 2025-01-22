@@ -1,76 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { Box, Typography, AppBar, Toolbar, Button, Grid, Card, CardContent } from "@mui/material";
+import { Box, Grid, Card, CardContent, Typography, Button } from "@mui/material";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { JobCard } from "@/components/dashboard/JobCard";
 import { ActivityItem } from "@/components/dashboard/ActivityItem";
 import { recentJobs, statsData, recentActivities } from "@/data/index";
+import Header from "@/components/dashboard/Header"; 
 
 const Dashboard = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
-      <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
-        <Toolbar>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/f7a98b4005a2f1122fca47c9c2e20cca9902f81182f9787864a4383cb85fee36?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt=""
-            style={{ width: '43px', marginRight: '16px' }}
-          />
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#000' }}>SSH</Typography>
-          <nav>
-            <Button
-              sx={{
-                color: 'gray',
-                '&:hover': { color: 'white' }
-              }}
-            >
-              Dashboard
-            </Button>
-            <Button
-              sx={{
-                color: 'gray',
-                '&:hover': { color: 'white' }
-              }}
-            >
-              Events
-            </Button>
-            <Button
-              sx={{
-                color: 'gray',
-                '&:hover': { color: 'white' }
-              }}
-            >
-              Jobs
-            </Button>
-            <Button
-              sx={{
-                color: 'gray',
-                '&:hover': { color: 'white' }
-              }}
-            >
-              Talents
-            </Button>
-            <Button
-              sx={{
-                color: 'gray',
-                '&:hover': { color: 'white' }
-              }}
-            >
-              Messages
-            </Button>
-          </nav>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt=""
-            style={{ width: '89px', marginLeft: '16px' }}
-          />
-        </Toolbar>
-      </AppBar>
+      <Header /> {/* Use the Header component */}
 
-      <Box sx={{ flexGrow: 1, padding: 3 }}>
+      <Box sx={{ flexGrow: 1, padding: { xs: 2, md: 3 } }}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Grid container spacing={2}>
