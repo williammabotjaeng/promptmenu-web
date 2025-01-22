@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Box, Typography, Grid, Paper, Button } from '@mui/material';
-import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { PaymentMethod } from '@/components/portal/onboarding/PaymentMethod';
 import { CardInput } from '@/components/portal/onboarding/CardInput';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
@@ -40,14 +39,23 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
   };
 
   return (
-    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white' }}>
+    <Box sx={{ display: 'flex', overflow: 'none', flexDirection: 'column', backgroundColor: 'black' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
         {/* Header Section */}
         <OnboardingHeader steps={steps} onClose={onClose} />
 
         {/* Payment Section */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: 4, paddingTop: 4, alignText: 'left' }}>
-          <Typography variant="h5" sx={{ color: '#977342', paddingBottom: 3, fontWeight: 'bold', alignText: 'left', marginRight: 60 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: { xs: 2, md: 4 }, paddingTop: 4 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              color: '#977342',
+              paddingBottom: 3,
+              fontWeight: 'bold',
+              textAlign: 'center', // Centered for all screen sizes
+              marginRight: { xs: 0, md: 60 }
+            }}
+          >
             Payment Methods
           </Typography>
           <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(151, 115, 66, 0.05)', width: '100%', maxWidth: '768px' }}>
@@ -62,15 +70,15 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
                 placeholder="Card Number"
                 ariaLabel="Enter card number"
               />
-              <Grid container spacing={4} sx={{ mt: 4 }}>
-                <Grid item xs={6}>
+              <Grid container spacing={2} sx={{ mt: 4 }}>
+                <Grid item xs={6} sm={6}>
                   <CardInput
                     id="expiry"
                     placeholder="MM/YY"
                     ariaLabel="Enter card expiry date"
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} sm={6}>
                   <CardInput
                     id="cvc"
                     placeholder="CVC"
@@ -83,26 +91,38 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
         </Box>
 
         {/* Navigation Buttons */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', paddingX: 4, marginTop: 4, width: '60%', marginLeft: 34 }}>
-          <Button 
-            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' } }} 
+        <Box sx={{
+          display: { xs: 'flex', md: 'flex' }, 
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: { xs: 'flex-start', md: 'space-between' },
+          marginTop: 2,
+          width: { xs: '100%', md: '50%' },
+          paddingX: 2
+        }}>
+          <Button
+            sx={{
+              color: '#977342',
+              border: '2px solid #977342',
+              '&:hover': { color: '#fff' },
+              marginBottom: { xs: 1, md: 0 }
+            }}
             onClick={handleBack}
           >
             Back
           </Button>
-          <Button 
-            sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+          <Button
+            sx={{ color: '#000', backgroundColor: '#CEAB76' }}
             onClick={handleContinue}
           >
             Continue
           </Button>
         </Box>
-
-        {/* Step Indicator Section */}
-        <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginTop: 4, color: 'gray', textAlign: 'center' }}>
-          Step {activeStep + 1} of 8 - Payment
-        </Typography>
       </Box>
+
+      {/* Step Indicator Section */}
+      <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginTop: 4, color: 'gray', textAlign: 'center' }}>
+        Step {activeStep + 1} of 8 - Payment
+      </Typography>
     </Box>
   );
 };
