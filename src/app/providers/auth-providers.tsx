@@ -1,3 +1,5 @@
+"use client";
+
 import React, { createContext, useContext, useState } from 'react';
 import { AuthenticatedUser } from '@/types/AuthenticatedUser';
 import { useMutation } from '@tanstack/react-query';
@@ -437,10 +439,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (username: string, password: string) => {
     await loginMutation.mutateAsync({ username, password });
-    if (user) {
-      console.log("User", user);
-      router.push('/dashboard')
-    }
   };
 
   const verifyOtp = async (username: string, otp: string) => {

@@ -9,7 +9,7 @@ import Alert from '@mui/material/Alert';
 import { useAuth } from '@/providers/auth-providers'; 
 import '@/styles/globals.css';
 import { LoginData } from '@/types/LoginData'; 
-import { Box } from '@mui/material'; // Import Box for layout
+import { Box } from '@mui/material'; 
 
 const Login: React.FC = () => {
   const { login } = useAuth(); 

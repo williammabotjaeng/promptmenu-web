@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import { Facebook, Google, Twitter } from '@mui/icons-material';
