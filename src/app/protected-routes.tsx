@@ -1,47 +1,47 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { NextShield } from 'next-shield';
-import useTokenStore from '@/state/use-token-store';
-import { usePathname } from 'next/navigation'
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 
 const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-
-  const pathname = usePathname();
-
-  const [cookies] = useCookies(['access', 'user_role']);
-
-  const accessToken = cookies?.access; 
-  const user_role = cookies?.user_role;
+  const { data: session, status } = useSession(); 
+  const currentPath = usePathname(); 
+  const [cookies] = useCookies(['user_role']);
 
   useEffect(() => {
-    if ((accessToken && user_role === 'client') && (pathname === '/login' || pathname === '/portal' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
-      router.push('/dashboard'); 
+    // Check if the session is loading
+    if (status === 'loading') return;
+
+    // If not authenticated, redirect to login
+    if (!session) {
+      router.push('/login');
+      return;
     }
 
-    if ((accessToken && user_role === 'talent') && (pathname === '/login' || pathname === '/dashboard' || pathname === '/register' || pathname === '/otp' || pathname === '/')) {
-      router.push('/portal'); 
+    // Redirect based on user role
+    const userRole = cookies['user_role']; 
+
+    console.log("Current Path: ", currentPath);
+    console.log("User Role: ", userRole);
+
+    if (userRole === 'client' && (currentPath === '/login' || currentPath === '/portal' || currentPath === '/register' || currentPath === '/otp' || currentPath === '/')) {
+      router.push('/dashboard');
     }
 
-  }, [pathname, accessToken, router, user_role]);
+    if (userRole === 'talent' && (currentPath === '/login' || currentPath === '/dashboard' || currentPath === '/register' || currentPath === '/otp' || currentPath === '/')) {
+      router.push('/portal');
+    }
+
+  }, [session, status, router, currentPath]);
 
   return (
-    <NextShield
-      isAuth={!!accessToken} 
-      isLoading={false} 
-      router={null}
-      privateRoutes={['/dashboard', '/portal', '/client-onboarding', '/talent-onboarding']} 
-      publicRoutes={['/', '/login', '/register', '/otp']}
-      hybridRoutes={['/contact']} 
-      accessRoute={user_role === 'client' ? '/dashboard' : '/portal'} 
-      loginRoute="/login"
-      LoadingComponent={<p>Loading...</p>} 
-    >
+    <>
       {children}
-    </NextShield>
+    </>
   );
 };
 

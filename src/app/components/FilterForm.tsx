@@ -7,7 +7,7 @@ function FilterForm() {
       component="form"
       sx={{
         display: 'flex',
-        flexDirection: { xs: 'column', md: 'row' }, // Column on small screens, row on medium and up
+        flexDirection: { xs: 'column', md: 'row' }, 
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingX: 2,
@@ -21,7 +21,7 @@ function FilterForm() {
       <Box
         sx={{
           display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' }, // Column on small screens, row on medium and up
+          flexDirection: { xs: 'column', md: 'row' }, 
           justifyContent: 'center',
           padding: 3,
           width: '100%',
@@ -66,14 +66,14 @@ function FilterForm() {
           type="submit"
           variant="contained"
           sx={{
-            padding: { xs: '12px 24px', md: '20px 24px' }, // Reduced padding for larger displays
+            padding: { xs: '12px 24px', md: '20px 24px' }, 
             backgroundColor: '#977342',
             color: 'white',
             borderRadius: 2,
             alignSelf: 'flex-start',
             marginLeft: { md: '16px' },
-            height: '100%', // Ensures button height matches input height
-            width: { xs: '100%', md: '250px' }, // Wider button on larger screens
+            height: '100%', 
+            width: { xs: '100%', md: '250px' },
           }}
         >
           Apply Filters
