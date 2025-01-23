@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { useAuth } from '@/providers/auth-providers';
-import config from 'config'; 
+import config from 'config';
 
 const handler = NextAuth({
   providers: [
@@ -14,13 +14,9 @@ const handler = NextAuth({
       async authorize(credentials) {
         try {
           const { login } = useAuth();
-          const { response } = await login(
-            credentials.username,
-            credentials.password,
-        );
+          const user: any = await login(credentials.username, credentials.password);
 
-          // Return user object to be stored in session
-          return { ...user, tokens }; 
+          return user || null; 
         } catch (error) {
           console.error('Login error: ', error);
           return null; 
@@ -30,13 +26,14 @@ const handler = NextAuth({
   ],
   pages: {
     signIn: '/login', 
+    newUser: '/register'
   },
   callbacks: {
     async jwt({ token, user }) {
-
       if (user) {
-        token.access = user.tokens.access;
-        token.refresh = user.tokens.refresh;
+        console.log("user data", user);
+        token.access = user.access;
+        token.refresh = user.refresh;
         token.user_role = user.user_role;
         token.profile_progress = user.profile_progress;
         token.onboarding_presented = user.onboarding_presented;

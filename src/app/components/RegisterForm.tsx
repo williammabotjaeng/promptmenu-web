@@ -3,6 +3,12 @@ import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar,
 
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import Image from 'next/image';
+import { useState } from "react";
+
+import { useAuth } from "@/providers/auth-providers";
+
+import { useCookies } from "react-cookie";
+import { redirect } from "next/navigation";
 
 const features = [
   {
@@ -23,6 +29,70 @@ const features = [
 ];
 
 export const RegisterForm: React.FC = () => {
+
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    email: '',
+    firstname: '',
+    lastname: '',
+  });
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+  const [cookies] = useCookies(['username', 'email']);
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const { register } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log("Form Data", formData);
+    try {
+
+      await register(
+        formData.username,
+        formData.password,
+        formData.email,
+        formData.firstname,
+        formData.lastname,
+      );
+
+
+      
+      setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+
+      
+      setTimeout(() => {
+        redirect('/otp')
+      }, 2000);
+
+    } catch (error: any) {
+      console.error('Registration failed:', error);
+      let errorMessage = 'Registration failed. Please try again.';
+
+      // Handle specific error messages
+      if (error?.response) {
+        if (error?.response.data.message.includes('unique constraint')) {
+          errorMessage = 'Email or username already exists.';
+        }
+      }
+
+      setSnackbarMessage(errorMessage);
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    }
+  };
+
   return (
     <Box sx={{ padding: 4, backgroundColor: 'transparent' }}>
       <Grid container spacing={4}>
@@ -86,24 +156,25 @@ export const RegisterForm: React.FC = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={handleChange}
             InputLabelProps={{
               sx: {
-                color: '#977342', // Default label color
+                color: '#977342', 
                 '&.Mui-focused': {
-                  color: '#977342', // Focused label color
+                  color: '#977342',
                 },
               },
             }}
             InputProps={{
               sx: {
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342', // Border color
+                  borderColor: '#977342', 
                 },
                 '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342', // Border color on hover
+                  borderColor: '#977342', 
                 },
                 '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342', // Border color on focus
+                  borderColor: '#977342', 
                 },
               },
             }}
@@ -114,6 +185,7 @@ export const RegisterForm: React.FC = () => {
             variant="outlined"
             fullWidth
             margin="normal"
+            onChange={handleChange}
             InputLabelProps={{
               sx: {
                 color: '#977342',
@@ -142,6 +214,7 @@ export const RegisterForm: React.FC = () => {
           type="email"
           id="email"
           variant="outlined"
+          onChange={handleChange}
           fullWidth
           margin="normal"
           InputLabelProps={{
@@ -167,10 +240,11 @@ export const RegisterForm: React.FC = () => {
           }}
         />
         <TextField
-          label="Phone Number"
-          type="tel"
-          id="phone"
+          label="Username"
+          type="texr"
+          id="username"
           variant="outlined"
+          onChange={handleChange}
           fullWidth
           margin="normal"
           InputLabelProps={{
@@ -201,6 +275,7 @@ export const RegisterForm: React.FC = () => {
           id="password"
           variant="outlined"
           fullWidth
+          onChange={handleChange}
           margin="normal"
           InputLabelProps={{
             sx: {
@@ -230,6 +305,7 @@ export const RegisterForm: React.FC = () => {
           id="confirmPassword"
           variant="outlined"
           fullWidth
+          onChange={handleChange}
           margin="normal"
           InputLabelProps={{
             sx: {

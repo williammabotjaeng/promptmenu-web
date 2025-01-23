@@ -21,6 +21,7 @@ import { useCompany } from './company-provider';
 import { useTalentProfile } from './talent-profile-provider';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { handleCreateUserEvent } from '@/api/auth/helpers/auth-helpers';
 
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null;
@@ -31,28 +32,8 @@ interface AuthContextType {
     username: string,
     password: string,
     email: string,
-    date_of_birth: string,
-    user_role: string,
     firstname: string,
     lastname: string,
-    gender: string,
-    nationality: string,
-    has_accepted: string,
-    is_influencer: string,
-    whatsapp_number: string,
-    preferred_payment_methods: string,
-    vat_certificate: string,
-    trade_license: string,
-    custom_payment_terms: string,
-    accept_std_payment_terms: string,
-    accounts_email: string,
-    mobile_number: string,
-    job_title: string,
-    contact_person: string,
-    state_province_region: string,
-    company_name: string,
-    address: string,
-    telephone: string
   ) => Promise<void>;
 }
 
@@ -149,7 +130,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         });
 
         if (paymentMethodJSON) {
-          
+
         }
 
         setSocialMediaLinks({
@@ -244,28 +225,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const registerMutation = useMutation({
     mutationKey: ['register_user'],
     mutationFn: async (userData: RegistrationData) => {
-
       console.log("User Data", userData);
 
       return await apiCall('/accounts/register/', 'POST', {
         username: userData.username,
-        user_role: userData.user_role,
-        date_of_birth: userData.date_of_birth,
-        email: userData.email,
         firstname: userData.firstname,
         lastname: userData.lastname,
+        email: userData.email,
         password: userData.password,
-        gender: userData.gender,
-        nationality: userData.nationality,
-        has_accepted: Boolean(userData.has_accepted),
-        is_influencer: userData.is_influencer,
-        whatsapp_number: String(userData.whatsapp_number),
-        address: userData.address,
-        telephone: userData.address,
       });
     },
     onSuccess: (data: RegistrationSuccessData) => {
       console.log('Registration successful: ', data);
+      handleCreateUserEvent(data.email);
     },
     onError: (error: RegistrationErrorData) => {
       console.error('Registration error: ', { ...error });
@@ -344,7 +316,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         // Payment Methods
         if (paymentMethodJSON) {
-          
+
         }
 
         // Set physical attributes
@@ -449,55 +421,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     username: string,
     password: string,
     email: string,
-    user_role: string,
     firstname: string,
-    lastname: string,
-    date_of_birth: string,
-    gender: string,
-    nationality: string,
-    has_accepted: string,
-    is_influencer: string,
-    whatsapp_number: string,
-    address: string,
-    preferred_payment_methods: string,
-    vat_certificate: string,
-    trade_license: string,
-    custom_payment_terms: string,
-    accept_std_payment_terms: string,
-    accounts_email: string,
-    mobile_number: string,
-    job_title: string,
-    contact_person: string,
-    state_province_region: string,
-    company_name: string,
-    telephone: string
+    lastname: string
   ) => {
     const registrationData = {
       username,
       password,
       email,
-      user_role,
       firstname,
       lastname,
-      date_of_birth,
-      gender,
-      nationality,
-      has_accepted,
-      is_influencer,
-      whatsapp_number,
-      address,
-      preferred_payment_methods,
-      vat_certificate,
-      trade_license,
-      custom_payment_terms,
-      accept_std_payment_terms,
-      accounts_email,
-      mobile_number,
-      job_title,
-      contact_person,
-      state_province_region,
-      company_name,
-      telephone
     };
 
     await registerMutation.mutateAsync(registrationData);
