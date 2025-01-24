@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import { Facebook, Google, Twitter } from '@mui/icons-material';
+import Link from 'next/link';
 
 export const LoginForm: React.FC = () => {
   return (
@@ -14,9 +15,9 @@ export const LoginForm: React.FC = () => {
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c3fc10b45272c7c3f40000cb49e896f62fd831f2d1f6075f068d38a771d3152f?apiKey=7fae980a988640eea8add1e49a5d542e&"
             alt="Company logo"
-            style={{ maxWidth: '204px', marginBottom:'20px', marginTop: '1px' }}
+            style={{ maxWidth: '204px', marginBottom: '20px', marginTop: '1px' }}
           />
-          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16}, alignItems: { md: 'none', xs: 'center' } }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16 }, alignItems: { md: 'none', xs: 'center' } }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
               Welcome Back
             </Typography>
@@ -33,22 +34,22 @@ export const LoginForm: React.FC = () => {
                 margin="normal"
                 InputLabelProps={{
                   sx: {
-                    color: '#977342', 
+                    color: '#977342',
                     '&.Mui-focused': {
-                      color: '#977342', 
+                      color: '#977342',
                     },
                   },
                 }}
                 InputProps={{
                   sx: {
                     '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#977342', 
+                      borderColor: '#977342',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#977342', 
+                      borderColor: '#977342',
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#977342', 
+                      borderColor: '#977342',
                     },
                   },
                 }}
@@ -61,7 +62,7 @@ export const LoginForm: React.FC = () => {
                 margin="normal"
                 InputLabelProps={{
                   sx: {
-                    color: '#977342', 
+                    color: '#977342',
                     '&.Mui-focused': {
                       color: '#977342',
                     },
@@ -73,7 +74,7 @@ export const LoginForm: React.FC = () => {
                       borderColor: '#977342',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#977342', 
+                      borderColor: '#977342',
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
@@ -87,18 +88,20 @@ export const LoginForm: React.FC = () => {
                   label="Remember me"
                   sx={{ color: 'gray' }}
                 />
-                <Button
-                  variant="text"
-                  sx={{
-                    color: '#977342',
-                    '&:hover': {
-                      backgroundColor: '#977342',
-                      color: 'white', 
-                    },
-                  }}
-                >
-                  Forgot Password?
-                </Button>
+                <Link href="/forgot">
+                  <Button
+                    variant="text"
+                    sx={{
+                      color: '#977342',
+                      '&:hover': {
+                        color: '#CEAB76',
+                        backgroundColor: 'transparent'
+                      },
+                    }}
+                  >
+                    Forgot Password?
+                  </Button>
+                </Link>
               </Box>
               <Button
                 type="submit"
@@ -108,10 +111,10 @@ export const LoginForm: React.FC = () => {
                   backgroundColor: '#977342',
                   color: 'white',
                   padding: '10px 20px',
-                  width: '100%', 
+                  width: '100%',
                   '&:hover': {
                     backgroundColor: '#977342',
-                    color: 'white', 
+                    color: 'white',
                   },
                 }}
               >
@@ -120,18 +123,20 @@ export const LoginForm: React.FC = () => {
               <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                 <Typography variant="body2" sx={{ color: 'gray' }}>
                   Don't have an account?{' '}
-                  <Button
-                    variant="text"
-                    sx={{
-                      color: '#977342',
-                      '&:hover': {
-                        backgroundColor: '#977342',
-                        color: 'white', 
-                      },
-                    }}
-                  >
-                    Sign up
-                  </Button>
+                  <Link href="/register">
+                    <Button
+                      variant="text"
+                      sx={{
+                        color: '#977342',
+                        '&:hover': {
+                          color: '#CEAB76',
+                          background: 'transparent'
+                        },
+                      }}
+                    >
+                      Sign up
+                    </Button>
+                  </Link>
                 </Typography>
               </Box>
             </form>
@@ -167,7 +172,7 @@ export const LoginForm: React.FC = () => {
                 color: 'white',
                 '&:hover': {
                   backgroundColor: '#977342',
-                  color: 'white', 
+                  color: 'white',
                 },
               }}
             >
@@ -180,7 +185,7 @@ export const LoginForm: React.FC = () => {
                 color: 'white',
                 '&:hover': {
                   backgroundColor: '#977342',
-                  color: 'white', 
+                  color: 'white',
                 },
               }}
             >
@@ -193,7 +198,7 @@ export const LoginForm: React.FC = () => {
                 color: 'white',
                 '&:hover': {
                   backgroundColor: '#977342',
-                  color: 'white', 
+                  color: 'white',
                 },
               }}
             >

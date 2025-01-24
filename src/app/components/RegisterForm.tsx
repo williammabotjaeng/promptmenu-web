@@ -10,6 +10,7 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import { useCookies } from "react-cookie";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -433,7 +434,10 @@ export const RegisterForm: React.FC = () => {
               <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                 <Typography variant="body2" color="white">
                   Already have an account?
-                  <Button variant="text" sx={{ padding: 0, color: '#977342' }}> Sign in</Button>
+                  <Link href="/login"><Button variant="text" sx={{ padding: 0, color: '#977342', '&:hover': {
+                    color: '#CEAB76',
+                    background: 'transparent'
+                  } }}>Sign in</Button></Link>
                 </Typography>
               </Box>
             </form>
