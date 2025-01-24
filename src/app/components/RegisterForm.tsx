@@ -41,6 +41,7 @@ export const RegisterForm: React.FC = () => {
     email: '',
     firstname: '',
     lastname: '',
+    confirmPassword: ''
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -48,12 +49,74 @@ export const RegisterForm: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
   const [cookies, setCookie] = useCookies(['username', 'email']);
-  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     console.log("Name:", name);
     console.log("Value:", value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const { firstname, lastname, email, username, password, confirmPassword } = formData;
+
+    if (!firstname || !lastname || !email || !username || !password || !confirmPassword) {
+      setSnackbarMessage('All fields are required.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    if (password.length < 8) {
+      setSnackbarMessage('Password must be at least 8 characters long.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      setSnackbarMessage('Password must contain at least one uppercase letter.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    if (!/[a-z]/.test(password)) {
+      setSnackbarMessage('Password must contain at least one lowercase letter.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    if (!/[0-9]/.test(password)) {
+      setSnackbarMessage('Password must contain at least one digit.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+      setSnackbarMessage('Password must contain at least one special character.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    if (password.includes(username)) {
+      setSnackbarMessage('Password cannot contain the username.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    if (password !== confirmPassword) {
+      setSnackbarMessage('Passwords do not match.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+
+    return true;
   };
 
   const { register } = useAuth();
@@ -65,41 +128,40 @@ export const RegisterForm: React.FC = () => {
 
     setCookie("username", formData.username);
 
-    try {
+    if (validateForm()) {
+      try {
 
-      await register(
-        formData.username,
-        formData.password,
-        formData.email,
-        formData.firstname,
-        formData.lastname,
-      );
+        await register(
+          formData.username,
+          formData.password,
+          formData.email,
+          formData.firstname,
+          formData.lastname,
+        );
+
+        setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
 
 
-      
-      setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
+        setTimeout(() => {
+          redirect('/otp')
+        }, 2000);
 
-      
-      setTimeout(() => {
-        redirect('/otp')
-      }, 2000);
+      } catch (error: any) {
+        console.error('Registration failed:', error);
+        let errorMessage = 'Registration failed. Please try again.';
 
-    } catch (error: any) {
-      console.error('Registration failed:', error);
-      let errorMessage = 'Registration failed. Please try again.';
-
-      // Handle specific error messages
-      if (error?.response) {
-        if (error?.response.data.message.includes('unique constraint')) {
-          errorMessage = 'Email or username already exists.';
+        if (error?.response) {
+          if (error?.response.data.message.includes('unique constraint')) {
+            errorMessage = 'Email or username already exists.';
+          }
         }
-      }
 
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
+        setSnackbarMessage(errorMessage);
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      }
     }
   };
 
@@ -113,31 +175,31 @@ export const RegisterForm: React.FC = () => {
         {/* Left Column */}
         <Grid item xs={12} md={6}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-          <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
-            <Image
-              src={SSHGoldLogo.src}
-              alt="Staffing Solutions Logo"
-              width={200} 
-              height={204} 
-              style={{ opacity: 0.5, overflow: 'hidden' }}
-            />
-            <Typography
-              variant="h4"
-              sx={{
-                fontWeight: 'bold',
-                color: '#977342',
-                fontSize: '20px',
-                opacity: 0.3,
-                position: 'absolute',
-                left: '155%',
-                top: '36%', 
-                transform: 'translate(-50%, -100%)',
-                width: '150%'
-              }}
-            >
-              Staffing Solutions Hub
-            </Typography>
-          </Box>
+            <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
+              <Image
+                src={SSHGoldLogo.src}
+                alt="Staffing Solutions Logo"
+                width={200}
+                height={204}
+                style={{ opacity: 0.5, overflow: 'hidden' }}
+              />
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 'bold',
+                  color: '#977342',
+                  fontSize: '20px',
+                  opacity: 0.3,
+                  position: 'absolute',
+                  left: '155%',
+                  top: '36%',
+                  transform: 'translate(-50%, -100%)',
+                  width: '150%'
+                }}
+              >
+                Staffing Solutions Hub
+              </Typography>
+            </Box>
             <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#fff', fontSize: '48px', mb: 2 }}>
               Join the Winning <span style={{ display: 'block', color: '#977342' }}>Talent Network</span>
             </Typography>
@@ -155,243 +217,243 @@ export const RegisterForm: React.FC = () => {
           </Box>
         </Grid>
 
-       {/* Right Column */}
-<Grid item xs={12} md={6}>
-  <Box sx={{ backgroundColor: '#ffffff1a', padding: 4, borderRadius: 2 }}>
-    <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
-      Create Your Account
-    </Typography>
-    <form  onSubmit={handleSubmit} method="POST">
-      <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
-          <TextField
-            label="First Name"
-            id="firstName"
-            name="firstname"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            onChange={handleChange}
-            InputLabelProps={{
-              sx: {
-                color: '#977342', 
-                '&.Mui-focused': {
-                  color: '#977342',
-                },
-              },
-            }}
-            InputProps={{
-              sx: {
-                color: '#977342',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342', 
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342', 
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342', 
-                },
-              },
-            }}
-          />
-          <TextField
-            label="Last Name"
-            id="lastName"
-            name="lastname"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            onChange={handleChange}
-            InputLabelProps={{
-              sx: {
-                color: '#977342',
-                '&.Mui-focused': {
-                  color: '#977342',
-                },
-              },
-            }}
-            InputProps={{
-              sx: {
-                color: '#977342',
-                '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342',
-                },
-                '&:hover .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342',
-                },
-                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                  borderColor: '#977342',
-                },
-              },
-            }}
-          />
-        </Box>
-        <TextField
-          label="Email Address"
-          type="email"
-          id="email"
-          name="email"
-          variant="outlined"
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            sx: {
-              color: '#977342',
-              '&.Mui-focused': {
-                color: '#977342',
-              },
-            },
-          }}
-          InputProps={{
-            sx: {
-              color: '#977342',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-            },
-          }}
-        />
-        <TextField
-          label="Username"
-          type="texr"
-          id="username"
-          name="username"
-          variant="outlined"
-          onChange={handleChange}
-          fullWidth
-          margin="normal"
-          InputLabelProps={{
-            sx: {
-              color: '#977342',
-              '&.Mui-focused': {
-                color: '#977342',
-              },
-            },
-          }}
-          InputProps={{
-            sx: {
-              color: '#977342',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-            },
-          }}
-        />
-        <TextField
-          label="Password"
-          type="password"
-          id="password"
-          name="password"
-          variant="outlined"
-          fullWidth
-          onChange={handleChange}
-          margin="normal"
-          InputLabelProps={{
-            sx: {
-              color: '#977342',
-              '&.Mui-focused': {
-                color: '#977342',
-              },
-            },
-          }}
-          InputProps={{
-            sx: {
-              color: '#977342',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-            },
-          }}
-        />
-        <TextField
-          label="Confirm Password"
-          type="password"
-          id="confirmPassword"
-          name="confirmPassword"
-          variant="outlined"
-          fullWidth
-          onChange={handleChange}
-          margin="normal"
-          InputLabelProps={{
-            sx: {
-              color: '#977342',
-              '&.Mui-focused': {
-                color: '#977342',
-              },
-            },
-          }}
-          InputProps={{
-            sx: {
-              color: '#977342',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: '#977342',
-              },
-            },
-          }}
-        />
-        <FormControlLabel
-          control={<Checkbox sx={{ color: '#977342' }} id="terms" />}
-          label={
-            <Typography sx={{ fontSize: { xs: '12px' }, color: { md: '#fff', xs: '#ceab76' } }}> 
-              I agree to the Terms of Service and Privacy Policy
+        {/* Right Column */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ backgroundColor: '#ffffff1a', padding: 4, borderRadius: 2 }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
+              Create Your Account
             </Typography>
-          }
-          sx={{ fontSize: { xs: '10px' } }}
-        />
-      </Box>
-      <Button type="submit" variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
-        Create Account
-      </Button>
-      <Box sx={{ textAlign: 'center', marginTop: 2 }}>
-        <Typography variant="body2" color="white">
-          Already have an account? 
-          <Button variant="text" sx={{ padding: 0, color: '#977342' }}> Sign in</Button>
-        </Typography>
-      </Box>
-    </form>
-  </Box>
-</Grid>
+            <form onSubmit={handleSubmit} method="POST">
+              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
+                  <TextField
+                    label="First Name"
+                    id="firstname"
+                    name="firstname"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    onChange={handleChange}
+                    InputLabelProps={{
+                      sx: {
+                        color: '#977342',
+                        '&.Mui-focused': {
+                          color: '#977342',
+                        },
+                      },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: '#977342',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#977342',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#977342',
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#977342',
+                        },
+                      },
+                    }}
+                  />
+                  <TextField
+                    label="Last Name"
+                    id="lastname"
+                    name="lastname"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    onChange={handleChange}
+                    InputLabelProps={{
+                      sx: {
+                        color: '#977342',
+                        '&.Mui-focused': {
+                          color: '#977342',
+                        },
+                      },
+                    }}
+                    InputProps={{
+                      sx: {
+                        color: '#977342',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#977342',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#977342',
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#977342',
+                        },
+                      },
+                    }}
+                  />
+                </Box>
+                <TextField
+                  label="Email Address"
+                  type="email"
+                  id="email"
+                  name="email"
+                  variant="outlined"
+                  onChange={handleChange}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    sx: {
+                      color: '#977342',
+                      '&.Mui-focused': {
+                        color: '#977342',
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    sx: {
+                      color: '#977342',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                    },
+                  }}
+                />
+                <TextField
+                  label="Username"
+                  type="texr"
+                  id="username"
+                  name="username"
+                  variant="outlined"
+                  onChange={handleChange}
+                  fullWidth
+                  margin="normal"
+                  InputLabelProps={{
+                    sx: {
+                      color: '#977342',
+                      '&.Mui-focused': {
+                        color: '#977342',
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    sx: {
+                      color: '#977342',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                    },
+                  }}
+                />
+                <TextField
+                  label="Password"
+                  type="password"
+                  id="password"
+                  name="password"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  margin="normal"
+                  InputLabelProps={{
+                    sx: {
+                      color: '#977342',
+                      '&.Mui-focused': {
+                        color: '#977342',
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    sx: {
+                      color: '#977342',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                    },
+                  }}
+                />
+                <TextField
+                  label="Confirm Password"
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  variant="outlined"
+                  fullWidth
+                  onChange={handleChange}
+                  margin="normal"
+                  InputLabelProps={{
+                    sx: {
+                      color: '#977342',
+                      '&.Mui-focused': {
+                        color: '#977342',
+                      },
+                    },
+                  }}
+                  InputProps={{
+                    sx: {
+                      color: '#977342',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#977342',
+                      },
+                    },
+                  }}
+                />
+                <FormControlLabel
+                  control={<Checkbox sx={{ color: '#977342' }} id="terms" />}
+                  label={
+                    <Typography sx={{ fontSize: { xs: '12px' }, color: { md: '#fff', xs: '#ceab76' } }}>
+                      I agree to the Terms of Service and Privacy Policy
+                    </Typography>
+                  }
+                  sx={{ fontSize: { xs: '10px' } }}
+                />
+              </Box>
+              <Button type="submit" variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
+                Create Account
+              </Button>
+              <Box sx={{ textAlign: 'center', marginTop: 2 }}>
+                <Typography variant="body2" color="white">
+                  Already have an account?
+                  <Button variant="text" sx={{ padding: 0, color: '#977342' }}> Sign in</Button>
+                </Typography>
+              </Box>
+            </form>
+          </Box>
+        </Grid>
       </Grid>
       <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400', fontSize: { xs: '12px' } }}>
         © 2025 Staffing Solutions Hub. All rights reserved.
       </Box>
       {/* Snackbar for notifications */}
       <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        >
-          <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
