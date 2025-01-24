@@ -449,6 +449,15 @@ export const RegisterForm: React.FC = () => {
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{
+          '& .MuiSnackbarContent-root': {
+            borderRadius: '8px',
+            padding: '16px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+            width: { xs: '90%', sm: '400px' },
+            margin: '0 auto',
+          },
+        }}
       >
         <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
           {snackbarMessage}
