@@ -23,6 +23,7 @@ const About: React.FC = () => {
           alignSelf: 'center',
           paddingX: 2,
           paddingY: 1,
+          color: '#333',
           marginTop: 1,
           width: '100%',
           maxWidth: 'screen.xl',
