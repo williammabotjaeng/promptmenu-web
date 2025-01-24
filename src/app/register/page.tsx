@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { RegisterForm } from '@/components/RegisterForm';
-import RegisterFormTalent from '@/components/RegisterFormTalent';
 import Snackbar from '@mui/material/Snackbar'; 
 import Alert from '@mui/material/Alert'; 
 import { useAuth } from '@/providers/auth-providers';
