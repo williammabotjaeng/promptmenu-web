@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
+import Link from 'next/link';
 
 const JourneySection = () => {
   return (
@@ -8,8 +9,8 @@ const JourneySection = () => {
         display: 'flex', 
         flexDirection: 'column', 
         justifyContent: 'center', 
-        padding: { xs: 4, md: 12 }, // Responsive padding
-        marginTop: { xs: 2, md: 3 }, // Responsive margin
+        padding: { xs: 4, md: 12 }, 
+        marginTop: { xs: 2, md: 3 }, 
         width: '100%', 
         textAlign: 'center', 
         color: 'white', 
@@ -30,7 +31,7 @@ const JourneySection = () => {
           sx={{ 
             zIndex: 10, 
             fontWeight: 'bold', 
-            fontSize: { xs: '28px', md: '36px' }, // Responsive font size
+            fontSize: { xs: '28px', md: '36px' }, 
             color: 'white', 
             maxWidth: '100%' 
           }}
@@ -41,7 +42,7 @@ const JourneySection = () => {
           variant="h6" 
           sx={{ 
             marginTop: 3, 
-            fontSize: { xs: '16px', md: '20px' }, // Responsive font size
+            fontSize: { xs: '16px', md: '20px' }, 
             color: 'white', 
             maxWidth: '100%' 
           }}
@@ -63,9 +64,10 @@ const JourneySection = () => {
               gap: 2, 
               maxWidth: '332px', 
               width: '100%', 
-              flexDirection: { xs: 'column', sm: 'row' }, // Stack buttons on small screens
+              flexDirection: { xs: 'column', sm: 'row' }, 
             }}
           >
+            <Link href="/register">
             <Button 
               variant="contained" 
               sx={{ 
@@ -82,6 +84,8 @@ const JourneySection = () => {
             >
               Register Now
             </Button>
+            </Link>
+            <Link href="/contact">
             <Button 
               variant="outlined" 
               sx={{ 
@@ -97,6 +101,7 @@ const JourneySection = () => {
             >
               Contact Us
             </Button>
+            </Link>
           </Box>
         </Box>
       </Box>

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import featuredTalentLeft from '@/assets/featured-talent-left.png'; 
 import featuredTalentCenter from '@/assets/featured-talent-center.png'; 
 import featuredTalentRight from '@/assets/featured-talent-right.png'; 
+import Link from 'next/link';
 
 const FeaturedTalent: React.FC = () => {
   return (
@@ -58,6 +59,7 @@ const FeaturedTalent: React.FC = () => {
       </Box>
       <br />
       <br />
+      <Link href="/talent">
       <Button
         variant="contained"
         sx={{
@@ -77,6 +79,7 @@ const FeaturedTalent: React.FC = () => {
       >
         View All Talents
       </Button>
+      </Link>
       <br />
       <br />
     </Box>
