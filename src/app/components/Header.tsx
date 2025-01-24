@@ -88,13 +88,13 @@ export const Header: React.FC = () => {
           <Link href="/about" passHref>
             <Button sx={{ color: 'white' }}>About</Button>
           </Link>
-          <Link href="/talents" passHref>
+          <Link href="/talent" passHref>
             <Button sx={{ color: 'white' }}>Talents</Button>
           </Link>
           <Link href="/contact" passHref>
             <Button sx={{ color: 'white' }}>Contact</Button>
           </Link>
-          <Link href="/join" passHref>
+          <Link href="/register" passHref>
             <Button className="px-6 rounded primary" sx={{ backgroundColor: '#977342', color: '#ffffff' }}>
               Join Now
             </Button>
