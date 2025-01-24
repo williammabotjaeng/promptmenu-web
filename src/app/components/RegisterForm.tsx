@@ -167,6 +167,7 @@ export const RegisterForm: React.FC = () => {
             }}
             InputProps={{
               sx: {
+                color: '#977342',
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: '#977342', 
                 },
@@ -196,6 +197,7 @@ export const RegisterForm: React.FC = () => {
             }}
             InputProps={{
               sx: {
+                color: '#977342',
                 '& .MuiOutlinedInput-notchedOutline': {
                   borderColor: '#977342',
                 },
@@ -227,6 +229,7 @@ export const RegisterForm: React.FC = () => {
           }}
           InputProps={{
             sx: {
+              color: '#977342',
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#977342',
               },
@@ -257,6 +260,7 @@ export const RegisterForm: React.FC = () => {
           }}
           InputProps={{
             sx: {
+              color: '#977342',
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#977342',
               },
@@ -287,6 +291,7 @@ export const RegisterForm: React.FC = () => {
           }}
           InputProps={{
             sx: {
+              color: '#977342',
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#977342',
               },
@@ -317,6 +322,7 @@ export const RegisterForm: React.FC = () => {
           }}
           InputProps={{
             sx: {
+              color: '#977342',
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: '#977342',
               },
@@ -332,7 +338,7 @@ export const RegisterForm: React.FC = () => {
         <FormControlLabel
           control={<Checkbox sx={{ color: '#977342' }} id="terms" />}
           label={
-            <Typography sx={{ fontSize: { xs: '12px' }, color: { md: '#000', xs: '#ceab76' } }}> 
+            <Typography sx={{ fontSize: { xs: '12px' }, color: { md: '#fff', xs: '#ceab76' } }}> 
               I agree to the Terms of Service and Privacy Policy
             </Typography>
           }
