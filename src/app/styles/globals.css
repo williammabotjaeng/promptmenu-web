@@ -124,3 +124,7 @@ button:hover {
 .event-creation-content {
   text-align: center;
 }
+
+.tiktok-footer:hover {
+  color: white !important;
+}
