@@ -24,7 +24,7 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   verifyOtp: (username: string, otp: string) => Promise<void>;
   logout: () => void;
   register: (
@@ -82,8 +82,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginMutation = useMutation({
     mutationKey: ['login_user'],
-    mutationFn: async ({ username, password }: LoginData) => {
-      return await apiCall('/accounts/login/', 'POST', { username, password });
+    mutationFn: async ({ email, password }: LoginData) => {
+      return await apiCall('/accounts/login/', 'POST', { email, password });
     },
     onSuccess: (data: LoginSuccessData) => {
 
@@ -407,8 +407,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     clearUserData();
   };
 
-  const login = async (username: string, password: string) => {
-    await loginMutation.mutateAsync({ username, password });
+  const login = async (email: string, password: string) => {
+    await loginMutation.mutateAsync({ email, password });
   };
 
   const verifyOtp = async (username: string, otp: string) => {

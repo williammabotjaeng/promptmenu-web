@@ -22,7 +22,7 @@ export const LoginForm: React.FC = () => {
 
   const { login } = useAuth();
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -35,6 +35,8 @@ export const LoginForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("Field:", name);
+    console.log("Value:", value);
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -44,8 +46,10 @@ export const LoginForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    console.log("Form Data:", formData);
+
     const newErrors: { [key: string]: string } = {};
-    if (!formData.username) newErrors.username = "Username or Email is required.";
+    if (!formData.email) newErrors.email = "Username or Email is required.";
     if (!formData.password) newErrors.password = "Password is required.";
 
     setErrors(newErrors);
@@ -53,7 +57,7 @@ export const LoginForm: React.FC = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
 
-        await login(formData.username, formData.password);
+        await login(formData.email, formData.password);
 
         setSnackbarMessage("Login successful! Redirecting...");
         setSnackbarSeverity("success");
@@ -102,6 +106,7 @@ export const LoginForm: React.FC = () => {
               <TextField
                 label="Email Address"
                 type="email"
+                name="email"
                 placeholder="name@company.com"
                 fullWidth
                 margin="normal"
@@ -135,6 +140,7 @@ export const LoginForm: React.FC = () => {
               <TextField
                 label="Password"
                 type="password"
+                name="password"
                 placeholder="Enter your password"
                 fullWidth
                 margin="normal"
