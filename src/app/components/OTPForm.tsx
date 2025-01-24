@@ -27,34 +27,75 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
+  const [cookies] = useCookies(['username']);
+
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOtp(e.target.value);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      await verifyOtp(username, otp);
+  const validateForm = () => {
 
-      setSnackbarMessage('OTP verification successful!');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
-
-
-      setSnackbarMessage("Login successful! Redirecting...");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-
-      setTimeout(() => {
-          router.push('/dashboard');
-      }, 2000);
-    } catch (error) {
-      console.error('OTP verification failed:', error);
-      setSnackbarMessage('OTP verification failed. Please try again.');
+    const storedUsername = cookies['username']; 
+  
+    if (username !== storedUsername) {
+      setSnackbarMessage('Username does not match.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
+      return false;
+    }
+  
+    if (!otp) {
+      setSnackbarMessage('OTP is required.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+  
+    if (!/^\d{6}$/.test(otp)) {
+      setSnackbarMessage('OTP must be exactly 6 digits and numeric.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return false;
+    }
+  
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("OTP Data", username, otp);
+    if (validateForm()) {
+        try {
+          await verifyOtp(username, otp);
+
+          setSnackbarMessage('OTP verification successful!');
+          setSnackbarSeverity('success');
+          setSnackbarOpen(true);
+
+
+          setSnackbarMessage("Login successful! Redirecting...");
+          setSnackbarSeverity("success");
+          setSnackbarOpen(true);
+
+          setTimeout(() => {
+              router.push('/dashboard');
+          }, 2000);
+        } catch (error: any) {
+          console.error('Registration failed:', error);
+          let errorMessage = 'Registration failed. Please try again.';
+  
+          if (error?.response) {
+            if (error?.response.data.message.includes('unique constraint')) {
+              errorMessage = 'Email or username already exists.';
+            }
+          }
+  
+          setSnackbarMessage(errorMessage);
+          setSnackbarSeverity('error');
+          setSnackbarOpen(true);
+        }
     }
   };
 
@@ -205,8 +246,11 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
               <Twitter />
             </Button>
           </Box>
-          {/* Snackbar for feedback */}
-          <Snackbar
+          
+        </Box>
+      </Grid>
+      {/* Snackbar for feedback */}
+      <Snackbar
             open={snackbarOpen}
             autoHideDuration={6000}
             onClose={handleSnackbarClose}
@@ -216,8 +260,6 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
               {snackbarMessage}
             </Alert>
           </Snackbar>
-        </Box>
-      </Grid>
     </Grid>
   );
 };
