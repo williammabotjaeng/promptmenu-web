@@ -42,14 +42,18 @@ export const LoginForm: React.FC = () => {
                 }}
                 InputProps={{
                   sx: {
+                    color: '#977342',
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
+                      color: '#977342'
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
+                      color: '#977342'
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
+                      color: '#977342'
                     },
                   },
                 }}
@@ -70,14 +74,18 @@ export const LoginForm: React.FC = () => {
                 }}
                 InputProps={{
                   sx: {
+                    color: '#977342',
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
+                      color: '#977342'
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
+                      color: '#977342'
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
+                      color: '#977342'
                     },
                   },
                 }}
