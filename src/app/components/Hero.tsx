@@ -3,6 +3,7 @@
 import React from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import heroBanner from '@/assets/hero-banner.png'; 
+import Link from 'next/link';
 
 const Hero: React.FC = () => {
   return (
@@ -58,6 +59,7 @@ const Hero: React.FC = () => {
         
         {/* Buttons */}
         <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: '20px' }}>
+          <Link href="/register">
           <Button
             variant="contained"
             sx={{
@@ -75,6 +77,8 @@ const Hero: React.FC = () => {
           >
             Join as Talent
           </Button>
+          </Link>
+          <Link href="/register">
           <Button
             variant="contained"
             sx={{
@@ -91,6 +95,7 @@ const Hero: React.FC = () => {
           >
             Hire Talent
           </Button>
+          </Link>
         </Box>
       </Typography>
       

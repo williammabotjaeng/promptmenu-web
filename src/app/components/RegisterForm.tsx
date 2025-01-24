@@ -177,6 +177,7 @@ export const RegisterForm: React.FC = () => {
         <Grid item xs={12} md={6}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
+              <Link href="/">
               <Image
                 src={SSHGoldLogo.src}
                 alt="Staffing Solutions Logo"
@@ -184,6 +185,7 @@ export const RegisterForm: React.FC = () => {
                 height={204}
                 style={{ opacity: 0.5, overflow: 'hidden' }}
               />
+              </Link>
               <Typography
                 variant="h4"
                 sx={{
