@@ -23,10 +23,10 @@ export const WhiteHeader: React.FC = () => {
       <Link href="/dashboard" passHref>
         <Button sx={{ color: '#4B5563', width: '100%', textTransform: 'none' }}>Dashboard</Button>
       </Link>
-      <Link href="/services" passHref>
+      <Link href="/portal" passHref>
         <Button sx={{ color: '#977342', width: '100%', textTransform: 'none' }}>Jane Doe</Button>
       </Link>
-      <Link href="/join" passHref>
+      <Link href="/register" passHref>
         <Button className="px-6 rounded primary" sx={{ backgroundColor: '#977342', color: '#ffffff', width: '100%' }}>
           Join Now
         </Button>
