@@ -1,8 +1,71 @@
 import * as React from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { Facebook, Google, Twitter } from '@mui/icons-material';
+import useUserDataStore from '@/state/use-user-data-store';
+import { useCookies } from 'react-cookie';
+import { useAuth } from '@/providers/auth-providers';
+import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
+import { useState } from 'react';
+import { eventNames } from 'process';
 
-export const OTPForm: React.FC = () => {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+interface OTPFormProps {
+  username: string;
+}
+
+export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
+
+  const { verifyOtp } = useAuth();
+  const [otp, setOtp] = useState('');
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+  const router = useRouter();
+
+  const handleChange = (event: any) => {
+    console.log("otp", event.target.value);
+    setOtp(event.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      await verifyOtp(username, otp);
+
+      setSnackbarMessage('OTP verification successful!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+
+
+      setSnackbarMessage("Login successful! Redirecting...");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+
+      setTimeout(() => {
+          router.push('/dashboard');
+      }, 2000);
+    } catch (error) {
+      console.error('OTP verification failed:', error);
+      setSnackbarMessage('OTP verification failed. Please try again.');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleSnackbarClose = (event: React.SyntheticEvent<any> | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   return (
     <Grid container sx={{ height: { xs: '100%', md: '125vh' }, backgroundColor: 'black' }}>
       {/* Left Column */}
@@ -14,24 +77,26 @@ export const OTPForm: React.FC = () => {
             alt="Company logo"
             style={{ maxWidth: '204px', marginBottom: '20px' }}
           />
-          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center',  mt: { xs: 0, md: 16} }}>
+          <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16 } }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
               Verify One Time Pin
             </Typography>
             <Typography variant="body1" sx={{ color: 'gray', marginBottom: 4 }}>
-            Enter OTP sent to your email
+              Enter OTP sent to your email
             </Typography>
-            <form>
+            <form onSubmit={handleSubmit}>
               {/* Styled Input Fields */}
               <TextField
                 label="OTP"
                 type="text"
+                name="otp"
                 placeholder="Enter your OTP"
                 fullWidth
+                onClick={handleChange}
                 margin="normal"
                 InputLabelProps={{
                   sx: {
-                    color: '#977342', 
+                    color: '#977342',
                     '&.Mui-focused': {
                       color: '#977342',
                     },
@@ -43,7 +108,7 @@ export const OTPForm: React.FC = () => {
                       borderColor: '#977342',
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#977342', 
+                      borderColor: '#977342',
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
@@ -59,14 +124,14 @@ export const OTPForm: React.FC = () => {
                   backgroundColor: '#977342',
                   color: 'white',
                   padding: '10px 20px',
-                  width: '100%', 
+                  width: '100%',
                   '&:hover': {
                     backgroundColor: '#977342',
-                    color: 'white', 
+                    color: 'white',
                   },
                 }}
               >
-                Verify Email 
+                Verify Email
               </Button>
               <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                 <Typography variant="body2" sx={{ color: 'gray' }}>
@@ -106,7 +171,7 @@ export const OTPForm: React.FC = () => {
                 color: 'white',
                 '&:hover': {
                   backgroundColor: '#977342',
-                  color: 'white', 
+                  color: 'white',
                 },
               }}
             >
@@ -119,7 +184,7 @@ export const OTPForm: React.FC = () => {
                 color: 'white',
                 '&:hover': {
                   backgroundColor: '#977342',
-                  color: 'white', 
+                  color: 'white',
                 },
               }}
             >
@@ -132,13 +197,24 @@ export const OTPForm: React.FC = () => {
                 color: 'white',
                 '&:hover': {
                   backgroundColor: '#977342',
-                  color: 'white', 
+                  color: 'white',
                 },
               }}
             >
               <Twitter />
             </Button>
           </Box>
+          {/* Snackbar for feedback */}
+          <Snackbar
+            open={snackbarOpen}
+            autoHideDuration={6000}
+            onClose={handleSnackbarClose}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          >
+            <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+              {snackbarMessage}
+            </Alert>
+          </Snackbar>
         </Box>
       </Grid>
     </Grid>

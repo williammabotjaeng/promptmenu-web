@@ -42,10 +42,12 @@ export const RegisterForm: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
-  const [cookies] = useCookies(['username', 'email']);
+  const [cookies, setCookie] = useCookies(['username', 'email']);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("Name:", name);
+    console.log("Value:", value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -55,6 +57,9 @@ export const RegisterForm: React.FC = () => {
     e.preventDefault();
 
     console.log("Form Data", formData);
+    
+    setCookie("username", formData.username);
+
     try {
 
       await register(
@@ -147,12 +152,13 @@ export const RegisterForm: React.FC = () => {
     <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
       Create Your Account
     </Typography>
-    <form>
+    <form  onSubmit={handleSubmit} method="POST">
       <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
         <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' } }}>
           <TextField
             label="First Name"
             id="firstName"
+            name="firstname"
             variant="outlined"
             fullWidth
             margin="normal"
@@ -183,6 +189,7 @@ export const RegisterForm: React.FC = () => {
           <TextField
             label="Last Name"
             id="lastName"
+            name="lastname"
             variant="outlined"
             fullWidth
             margin="normal"
@@ -215,6 +222,7 @@ export const RegisterForm: React.FC = () => {
           label="Email Address"
           type="email"
           id="email"
+          name="email"
           variant="outlined"
           onChange={handleChange}
           fullWidth
@@ -246,6 +254,7 @@ export const RegisterForm: React.FC = () => {
           label="Username"
           type="texr"
           id="username"
+          name="username"
           variant="outlined"
           onChange={handleChange}
           fullWidth
@@ -277,6 +286,7 @@ export const RegisterForm: React.FC = () => {
           label="Password"
           type="password"
           id="password"
+          name="password"
           variant="outlined"
           fullWidth
           onChange={handleChange}
@@ -308,6 +318,7 @@ export const RegisterForm: React.FC = () => {
           label="Confirm Password"
           type="password"
           id="confirmPassword"
+          name="confirmPassword"
           variant="outlined"
           fullWidth
           onChange={handleChange}
@@ -345,7 +356,7 @@ export const RegisterForm: React.FC = () => {
           sx={{ fontSize: { xs: '10px' } }}
         />
       </Box>
-      <Button variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
+      <Button type="submit" variant="contained" sx={{ backgroundColor: '#977342', color: '#fff', padding: '16px', marginTop: 2 }}>
         Create Account
       </Button>
       <Box sx={{ textAlign: 'center', marginTop: 2 }}>
