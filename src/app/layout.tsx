@@ -10,7 +10,6 @@ import { CompanyProvider } from '@/providers/company-provider';
 import { TalentProfileProvider } from "@/providers/talent-profile-provider";
 import { EventProvider } from "@/providers/event-provider";
 import ProtectedRoutes from "./protected-routes";
-import { SessionProvider } from 'next-auth/react';
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -50,7 +49,6 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
-            <SessionProvider> {/* Wrap with SessionProvider */}
               <CompanyProvider>
                 <EventProvider>
                   <TalentProfileProvider>
@@ -64,7 +62,6 @@ export default function RootLayout({
                   </TalentProfileProvider>
                 </EventProvider>
               </CompanyProvider>
-            </SessionProvider>
           </QueryClientProvider>
         </ThemeProvider>
       </body>

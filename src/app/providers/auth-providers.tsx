@@ -21,7 +21,6 @@ import { useCompany } from './company-provider';
 import { useTalentProfile } from './talent-profile-provider';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
-import { handleCreateUserEvent } from '@/api/auth/helpers/auth-helpers';
 
 interface AuthContextType {
   user: AuthenticatedUser | RegistrationSuccessData | null;
@@ -237,7 +236,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
     onSuccess: (data: RegistrationSuccessData) => {
       console.log('Registration successful: ', data);
-      handleCreateUserEvent(data.email);
     },
     onError: (error: RegistrationErrorData) => {
       console.error('Registration error: ', { ...error });
