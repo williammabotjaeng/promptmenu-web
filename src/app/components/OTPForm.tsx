@@ -29,9 +29,8 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
 
   const router = useRouter();
 
-  const handleChange = (event: any) => {
-    console.log("otp", event.target.value);
-    setOtp(event.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOtp(e.target.value);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -92,7 +91,8 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
                 name="otp"
                 placeholder="Enter your OTP"
                 fullWidth
-                onClick={handleChange}
+                value={otp}
+                onChange={handleChange}
                 margin="normal"
                 InputLabelProps={{
                   sx: {
@@ -104,6 +104,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
                 }}
                 InputProps={{
                   sx: {
+                    color: '#977342',
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
                     },
