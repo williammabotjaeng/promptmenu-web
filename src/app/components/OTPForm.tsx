@@ -2,7 +2,9 @@ import * as React from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { Facebook, Google, Twitter } from '@mui/icons-material';
+import { Facebook, Instagram, Twitter } from '@mui/icons-material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import useUserDataStore from '@/state/use-user-data-store';
 import { useCookies } from 'react-cookie';
 import { useAuth } from '@/providers/auth-providers';
@@ -10,6 +12,7 @@ import { useRouter } from 'next/navigation';
 import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { eventNames } from 'process';
+import Link from 'next/link';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -206,6 +209,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
           </Box>
           {/* Social Icons */}
           <Box sx={{ position: 'absolute', bottom: 16, left: 16, display: 'flex', gap: 2 }}>
+            <Link href="https://web.facebook.com/people/Staffing-Solutions-Hub/61568735786489" target="_blank">
             <Button
               variant="outlined"
               sx={{
@@ -219,6 +223,8 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
             >
               <Facebook />
             </Button>
+            </Link>
+            <Link href="https://www.instagram.com/staffingsolutionshub" target="_blank">
             <Button
               variant="outlined"
               sx={{
@@ -230,8 +236,10 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
                 },
               }}
             >
-              <Google />
+              <Instagram />
             </Button>
+            </Link>
+            <Link href="https://x.com/staffinghub_ae" target="_blank">
             <Button
               variant="outlined"
               sx={{
@@ -245,6 +253,22 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
             >
               <Twitter />
             </Button>
+            </Link>
+            <Link href="https://www.tiktok.com/@staffingsolutionshub" target="_blank">
+            <Button
+              variant="outlined"
+              sx={{
+                borderColor: 'white',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#977342',
+                  color: 'white',
+                },
+              }}
+            >
+              <FontAwesomeIcon style={{ fontSize: '24px' }} icon={faTiktok} />
+            </Button>
+            </Link>
           </Box>
           
         </Box>
@@ -259,7 +283,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
             <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
               {snackbarMessage}
             </Alert>
-          </Snackbar>
+      </Snackbar>
     </Grid>
   );
 };

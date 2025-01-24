@@ -2,12 +2,83 @@
 
 import * as React from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { Facebook, Instagram, Twitter } from '@mui/icons-material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/providers/auth-providers';
+import SSHGoldLogo from '@/assets/GoldLogo.png';
+import LoginImage from '@/assets/login-img.png';
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 export const LoginForm: React.FC = () => {
+
+  const { login } = useAuth();
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+  const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newErrors: { [key: string]: string } = {};
+    if (!formData.username) newErrors.username = "Username or Email is required.";
+    if (!formData.password) newErrors.password = "Password is required.";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      try {
+
+        await login(formData.username, formData.password);
+
+        setSnackbarMessage("Login successful! Redirecting...");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2000);
+        
+      } catch (error) {
+        console.error("Login failed:", error);
+        setSnackbarMessage("Login failed. Please check your credentials.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      }
+    }
+  };
+
+  const handleSnackbarClose = (event: React.SyntheticEvent<any> | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   return (
     <Grid container sx={{ height: { xs: '100%', md: '125vh' }, backgroundColor: 'black' }}>
       {/* Left Column */}
@@ -15,9 +86,9 @@ export const LoginForm: React.FC = () => {
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: { xs: 1, md: 12 } }}>
           <img
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c3fc10b45272c7c3f40000cb49e896f62fd831f2d1f6075f068d38a771d3152f?apiKey=7fae980a988640eea8add1e49a5d542e&"
+            src={SSHGoldLogo.src}
             alt="Company logo"
-            style={{ maxWidth: '204px', marginBottom: '20px', marginTop: '1px' }}
+            style={{ maxWidth: '204px', marginBottom: '20px', marginTop: '1px', opacity: 0.2 }}
           />
           <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16 }, alignItems: { md: 'none', xs: 'center' } }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
@@ -26,7 +97,7 @@ export const LoginForm: React.FC = () => {
             <Typography variant="body1" sx={{ color: 'gray', marginBottom: 4 }}>
               Sign in to your account to continue
             </Typography>
-            <form>
+            <form onSubmit={handleSubmit} method="POST">
               {/* Styled Input Fields */}
               <TextField
                 label="Email Address"
@@ -34,6 +105,7 @@ export const LoginForm: React.FC = () => {
                 placeholder="name@company.com"
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
                 InputLabelProps={{
                   sx: {
                     color: '#977342',
@@ -66,6 +138,7 @@ export const LoginForm: React.FC = () => {
                 placeholder="Enter your password"
                 fullWidth
                 margin="normal"
+                onChange={handleChange}
                 InputLabelProps={{
                   sx: {
                     color: '#977342',
@@ -157,7 +230,7 @@ export const LoginForm: React.FC = () => {
       <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'flex' }, position: 'relative' }}>
         <img
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0ca397a6303443cf9ac61c117ae8a3d543e83d9bdce376c072ed0bd5eade2785?apiKey=7fae980a988640eea8add1e49a5d542e&"
+          src={LoginImage.src}
           alt="Background fashion event"
           style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'relative', top: 0, left: 0 }}
         />
@@ -175,68 +248,79 @@ export const LoginForm: React.FC = () => {
           {/* Social Icons */}
           <Box sx={{ position: 'absolute', bottom: 16, left: 16, display: 'flex', gap: 2 }}>
             <Link href="https://web.facebook.com/people/Staffing-Solutions-Hub/61568735786489" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <Facebook />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <Facebook />
+              </Button>
             </Link>
             <Link href="https://www.instagram.com/staffingsolutionshub" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <Instagram />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <Instagram />
+              </Button>
             </Link>
             <Link href="https://x.com/staffinghub_ae" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <Twitter />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <Twitter />
+              </Button>
             </Link>
             <Link href="https://www.tiktok.com/@staffingsolutionshub" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <FontAwesomeIcon style={{ fontSize: '24px' }} icon={faTiktok} />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <FontAwesomeIcon style={{ fontSize: '24px' }} icon={faTiktok} />
+              </Button>
             </Link>
           </Box>
         </Box>
       </Grid>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };
