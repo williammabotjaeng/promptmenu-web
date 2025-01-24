@@ -2,7 +2,9 @@
 
 import * as React from 'react';
 import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
-import { Facebook, Google, Twitter } from '@mui/icons-material';
+import { Facebook, Instagram, Twitter } from '@mui/icons-material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
 
 export const LoginForm: React.FC = () => {
@@ -172,6 +174,7 @@ export const LoginForm: React.FC = () => {
           </Box>
           {/* Social Icons */}
           <Box sx={{ position: 'absolute', bottom: 16, left: 16, display: 'flex', gap: 2 }}>
+            <Link href="https://web.facebook.com/people/Staffing-Solutions-Hub/61568735786489" target="_blank">
             <Button
               variant="outlined"
               sx={{
@@ -185,6 +188,8 @@ export const LoginForm: React.FC = () => {
             >
               <Facebook />
             </Button>
+            </Link>
+            <Link href="https://www.instagram.com/staffingsolutionshub" target="_blank">
             <Button
               variant="outlined"
               sx={{
@@ -196,8 +201,10 @@ export const LoginForm: React.FC = () => {
                 },
               }}
             >
-              <Google />
+              <Instagram />
             </Button>
+            </Link>
+            <Link href="https://x.com/staffinghub_ae" target="_blank">
             <Button
               variant="outlined"
               sx={{
@@ -211,6 +218,22 @@ export const LoginForm: React.FC = () => {
             >
               <Twitter />
             </Button>
+            </Link>
+            <Link href="https://www.tiktok.com/@staffingsolutionshub" target="_blank">
+            <Button
+              variant="outlined"
+              sx={{
+                borderColor: 'white',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: '#977342',
+                  color: 'white',
+                },
+              }}
+            >
+              <FontAwesomeIcon style={{ fontSize: '24px' }} icon={faTiktok} />
+            </Button>
+            </Link>
           </Box>
         </Box>
       </Grid>
