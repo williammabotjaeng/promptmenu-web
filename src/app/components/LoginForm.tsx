@@ -92,9 +92,8 @@ export const LoginForm: React.FC = () => {
               />
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
                 <FormControlLabel
-                  control={<Checkbox />}
+                  control={<Checkbox sx={{ color: '#977342' }} />}
                   label="Remember me"
-                  sx={{ color: 'gray' }}
                 />
                 <Link href="/forgot">
                   <Button
