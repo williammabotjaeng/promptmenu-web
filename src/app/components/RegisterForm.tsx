@@ -1,14 +1,19 @@
 import * as React from "react";
 import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar, Grid } from "@mui/material";
-
+import Snackbar from '@mui/material/Snackbar';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import Image from 'next/image';
 import { useState } from "react";
 
 import { useAuth } from "@/providers/auth-providers";
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import { useCookies } from "react-cookie";
 import { redirect } from "next/navigation";
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 const features = [
   {
@@ -57,7 +62,7 @@ export const RegisterForm: React.FC = () => {
     e.preventDefault();
 
     console.log("Form Data", formData);
-    
+
     setCookie("username", formData.username);
 
     try {
@@ -96,6 +101,10 @@ export const RegisterForm: React.FC = () => {
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -372,6 +381,17 @@ export const RegisterForm: React.FC = () => {
       <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400', fontSize: { xs: '12px' } }}>
         © 2025 Staffing Solutions Hub. All rights reserved.
       </Box>
+      {/* Snackbar for notifications */}
+      <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
     </Box>
   );
 };
