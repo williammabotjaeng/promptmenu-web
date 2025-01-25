@@ -18,6 +18,10 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   const accessRoute = user_role === 'client' ? '/dashboard' : '/portal';
 
+  useEffect(() => {
+    console.log("Value of User:", user);
+  }, [user]);
+
   return (
     <NextShield
       isAuth={user} 

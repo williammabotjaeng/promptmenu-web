@@ -32,6 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onSuccess: (data: LoginSuccessData) => {
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
       setUser(true);
+      
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
     },

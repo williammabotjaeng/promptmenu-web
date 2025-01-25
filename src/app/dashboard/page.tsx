@@ -6,9 +6,17 @@ import { StatCard } from "@/components/dashboard/StatCard";
 import { JobCard } from "@/components/dashboard/JobCard";
 import { ActivityItem } from "@/components/dashboard/ActivityItem";
 import { recentJobs, statsData, recentActivities } from "@/data/index";
+import { useAuth } from "@/providers/auth-providers";
 import Header from "@/components/dashboard/Header"; 
+import { useEffect } from "react";
 
 const Dashboard = () => {
+
+  const { user } = useAuth();
+
+  useEffect(() => {
+    console.log("Value of user:", user);
+  }, [user]);
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
       <Header /> {/* Use the Header component */}
