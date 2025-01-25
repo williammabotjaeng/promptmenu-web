@@ -4,7 +4,7 @@ import { RegistrationSuccessData } from '@/types/RegistrationSuccessData';
 import { ErrorData } from '@/types/ErrorData';
 
 export interface AuthContextType {
-    user: AuthenticatedUser | RegistrationSuccessData | null;
+    user: boolean;
     login: (email: string, password: string) => Promise<void>;
     loginIsLoading: boolean; 
     loginError: boolean; 
