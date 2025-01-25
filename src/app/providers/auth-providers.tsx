@@ -16,12 +16,14 @@ import clearCurrentUser from '@/state/use-user-store';
 import { useStore } from 'zustand';
 import useTokenStore from '@/state/use-token-store';
 import { AuthContextType } from '@/types/AuthContext';
+import useAuthStore from '@/state/use-auth-store';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState(false);
   const { setTokens } = useStore(useTokenStore);
+  const { setAuth, clearAuth } = useStore(useAuthStore);
   const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh']);
 
   const loginMutation = useMutation({
@@ -32,6 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onSuccess: (data: LoginSuccessData) => {
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
       setUser(true);
+      setAuth(true);
       
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
@@ -70,6 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
       setUser(true);
+      setAuth(true);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
     },
@@ -83,6 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     removeCookie('refresh', { path: '/' });
     setUser(false);
     clearCurrentUser();
+    clearAuth();
   };
 
   const login = async (email: string, password: string) => {

@@ -6,12 +6,16 @@ import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer } from '@m
 import Image from 'next/image';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import { useCookies } from 'react-cookie';
+import { useStore } from 'zustand';
 import MenuIcon from '@mui/icons-material/Menu';
+import useAuthStore from '@/state/use-auth-store';
 
 export const Header: React.FC = () => {
   const [cookies] = useCookies(["access"]);
   const accessToken = cookies['access'];
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+
+  const { isAuthenticated } = useStore(useAuthStore);
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -36,7 +40,7 @@ export const Header: React.FC = () => {
           Join Now
         </Button>
       </Link>
-      {!accessToken && (
+      {!isAuthenticated && (
         <Link href="/login" passHref>
           <Button 
             sx={{ 

@@ -9,17 +9,22 @@ import { recentJobs, statsData, recentActivities } from "@/data/index";
 import { useAuth } from "@/providers/auth-providers";
 import Header from "@/components/dashboard/Header"; 
 import { useEffect } from "react";
+import { useStore } from "zustand";
+import useAuthStore from "@/state/use-auth-store";
 
 const Dashboard = () => {
 
   const { user } = useAuth();
 
+  const { isAuthenticated } = useStore(useAuthStore);
+
   useEffect(() => {
-    console.log("Value of user:", user);
-  }, [user]);
+    console.log("Value of user:", isAuthenticated);
+  }, []);
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
-      <Header /> {/* Use the Header component */}
+      <Header /> 
 
       <Box sx={{ flexGrow: 1, padding: { xs: 2, md: 3 } }}>
         <Grid container spacing={3}>
