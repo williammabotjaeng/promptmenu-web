@@ -63,9 +63,7 @@ export const LoginForm: React.FC = () => {
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
         
-        setTimeout(() => {
-          router.push('/dashboard');
-        }, 2000);
+        router.push('/dashboard');
         
       } catch (error) {
         console.error("Login failed:", error);

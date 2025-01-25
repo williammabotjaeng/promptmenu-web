@@ -20,7 +20,7 @@ import { AuthContextType } from '@/types/AuthContext';
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<AuthenticatedUser | RegistrationSuccessData | null>(null);
+  const [user, setUser] = useState(false);
   const { setTokens } = useStore(useTokenStore);
   const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh']);
 
@@ -30,14 +30,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return await apiCall('/accounts/login/', 'POST', { email, password });
     },
     onSuccess: (data: LoginSuccessData) => {
-      const loggedInUser: AuthenticatedUser = {
-        refresh: data?.tokens?.refresh,
-        access: data?.tokens?.access,
-        user_role: data?.tokens?.user_role
-      };
-
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
-      setUser(loggedInUser);
+      setUser(true);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
     },
@@ -71,14 +65,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return await apiCall('/accounts/verify_otp/', 'POST', data);
     },
     onSuccess: (data: LoginSuccessData) => {
-      const loggedInUser: AuthenticatedUser = {
-        refresh: data?.tokens?.refresh,
-        access: data?.tokens?.access,
-        user_role: data?.tokens?.user_role
-      };
+    
 
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
-      setUser(loggedInUser);
+      setUser(true);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
     },
@@ -90,7 +80,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     removeCookie('access', { path: '/' });
     removeCookie('refresh', { path: '/' });
-    setUser(null);
+    setUser(false);
     clearCurrentUser();
   };
 

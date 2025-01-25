@@ -5,22 +5,22 @@ import { useRouter } from 'next/navigation';
 import { NextShield } from 'next-shield';
 import { useCookies } from 'react-cookie';
 import { useAuth } from '@/providers/auth-providers';
+import Loading from '@/components/Loading';
 
 const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   
   const router = useRouter();
-  const [cookies] = useCookies(['access', 'user_role']);
+  const [cookies] = useCookies(['user_role']);
 
-  const { loginIsLoading, verifyOtpIsLoading } = useAuth();
+  const { loginIsLoading, verifyOtpIsLoading, user } = useAuth();
   
-  const accessToken = cookies?.access; 
   const user_role = cookies?.user_role;
 
   const accessRoute = user_role === 'client' ? '/dashboard' : '/portal';
 
   return (
     <NextShield
-      isAuth={!!accessToken} 
+      isAuth={user} 
       isLoading={loginIsLoading || verifyOtpIsLoading} 
       router={router}
       privateRoutes={['/dashboard', '/portal', '/client-onboarding', '/talent-onboarding']} 
@@ -28,7 +28,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       hybridRoutes={['/contact', 'talent']} 
       accessRoute={accessRoute} 
       loginRoute="/login"
-      LoadingComponent={<p>Loading...</p>} 
+      LoadingComponent={<Loading />} 
     >
       {children}
     </NextShield>
