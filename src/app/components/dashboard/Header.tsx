@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, Button, IconButton, Typography, Box, Drawer } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/auth-providers';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import Image from 'next/image';
@@ -10,6 +11,9 @@ const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [cookies] = useCookies(['access']);
   const { logout } = useAuth();
+
+  const router = useRouter();
+
   const accessToken = cookies?.access;
 
   const toggleDrawer = (open: boolean) => () => {

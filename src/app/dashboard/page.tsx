@@ -11,16 +11,19 @@ import Header from "@/components/dashboard/Header";
 import { useEffect } from "react";
 import { useStore } from "zustand";
 import useAuthStore from "@/state/use-auth-store";
+import { useRouter } from "next/navigation";
+import { useCookies } from "react-cookie";
 
 const Dashboard = () => {
 
   const { user } = useAuth();
+  const router = useRouter();
+  const [cookies] = useCookies(['access']);
+
+  const accessToken = cookies['access'];
 
   const { isAuthenticated } = useStore(useAuthStore);
 
-  useEffect(() => {
-    console.log("Value of user:", isAuthenticated);
-  }, []);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>

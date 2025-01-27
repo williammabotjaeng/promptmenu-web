@@ -48,7 +48,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
         setRoutesResolved(true);
         router.push('/dashboard');
       }
-    } else if (!accessToken && publicRoutes.includes(pathname.toLocaleLowerCase())) {
+    } else if (!accessToken && (publicRoutes.includes(pathname.toLocaleLowerCase()) || hybridRoutes.includes(pathname.toLocaleLowerCase()))) {
       console.log("Redirecting to login");
       setRoutesResolved(true);
       router.push(pathname);

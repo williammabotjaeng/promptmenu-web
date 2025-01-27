@@ -16,7 +16,9 @@ import clearCurrentUser from '@/state/use-user-store';
 import { useStore } from 'zustand';
 import useTokenStore from '@/state/use-token-store';
 import { AuthContextType } from '@/types/AuthContext';
+import { useRouter, redirect } from 'next/navigation';
 import useAuthStore from '@/state/use-auth-store';
+import { red } from '@mui/material/colors';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -25,6 +27,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { setTokens } = useStore(useTokenStore);
   const { setAuth, clearAuth } = useStore(useAuthStore);
   const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh']);
+
+  const router = useRouter();
 
   const loginMutation = useMutation({
     mutationKey: ['login_user'],
@@ -85,9 +89,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     removeCookie('access', { path: '/' });
     removeCookie('refresh', { path: '/' });
-    setUser(false);
-    clearCurrentUser();
-    clearAuth();
+    redirect('/login');
   };
 
   const login = async (email: string, password: string) => {
