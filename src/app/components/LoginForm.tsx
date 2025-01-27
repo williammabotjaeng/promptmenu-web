@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/auth-providers';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import LoginImage from '@/assets/login-img.png';
+import Image from 'next/image';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -86,12 +87,9 @@ export const LoginForm: React.FC = () => {
       {/* Left Column */}
       <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', padding: { xs: 1, md: 4 } }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: { xs: 1, md: 12 } }}>
-          <img
-            loading="lazy"
-            src={SSHGoldLogo.src}
-            alt="Company logo"
-            style={{ maxWidth: '204px', marginBottom: '20px', marginTop: '1px', opacity: 0.2 }}
-          />
+          <Link href="/">
+          <Image src={SSHGoldLogo} alt="Logo" width={200} height={200} style={{ cursor: 'pointer', opacity: .3 }} />
+          </Link>
           <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16 }, alignItems: { md: 'none', xs: 'center' } }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
               Welcome Back

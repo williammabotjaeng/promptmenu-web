@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import { AppBar, Toolbar, Button, IconButton, Typography, Box, Drawer } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useCookies } from 'react-cookie';
+import { useAuth } from '@/providers/auth-providers';
+import SSHGoldLogo from '@/assets/GoldLogo.png';
+import Image from 'next/image';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [cookies] = useCookies(['access']);
+  const { logout } = useAuth();
+  const accessToken = cookies?.access;
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
+
+  const handleLogout = () => {
+    console.log("Logout");
+    logout();
+  }
 
   const menuItems = (
     <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
@@ -23,18 +35,25 @@ const Header = () => {
           {text}
         </Button>
       ))}
+      {accessToken && (
+        <Button
+          sx={{
+            color: '#977342',
+            '&:hover': { color: '#fff', backgroundColor: '#CEAB76' },
+            width: '100%'
+          }}
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
+      )}
     </Box>
   );
 
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
       <Toolbar>
-        <img
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/f7a98b4005a2f1122fca47c9c2e20cca9902f81182f9787864a4383cb85fee36?apiKey=7fae980a988640eea8add1e49a5d542e&"
-          alt=""
-          style={{ width: '43px', marginRight: '16px' }}
-        />
+        <Image src={SSHGoldLogo} alt="Logo" width={60} height={60} style={{ cursor: 'pointer' }} />
         <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#000' }}>SSH</Typography>
 
         <IconButton
@@ -61,7 +80,7 @@ const Header = () => {
                 sx={{
                   color: 'gray',
                   '&:hover': { color: 'white' },
-                  marginLeft: '16px' // Add spacing between buttons
+                  marginLeft: '16px'
                 }}
               >
                 {text}
