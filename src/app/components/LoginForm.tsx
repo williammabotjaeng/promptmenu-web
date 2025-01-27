@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 import { useAuth } from '@/providers/auth-providers';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import LoginImage from '@/assets/login-img.png';
