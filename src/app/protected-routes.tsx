@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { NextShield } from 'next-shield';
 import { useCookies } from 'react-cookie';
 import { useAuth } from '@/providers/auth-providers';
@@ -12,7 +12,11 @@ import useAuthStore from './state/use-auth-store';
 const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   
   const router = useRouter();
-  const [cookies] = useCookies(['user_role']);
+  const pathname = usePathname();
+
+  const [cookies] = useCookies(['user_role', 'access']);
+
+  const accessToken = cookies?.access;
 
   const { loginIsLoading, verifyOtpIsLoading, user } = useAuth();
 
@@ -23,7 +27,20 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const accessRoute = user_role === 'client' ? '/dashboard' : '/portal';
 
   useEffect(() => {
-    console.log("Value of User:", useAuthStore.getState().isAuthenticated);
+    console.log("Pathname:", pathname);
+    console.log("Cookies Status:", accessToken)
+    if (accessToken && pathname.toLocaleLowerCase() === '/login')
+    {
+      console.log("I'm on login");
+      router.push('/dashboard');
+    } else if (accessToken && pathname.toLocaleLowerCase() === '/register') {
+      console.log("I'm on register");
+      router.push('/dashboard');
+    } else if (accessToken && pathname.toLocaleLowerCase() === '/') {
+      console.log("I'm on home");
+      router.push('/dashboard');
+    }
+    
   }, []);
 
   return (
