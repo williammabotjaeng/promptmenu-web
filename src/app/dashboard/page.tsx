@@ -15,22 +15,26 @@ import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { PersonAdd, Star } from "@mui/icons-material";
 import Work from "@mui/icons-material/Work";
+import Loading from "@/components/Loading";
 
 const Dashboard = () => {
 
   const { user, updateUser } = useAuth();
   const router = useRouter();
-  const [cookies] = useCookies(['ssh_session_id', 'user_role']);
+  const [cookies, setCookie] = useCookies(['ssh_session_id', 'user_role']);
 
   const user_role = cookies['user_role'];
 
+  const user_roles = ['client', 'talent', 'influencer'];
+
   const [openModal, setOpenModal] = useState(true); 
+  const [loading, setLoading] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option: 'client' | 'talent' | 'influencer') => {
     console.log("User selected:", option);
     handleCloseModal(); 
     updateUser(
@@ -38,13 +42,30 @@ const Dashboard = () => {
         value: option
       }
     )
+    setCookie('user_role', option.toLowerCase());
   };
 
   useEffect(() => {
-      if ((!user_role || user_role === 'undefined')) {
+    console.log("User Role:", user_role);
+    setLoading(true);
+
+    if (user_role === 'undefined') {
+        console.log("User role:", user_role);
+        console.log("Check:", user_role === 'undefined');
+        setLoading(false);
         setOpenModal(true);
-      }
-  }, []);
+    } else if (user_role in user_roles) {
+        if (user_role === 'client') {
+            router.push('/dashboard');
+        } else if (user_role === 'talent' || user_role === 'influencer') {
+            router.push('/portal');
+        }
+    }
+
+    setLoading(false);
+}, [user_role, user_roles, router]);
+
+  if (loading) return <Loading />;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
