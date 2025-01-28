@@ -3,7 +3,7 @@ export const privateRoutes: string[] = [
   ];
 
   export const publicRoutes: string[] = [
-      '/', '/login', '/register'
+      '/', '/login', '/register', '/otp'
   ];
 
   export const hybridRoutes: string[] = [
