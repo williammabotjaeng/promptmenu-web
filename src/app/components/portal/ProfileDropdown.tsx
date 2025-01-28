@@ -41,8 +41,9 @@ const ProfileDropdown: React.FC = () => {
                 onClose={handleClose}
                 PaperProps={{
                     style: {
-                        backgroundColor: '#977342',
-                        color: 'black',
+                        backgroundColor: '#fff',
+                        color: '#977342',
+                        border: '1px solid #CEAB76',
                         maxHeight: 48 * 4.5 + 8,
                     },
                 }}
@@ -57,23 +58,25 @@ const ProfileDropdown: React.FC = () => {
                     onClick={() => handleMenuItemClick('/messages')}
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
+                            backgroundColor: '#CEAB76',
+                            color: '#fff',
                         },
                     }}
                 >
                     Messages
                     <Box component={"span"} sx={{
-                        background: 'white',
+                        background: '#977342',
                         borderRadius: { xs: '80%', md: '50%' }, 
-                        color: '#977342',
+                        border: '1px solid #977342',
+                        color: '#fff',
                         width: { xs: '24px', md: '24px' }, 
                         height: { xs: '18px', md: '24px' }, 
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center', 
                         marginLeft: '8px', 
-                        fontSize: '14px', 
+                        padding: { xs: '10px' },
+                        fontSize: { xs: '16px', md: '14px' }, 
                     }}>
                         {0}
                     </Box>
@@ -82,8 +85,8 @@ const ProfileDropdown: React.FC = () => {
                     onClick={() => handleMenuItemClick('/payments')}
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
+                            backgroundColor: '#CEAB76',
+                            color: '#fff',
                         },
                     }}
                 >
@@ -94,8 +97,8 @@ const ProfileDropdown: React.FC = () => {
                     onClick={handleLogout}
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
+                            backgroundColor: '#CEAB76',
+                            color: '#fff',
                         },
                     }}
                 >
