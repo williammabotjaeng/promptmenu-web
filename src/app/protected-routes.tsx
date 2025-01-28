@@ -52,7 +52,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     } else if ((!sessionID || sessionID === 'undefined') && privateRoutes.includes(pathname)) {
       setRoutesResolved(true);
       router.push('/login');
-    }
+    } 
 
     const timer = setTimeout(() => {
       setLoading(false);

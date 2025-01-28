@@ -26,7 +26,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState(false);
   const { setTokens } = useStore(useTokenStore);
   const { setAuth, clearAuth } = useStore(useAuthStore);
-  const [cookies, setCookie, removeCookie] = useCookies(['access', 'refresh', 'ssh_session_id']);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'access', 'refresh', 'ssh_session_id', 'user_role'
+  ]);
 
   const router = useRouter();
 
@@ -41,6 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAuth(true);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
+      setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
       redirect('/dashboard'); 
     },
@@ -79,6 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAuth(true);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
+      setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.tokens?.ssh_session_id, { path: '/', maxAge: 604800 });
     },
     onError: (error) => {
@@ -94,6 +98,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onSuccess: () => {
       removeCookie('access', { path: '/' });
       removeCookie('refresh', { path: '/' });
+      removeCookie('ssh_session_id', { path: '/' });
+      removeCookie('user_role', { path: '/' });
       redirect('/login'); 
     },
     onError: (error) => {

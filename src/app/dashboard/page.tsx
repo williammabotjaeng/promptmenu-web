@@ -1,14 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { Box, Grid, Card, CardContent, Typography, Button } from "@mui/material";
+import { Box, Grid, Card, CardContent, Typography, Button, DialogTitle, Dialog, DialogContent, DialogActions } from "@mui/material";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { JobCard } from "@/components/dashboard/JobCard";
 import { ActivityItem } from "@/components/dashboard/ActivityItem";
 import { recentJobs, statsData, recentActivities } from "@/data/index";
 import { useAuth } from "@/providers/auth-providers";
 import Header from "@/components/dashboard/Header"; 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import useAuthStore from "@/state/use-auth-store";
 import { useRouter } from "next/navigation";
@@ -18,12 +18,26 @@ const Dashboard = () => {
 
   const { user } = useAuth();
   const router = useRouter();
-  const [cookies] = useCookies(['access']);
+  const [cookies] = useCookies(['ssh_session_id', 'user_role']);
 
-  const accessToken = cookies['access'];
+  const user_role = cookies['user_role'];
 
-  const { isAuthenticated } = useStore(useAuthStore);
+  const [openModal, setOpenModal] = useState(true); 
 
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleOptionClick = (option) => {
+    console.log("User selected:", option);
+    handleCloseModal(); 
+  };
+
+  useEffect(() => {
+      if ((!user_role || user_role === 'undefined')) {
+        setOpenModal(true);
+      }
+  }, []);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden', backgroundColor: 'white' }}>
@@ -75,6 +89,18 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Box>
+      {/* Modal for user options */}
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        <DialogTitle>What are you looking for on SSH?</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">Please select one of the options below:</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => handleOptionClick("Hire Talent")} color="primary">Hire Talent</Button>
+          <Button onClick={() => handleOptionClick("Find Work")} color="primary">Find Work</Button>
+          <Button onClick={() => handleOptionClick("I'm an Influencer")} color="primary">I'm an Influencer</Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
