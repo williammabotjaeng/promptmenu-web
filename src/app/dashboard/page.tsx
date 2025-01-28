@@ -23,7 +23,7 @@ const Dashboard = () => {
   const router = useRouter();
   const [cookies, setCookie] = useCookies(['ssh_session_id', 'user_role']);
 
-  const user_role = cookies['user_role'];
+  let user_role = cookies['user_role'];
 
   const user_roles = ['client', 'talent', 'influencer'];
 
@@ -38,7 +38,8 @@ const Dashboard = () => {
     console.log("User selected:", option);
     handleCloseModal(); 
     updateUser(
-      { field: 'user_role',
+      { 
+        field: 'user_role',
         value: option
       }
     )
@@ -51,7 +52,7 @@ const Dashboard = () => {
 
     if (!user_role) {
         console.log("User role:", user_role);
-        console.log("Check:", user_role === 'undefined');
+        console.log("Check:", !user_role);
         setLoading(false);
         setOpenModal(true);
     } else if (user_role in user_roles) {

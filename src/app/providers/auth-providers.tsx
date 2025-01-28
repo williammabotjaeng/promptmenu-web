@@ -80,14 +80,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     mutationFn: async (data: OTPData) => {
       return await apiCall('/accounts/verify_otp/', 'POST', data);
     },
-    onSuccess: (data: LoginSuccessData) => {
+    onSuccess: (data) => {
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
       setUser(true);
       setAuth(true);
+      let temp_user_role = data?.tokens?.user_role === 'None' ? undefined : data?.tokens?.user_role; 
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
-      setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
-      setCookie('ssh_session_id', data?.tokens?.ssh_session_id, { path: '/', maxAge: 604800 });
+      setCookie('user_role', temp_user_role, { path: '/', maxAge: 604800 });
+      setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
     },
     onError: (error) => {
       console.error('OTP verification error: ', error);
