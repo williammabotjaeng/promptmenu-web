@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Avatar, Menu, MenuItem } from '@mui/material';
+import { Avatar, Box, Menu, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/auth-providers';
 
@@ -28,12 +28,12 @@ const ProfileDropdown: React.FC = () => {
     };
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { xs: 'flex-start', md: 'start' } }}>
             <Avatar
                 alt="Profile Picture"
                 src="/path/to/profile/picture.jpg"
                 onClick={handleClick}
-                style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'white', color: '#977342', border: '1px solid #977342' }}
+                sx={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'white', color: '#977342', border: '1px solid #977342' }}
             />
             <Menu
                 anchorEl={anchorEl}
@@ -44,8 +44,13 @@ const ProfileDropdown: React.FC = () => {
                         backgroundColor: '#977342',
                         color: 'black',
                         maxHeight: 48 * 4.5 + 8,
-                        width: '20ch',
                     },
+                }}
+                sx={{
+                    width: { xs: '16ch', md: '20ch' },
+                    marginRight: {
+                        md: 20
+                    }
                 }}
             >
                 <MenuItem
@@ -58,12 +63,12 @@ const ProfileDropdown: React.FC = () => {
                     }}
                 >
                     Messages
-                    <span style={{
+                    <Box component={"span"} sx={{
                         background: 'white',
-                        borderRadius: '50%', 
+                        borderRadius: { xs: '80%', md: '50%' }, 
                         color: '#977342',
-                        width: '24px', 
-                        height: '24px', 
+                        width: { xs: '24px', md: '24px' }, 
+                        height: { xs: '18px', md: '24px' }, 
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center', 
@@ -71,7 +76,7 @@ const ProfileDropdown: React.FC = () => {
                         fontSize: '14px', 
                     }}>
                         {0}
-                    </span>
+                    </Box>
                 </MenuItem>
                 <MenuItem
                     onClick={() => handleMenuItemClick('/payments')}
@@ -97,7 +102,7 @@ const ProfileDropdown: React.FC = () => {
                     Logout
                 </MenuItem>
             </Menu>
-        </div>
+        </Box>
     );
 };
 

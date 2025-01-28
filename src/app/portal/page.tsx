@@ -121,7 +121,8 @@ const Portal: React.FC = () => {
               </Grid>
               <Grid item xs={4} sx={{
                 display: 'flex',
-                flexDirection: 'row'
+                flexDirection: 'row',
+                justifyContent: 'flex-end'
               }}>
                 <NotificationDropdown />
                 <ProfileDropdown />
