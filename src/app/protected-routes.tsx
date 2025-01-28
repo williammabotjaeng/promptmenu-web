@@ -27,8 +27,6 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const accessRoute = user_role === 'client' ? '/dashboard' : '/portal';
 
   useEffect(() => {
-    console.log("Pathname:", pathname);
-    console.log("Cookies Status:", sessionID);
     setRoutesResolved(false);
 
     if (sessionID && sessionID !== 'undefined') {

@@ -36,14 +36,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return await apiCall('/accounts/login/', 'POST', { email, password });
     },
     onSuccess: (data) => {
-      console.log("Login Successful:", data);
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
       setUser(true);
       setAuth(true);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
-      console.log("SSH Session ID:", cookies['ssh_session_id']);
       redirect('/dashboard'); 
     },
     onError: (error) => {
@@ -63,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     },
     onSuccess: (data: RegistrationSuccessData) => {
-      console.log('Registration successful: ', data);
+    
     },
     onError: (error: RegistrationErrorData) => {
       console.error('Registration error: ', { ...error });
