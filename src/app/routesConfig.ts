@@ -1,5 +1,5 @@
 export const privateRoutes: string[] = [
-      '/dashboard', 'portal', 'post-event', 'talent-onboarding'
+      '/dashboard', '/portal', '/post-event', '/talent-onboarding'
   ];
 
   export const publicRoutes: string[] = [
