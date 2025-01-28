@@ -49,7 +49,7 @@ const Dashboard = () => {
     console.log("User Role:", user_role);
     setLoading(true);
 
-    if (user_role === 'undefined') {
+    if (!user_role) {
         console.log("User role:", user_role);
         console.log("Check:", user_role === 'undefined');
         setLoading(false);
@@ -118,7 +118,7 @@ const Dashboard = () => {
         </Grid>
       </Box>
       {/* Modal for user options */}
-      <Dialog open={openModal} onClose={handleCloseModal} sx={{
+      {user_role ? null : (<Dialog open={openModal} onClose={handleCloseModal} sx={{
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
@@ -174,7 +174,7 @@ const Dashboard = () => {
             }}>I'm an Influencer</Button>
           </Box>
         </DialogActions>
-      </Dialog>
+      </Dialog>)}
     </Box>
   );
 };
