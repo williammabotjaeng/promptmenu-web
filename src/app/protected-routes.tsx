@@ -9,6 +9,7 @@ import { useStore } from 'zustand';
 import Loading from '@/components/Loading';
 import useAuthStore from '@/state/use-auth-store';
 import { publicRoutes, privateRoutes, hybridRoutes } from './routesConfig';
+import { access } from 'fs';
 
 const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   
@@ -33,17 +34,19 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       if (publicRoutes.includes(pathname.toLowerCase())) {
         console.log("Redirecting from public route to dashboard");
         setRoutesResolved(true);
-        router.push('/dashboard');
+        router.push(accessRoute);
       } else if (hybridRoutes.includes(pathname.toLowerCase())) {
         console.log("On a hybrid route");
         setRoutesResolved(true);
+        router.push(pathname);
       } else if (privateRoutes.includes(pathname.toLowerCase())) {
         console.log("On a private route");
         setRoutesResolved(true);
+        router.push(pathname);
       } else {
         console.log("Redirecting to dashboard from unknown route");
         setRoutesResolved(true);
-        router.push('/dashboard');
+        router.push(accessRoute);
       }
     } else if ((!sessionID || sessionID === 'undefined') && (publicRoutes.includes(pathname.toLocaleLowerCase()) || hybridRoutes.includes(pathname.toLocaleLowerCase()))) {
       console.log("Redirecting to login");

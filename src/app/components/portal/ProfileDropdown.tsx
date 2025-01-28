@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/providers/auth-providers';
 
 const ProfileDropdown: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const { logout } = useAuth();
     const router = useRouter();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -15,6 +17,10 @@ const ProfileDropdown: React.FC = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = () => {
+        logout();
+    }
 
     const handleMenuItemClick = (route: string) => {
         handleClose();
@@ -27,7 +33,7 @@ const ProfileDropdown: React.FC = () => {
                 alt="Profile Picture"
                 src="/path/to/profile/picture.jpg"
                 onClick={handleClick}
-                style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'black', color: '#977342' }}
+                style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'white', color: '#977342', border: '1px solid #977342' }}
             />
             <Menu
                 anchorEl={anchorEl}
@@ -53,7 +59,7 @@ const ProfileDropdown: React.FC = () => {
                 >
                     Messages
                     <span style={{
-                        background: 'black',
+                        background: 'white',
                         borderRadius: '50%', 
                         color: '#977342',
                         width: '24px', 
@@ -68,17 +74,6 @@ const ProfileDropdown: React.FC = () => {
                     </span>
                 </MenuItem>
                 <MenuItem
-                    onClick={() => handleMenuItemClick('/account')}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
-                        },
-                    }}
-                >
-                    Account
-                </MenuItem>
-                <MenuItem
                     onClick={() => handleMenuItemClick('/payments')}
                     sx={{
                         '&:hover': {
@@ -89,8 +84,9 @@ const ProfileDropdown: React.FC = () => {
                 >
                     Payments
                 </MenuItem>
+            
                 <MenuItem
-                    onClick={() => handleMenuItemClick('/settings')}
+                    onClick={handleLogout}
                     sx={{
                         '&:hover': {
                             backgroundColor: 'black',
@@ -98,18 +94,7 @@ const ProfileDropdown: React.FC = () => {
                         },
                     }}
                 >
-                    Settings
-                </MenuItem>
-                <MenuItem
-                    onClick={() => handleMenuItemClick('/support')}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
-                        },
-                    }}
-                >
-                    Support
+                    Logout
                 </MenuItem>
             </Menu>
         </div>

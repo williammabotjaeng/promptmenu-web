@@ -24,7 +24,7 @@ const NotificationDropdown: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <IconButton onClick={handleClick} style={{ color: 'black' }}>
+      <IconButton onClick={handleClick} style={{ color: '#977342' }}>
         <NotificationsIcon />
       </IconButton>
       <Menu

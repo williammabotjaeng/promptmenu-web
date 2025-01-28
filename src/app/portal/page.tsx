@@ -11,6 +11,8 @@ import Sticky from 'react-sticky-el';
 import { useEffect, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Loading from '@/components/Loading';
+import NotificationDropdown from '@/components/portal/NotificationDropdown';
+import ProfileDropdown from '@/components/portal/ProfileDropdown';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -117,13 +119,12 @@ const Portal: React.FC = () => {
                 <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px', md: '24px' }, marginLeft: { xs: 4 } }}>Welcome, Sarah!</Typography>
                 <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px', md: '24px'}, marginLeft: { xs: 4 }  }}>Last login: March 15, 2025</Typography>
               </Grid>
-              <Grid item xs={4}>
-                <img
-                  loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/10a92cdbd711daa1009d26188fe2c49cae017807b8f06f38a295ba99fd05bcfa?apiKey=7fae980a988640eea8add1e49a5d542e&"
-                  alt=""
-                  style={{ width: '77px', float: 'right' }}
-                />
+              <Grid item xs={4} sx={{
+                display: 'flex',
+                flexDirection: 'row'
+              }}>
+                <NotificationDropdown />
+                <ProfileDropdown />
               </Grid>
             </Grid>
 
