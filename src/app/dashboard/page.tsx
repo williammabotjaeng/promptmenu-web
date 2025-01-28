@@ -13,6 +13,8 @@ import { useStore } from "zustand";
 import useAuthStore from "@/state/use-auth-store";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
+import { PersonAdd, Star } from "@mui/icons-material";
+import Work from "@mui/icons-material/Work";
 
 const Dashboard = () => {
 
@@ -90,39 +92,61 @@ const Dashboard = () => {
         </Grid>
       </Box>
       {/* Modal for user options */}
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>What are you looking for on SSH?</DialogTitle>
+      <Dialog open={openModal} onClose={handleCloseModal} sx={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        padding: 2,
+        maxWidth: '90%', 
+        margin: 'auto', 
+      }}>
+        <DialogTitle sx={{ textAlign: 'center', padding: 2 }}>What are you looking for on SSH?</DialogTitle>
         <DialogContent>
-          <Typography variant="body1">Please select one of the options below:</Typography>
+          <Typography sx={{
+            textAlign: 'center'
+          }} variant="body1">Please select one of the options below:</Typography>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => handleOptionClick("Hire Talent")} sx={{
-            color: '#977342',
-            backgroundColor: 'black',
-            '&:hover': {
-              color: '#CEAB76',
-              backgroundColor: '#fff',
-              border: '1px solid #CEAB76'
-            }
-          }}>Hire Talent</Button>
-          <Button onClick={() => handleOptionClick("Find Work")} sx={{
-            color: '#977342',
-            backgroundColor: 'black',
-            '&:hover': {
-              color: '#CEAB76',
-              backgroundColor: '#fff',
-              border: '1px solid #CEAB76'
-            }
-          }}>Find Work</Button>
-          <Button onClick={() => handleOptionClick("I'm an Influencer")} sx={{
-            color: '#977342',
-            backgroundColor: 'black',
-            '&:hover': {
-              color: '#CEAB76',
-              backgroundColor: '#fff',
-              border: '1px solid #CEAB76'
-            }
-          }}>I'm an Influencer</Button>
+        <DialogActions sx={{
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: { xs: 'center', md: 'space-evenly' }, 
+          alignItems: 'center' 
+        }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
+            <PersonAdd sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
+            <Button onClick={() => handleOptionClick("Hire Talent")} sx={{
+              color: '#fff',
+              backgroundColor: '#977342',
+              '&:hover': {
+                color: '#fff',
+                backgroundColor: '#CEAB76',
+                border: '1px solid #CEAB76'
+              }
+            }}>Hire Talent</Button>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
+            <Work sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
+            <Button onClick={() => handleOptionClick("Find Work")} sx={{
+              color: '#fff',
+              backgroundColor: '#977342',
+              '&:hover': {
+                color: '#fff',
+                backgroundColor: '#CEAB76',
+                border: '1px solid #CEAB76'
+              }
+            }}>Find Work</Button>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
+            <Star sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
+            <Button onClick={() => handleOptionClick("I'm an Influencer")} sx={{
+              color: '#fff',
+              backgroundColor: '#977342',
+              '&:hover': {
+                color: '#fff',
+                backgroundColor: '#CEAB76',
+                border: '1px solid #CEAB76'
+              }
+            }}>I'm an Influencer</Button>
+          </Box>
         </DialogActions>
       </Dialog>
     </Box>
