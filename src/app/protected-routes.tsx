@@ -17,8 +17,8 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [routesResolved, setRoutesResolved] = useState(true);
   const [loading, setLoading] = useState(false); // State to manage loading
 
-  const [cookies] = useCookies(['user_role', 'access']);
-  const accessToken = cookies?.access;
+  const [cookies] = useCookies(['user_role', 'access', 'ssh_session_id']);
+  const sessionID = cookies?.ssh_session_id;
 
   const { loginIsLoading, verifyOtpIsLoading } = useAuth();
   const { isAuthenticated } = useStore(useAuthStore);
@@ -28,11 +28,11 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
   useEffect(() => {
     console.log("Pathname:", pathname);
-    console.log("Cookies Status:", accessToken);
+    console.log("Cookies Status:", sessionID);
     setRoutesResolved(false);
     setLoading(true); 
 
-    if (accessToken) {
+    if (sessionID && sessionID !== 'undefined') {
       if (publicRoutes.includes(pathname.toLowerCase())) {
         console.log("Redirecting from public route to dashboard");
         setRoutesResolved(true);
@@ -48,10 +48,13 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
         setRoutesResolved(true);
         router.push('/dashboard');
       }
-    } else if (!accessToken && (publicRoutes.includes(pathname.toLocaleLowerCase()) || hybridRoutes.includes(pathname.toLocaleLowerCase()))) {
+    } else if ((!sessionID || sessionID === 'undefined') && (publicRoutes.includes(pathname.toLocaleLowerCase()) || hybridRoutes.includes(pathname.toLocaleLowerCase()))) {
       console.log("Redirecting to login");
       setRoutesResolved(true);
       router.push(pathname);
+    } else if (privateRoutes.includes(pathname)) {
+      setRoutesResolved(true);
+      router.push('/login');
     }
 
     const timer = setTimeout(() => {
@@ -59,7 +62,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     }, 300); 
 
     return () => clearTimeout(timer); 
-  }, [accessToken, pathname, router]);
+  }, [sessionID, pathname, router]);
 
   if (loading || !routesResolved || verifyOtpIsLoading) return <Loading />;
 
