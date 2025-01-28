@@ -96,9 +96,33 @@ const Dashboard = () => {
           <Typography variant="body1">Please select one of the options below:</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleOptionClick("Hire Talent")} color="primary">Hire Talent</Button>
-          <Button onClick={() => handleOptionClick("Find Work")} color="primary">Find Work</Button>
-          <Button onClick={() => handleOptionClick("I'm an Influencer")} color="primary">I'm an Influencer</Button>
+          <Button onClick={() => handleOptionClick("Hire Talent")} sx={{
+            color: '#977342',
+            backgroundColor: 'black',
+            '&:hover': {
+              color: '#CEAB76',
+              backgroundColor: '#fff',
+              border: '1px solid #CEAB76'
+            }
+          }}>Hire Talent</Button>
+          <Button onClick={() => handleOptionClick("Find Work")} sx={{
+            color: '#977342',
+            backgroundColor: 'black',
+            '&:hover': {
+              color: '#CEAB76',
+              backgroundColor: '#fff',
+              border: '1px solid #CEAB76'
+            }
+          }}>Find Work</Button>
+          <Button onClick={() => handleOptionClick("I'm an Influencer")} sx={{
+            color: '#977342',
+            backgroundColor: 'black',
+            '&:hover': {
+              color: '#CEAB76',
+              backgroundColor: '#fff',
+              border: '1px solid #CEAB76'
+            }
+          }}>I'm an Influencer</Button>
         </DialogActions>
       </Dialog>
     </Box>
