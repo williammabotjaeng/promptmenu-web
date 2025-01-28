@@ -8,8 +8,9 @@ import { AuditionCard } from '@/components/portal/AuditionCard';
 import { ProfileTask } from '@/components/portal/ProfileTask';
 import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress, IconButton, Drawer } from '@mui/material';
 import Sticky from 'react-sticky-el';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+import Loading from '@/components/Loading';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -50,10 +51,21 @@ const profileTasks = [
 
 const Portal: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
+
+  useEffect(() => {
+      setLoading(true);
+
+      setTimeout(() => {
+        setLoading(false)
+      }, 500);
+  }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <>
