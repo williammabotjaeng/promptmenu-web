@@ -15,7 +15,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const router = useRouter();
   const pathname = usePathname();
   const [routesResolved, setRoutesResolved] = useState(true);
-  const [loading, setLoading] = useState(false); // State to manage loading
+  const [loading, setLoading] = useState(false); 
 
   const [cookies] = useCookies(['user_role', 'access', 'ssh_session_id']);
   const sessionID = cookies?.ssh_session_id;
@@ -30,7 +30,6 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     console.log("Pathname:", pathname);
     console.log("Cookies Status:", sessionID);
     setRoutesResolved(false);
-    setLoading(true); 
 
     if (sessionID && sessionID !== 'undefined') {
       if (publicRoutes.includes(pathname.toLowerCase())) {
@@ -52,7 +51,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       console.log("Redirecting to login");
       setRoutesResolved(true);
       router.push(pathname);
-    } else if (privateRoutes.includes(pathname)) {
+    } else if ((!sessionID || sessionID === 'undefined') && privateRoutes.includes(pathname)) {
       setRoutesResolved(true);
       router.push('/login');
     }

@@ -11,11 +11,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import useAuthStore from '@/state/use-auth-store';
 
 export const Header: React.FC = () => {
-  const [cookies] = useCookies(["access"]);
-  const accessToken = cookies['access'];
+  const [cookies] = useCookies(["access", "ssh_session_id"]);
+  const sessionID = cookies['ssh_session_id'];
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
-  const { isAuthenticated } = useStore(useAuthStore);
+  
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -40,7 +40,7 @@ export const Header: React.FC = () => {
           Join Now
         </Button>
       </Link>
-      {!isAuthenticated && (
+      {(!sessionID || sessionID === 'undefined') && (
         <Link href="/login" passHref>
           <Button 
             sx={{ 
@@ -64,7 +64,7 @@ export const Header: React.FC = () => {
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
         {/* Logo and Title Section */}
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-          <Link href={accessToken ? '/dashboard' : '/'} passHref>
+          <Link href={(!sessionID || sessionID === 'undefined') ? '/dashboard' : '/'} passHref>
             <Image src={SSHGoldLogo} alt="Logo" width={60} height={60} style={{ cursor: 'pointer' }} />
           </Link>
           <Typography variant="h6" sx={{ color: '#977342', marginLeft: '10px', fontWeight: 'bold' }}>
@@ -103,7 +103,7 @@ export const Header: React.FC = () => {
               Join Now
             </Button>
           </Link>
-          {!accessToken && (
+          {(!sessionID || sessionID === 'undefined') && (
             <Link href="/login" passHref>
               <Button 
                 sx={{ 

@@ -42,7 +42,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setAuth(true);
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
-      setCookie('ssh_session_id', data?.tokens?.ssh_session_id, { path: '/', maxAge: 604800 });
+      setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
+      console.log("SSH Session ID:", cookies['ssh_session_id']);
       redirect('/dashboard'); 
     },
     onError: (error) => {
