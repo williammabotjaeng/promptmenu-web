@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Button, IconButton, Typography, Box, Drawer } from '@mui/material';
+import { AppBar, Toolbar, Button, IconButton, Typography, Box, Drawer, Grid } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/auth-providers';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import Image from 'next/image';
+import ProfileDropdown from '@/components/dashboard/ProfileDropdown';
+import NotificationDropdown from '@/components/dashboard/NotificationDropdown';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -93,12 +95,14 @@ const Header = () => {
           </nav>
           {/* Right-side Image */}
           <Box sx={{ alignItems: 'center', marginLeft: '16px' }}>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt=""
-              style={{ width: '89px' }}
-            />
+          <Grid item xs={4} sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-end'
+              }}>
+                <NotificationDropdown />
+                <ProfileDropdown />
+              </Grid>
           </Box>
         </Box>
       </Toolbar>

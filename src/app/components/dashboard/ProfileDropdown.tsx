@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState } from 'react';
-import { Avatar, Menu, MenuItem } from '@mui/material';
+import { Avatar, Box, Menu, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/providers/auth-providers';
 
 const ProfileDropdown: React.FC = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const { logout } = useAuth();
     const router = useRouter();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -16,18 +18,22 @@ const ProfileDropdown: React.FC = () => {
         setAnchorEl(null);
     };
 
+    const handleLogout = () => {
+        logout();
+    }
+
     const handleMenuItemClick = (route: string) => {
         handleClose();
         router.push(route);
     };
 
     return (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { xs: 'flex-start', md: 'start' } }}>
             <Avatar
                 alt="Profile Picture"
                 src="/path/to/profile/picture.jpg"
                 onClick={handleClick}
-                style={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'black', color: '#977342' }}
+                sx={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'white', color: '#977342', border: '1px solid #977342' }}
             />
             <Menu
                 anchorEl={anchorEl}
@@ -35,87 +41,71 @@ const ProfileDropdown: React.FC = () => {
                 onClose={handleClose}
                 PaperProps={{
                     style: {
-                        backgroundColor: '#977342',
-                        color: 'black',
+                        backgroundColor: '#fff',
+                        color: '#977342',
+                        border: '1px solid #CEAB76',
                         maxHeight: 48 * 4.5 + 8,
-                        width: '20ch',
                     },
+                }}
+                sx={{
+                    width: { xs: '16ch', md: '20ch' },
+                    marginRight: {
+                        md: 20
+                    }
                 }}
             >
                 <MenuItem
                     onClick={() => handleMenuItemClick('/messages')}
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
+                            backgroundColor: '#CEAB76',
+                            color: '#fff',
                         },
                     }}
                 >
                     Messages
-                    <span style={{
-                        background: 'black',
-                        borderRadius: '50%', 
-                        color: '#977342',
-                        width: '24px', 
-                        height: '24px', 
+                    <Box component={"span"} sx={{
+                        background: '#977342',
+                        borderRadius: { xs: '80%', md: '50%' }, 
+                        border: '1px solid #977342',
+                        color: '#fff',
+                        width: { xs: '24px', md: '24px' }, 
+                        height: { xs: '18px', md: '24px' }, 
                         display: 'flex', 
                         alignItems: 'center', 
                         justifyContent: 'center', 
                         marginLeft: '8px', 
-                        fontSize: '14px', 
+                        padding: { xs: '10px' },
+                        fontSize: { xs: '16px', md: '14px' }, 
                     }}>
                         {0}
-                    </span>
-                </MenuItem>
-                <MenuItem
-                    onClick={() => handleMenuItemClick('/jobs')}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
-                        },
-                    }}
-                >
-                    My Jobs
-                    <span style={{
-                        background: 'black',
-                        borderRadius: '50%', 
-                        color: '#977342',
-                        width: '24px', 
-                        height: '24px', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        marginLeft: '8px', 
-                        fontSize: '14px', 
-                    }}>
-                        {0}
-                    </span>
+                    </Box>
                 </MenuItem>
                 <MenuItem
                     onClick={() => handleMenuItemClick('/payments')}
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
+                            backgroundColor: '#CEAB76',
+                            color: '#fff',
                         },
                     }}
                 >
                     Payments
                 </MenuItem>
+            
                 <MenuItem
-                    onClick={() => handleMenuItemClick('/settings')}
+                    onClick={handleLogout}
                     sx={{
                         '&:hover': {
-                            backgroundColor: 'black',
-                            color: '#977342',
+                            backgroundColor: '#CEAB76',
+                            color: '#fff',
                         },
                     }}
                 >
-                    Settings
+                    Logout
                 </MenuItem>
             </Menu>
-        </div>
+        </Box>
     );
 };
 
