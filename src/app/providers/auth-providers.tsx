@@ -19,6 +19,8 @@ import useTokenStore from '@/state/use-token-store';
 import { AuthContextType } from '@/types/AuthContext';
 import { useRouter, redirect } from 'next/navigation';
 import useAuthStore from '@/state/use-auth-store';
+import { UserUpdateData } from '@/types/UserUpdateData';
+import { restCall } from '@/services/restCall';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -29,6 +31,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'ssh_session_id', 'user_role'
   ]);
+
+  const accessToken = cookies?.access;
 
   const router = useRouter();
 
@@ -107,6 +111,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     },
   });
 
+  const updateUserMutation = useMutation({
+    mutationKey: ['update_user'],
+    mutationFn: async ({ field, value}: UserUpdateData) => {
+      return await restCall('/accounts/update-user/', 'PATCH', {
+        [field]: value
+      }, accessToken);
+    },
+    onSuccess: (data) => {
+      console.log('User updated successfully:', data);
+      
+    },
+    onError: (error) => {
+      console.error('Update user error: ', error);
+    },
+  });
+
   const login = async (email, password) => {
     await loginMutation.mutateAsync({ email, password });
   };
@@ -137,6 +157,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await registerMutation.mutateAsync(registrationData);
   };
 
+  const updateUser = async (userData) => {
+    await updateUserMutation.mutateAsync(userData);
+  };
+
   return (
     <AuthContext.Provider value={{ 
       user, 
@@ -144,6 +168,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       verifyOtp, 
       logout, 
       register, 
+      updateUser,
       loginIsLoading: loginMutation.isPending,
       loginError: loginMutation.isError,
       verifyOtpIsLoading: verifyOtpMutation.isPending,

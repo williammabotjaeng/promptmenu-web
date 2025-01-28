@@ -18,7 +18,7 @@ import Work from "@mui/icons-material/Work";
 
 const Dashboard = () => {
 
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const router = useRouter();
   const [cookies] = useCookies(['ssh_session_id', 'user_role']);
 
@@ -33,6 +33,11 @@ const Dashboard = () => {
   const handleOptionClick = (option) => {
     console.log("User selected:", option);
     handleCloseModal(); 
+    updateUser(
+      { field: 'user_role',
+        value: option
+      }
+    )
   };
 
   useEffect(() => {
@@ -113,7 +118,7 @@ const Dashboard = () => {
         }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
             <PersonAdd sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
-            <Button onClick={() => handleOptionClick("Hire Talent")} sx={{
+            <Button onClick={() => handleOptionClick("client")} sx={{
               color: '#fff',
               backgroundColor: '#977342',
               '&:hover': {
@@ -125,7 +130,7 @@ const Dashboard = () => {
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
             <Work sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
-            <Button onClick={() => handleOptionClick("Find Work")} sx={{
+            <Button onClick={() => handleOptionClick("talent")} sx={{
               color: '#fff',
               backgroundColor: '#977342',
               '&:hover': {
@@ -137,7 +142,7 @@ const Dashboard = () => {
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
             <Star sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
-            <Button onClick={() => handleOptionClick("I'm an Influencer")} sx={{
+            <Button onClick={() => handleOptionClick("influencer")} sx={{
               color: '#fff',
               backgroundColor: '#977342',
               '&:hover': {
