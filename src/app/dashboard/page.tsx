@@ -55,10 +55,14 @@ const Dashboard = () => {
         console.log("Check:", !user_role);
         setLoading(false);
         setOpenModal(true);
-    } else if (user_role in user_roles) {
+    } else {
         if (user_role === 'client') {
+            console.log("It's a client");
+            setLoading(false);
             router.push('/dashboard');
         } else if (user_role === 'talent' || user_role === 'influencer') {
+            console.log("It's talent");
+            setLoading(false);
             router.push('/portal');
         }
     }
