@@ -75,7 +75,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                     </Typography>
                     <TextField
                         variant="outlined"
-                        placeholder="Click a Skill to add here..."
+                        placeholder="Your skills will show here..."
                         sx={{
                             backgroundColor: 'black',
                             border: '1px solid #CEAB76',
