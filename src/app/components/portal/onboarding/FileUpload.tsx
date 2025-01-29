@@ -8,11 +8,12 @@ import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { TalentProfileData } from '@/types/TalentProfileData';
 
 export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats, maxSize, onFileSelect }) => {
 
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
-    const [headshot, setHeadshot] = useState<string | null>(null);
+    const [headshot, setHeadshot] = useState(talentData?.headshot || '');
     const [cookies, setCookie, removeCookie] = useCookies(['headshotBlobUrl']);
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -24,6 +25,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
         if (file) {
             const objectUrl = URL.createObjectURL(file);
             setHeadshot(objectUrl);
+            setTalentData({
+                headshot: objectUrl,
+                website: '',
+                social_media_links: undefined,
+                user: ''
+            });
             setCookie('headshotBlobUrl', objectUrl);
             setSnackbarMessage('Headshot Uploaded Successfully');
             setSnackbarSeverity('success');
@@ -36,6 +43,12 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
 
         setHeadshot(null);
         removeCookie('headshotBlobUrl');
+        setTalentData({
+            headshot: null,
+            website: '',
+            social_media_links: undefined,
+            user: ''
+        });
 
         setSnackbarMessage('Headshot Deleted Successfully');
         setSnackbarSeverity('success');
