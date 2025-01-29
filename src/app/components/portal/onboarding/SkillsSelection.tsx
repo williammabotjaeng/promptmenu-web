@@ -17,9 +17,22 @@ const steps = [
 ];
 
 const skills = [
-    { name: 'Acting' },
+    { name: 'Event Coordination' },
+    { name: 'Project Management' },
     { name: 'Modeling' },
-    { name: 'Dancing' }
+    { name: 'Event Executive' },
+    { name: 'Ushering' },
+    { name: 'Freelancing' },
+    { name: 'Photography' },
+    { name: 'Influencer Marketing' },
+    { name: 'Sports Modeling' },
+    { name: 'Security Management' },
+    { name: 'Hosting' },
+    { name: 'Videography' },
+    { name: 'Event Management' },
+    { name: 'Event Organization' },
+    { name: 'Site Management' },
+    { name: 'Journalism' },
 ];
 
 const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
@@ -52,7 +65,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                     <Typography 
                         variant="h5" 
                         sx={{ 
-                            textAlign: { xs: 'left', md: 'center' }, // Center on large screens
+                            textAlign: { xs: 'left', md: 'center' }, 
                             color: '#ceab76', 
                             paddingBottom: 1, 
                             marginRight: { xs: 0, md: 50 } 
@@ -67,8 +80,8 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                             backgroundColor: 'black',
                             border: '1px solid #CEAB76',
                             color: '#fff',
-                            width: '100%', // Full width
-                            maxWidth: '600px', // Increased max width for larger screens
+                            width: '100%', 
+                            maxWidth: '600px', 
                             borderRadius: '8px',
                             '& .MuiOutlinedInput-input': {
                                 padding: '12px 12px'
