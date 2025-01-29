@@ -1,4 +1,8 @@
-export interface SkillTagProps {
+export interface SkillType {
     name: string;
-    onRemove?: () => void;
+}
+export interface SkillTagProps {
+    skill: SkillType;
+    handleSkillClick: (skill: SkillType) => void;
+    selectedSkills: SkillType[];
 }

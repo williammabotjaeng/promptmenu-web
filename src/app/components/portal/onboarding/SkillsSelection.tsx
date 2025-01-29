@@ -4,6 +4,8 @@ import { SkillTag } from '@/components/portal/onboarding/SkillTag';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import { SkillType } from '@/types/Props/SkillTagProps';
+import { useState } from 'react';
 
 const steps = [
     { number: 1, title: 'Headshot', isActive: false },
@@ -16,7 +18,7 @@ const steps = [
     { number: 8, title: 'Review', isActive: false }
 ];
 
-const skills = [
+const skills: SkillType[] = [
     { name: 'Event Coordination' },
     { name: 'Project Management' },
     { name: 'Modeling' },
@@ -36,6 +38,8 @@ const skills = [
 ];
 
 const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
+    
+    const [selectedSkills, setSelectedSkills] = useState<SkillType[]>([]);
 
     const router = useRouter();
 
@@ -52,6 +56,10 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
 
     const onClose = () => {
         router.push('/portal');
+    }
+
+    function handleSkillClick(skill: SkillType): void {
+        throw new Error('Function not implemented.');
     }
 
     return (
@@ -96,7 +104,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                     />
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, marginTop: 2, justifyContent: 'center' }}>
                         {skills.map((skill) => (
-                            <SkillTag key={skill.name} {...skill} />
+                            <SkillTag key={skill.name} skill={skill} selectedSkills={selectedSkills} handleSkillClick={handleSkillClick}/>
                         ))}
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: 8, width: { xs: '100%', md: '50%' }, backgroundColor: 'black' }}>
