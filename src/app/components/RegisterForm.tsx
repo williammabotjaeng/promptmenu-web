@@ -492,7 +492,7 @@ export const RegisterForm: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0', // Add spacing between items
+                marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0', 
               }}
             >
               <span
