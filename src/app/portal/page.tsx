@@ -9,6 +9,7 @@ import { ProfileTask } from '@/components/portal/ProfileTask';
 import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress, IconButton, Drawer } from '@mui/material';
 import Sticky from 'react-sticky-el';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
 import Loading from '@/components/Loading';
@@ -55,9 +56,15 @@ const profileTasks = [
 const Portal: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [cookies] = useCookies(['firstname']);
+  const [cookies] = useCookies(['firstname', 'onboarding_presented', 'user_role']);
 
   const firstName = cookies['firstname'] || 'User';
+
+  const user_role = cookies['user_role'] || '';
+
+  const onboardingPresented = cookies['onboarding_presented'] || false;
+
+  const router = useRouter();
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -65,7 +72,13 @@ const Portal: React.FC = () => {
 
   useEffect(() => {
       setLoading(true);
-
+      if (!onboardingPresented) {
+        if (user_role === 'talent') {
+          router.push('/talent-onboarding');
+        } else if (user_role === 'influencer') {
+          router.push('/influencer-onboarding')
+        }
+      }
       setTimeout(() => {
         setLoading(false)
       }, 500);
