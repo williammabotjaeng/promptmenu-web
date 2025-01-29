@@ -61,63 +61,65 @@ export const RegisterForm: React.FC = () => {
   const validateForm = () => {
     const { firstname, lastname, email, username, password, confirmPassword } = formData;
 
-    if (!firstname || !lastname || !email || !username || !password || !confirmPassword) {
-      setSnackbarMessage('All fields are required.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
+    // Validation rules
+    const requirements = [
+      {
+        check: firstname && lastname && email && username && password && confirmPassword,
+        message: "All fields are required.",
+      },
+      {
+        check: password.length >= 8,
+        message: "Password must be at least 8 characters long.",
+      },
+      {
+        check: /[A-Z]/.test(password),
+        message: "Password must contain at least one uppercase letter.",
+      },
+      {
+        check: /[a-z]/.test(password),
+        message: "Password must contain at least one lowercase letter.",
+      },
+      {
+        check: /[0-9]/.test(password),
+        message: "Password must contain at least one digit.",
+      },
+      {
+        check: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        message: "Password must contain at least one special character.",
+      },
+      {
+        check: !password.includes(username),
+        message: "Password cannot contain the username.",
+      },
+      {
+        check: password === confirmPassword,
+        message: "Passwords must match.",
+      },
+    ];
 
-    if (password.length < 8) {
-      setSnackbarMessage('Password must be at least 8 characters long.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
+    // Evaluate all requirements
+    const results = requirements.map((requirement) => ({
+      met: requirement.check,
+      message: requirement.message,
+    }));
 
-    if (!/[A-Z]/.test(password)) {
-      setSnackbarMessage('Password must contain at least one uppercase letter.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
+    // Separate met and unmet requirements
+    const unmetRequirements = results.filter((result) => !result.met);
+    const metRequirements = results.filter((result) => result.met);
 
-    if (!/[a-z]/.test(password)) {
-      setSnackbarMessage('Password must contain at least one lowercase letter.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
+    // Build feedback message
+    const feedback = [
+      ...metRequirements.map((req) => `✅ ${req.message}`),
+      ...unmetRequirements.map((req) => `❌ ${req.message}`),
+    ].join("\n");
 
-    if (!/[0-9]/.test(password)) {
-      setSnackbarMessage('Password must contain at least one digit.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
+    // Show feedback in snackbar
+    setSnackbarMessage(feedback);
+    setSnackbarSeverity(unmetRequirements.length > 0 ? "error" : "success");
+    setSnackbarOpen(true);
 
-    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
-      setSnackbarMessage('Password must contain at least one special character.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
-
-    if (password.includes(username)) {
-      setSnackbarMessage('Password cannot contain the username.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
-
-    if (password !== confirmPassword) {
-      setSnackbarMessage('Passwords do not match.');
-      setSnackbarSeverity('error');
-      setSnackbarOpen(true);
-      return false;
-    }
-
-    return true;
+    // Return validation result
+    return unmetRequirements.length === 0;
   };
 
   const { register } = useAuth();
@@ -178,13 +180,13 @@ export const RegisterForm: React.FC = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
               <Link href="/">
-              <Image
-                src={SSHGoldLogo.src}
-                alt="Staffing Solutions Logo"
-                width={200}
-                height={204}
-                style={{ opacity: 0.5, overflow: 'hidden' }}
-              />
+                <Image
+                  src={SSHGoldLogo.src}
+                  alt="Staffing Solutions Logo"
+                  width={200}
+                  height={204}
+                  style={{ opacity: 0.5, overflow: 'hidden' }}
+                />
               </Link>
               <Typography
                 variant="h4"
@@ -436,10 +438,12 @@ export const RegisterForm: React.FC = () => {
               <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                 <Typography variant="body2" color="white">
                   Already have an account?
-                  <Link href="/login"><Button variant="text" sx={{ padding: 0, color: '#977342', '&:hover': {
-                    color: '#CEAB76',
-                    background: 'transparent'
-                  } }}>Sign in</Button></Link>
+                  <Link href="/login"><Button variant="text" sx={{
+                    padding: 0, color: '#977342', '&:hover': {
+                      color: '#CEAB76',
+                      background: 'transparent'
+                    }
+                  }}>Sign in</Button></Link>
                 </Typography>
               </Box>
             </form>
@@ -462,11 +466,46 @@ export const RegisterForm: React.FC = () => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
             width: { xs: '90%', sm: '400px' },
             margin: '0 auto',
+            backgroundColor: '#ffffff', // Set background to white
           },
         }}
       >
-        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
-          {snackbarMessage}
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{
+            width: '100%',
+            backgroundColor: '#ffffff', // White background for the Alert
+            color: '#333', // Dark text for better readability
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column', // Organize content vertically
+            alignItems: 'flex-start', // Align text to the left
+          }}
+        >
+          {/* Display the list of messages */}
+          {snackbarMessage.split('\n').map((message, index) => (
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0', // Add spacing between items
+              }}
+            >
+              <span
+                style={{
+                  marginRight: '8px',
+                  fontSize: '18px',
+                }}
+              >
+                {message.startsWith('✅') ? '✅' : '❌'}
+              </span>
+              <span>{message.slice(2).trim()}</span>
+            </div>
+          ))}
         </Alert>
       </Snackbar>
     </Box>
