@@ -11,8 +11,9 @@ import ProfileDropdown from './ProfileDropdown';
 import NotificationDropdown from './NotificationDropdown';
 
 const Header: React.FC = () => {
-  const [cookies] = useCookies(["access"]);
+  const [cookies] = useCookies(["access", "firstname", "lastname"]);
   const accessToken = cookies['access'];
+  const firstName = cookies['firstname'] || 'User';
   const { logout } = useAuth(); 
 
   const router = useRouter();

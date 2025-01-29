@@ -9,6 +9,7 @@ import { ProfileTask } from '@/components/portal/ProfileTask';
 import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress, IconButton, Drawer } from '@mui/material';
 import Sticky from 'react-sticky-el';
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
 import Loading from '@/components/Loading';
 import NotificationDropdown from '@/components/portal/NotificationDropdown';
@@ -54,6 +55,9 @@ const profileTasks = [
 const Portal: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [cookies] = useCookies(['firstname']);
+
+  const firstName = cookies['firstname'] || 'User';
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -116,7 +120,7 @@ const Portal: React.FC = () => {
           <Box sx={{ padding: 2 }}>
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
-                <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px', md: '24px' }, marginLeft: { xs: 4 } }}>Welcome, Sarah!</Typography>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px', md: '24px' }, marginLeft: { xs: 4 } }}>Welcome, {firstName}!</Typography>
                 <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px', md: '24px'}, marginLeft: { xs: 4 }  }}>Last login: March 15, 2025</Typography>
               </Grid>
               <Grid item xs={4} sx={{

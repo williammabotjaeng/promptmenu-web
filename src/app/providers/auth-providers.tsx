@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { setTokens } = useStore(useTokenStore);
   const { setAuth, clearAuth } = useStore(useAuthStore);
   const [cookies, setCookie, removeCookie] = useCookies([
-    'access', 'refresh', 'ssh_session_id', 'user_role', 'username'
+    'access', 'refresh', 'ssh_session_id', 'user_role', 'username', 'firstname', 'lastname'
   ]);
 
   const accessToken = cookies?.access;
@@ -48,6 +48,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
       setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
+      setCookie('firstname', data?.tokens?.firstname, { path: '/', maxAge: 604800 });
+      setCookie('lastname', data?.tokens?.lastname, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
       redirect('/dashboard'); 
     },
@@ -88,6 +90,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('access', data?.tokens?.access, { path: '/', maxAge: 604800 });
       setCookie('refresh', data?.tokens?.refresh, { path: '/', maxAge: 604800 });
       setCookie('user_role', temp_user_role, { path: '/', maxAge: 604800 });
+      setCookie('firstname', data?.tokens?.firstname, { path: '/', maxAge: 604800 });
+      setCookie('lastname', data?.tokens?.lastname, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
     },
     onError: (error) => {
