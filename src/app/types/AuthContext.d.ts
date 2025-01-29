@@ -2,6 +2,7 @@ import { AuthenticatedUser } from '@/types/AuthenticatedUser';
 import { LoginSuccessData } from '@/types/LoginSuccessData';
 import { RegistrationSuccessData } from '@/types/RegistrationSuccessData';
 import { ErrorData } from '@/types/ErrorData';
+import { UserUpdateData } from '@/types/UserUpdateData';
 
 export interface AuthContextType {
     user: boolean;
@@ -19,7 +20,7 @@ export interface AuthContextType {
       firstname: string,
       lastname: string,
     ) => Promise<void>;
-    updateUser: (updateData: { field?: string; value?: string; }) => Promise<void>;
+    updateUser: (updateData: UserUpdateData) => Promise<void>;
     registerIsLoading: boolean;
     registerError: ErrorData | null; 
 }

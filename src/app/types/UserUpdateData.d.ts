@@ -1,4 +1,4 @@
 export interface UserUpdateData {
     field: string;
-    value: string;
+    value: string | boolean;
 }

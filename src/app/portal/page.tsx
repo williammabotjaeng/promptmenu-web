@@ -99,7 +99,7 @@ const Portal: React.FC = () => {
                 alt="Logo"
                 style={{ width: '109px', marginBottom: '16px' }}
               />
-              <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold' }}>Talent Portal</Typography>
+              <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold' }}>{user_role === 'talent' ? 'Talent' : 'Influencer'} Portal</Typography>
               <Box sx={{ marginTop: 2 }}>
                 {sidebarItems.map((item, index) => (
                   <SidebarItem key={index} {...item} />
@@ -122,7 +122,7 @@ const Portal: React.FC = () => {
 
         <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
           <Box sx={{ width: 250, padding: 2, backgroundColor: '#000', height: '100%' }}>
-            <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold', marginBottom: 2 }}>Talent Portal</Typography>
+            <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold', marginBottom: 2 }}>{user_role === 'talent' ? 'Talent' : 'Influencer'} Portal</Typography>
             {sidebarItems.map((item, index) => (
               <SidebarItem key={index} {...item} />
             ))}

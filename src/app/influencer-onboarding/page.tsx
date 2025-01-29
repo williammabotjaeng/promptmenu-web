@@ -21,22 +21,28 @@ import axios from 'axios';
 import PortfolioMedia from '@/components/portal/onboarding/PortfolioMedia';
 import { PaymentSection } from '@/components/portal/onboarding/PaymentSection';
 import { PortfolioBuilder } from '@/components/portal/onboarding/PortfolioBuilder';
+import { useAuth } from '@/providers/auth-providers';
 
-const TalentOnboarding: React.FC = () => {
+const InfluencerOnboarding: React.FC = () => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState(0);
   const { createTalentProfile } = useOnboarding();
-  const [cookies] = useCookies([
+  const [cookies, setCookie] = useCookies([
     'headshotBlobUrl',
     'username',
     'access',
     'governmentIDUrl',
     'portfolioVideo',
     'portfolioImages',
-    'portfolioPdf'
+    'portfolioPdf',
+    'onboarding_presented'
   ]);
 
+  const { updateUser } = useAuth();
+
   const accessToken = cookies?.access;
+
+  const onboardingPresented = cookies['onboarding_presented'] || false;
 
   const steps = [
     { title: 'Step 1: Headshot', content: 'Upload a headshot photo.' },
@@ -85,6 +91,16 @@ const TalentOnboarding: React.FC = () => {
 
   const getFileExtension = (blob) => {
     return fileTypeMapping[blob.type] || 'bin';
+  };
+
+  const handleOnboardingStatus = () => {
+    updateUser(
+      { 
+        field: 'onboarding_presented',
+        value: true
+      }
+    )
+    setCookie('onboarding_presented', true);
   };
 
   const saveFileMetadata = async (fileName, s3Url) => {
@@ -162,6 +178,10 @@ const TalentOnboarding: React.FC = () => {
   const uploadID = () => uploadFiles([cookies.governmentIDUrl], 'id');
   const uploadHeadshot = () => uploadFiles([cookies.headshotBlobUrl], 'headshot');
 
+  useEffect(() => {
+      if (!onboardingPresented) handleOnboardingStatus();
+    }, []);
+
   return (
     <Box sx={{ width: '100%', backgroundColor: 'black', border: 'none' }}>
       {activeStep === 0 && (
@@ -199,4 +219,4 @@ const TalentOnboarding: React.FC = () => {
   );
 };
 
-export default TalentOnboarding;
+export default InfluencerOnboarding;
