@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { setTokens } = useStore(useTokenStore);
   const { setAuth, clearAuth } = useStore(useAuthStore);
   const [cookies, setCookie, removeCookie] = useCookies([
-    'access', 'refresh', 'ssh_session_id', 'user_role'
+    'access', 'refresh', 'ssh_session_id', 'user_role', 'username'
   ]);
 
   const accessToken = cookies?.access;
@@ -105,6 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeCookie('refresh', { path: '/' });
       removeCookie('ssh_session_id', { path: '/' });
       removeCookie('user_role', { path: '/' });
+      removeCookie('username', { path: '/' });
       redirect('/login'); 
     },
     onError: (error) => {
