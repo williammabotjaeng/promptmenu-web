@@ -20,6 +20,7 @@ import RevImageTwo from '@/assets/review_image_two.png';
 import RevImageThree from '@/assets/review_image_three.png';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useEffect } from 'react';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -58,7 +59,7 @@ const idDocs = [
 
 export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
-  const { talentData, paymentMethods } = useStore(useTalentOnboardingStore);
+  const { talentData, paymentMethods, physicalAttributes } = useStore(useTalentOnboardingStore);
 
   const router = useRouter();
 
@@ -73,6 +74,10 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  useEffect(() => {
+    console.log("Physical Attr:", physicalAttributes);
+  }, [])
 
   return (
     <Box sx={{
@@ -143,10 +148,10 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           Attributes
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2, width: { xs: '100%' } }}>
-          <AttributeCard key={'Height'} label={"Height"} value={String(talentData?.height)} />
-          <AttributeCard key={'Weight'} label={"Weight"} value={String(talentData?.weight)} />
-          <AttributeCard key={'Eye Color'} label={"Eye Color"} value={talentData?.eyeColor} />
-          <AttributeCard key={'Hair Color'} label={"Hair Color"} value={talentData?.hairColor} />
+          <AttributeCard key={'Height'} label={"Height"} value={String(physicalAttributes?.height)} />
+          <AttributeCard key={'Weight'} label={"Weight"} value={String(physicalAttributes?.weight)} />
+          <AttributeCard key={'Eye Color'} label={"Eye Color"} value={physicalAttributes?.eyeColor} />
+          <AttributeCard key={'Hair Color'} label={"Hair Color"} value={physicalAttributes?.hairColor} />
         </Box>
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
