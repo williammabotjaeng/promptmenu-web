@@ -6,6 +6,8 @@ import { SocialInput } from './SocialInput';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -26,6 +28,7 @@ const socialInputs = [
 
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
+  const [cookies, setCookie] = useCookies(['website', 'twitter', 'tiktok', 'facebook', 'instagram', 'linkedin']);
   const [socialData, setSocialData] = React.useState({
     instagram: '',
     tiktok: '',
@@ -51,6 +54,17 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
       [field]: value,
     }));
   };
+
+  useEffect(() => {
+    setSocialData({
+      website: cookies.website || '',
+      tiktok: cookies.tiktok || '',
+      // twitter: cookies.twitter || '',
+      // facebook: cookies.facebook || '',
+      instagram: cookies.instagram || '',
+     // linkedin: cookies.linkedin || '',
+    });
+  }, [cookies]);
 
   return (
     <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'black', paddingX: { xs: 2, md: 4 } }}>
