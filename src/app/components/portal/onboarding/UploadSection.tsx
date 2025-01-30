@@ -1,29 +1,23 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Typography, Button, Paper } from '@mui/material';
+import { Box, Typography, Button, Paper, IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faIdCard as solidIdCard } from '@fortawesome/free-solid-svg-icons';
 import { faIdCard as regularIdCard } from '@fortawesome/free-regular-svg-icons';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { UploadSectionProps } from '@/types/Props/UploadSectionsProps';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
-import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 
 export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
-
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
-  const [cookies, setCookie, removeCookie] = useCookies(['id_front_blob', 'id_back_blob']);
   const [idData, setIDData] = useState({
-    front: '',
-    back: ''
+    front: talentData?.government_id_front || '',
+    back: talentData?.government_id_back || ''
   });
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const renderIcon = (title: string) => {
     switch (title.toLowerCase()) {
@@ -38,28 +32,106 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log("File", file);
-    console.log("Event", event);
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      if (event.target.alt === "Back Side") {
-        setTalentData({
-          ...talentData,
-          government_id_back: objectUrl
-        });
-      } else {
-        setTalentData({
-          ...talentData,
-          government_id_front: objectUrl
-        });
-      }
-    
-      setSnackbarMessage('Headshot Uploaded Successfully');
-      setSnackbarSeverity('success');
-      setSnackbarOpen(true);
+      const side = title.toLowerCase().includes('front') ? 'front' : 'back';
+
+      // Update the idData state with the uploaded file's blob URL
+      setIDData((prev) => ({
+        ...prev,
+        [side]: objectUrl
+      }));
+
+      // Update the talentData state with the uploaded file's blob URL
+      setTalentData({
+        ...talentData,
+        [`government_id_${side}`]: objectUrl
+      });
     }
   };
 
+  const handleDelete = () => {
+    const side = title.toLowerCase().includes('front') ? 'front' : 'back';
+
+    // Remove the image from idData state
+    setIDData((prev) => ({
+      ...prev,
+      [side]: ''
+    }));
+
+    // Remove the image from talentData state
+    setTalentData({
+      ...talentData,
+      [`government_id_${side}`]: ''
+    });
+  };
+
+  const renderUploadContent = () => {
+    const side = title.toLowerCase().includes('front') ? 'front' : 'back';
+    const uploadedImage = idData[side];
+
+    if (uploadedImage) {
+      // Display the uploaded image with a delete button
+      return (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            mt: 2
+          }}
+        >
+          <Box
+            sx={{
+              width: '100px',
+              height: '100px',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              border: '2px solid #CEAB76',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              mb: 1
+            }}
+          >
+            <img
+              src={uploadedImage}
+              alt={`${title} Preview`}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </Box>
+          <IconButton
+            onClick={handleDelete}
+            sx={{
+              color: 'red',
+              '&:hover': { color: 'darkred' }
+            }}
+            aria-label={`Delete ${title}`}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Box>
+      );
+    }
+
+    // Display the upload button if no image is uploaded
+    return (
+      <Button
+        variant="contained"
+        component="label"
+        sx={{ mt: 2, bgcolor: '#977342', color: 'white', '&:hover': { bgcolor: '#977342' } }}
+        aria-label={`Upload ${title}`}
+      >
+        Upload
+        <input
+          type="file"
+          hidden
+          accept="image/*"
+          onChange={handleFileChange}
+        />
+      </Button>
+    );
+  };
 
   return (
     <Paper
@@ -88,21 +160,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
         <Typography variant="body1" sx={{ textAlign: 'center', color: '#977342', mt: 1 }}>
           {title}
         </Typography>
-        <Button
-          variant="contained"
-          component="label" 
-          sx={{ mt: 2, bgcolor: '#977342', color: 'white', '&:hover': { bgcolor: '#977342' } }}
-          aria-label={`Upload ${title}`}
-        >
-          Upload
-          <input
-            type="file"
-            hidden
-            alt={title}
-            accept="image/*" 
-            onChange={handleFileChange}
-          />
-        </Button>
+        {renderUploadContent()}
       </Box>
     </Paper>
   );
