@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { Box, Typography, Grid, Paper, Button } from '@mui/material';
+import { Box, Typography, Grid, Paper, Button, TextField } from '@mui/material';
 import { PaymentMethod } from '@/components/portal/onboarding/PaymentMethod';
-import { CardInput } from '@/components/portal/onboarding/CardInput';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import { useEffect, useState } from 'react';
+import { useStore } from 'zustand';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -17,13 +19,27 @@ const steps = [
   { number: 8, title: "Review", isActive: false }
 ];
 
-const paymentMethods = [
-  { label: "Credit Card", isActive: true },
-  { label: "Bank Account" },
-  { label: "PayPal" }
+const paymentMethodsTab = [
+  { label: "Credit Card", value: "creditCard" },
+  { label: "Bank Account", value: "bankAccount" },
+  { label: "PayPal", value: "paypal" }
 ];
 
 export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
+  const [activePaymentMethod, setActivePaymentMethod] = useState<string>("creditCard");
+
+  const { paymentMethods, setPaymentMethods } = useStore(useTalentOnboardingStore);
+
+  const [paymentDetails, setPaymentDetails] = useState({
+    ccNumber: paymentMethods?.ccNumber || '',
+    ccFirstName: paymentMethods?.ccFirstName || '',
+    ccLastName: paymentMethods?.ccLastName || '',
+    ccExpiry: paymentMethods?.ccExpiry || '',
+    ccCVC: paymentMethods?.ccCVC || '',
+    paypalEmail: paymentMethods?.paypalEmail || '',
+    stripeDetails: paymentMethods?.stripeDetails || ''
+  });
+
   const router = useRouter();
 
   const onClose = () => {
@@ -35,96 +51,276 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
   };
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    } else {
+      router.push('/portal');
+    }
+  };
+
+
+  useEffect(() => {
+    if (paymentMethods) {
+      setPaymentDetails({
+        ccNumber: paymentMethods.ccNumber || '',
+        ccFirstName: paymentMethods.ccFirstName || '',
+        ccLastName: paymentMethods.ccLastName || '',
+        ccExpiry: paymentMethods.ccExpiry || '',
+        ccCVC: paymentMethods.ccCVC || '',
+        paypalEmail: paymentMethods.paypalEmail || '',
+        stripeDetails: paymentMethods.stripeDetails || ''
+      });
+    }
+  }, [paymentMethods]);
+
+  const renderPaymentForm = () => {
+    switch (activePaymentMethod) {
+      case "paypal":
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="body1" sx={{ mb: 2, color: '#977342' }}>
+              Enter your PayPal email:
+            </Typography>
+            <TextField
+              fullWidth
+              placeholder="PayPal Email"
+              variant="outlined"
+              sx={{
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#977342',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#CEAB76',
+                  },
+                },
+              }}
+            />
+          </Box>
+        );
+      case "bankAccount":
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="body1" sx={{ mb: 2, color: '#977342' }}>
+              Enter your banking details:
+            </Typography>
+            <TextField
+              fullWidth
+              placeholder="Account Number"
+              variant="outlined"
+              sx={{
+                mb: 2,
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#977342',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#CEAB76',
+                  },
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              placeholder="Bank Name"
+              variant="outlined"
+              sx={{
+                mb: 2,
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#977342',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#CEAB76',
+                  },
+                },
+              }}
+            />
+            <TextField
+              fullWidth
+              placeholder="IBAN"
+              variant="outlined"
+              sx={{
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#977342',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#CEAB76',
+                  },
+                },
+              }}
+            />
+          </Box>
+        );
+      default:
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="body1" sx={{ mb: 2, color: '#977342' }}>
+              Enter your credit card details:
+            </Typography>
+            <TextField
+              fullWidth
+              placeholder="Card Number"
+              variant="outlined"
+              sx={{
+                mb: 2,
+                backgroundColor: 'white',
+                borderRadius: '8px',
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: '#977342',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: '#CEAB76',
+                  },
+                },
+              }}
+            />
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  placeholder="MM/YY"
+                  variant="outlined"
+                  sx={{
+                    backgroundColor: 'white',
+                    borderRadius: '8px',
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#977342',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#CEAB76',
+                      },
+                    },
+                  }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  fullWidth
+                  placeholder="CVC"
+                  variant="outlined"
+                  sx={{
+                    backgroundColor: 'white',
+                    borderRadius: '8px',
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: '#977342',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#CEAB76',
+                      },
+                    },
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        );
+    }
   };
 
   return (
-    <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'black' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
-        {/* Header Section */}
-        <OnboardingHeader steps={steps} onClose={onClose} />
+    <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', minHeight: '100vh' }}>
+      {/* Header Section */}
+      <OnboardingHeader steps={steps} onClose={onClose} />
 
-        {/* Payment Section */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: { xs: 2, md: 4 }, paddingTop: 4 }}>
-          <Typography
-            variant="h5"
+      {/* Payment Section */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: { xs: 2, md: 4 }, paddingTop: 4 }}>
+        <Typography
+          variant="h5"
+          sx={{
+            color: '#977342',
+            paddingBottom: 3,
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
+        >
+          Payment Methods
+        </Typography>
+
+        <Paper
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            padding: 4,
+            borderRadius: '8px',
+            backgroundColor: 'rgba(151, 115, 66, 0.05)',
+            width: '100%',
+            maxWidth: '768px',
+          }}
+        >
+          {/* Payment Method Tabs */}
+          <Box
             sx={{
-              color: '#977342',
-              paddingBottom: 3,
-              fontWeight: 'bold',
+              display: 'flex',
+              flexWrap: 'wrap',
+              py: 0.5,
               textAlign: 'center',
-              marginRight: { xs: 0, md: 60 }
+              borderBottom: '1px solid rgba(75, 85, 99, 0.2)',
+              color: '#4B5563',
             }}
           >
-            Payment Methods
-          </Typography>
-          <Paper sx={{ display: 'flex', flexDirection: 'column', padding: 4, borderRadius: '8px', backgroundColor: 'rgba(151, 115, 66, 0.05)', width: '100%', maxWidth: '768px' }}>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', py: 0.5, textAlign: 'center', borderBottom: '1px solid rgba(75, 85, 99, 0.2)', color: '#4B5563' }}>
-              {paymentMethods.map((method) => (
-                <PaymentMethod key={method.label} {...method} />
-              ))}
-            </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 4, width: '100%' }}>
-              <CardInput
-                id="cardNumber"
-                placeholder="Card Number"
-                ariaLabel="Enter card number"
+            {paymentMethodsTab.map((method) => (
+              <PaymentMethod
+                key={method.value}
+                label={method.label}
+                isActive={activePaymentMethod === method.value}
+                onClick={() => setActivePaymentMethod(method.value)}
               />
-              <Grid container spacing={2} sx={{ mt: 4 }}>
-                <Grid item xs={6} sm={6}>
-                  <CardInput
-                    id="expiry"
-                    placeholder="MM/YY"
-                    ariaLabel="Enter card expiry date"
-                  />
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                  <CardInput
-                    id="cvc"
-                    placeholder="CVC"
-                    ariaLabel="Enter card CVC"
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-          </Paper>
-        </Box>
+            ))}
+          </Box>
 
-        {/* Navigation Buttons */}
-        <Box sx={{
+          {/* Render Payment Form */}
+          {renderPaymentForm()}
+        </Paper>
+      </Box>
+
+      {/* Navigation Buttons */}
+      <Box
+        sx={{
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           justifyContent: { xs: 'flex-start', md: 'space-between' },
-          marginTop: 2,
+          marginTop: 4,
           width: { xs: '100%', md: '55%' },
           paddingX: 2,
           alignItems: { md: 'center' },
-          marginLeft: { md: 40 }
-        }}>
-          <Button
-            sx={{
-              color: '#977342',
-              border: '2px solid #977342',
-              '&:hover': { color: '#fff' },
-              marginBottom: { xs: 1, md: 0 }
-            }}
-            onClick={handleBack}
-          >
-            Back
-          </Button>
-          <Button
-            sx={{ color: '#000', backgroundColor: '#CEAB76' }}
-            onClick={handleContinue}
-          >
-            Continue
-          </Button>
-        </Box>
+          marginLeft: { xs: 'auto', md: '20%' },
+        }}
+      >
+        <Button
+          sx={{
+            color: '#977342',
+            border: '2px solid #977342',
+            '&:hover': { color: '#fff' },
+            marginBottom: { xs: 1, md: 0 },
+          }}
+          onClick={handleBack}
+        >
+          Back
+        </Button>
+        <Button
+          sx={{
+            color: '#000',
+            backgroundColor: '#CEAB76',
+            '&:hover': { backgroundColor: '#b08a5c' },
+          }}
+          onClick={handleContinue}
+        >
+          Continue
+        </Button>
       </Box>
-
-      {/* Step Indicator Section */}
-      <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginTop: 4, color: 'gray', textAlign: 'center' }}>
-        Step {activeStep + 1} of 8 - Payment
-      </Typography>
     </Box>
   );
 };
