@@ -49,6 +49,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
   };
 
   const handleContinue = () => {
+    setPaymentMethods({ payment_method: activePaymentMethod, ...paymentDetails });
     setActiveStep(activeStep + 1);
   };
 
@@ -61,8 +62,10 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
   };
 
   const handleInputChange = (field) => (event) => {
+    console.log("Field:", field);
+    console.log("Value:", event?.target?.value);
+    console.log("Object:", paymentDetails);
     setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
-    setPaymentMethods({ payment_method: activePaymentMethod, ...paymentDetails });
   };
 
 
