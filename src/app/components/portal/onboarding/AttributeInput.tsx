@@ -15,20 +15,24 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({ label, placehold
         sx={{
           bgcolor: 'black',
           borderRadius: '8px',
+          color: '#CEAB76',
           width: { xs: '100%', md: '24vw' },
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
               borderColor: '#977342', 
+              color: '#CEAB76',
             },
             '&:hover fieldset': {
-              borderColor: '#977342', 
+              borderColor: '#977342',
+              color: '#CEAB76', 
             },
             '&.Mui-focused fieldset': {
               borderColor: '#977342', 
+              color: '#CEAB76',
             },
           },
           '& .MuiInputBase-input': {
-            color: 'gray.400',
+            color: '#CEAB76',
           },
         }}
       />

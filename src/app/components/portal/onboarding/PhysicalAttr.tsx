@@ -5,6 +5,9 @@ import { DropdownAttribute } from './DropdownAttribute';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import { useEffect, useState } from 'react';
+import { useStore } from 'zustand';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -19,6 +22,14 @@ const steps = [
 
 export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
+  const { physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
+
+  const [formData, setFormData] = useState({
+    height: '',
+    weight: '',
+    ethnicity: '',
+  });
+
 
   const onClose = () => {
     router.push('/portal');
@@ -31,6 +42,16 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  useEffect(() => {
+    if (physicalAttributes) {
+      setFormData({
+        height: physicalAttributes.height || '',
+        weight: physicalAttributes.weight || '',
+        ethnicity: physicalAttributes.ethnicity || '',
+      });
+    }
+  }, [physicalAttributes]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', flexGrow: 1 }}>
@@ -59,14 +80,14 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
 
         {/* Navigation Buttons */}
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginLeft: { md: 36 }, marginTop: 4, width: { xs: '100%', md: '58%' } }}>
-          <Button 
-            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 } }} 
+          <Button
+            sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 } }}
             onClick={handleBack}
           >
             Back
           </Button>
-          <Button 
-            sx={{ color: '#000', backgroundColor: '#CEAB76' }} 
+          <Button
+            sx={{ color: '#000', backgroundColor: '#CEAB76' }}
             onClick={handleContinue}
           >
             Continue

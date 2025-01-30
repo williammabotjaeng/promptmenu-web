@@ -18,17 +18,6 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
           bgcolor: 'black',
           borderRadius: '8px',
           width: { xs: '100%', md: '24vw' },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: '#977342',
-            },
-            '&:hover fieldset': {
-              borderColor: '#977342', 
-            },
-            '&.Mui-focused fieldset': {
-              borderColor: '#977342', 
-            },
-          },
           '& .MuiSelect-select': {
             color: '#977342',
             display: 'flex',
