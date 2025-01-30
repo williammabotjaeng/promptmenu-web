@@ -18,6 +18,8 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import RevImageOne from '@/assets/review_image_one.png';
 import RevImageTwo from '@/assets/review_image_two.png';
 import RevImageThree from '@/assets/review_image_three.png';
+import { useStore } from 'zustand';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -55,6 +57,9 @@ const idDocs = [
 ];
 
 export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
+
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
+
   const router = useRouter();
 
   const onClose = () => {
@@ -91,16 +96,13 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
 
         <Box sx={{ display: 'flex', alignItems: { xs: 'center' }, justifyContent: { xs: 'center' }, flexDirection: { xs: 'column', md: 'row' } }}>
           <Image
-            src={Headshot.src}
+            src={talentData?.headshot || ''}
             width={200}
             height={210}
             alt="headshot-example"
           />
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: { xs: 1, md: 4 } }}>
             <Typography sx={{ fontSize: '16px', color: '#4B5563' }}>Primary Headshot</Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
-              <FontAwesomeIcon icon={faPenToSquare} style={{ color: '#977342', fontSize: '24px' }} />&nbsp;&nbsp;<Typography variant="body1">Edit</Typography>
-            </Box>
           </Box>
         </Box>
       </Box>
@@ -110,8 +112,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           Skills
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', marginBottom: 2 }}>
-          {skills.map((skill) => (
-            <SkillBadge key={skill} name={skill} />
+          {talentData?.skills.map((skill) => (
+            <SkillBadge key={skill?.name} name={skill?.name} />
           ))}
         </Box>
 

@@ -113,13 +113,13 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
               </Typography>
               {portfolioFile.type === 'video' ? (
                 <video
-                  src={portfolioFile.file}
+                  src={String(portfolioFile.file)}
                   controls
                   style={{ width: '100%', maxWidth: '300px', borderRadius: '8px' }}
                 />
               ) : (
                 <a
-                  href={portfolioFile.file}
+                  href={String(portfolioFile.file)}
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
