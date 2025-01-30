@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Typography, TextField, Button } from '@mui/material';
+import { Box, Typography, TextField, Button, Chip } from '@mui/material';
 import { SkillTag } from '@/components/portal/onboarding/SkillTag';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
@@ -38,7 +38,7 @@ const skills: SkillType[] = [
 ];
 
 const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
-    
+
     const [selectedSkills, setSelectedSkills] = useState<SkillType[]>([]);
 
     const router = useRouter();
@@ -58,9 +58,17 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
         router.push('/portal');
     }
 
-    function handleSkillClick(skill: SkillType): void {
-        throw new Error('Function not implemented.');
-    }
+    const handleSkillClick = (skill: SkillType) => {
+        console.log('Skill:', skill);
+        console.log('Skills:', [...selectedSkills])
+        const isSkillSelected = selectedSkills.some((selectedSkill) => selectedSkill.name === skill.name);
+
+        if (isSkillSelected) {
+            setSelectedSkills(selectedSkills.filter((selectedSkill) => selectedSkill.name !== skill.name));
+        } else {
+            setSelectedSkills([...selectedSkills, skill]);
+        }
+    };
 
     return (
         <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white' }}>
@@ -70,41 +78,20 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
 
                 {/* Skills Section */}
                 <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center', paddingX: { xs: 2, md: 4 }, paddingTop: 4 }}>
-                    <Typography 
-                        variant="h5" 
-                        sx={{ 
-                            textAlign: { xs: 'left', md: 'center' }, 
-                            color: '#ceab76', 
-                            paddingBottom: 1, 
-                            marginRight: { xs: 0, md: 50 } 
+                    <Typography
+                        variant="h5"
+                        sx={{
+                            textAlign: { xs: 'left', md: 'center' },
+                            color: '#ceab76',
+                            paddingBottom: 1,
+                            marginRight: { xs: 0, md: 50 }
                         }}
                     >
                         Professional Skills
                     </Typography>
-                    <TextField
-                        variant="outlined"
-                        placeholder="Your skills will show here..."
-                        sx={{
-                            backgroundColor: 'black',
-                            border: '1px solid #CEAB76',
-                            color: '#fff',
-                            width: '100%', 
-                            maxWidth: '600px', 
-                            borderRadius: '8px',
-                            '& .MuiOutlinedInput-input': {
-                                padding: '12px 12px'
-                            },
-                            '& .MuiInputBase-input::placeholder': {
-                                color: '#fff', 
-                            },
-                            '& .MuiInputBase-input': {
-                                color: '#fff', 
-                            },
-                        }}
-                    />
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, marginTop: 2, justifyContent: 'center' }}>
                         {skills.map((skill) => (
-                            <SkillTag key={skill.name} skill={skill} selectedSkills={selectedSkills} handleSkillClick={handleSkillClick}/>
+                            <SkillTag key={skill.name} skill={skill} selectedSkills={selectedSkills} handleSkillClick={handleSkillClick} />
                         ))}
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: 8, width: { xs: '100%', md: '50%' }, backgroundColor: 'black' }}>
