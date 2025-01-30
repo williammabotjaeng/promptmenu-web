@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Typography, Grid, Paper, Button, TextField } from '@mui/material';
+import { Box, Typography, Grid, Paper, Button, TextField, Snackbar, Alert } from '@mui/material';
 import { PaymentMethod } from '@/components/portal/onboarding/PaymentMethod';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
@@ -39,6 +39,10 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
 
   const { paymentMethods, setPaymentMethods, talentData } = useStore(useTalentOnboardingStore);
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   const [loading, setLoading] = useState(false);
 
   const [paymentDetails, setPaymentDetails] = useState({
@@ -65,10 +69,16 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
       skillsRequiringPhysicalAttributes.includes(skill.name)
     );
     setPaymentMethods({ payment_method: activePaymentMethod, ...paymentDetails });
-    if (hasPhysicalAttributeSkill) {
-      setActiveStep(activeStep + 1);
+    const areAllFieldsEmpty = Object.values(paymentDetails).every(value => value === '');
+    if (!areAllFieldsEmpty) {
+      if (hasPhysicalAttributeSkill) {
+        setActiveStep(activeStep + 1);
+      } else {
+        setActiveStep(activeStep + 2);
+      }
     } else {
-      setActiveStep(activeStep + 2);
+        setSnackbarMessage('Add At least 1 Payment Method.');
+        setSnackbarOpen(true);
     }
     setLoading(false);
   };
@@ -273,6 +283,10 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
     }
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  }
+
   if (loading) return <Loading />;
 
   return (
@@ -370,6 +384,17 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
       <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginBottom: 0, color: 'gray', textAlign: 'center', mt: 2 }}>
         Step {activeStep + 1} of 8 - Headshot Upload
       </Typography>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity='error' sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
