@@ -11,7 +11,7 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 
-export const UploadSection: React.FC<UploadSectionProps> = ({ title, onFileSelect }) => {
+export const UploadSection: React.FC<UploadSectionProps> = ({ title }) => {
 
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
@@ -38,19 +38,25 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title, onFileSelec
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    console.log("File", file);
+    console.log("Event", event);
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      setTalentData({
-        headshot: objectUrl,
-        website: '',
-        social_media_links: undefined,
-        user: ''
-      });
-      // setCookie('headshotBlobUrl', objectUrl);
+      if (event.target.alt === "Back Side") {
+        setTalentData({
+          ...talentData,
+          government_id_back: objectUrl
+        });
+      } else {
+        setTalentData({
+          ...talentData,
+          government_id_front: objectUrl
+        });
+      }
+    
       setSnackbarMessage('Headshot Uploaded Successfully');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-      onFileSelect(file);
     }
   };
 
@@ -84,7 +90,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title, onFileSelec
         </Typography>
         <Button
           variant="contained"
-          component="label" // Use `component="label"` to associate the button with the file input
+          component="label" 
           sx={{ mt: 2, bgcolor: '#977342', color: 'white', '&:hover': { bgcolor: '#977342' } }}
           aria-label={`Upload ${title}`}
         >
@@ -92,6 +98,7 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title, onFileSelec
           <input
             type="file"
             hidden
+            alt={title}
             accept="image/*" 
             onChange={handleFileChange}
           />

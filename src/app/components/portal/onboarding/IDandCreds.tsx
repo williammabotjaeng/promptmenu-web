@@ -6,6 +6,8 @@ import { UploadSection } from '@/components/portal/onboarding/UploadSection';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -19,11 +21,17 @@ const steps = [
 ];
 
 export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
   const router = useRouter();
 
-  const handleFileSelect = (file: File) => {
+  // Function to handle file selection and create a blob
+  const handleFileSelect = (file: File, side: string) => {
     console.log('File selected:', file);
-    // Perform additional actions with the file (e.g., upload to server)
+    console.log('Doc Side:', side);
+
+    const fileBlob = URL.createObjectURL(file);
+
+    
   };
 
   const onClose = () => {
@@ -48,8 +56,9 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
           ID Document
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center' }}>
-          <UploadSection title="Front Side" onFileSelect={handleFileSelect} />
-          <UploadSection title="Back Side" onFileSelect={handleFileSelect} />
+          {/* Pass the side of the document to the UploadSection */}
+          <UploadSection title="Front Side" />
+          <UploadSection title="Back Side" />
         </Box>
       </Paper>
 
