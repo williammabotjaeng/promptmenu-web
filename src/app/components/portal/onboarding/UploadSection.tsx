@@ -15,8 +15,11 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title, onFileSelec
 
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
-  const [cookies, setCookie, removeCookie] = useCookies(['headshotBlobUrl']);
-  const [headshot, setHeadshot] = useState(talentData?.headshot || '');
+  const [cookies, setCookie, removeCookie] = useCookies(['id_front_blob', 'id_back_blob']);
+  const [idData, setIDData] = useState({
+    front: '',
+    back: ''
+  });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -37,14 +40,13 @@ export const UploadSection: React.FC<UploadSectionProps> = ({ title, onFileSelec
     const file = event.target.files?.[0];
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      setHeadshot(objectUrl);
       setTalentData({
         headshot: objectUrl,
         website: '',
         social_media_links: undefined,
         user: ''
       });
-      setCookie('headshotBlobUrl', objectUrl);
+      // setCookie('headshotBlobUrl', objectUrl);
       setSnackbarMessage('Headshot Uploaded Successfully');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);

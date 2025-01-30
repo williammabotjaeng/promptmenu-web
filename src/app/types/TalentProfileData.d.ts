@@ -15,7 +15,8 @@ export interface TalentProfileData {
     weight?: number | null; 
     eyeColor?: string | null;
     hairColor?: string | null;
-    government_id?: string | null; 
+    government_id_front?: string | null;
+    government_id_back?: string | null;  
     banking_details?: string | null; 
     portfolio_pdf?: File | null; 
     additional_images?: Record<string, any> | null; 
