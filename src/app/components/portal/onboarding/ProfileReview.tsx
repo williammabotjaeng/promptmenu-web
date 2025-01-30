@@ -58,7 +58,7 @@ const idDocs = [
 
 export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
-  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
+  const { talentData, paymentMethods } = useStore(useTalentOnboardingStore);
 
   const router = useRouter();
 
@@ -120,10 +120,24 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: '18px', md: '20px' }, color: '#977342', fontWeight: 'semi-bold' }}>
           Payment Details
         </Typography>
+        {paymentMethods?.ccNumber && (
         <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Credit Card: **** **** **** 1234</Typography>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Expires: 12/25</Typography>
-        </Box>
+          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Credit Card: **** **** **** {paymentMethods?.ccNumber?.slice(-4)}</Typography>
+          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Expires: {paymentMethods?.ccExpiry}</Typography>
+        </Box>)}
+
+        {paymentMethods?.paypalEmail && (
+        <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
+          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Paypal Email:</Typography>
+          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Expires: {paymentMethods?.paypalEmail}</Typography>
+        </Box>)}
+
+        {paymentMethods?.accountNumber && (
+        <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
+          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Banking Details: </Typography>
+          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Account No.: {paymentMethods?.accountNumber}</Typography>
+          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Bank Name: {paymentMethods?.bankName}</Typography>
+        </Box>)}
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: '18px', md: '20px' }, fontWeight: 'semi-bold' }}>
           Attributes
