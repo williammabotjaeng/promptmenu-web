@@ -50,6 +50,9 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         ccCVC: '',
         paypalEmail: '',
         stripeDetails: '',
+        accountNumber: '',
+        bankName: '',
+        iBAN: ''
     },
     governmentID: null,
     bankDetails: {

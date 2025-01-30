@@ -7,4 +7,7 @@ export interface PaymentMethods {
     ccCVC?: string | null;
     paypalEmail?: string | null;
     stripeDetails?: string | null;
+    bankName?: string | null;
+    accountNumber?: string | null;
+    iBAN?: string | null;
 }

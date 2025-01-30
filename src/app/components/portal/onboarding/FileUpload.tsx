@@ -15,8 +15,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
     
     const [cookies, setCookie, removeCookie] = useCookies(['headshotBlobUrl']);
-    const [headshot, setHeadshot] = useState(cookies['headshotBlobUrl'] || '');
-    
+    const [headshot, setHeadshot] = useState(talentData?.headshot || '');
+
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');

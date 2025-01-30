@@ -37,7 +37,9 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
     ccExpiry: paymentMethods?.ccExpiry || '',
     ccCVC: paymentMethods?.ccCVC || '',
     paypalEmail: paymentMethods?.paypalEmail || '',
-    stripeDetails: paymentMethods?.stripeDetails || ''
+    bankName: paymentMethods?.bankName || '',
+    iBAN: paymentMethods?.iBAN || '',
+    accountNumber: paymentMethods?.accountNumber || ''
   });
 
   const router = useRouter();
@@ -58,6 +60,11 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
     }
   };
 
+  const handleInputChange = (field) => (event) => {
+    setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
+    setPaymentMethods({ payment_method: activePaymentMethod, ...paymentDetails });
+  };
+
 
   useEffect(() => {
     if (paymentMethods) {
@@ -68,7 +75,9 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
         ccExpiry: paymentMethods.ccExpiry || '',
         ccCVC: paymentMethods.ccCVC || '',
         paypalEmail: paymentMethods.paypalEmail || '',
-        stripeDetails: paymentMethods.stripeDetails || ''
+        bankName: paymentMethods.bankName || '',
+        accountNumber: paymentMethods.accountNumber || '',
+        iBAN: paymentMethods.iBAN || ''
       });
     }
   }, [paymentMethods]);
@@ -85,7 +94,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               fullWidth
               placeholder="PayPal Email"
               variant="outlined"
-              value={paymentDetails.paypalEmail}
+              value={paymentDetails.paypalEmail || ''}
+              onChange={handleInputChange('paypalEmail')}
               sx={{
                 backgroundColor: 'white',
                 borderRadius: '8px',
@@ -111,6 +121,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               fullWidth
               placeholder="Account Number"
               variant="outlined"
+              value={paymentDetails.accountNumber || ''}
+              onChange={handleInputChange('accountNumber')}
               sx={{
                 mb: 2,
                 backgroundColor: 'white',
@@ -129,6 +141,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               fullWidth
               placeholder="Bank Name"
               variant="outlined"
+              value={paymentDetails.bankName || ''}
+              onChange={handleInputChange('bankName')}
               sx={{
                 mb: 2,
                 backgroundColor: 'white',
@@ -147,6 +161,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               fullWidth
               placeholder="IBAN"
               variant="outlined"
+              value={paymentDetails.iBAN || ''}
+              onChange={handleInputChange('iBAN')}
               sx={{
                 backgroundColor: 'white',
                 borderRadius: '8px',
@@ -172,7 +188,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               fullWidth
               placeholder="Card Number"
               variant="outlined"
-              value={paymentDetails.ccNumber}
+              value={paymentDetails.ccNumber || ''}
+              onChange={handleInputChange('ccNumber')}
               sx={{
                 mb: 2,
                 backgroundColor: 'white',
@@ -193,7 +210,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
                   fullWidth
                   placeholder="MM/YY"
                   variant="outlined"
-                  value={paymentDetails.ccExpiry}
+                  value={paymentDetails.ccExpiry || ''}
+                  onChange={handleInputChange('ccExpiry')}
                   sx={{
                     backgroundColor: 'white',
                     borderRadius: '8px',
@@ -212,7 +230,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
                 <TextField
                   fullWidth
                   placeholder="CVC"
-                  value={paymentDetails.ccCVC}
+                  value={paymentDetails.ccCVC || ''}
+                  onChange={handleInputChange('ccCVC')}
                   variant="outlined"
                   sx={{
                     backgroundColor: 'white',
@@ -235,7 +254,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', minHeight: '100vh', pb: 4 }}>
       {/* Header Section */}
       <OnboardingHeader steps={steps} onClose={onClose} />
 
@@ -325,6 +344,10 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
           Continue
         </Button>
       </Box>
+      {/* Step Indicator Section */}
+      <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginBottom: 0, color: 'gray', textAlign: 'center', mt: 2 }}>
+        Step {activeStep + 1} of 8 - Headshot Upload
+      </Typography>
     </Box>
   );
 };
