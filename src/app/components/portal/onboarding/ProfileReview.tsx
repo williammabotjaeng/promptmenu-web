@@ -22,6 +22,8 @@ import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useEffect } from 'react';
 import { skillsRequiringPhysicalAttributes } from './PaymentSection';
+import moment from 'moment';
+import { useCookies } from 'react-cookie';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -61,6 +63,10 @@ const idDocs = [
 export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
   const { talentData, paymentMethods, physicalAttributes } = useStore(useTalentOnboardingStore);
+
+  const [cookies, setCookie] = useCookies([
+    'tiktok', 'instagram', 'website'
+  ]);
 
   const router = useRouter();
 
@@ -154,23 +160,20 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
             <AttributeCard key={'Hair Color'} label={"Hair Color"} value={physicalAttributes?.hairColor} />
           </Box></>)}
 
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        {talentData?.government_id_front && (<><Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           ID Document
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-          {idDocs.map((doc) => (
-            <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
-          ))}
-        </Box>
+        </Typography><Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+            {talentData?.government_id_front && (<DocumentItem title={"ID Document Front"} date={moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')} />)}
+            {talentData?.government_id_back && (<DocumentItem title={"ID Document Back"} date={moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')} />)}
+          </Box></>)}
 
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
+        {(cookies['tiktok'] || cookies['instagram'] || cookies['website']) && (<><Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
           Social Media Links
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-          {socialLinks.map((link, index) => (
-            <SocialMediaLink key={index} icon={link.icon} username={link.username} />
-          ))}
-        </Box>
+        </Typography><Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+            {cookies['instagram'] && (<SocialMediaLink icon={'instagram'} username={cookies['instagram']} />)}
+            {cookies['tiktok'] && (<SocialMediaLink icon={'tiktok'} username={cookies['tiktok']} />)}
+            {cookies['website'] && (<SocialMediaLink icon={'website'} username={cookies['website']} />)}
+          </Box></>)}
 
         {talentData?.additional_images && (<><Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
           Photos
@@ -234,14 +237,11 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
               }} />
           </Box></>)}
 
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
+        {talentData?.portfolio_pdf && (<><Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Documents
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
-          {documents.map((doc) => (
-            <DocumentItem key={doc.title} title={doc.title} date={doc.date} />
-          ))}
-        </Box>
+        </Typography><Box sx={{ display: 'flex', gap: 2, flexDirection: 'column', marginBottom: 2 }}>
+            {talentData?.portfolio_pdf && (<DocumentItem title={talentData?.portfolio_pdf?.fileName} date={moment(Date.now()).format('MMMM Do YYYY, h:mm:ss a')} />)}
+          </Box></>)}
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: { md: 4 }, width: '95%', ml: { md: 4 } }}>
