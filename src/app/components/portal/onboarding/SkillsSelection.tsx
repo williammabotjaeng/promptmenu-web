@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import { SkillType } from '@/types/Props/SkillTagProps';
 import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 const steps = [
     { number: 1, title: 'Headshot', isActive: false },
@@ -41,6 +42,8 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
 
     const [selectedSkills, setSelectedSkills] = useState<SkillType[]>([]);
 
+    const [cookies, setCookie] = useCookies(['skills']);
+
     const router = useRouter();
 
     const handleContinue = () => {
@@ -59,8 +62,6 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
     }
 
     const handleSkillClick = (skill: SkillType) => {
-        console.log('Skill:', skill);
-        console.log('Skills:', [...selectedSkills])
         const isSkillSelected = selectedSkills.some((selectedSkill) => selectedSkill.name === skill.name);
 
         if (isSkillSelected) {
@@ -68,6 +69,8 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
         } else {
             setSelectedSkills([...selectedSkills, skill]);
         }
+
+        setCookie('skills', JSON.stringify(selectedSkills));
     };
 
     return (
