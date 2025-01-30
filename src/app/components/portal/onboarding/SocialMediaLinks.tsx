@@ -1,12 +1,12 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Typography, Paper, Button } from '@mui/material';
+import { Box, Typography, Paper, Button, Snackbar, Alert } from '@mui/material';
 import { SocialInput } from './SocialInput';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { skillsRequiringPhysicalAttributes } from './PaymentSection';
@@ -38,16 +38,27 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
     tiktok: '',
     website: '',
   });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const onClose = () => {
     router.push('/portal');
   };
 
   const handleContinue = () => {
-    setActiveStep(activeStep + 1);
+    const areAllFieldsEmpty = Object.values(socialData).every(value => value === '');
+    
     setCookie('website', socialData.website);
     setCookie('tiktok', socialData.tiktok);
     setCookie('instagram', socialData.instagram);
+
+    if (!areAllFieldsEmpty) {
+      setActiveStep(activeStep + 1);
+    } else {
+      setSnackbarMessage('Add at least 1 Social Account.');
+      setSnackbarOpen(true);
+    }
   };
 
   const handleBack = () => {
@@ -79,6 +90,10 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
      // linkedin: cookies.linkedin || '',
     });
   }, [cookies]);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  }
 
   return (
     <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'black', paddingX: { xs: 2, md: 4 } }}>
@@ -123,6 +138,17 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
       <Typography variant="caption" sx={{ paddingX: 2, color: 'gray', textAlign: 'center', marginTop: 2 }}>
         Step {activeStep + 1} of 8 - Socials
       </Typography>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={"error"} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
