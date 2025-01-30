@@ -143,9 +143,10 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           Attributes
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2, width: { xs: '100%' } }}>
-          {attributes.map((attr) => (
-            <AttributeCard key={attr.label} label={attr.label} value={attr.value} />
-          ))}
+            <AttributeCard key={'Height'} label={"Height"} value={String(talentData?.height)} />
+            <AttributeCard key={'Weight'} label={"Weight"} value={String(talentData?.weight)} />
+            <AttributeCard key={'Eye Color'} label={"Eye Color"} value={talentData?.eyeColor} />
+            <AttributeCard key={'Hair Color'} label={"Hair Color"} value={talentData?.hairColor} />
         </Box>
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
