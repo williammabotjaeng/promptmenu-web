@@ -1,13 +1,14 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Typography, Button, Paper, Container } from '@mui/material';
+import { Box, Typography, Button, Paper, Container, Snackbar, Alert } from '@mui/material';
 import { UploadSection } from '@/components/portal/onboarding/UploadSection';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
+import { useState } from 'react';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -22,29 +23,33 @@ const steps = [
 
 export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   const router = useRouter();
-
-  // Function to handle file selection and create a blob
-  const handleFileSelect = (file: File, side: string) => {
-    console.log('File selected:', file);
-    console.log('Doc Side:', side);
-
-    const fileBlob = URL.createObjectURL(file);
-
-    
-  };
 
   const onClose = () => {
     router.push('/portal');
   };
 
   const handleContinue = () => {
-    setActiveStep(activeStep + 1);
+    if (talentData?.government_id_front && talentData?.government_id_back) {
+      setActiveStep(activeStep + 1);
+    } else {
+      setSnackbarMessage('Both Front and Back ID Images Required.');
+      setSnackbarOpen(true);
+    }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  }
 
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: 'black', opacity: 0.9, paddingBottom: '24px' }}>
@@ -84,6 +89,17 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
           Step {activeStep + 1} of 8 - ID Document
         </Typography>
       </footer>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={"error"} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
