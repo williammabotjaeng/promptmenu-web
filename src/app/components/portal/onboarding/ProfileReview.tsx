@@ -21,6 +21,7 @@ import RevImageThree from '@/assets/review_image_three.png';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useEffect } from 'react';
+import { skillsRequiringPhysicalAttributes } from './PaymentSection';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -75,9 +76,9 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
     setActiveStep(activeStep - 1);
   };
 
-  useEffect(() => {
-    console.log("Physical Attr:", physicalAttributes);
-  }, [])
+  const hasPhysicalAttributeSkill = talentData.skills.some(skill =>
+        skillsRequiringPhysicalAttributes.includes(skill.name)
+  );
 
   return (
     <Box sx={{
@@ -144,15 +145,14 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
             <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Bank Name: {paymentMethods?.bankName}</Typography>
           </Box>)}
 
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: '18px', md: '20px' }, fontWeight: 'semi-bold' }}>
+        {hasPhysicalAttributeSkill && (<><Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: '18px', md: '20px' }, fontWeight: 'semi-bold' }}>
           Attributes
-        </Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2, width: { xs: '100%' } }}>
-          <AttributeCard key={'Height'} label={"Height"} value={String(physicalAttributes?.height)} />
-          <AttributeCard key={'Weight'} label={"Weight"} value={String(physicalAttributes?.weight)} />
-          <AttributeCard key={'Eye Color'} label={"Eye Color"} value={physicalAttributes?.eyeColor} />
-          <AttributeCard key={'Hair Color'} label={"Hair Color"} value={physicalAttributes?.hairColor} />
-        </Box>
+        </Typography><Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2, width: { xs: '100%' } }}>
+            <AttributeCard key={'Height'} label={"Height"} value={String(physicalAttributes?.height)} />
+            <AttributeCard key={'Weight'} label={"Weight"} value={String(physicalAttributes?.weight)} />
+            <AttributeCard key={'Eye Color'} label={"Eye Color"} value={physicalAttributes?.eyeColor} />
+            <AttributeCard key={'Hair Color'} label={"Hair Color"} value={physicalAttributes?.hairColor} />
+          </Box></>)}
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           ID Document
@@ -172,14 +172,13 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           ))}
         </Box>
 
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
+        {talentData?.additional_images && (<><Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
           Photos
-        </Typography>
-        <Box sx={{ display: { xs: 'flex', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, gap: 2, marginBottom: 2, justifyContent: { xs: 'center' }, alignItems: { xs: 'center' } }}>
-          <Image src={talentData?.additional_images[0]} width={250} height={250} alt="Photo 1" />
-          <Image src={talentData?.additional_images[1]} width={250} height={250} alt="Photo 2" />
-          <Image src={talentData?.additional_images[2]} width={250} height={250} alt="Photo 3" />
-        </Box>
+        </Typography><Box sx={{ display: { xs: 'flex', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, gap: 2, marginBottom: 2, justifyContent: { xs: 'center' }, alignItems: { xs: 'center' } }}>
+            <Image src={talentData?.additional_images[0]} width={250} height={250} alt="Photo 1" />
+            <Image src={talentData?.additional_images[1]} width={250} height={250} alt="Photo 2" />
+            <Image src={talentData?.additional_images[2]} width={250} height={250} alt="Photo 3" />
+          </Box></>)}
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
           Video Showreel

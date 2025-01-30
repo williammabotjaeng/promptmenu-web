@@ -8,6 +8,9 @@ import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { skillsRequiringPhysicalAttributes } from './PaymentSection';
+import { useStore } from 'zustand';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -28,6 +31,7 @@ const socialInputs = [
 
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
+  const { talentData } = useStore(useTalentOnboardingStore);
   const [cookies, setCookie] = useCookies(['website', 'twitter', 'tiktok', 'facebook', 'instagram', 'linkedin']);
   const [socialData, setSocialData] = React.useState({
     instagram: '',
@@ -47,7 +51,14 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
   };
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    const hasPhysicalAttributeSkill = talentData.skills.some(skill =>
+          skillsRequiringPhysicalAttributes.includes(skill.name)
+    );
+    if (hasPhysicalAttributeSkill) {
+      setActiveStep(activeStep - 1);
+    } else {
+      setActiveStep(activeStep - 2);
+    }
   };
 
   const handleSocialInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {

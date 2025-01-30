@@ -7,6 +7,7 @@ import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import Loading from '@/components/Loading';
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -19,6 +20,14 @@ const steps = [
   { number: 8, title: "Review", isActive: false }
 ];
 
+export const skillsRequiringPhysicalAttributes: string[] = [
+  'Modeling',
+  'Sports Modeling',
+  'Ushering',
+  'Hosting',
+  'Security Management',
+];
+
 const paymentMethodsTab = [
   { label: "Credit Card", value: "creditCard" },
   { label: "Bank Account", value: "bankAccount" },
@@ -28,7 +37,9 @@ const paymentMethodsTab = [
 export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const [activePaymentMethod, setActivePaymentMethod] = useState<string>("creditCard");
 
-  const { paymentMethods, setPaymentMethods } = useStore(useTalentOnboardingStore);
+  const { paymentMethods, setPaymentMethods, talentData } = useStore(useTalentOnboardingStore);
+
+  const [loading, setLoading] = useState(false);
 
   const [paymentDetails, setPaymentDetails] = useState({
     ccNumber: paymentMethods?.ccNumber || '',
@@ -49,8 +60,17 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
   };
 
   const handleContinue = () => {
+    setLoading(true);
+    const hasPhysicalAttributeSkill = talentData.skills.some(skill =>
+      skillsRequiringPhysicalAttributes.includes(skill.name)
+    );
     setPaymentMethods({ payment_method: activePaymentMethod, ...paymentDetails });
-    setActiveStep(activeStep + 1);
+    if (hasPhysicalAttributeSkill) {
+      setActiveStep(activeStep + 1);
+    } else {
+      setActiveStep(activeStep + 2);
+    }
+    setLoading(false);
   };
 
   const handleBack = () => {
@@ -252,6 +272,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
         );
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', minHeight: '100vh', pb: 4 }}>

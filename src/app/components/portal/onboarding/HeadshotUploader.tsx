@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { Box, Typography, Paper, Button } from '@mui/material';
+import { Box, Typography, Paper, Button, Snackbar, Alert } from '@mui/material';
 import { FileUpload } from '@/components/portal/onboarding/FileUpload';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
+import { useState } from 'react';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: true },
@@ -17,20 +20,31 @@ const steps = [
 ];
 
 const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
-  
+
+  const { talentData } = useStore(useTalentOnboardingStore);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   const router = useRouter();
-  
+
   const handleFileSelect = (file: File) => {
     console.log('Selected file:', file);
   };
 
   const handleContinue = () => {
-    setActiveStep(activeStep + 1); 
+    if (talentData?.headshot) {
+      setActiveStep(activeStep + 1);
+    } else {
+      setSnackbarMessage('Please Upload a Headshot.');
+      setSnackbarOpen(true);
+    }
   };
-  
+
   const handleBack = () => {
     if (activeStep > 0) {
-      setActiveStep(activeStep - 1); 
+      setActiveStep(activeStep - 1);
     } else {
       router.push('/portal');
     }
@@ -38,6 +52,10 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
 
   const onClose = () => {
     router.push('/portal');
+  }
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   }
 
   return (
@@ -70,25 +88,25 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
               onFileSelect={handleFileSelect}
             />
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: 2, width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
-              <Button 
-                sx={{ 
-                  color: '#977342', 
-                  border: '2px solid #977342', 
+              <Button
+                sx={{
+                  color: '#977342',
+                  border: '2px solid #977342',
                   '&:hover': { color: '#fff' },
-                  width: { xs: '100%', md: 'auto' }, 
-                  marginBottom: { xs: 1, md: 0 } 
+                  width: { xs: '100%', md: 'auto' },
+                  marginBottom: { xs: 1, md: 0 }
                 }}
-                onClick={handleBack} 
+                onClick={handleBack}
               >
                 Back
               </Button>
-              <Button 
-                sx={{ 
-                  color: '#000', 
-                  backgroundColor: '#CEAB76', 
+              <Button
+                sx={{
+                  color: '#000',
+                  backgroundColor: '#CEAB76',
                   width: { xs: '100%', md: 'auto' } // Full width on mobile
-                }} 
-                onClick={handleContinue} 
+                }}
+                onClick={handleContinue}
               >
                 Continue
               </Button>
@@ -101,6 +119,17 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
           Step {activeStep + 1} of 8 - Headshot Upload
         </Typography>
       </Box>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={"error"} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
