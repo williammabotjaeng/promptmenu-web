@@ -121,32 +121,32 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           Payment Details
         </Typography>
         {paymentMethods?.ccNumber && (
-        <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Credit Card: **** **** **** {paymentMethods?.ccNumber?.slice(-4)}</Typography>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Expires: {paymentMethods?.ccExpiry}</Typography>
-        </Box>)}
+          <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Credit Card: **** **** **** {paymentMethods?.ccNumber?.slice(-4)}</Typography>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Expires: {paymentMethods?.ccExpiry}</Typography>
+          </Box>)}
 
         {paymentMethods?.paypalEmail && (
-        <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Paypal Email:</Typography>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Expires: {paymentMethods?.paypalEmail}</Typography>
-        </Box>)}
+          <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Paypal Email:</Typography>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Expires: {paymentMethods?.paypalEmail}</Typography>
+          </Box>)}
 
         {paymentMethods?.accountNumber && (
-        <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Banking Details: </Typography>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Account No.: {paymentMethods?.accountNumber}</Typography>
-          <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Bank Name: {paymentMethods?.bankName}</Typography>
-        </Box>)}
+          <Box sx={{ bgcolor: 'white', padding: { xs: 2, md: 3 }, borderRadius: '4px', marginBottom: 2, boxShadow: 1 }}>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Banking Details: </Typography>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Account No.: {paymentMethods?.accountNumber}</Typography>
+            <Typography sx={{ color: '#6B7280', fontSize: { xs: '14px', md: '16px' } }}>Bank Name: {paymentMethods?.bankName}</Typography>
+          </Box>)}
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: { xs: '18px', md: '20px' }, fontWeight: 'semi-bold' }}>
           Attributes
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', marginBottom: 2, width: { xs: '100%' } }}>
-            <AttributeCard key={'Height'} label={"Height"} value={String(talentData?.height)} />
-            <AttributeCard key={'Weight'} label={"Weight"} value={String(talentData?.weight)} />
-            <AttributeCard key={'Eye Color'} label={"Eye Color"} value={talentData?.eyeColor} />
-            <AttributeCard key={'Hair Color'} label={"Hair Color"} value={talentData?.hairColor} />
+          <AttributeCard key={'Height'} label={"Height"} value={String(talentData?.height)} />
+          <AttributeCard key={'Weight'} label={"Weight"} value={String(talentData?.weight)} />
+          <AttributeCard key={'Eye Color'} label={"Eye Color"} value={talentData?.eyeColor} />
+          <AttributeCard key={'Hair Color'} label={"Hair Color"} value={talentData?.hairColor} />
         </Box>
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
@@ -171,25 +171,65 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
           Photos
         </Typography>
         <Box sx={{ display: { xs: 'flex', md: 'flex' }, flexDirection: { xs: 'column', md: 'row' }, gap: 2, marginBottom: 2, justifyContent: { xs: 'center' }, alignItems: { xs: 'center' } }}>
-          <Image src={RevImageOne.src} width={250} height={250} alt="Photo 1" />
-          <Image src={RevImageTwo.src} width={250} height={250} alt="Photo 2" />
-          <Image src={RevImageThree.src} width={250} height={250} alt="Photo 3" />
+          <Image src={talentData?.additional_images[0]} width={250} height={250} alt="Photo 1" />
+          <Image src={talentData?.additional_images[1]} width={250} height={250} alt="Photo 2" />
+          <Image src={talentData?.additional_images[2]} width={250} height={250} alt="Photo 3" />
         </Box>
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
           Video Showreel
         </Typography>
-        <Box sx={{
-          bgcolor: 'white',
-          borderRadius: '4px',
-          height: { xs: '200px', md: '400px' },
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative',
-          marginBottom: 2
-        }}>
-          <PlayCircleOutlineIcon sx={{ color: '#977342', fontSize: { xs: '150px', md: '50px' }, position: 'absolute' }} />
+        <Box
+          sx={{
+            position: 'relative',
+            borderRadius: '4px',
+            height: { xs: '200px', md: '400px' },
+            marginBottom: 2,
+            overflow: 'hidden', // Ensures the video doesn't overflow the box
+          }}
+        >
+          {/* Video Background */}
+          <video
+            src={String(talentData?.portfolio_video?.file)}
+            autoPlay
+            loop
+            muted
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              zIndex: 1, 
+            }}
+          ></video>
+
+          {/* Overlay */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(255, 255, 255, 0.5)', 
+              zIndex: 2, 
+            }}
+          ></Box>
+
+          {/* Play Icon */}
+          <PlayCircleOutlineIcon
+            sx={{
+              color: '#977342',
+              fontSize: { xs: '150px', md: '50px' },
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)', 
+              zIndex: 3, 
+            }}
+          />
         </Box>
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
