@@ -6,20 +6,22 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import { useState } from 'react';
 import { PortfolioUploadSectionProps } from '@/types/Props/PortfolioUploadSectionProps';
+import { useStore } from 'zustand';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 
 export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
   title,
   description,
   buttonText
 }) => {
-  // State to manage the uploaded file
-  const [portfolioFile, setPortfolioFile] = useState<{ type: string; file: string | null; fileName: string | null }>({
-    type: '',
-    file: null,
-    fileName: null,
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
+
+  const [portfolioFile, setPortfolioFile] = useState<{ type: string; file: string | File | null; fileName: string | null }>({
+    type: title.toLowerCase() === 'videos' ? talentData?.portfolio_video?.type :  talentData?.portfolio_pdf?.type || '',
+    file: title.toLowerCase() === 'videos' ? talentData?.portfolio_video?.file :  talentData?.portfolio_pdf?.file || '',
+    fileName: title.toLowerCase() === 'videos' ? talentData?.portfolio_video?.fileName :  talentData?.portfolio_pdf?.fileName || '',
   });
 
-  // Function to render the appropriate icon based on the title
   const renderIcon = (title: string) => {
     switch (title.toLowerCase()) {
       case 'videos':
@@ -31,19 +33,37 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
     }
   };
 
-  // Handler for file upload
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const fileUrl = URL.createObjectURL(file); // Create a blob URL for the uploaded file
+      const fileUrl = URL.createObjectURL(file); 
       const fileType = title.toLowerCase().includes('videos') ? 'video' : 'resume';
 
-      // Update the state with the uploaded file, its type, and its name
       setPortfolioFile({
         type: fileType,
         file: fileUrl,
         fileName: file.name,
       });
+
+      if (title.toLocaleLowerCase() === 'videos') {
+        setTalentData({
+          ...talentData,
+          portfolio_video: {
+            type: fileType,
+            file: fileUrl,
+            fileName: file.name,
+          },
+        });
+      } else {
+        setTalentData({
+          ...talentData,
+          portfolio_pdf: {
+            type: fileType,
+            file: fileUrl,
+            fileName: file.name,
+          },
+        });
+      }
     }
   };
 

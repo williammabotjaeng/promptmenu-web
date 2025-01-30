@@ -88,6 +88,7 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         government_id_back: null,
         banking_details: null,
         portfolio_pdf: null,
+        portfolio_video: null,
         additional_images: null,
         is_verified: false,
         verification_notification_sent: false,
