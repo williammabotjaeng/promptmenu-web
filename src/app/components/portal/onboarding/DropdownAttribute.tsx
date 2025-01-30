@@ -22,6 +22,7 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ items, lab
           bgcolor: 'black',
           borderRadius: '8px',
           width: { xs: '100%', md: '24vw' },
+          color: '#CEAB76',
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
               borderColor: 'transparent',
@@ -34,7 +35,7 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ items, lab
             },
           },
           '& .MuiSelect-select': {
-            color: value ? '#fff' : '#977342', 
+            color: value ? '#CEAB76' : '#977342', 
             display: 'flex',
             alignItems: 'center',
           },

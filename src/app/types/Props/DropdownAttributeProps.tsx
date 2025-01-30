@@ -6,28 +6,28 @@ export interface DropdownAttributeProps {
     label: string;
     value: string;
     items: DropdownItem[];
-    onChange: (e: any) => void;
+    onChange: (event: any) => void;
 }
 
 export const eyeColorItems: DropdownItem[] = [
-    { value: 'BLUE', label: 'Blue' },
-    { value: 'GREEN', label: 'Green' },
-    { value: 'HAZEL', label: 'Hazel' },
-    { value: 'BROWN', label: 'Brown' },
-    { value: 'BLACK', label: 'Black' },
-    { value: 'GRAY', label: 'Gray' },
-    { value: 'AMBER', label: 'Amber' },
-    { value: 'HETEROCHROMIA', label: 'Heterochromia' },
+    { value: 'Blue', label: 'Blue' },
+    { value: 'Green', label: 'Green' },
+    { value: 'Hazel', label: 'Hazel' },
+    { value: 'Brown', label: 'Brown' },
+    { value: 'Black', label: 'Black' },
+    { value: 'Gray', label: 'Gray' },
+    { value: 'Amber', label: 'Amber' },
+    { value: 'Heterochromia', label: 'Heterochromia' },
   ];
   
   export const hairColorItems: DropdownItem[] = [
-    { value: 'BLACK', label: 'Black' },
-    { value: 'BROWN', label: 'Brown' },
-    { value: 'BLONDE', label: 'Blonde' },
-    { value: 'RED', label: 'Red' },
-    { value: 'AUBURN', label: 'Auburn' },
-    { value: 'GRAY', label: 'Gray' },
-    { value: 'WHITE', label: 'White' },
-    { value: 'SILVER', label: 'Silver' },
-    { value: 'SALT_AND_PEPPER', label: 'Salt and Pepper' },
+    { value: 'Black', label: 'Black' },
+    { value: 'Brown', label: 'Brown' },
+    { value: 'Blonde', label: 'Blonde' },
+    { value: 'Red', label: 'Red' },
+    { value: 'Auburn', label: 'Auburn' },
+    { value: 'Gray', label: 'Gray' },
+    { value: 'White', label: 'White' },
+    { value: 'Silver', label: 'Silver' },
+    { value: 'Salt and Pepper', label: 'Salt and Pepper' },
   ];

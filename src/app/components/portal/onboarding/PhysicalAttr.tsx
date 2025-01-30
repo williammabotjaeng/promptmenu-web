@@ -24,7 +24,6 @@ const steps = [
 export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
   const { physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
-
   const [formData, setFormData] = useState({
     height: '',
     weight: '',
@@ -39,22 +38,33 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
 
   const handleContinue = () => {
     setActiveStep(activeStep + 1);
+    setPhysicalAttributes(formData);
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const handleChange = (field: string) => (event: React.ChangeEvent<{ value: unknown }>) => {
-    const value = event.target.value;
-
-    console.log(`Field: ${field}, Value: ${value}`);
+  const handleEyeColorChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const value = event.target.value as string;
 
     setFormData((prevData) => ({
       ...prevData,
-      [field]: value,
+      eyeColor: value,
     }));
   };
+
+  const handleHairColorChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const value = event.target.value as string;
+
+    console.log(`Hair Color Selected: ${value}`);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      hairColor: value,
+    }));
+  };
+
 
   useEffect(() => {
     if (physicalAttributes) {
@@ -85,8 +95,8 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
                 <AttributeInput label="Weight" placeholder="kg" />
               </Box>
               <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, flexWrap: 'wrap', gap: 2, marginTop: 4, color: '#977342' }}>
-                <DropdownAttribute onChange={handleChange} items={eyeColorItems} label="Eye Color" value="Brown" />
-                <DropdownAttribute onChange={handleChange} items={hairColorItems} label="Hair Color" value="Black" />
+                <DropdownAttribute onChange={handleEyeColorChange} items={eyeColorItems} label="Eye Color" value={formData?.eyeColor} />
+                <DropdownAttribute onChange={handleHairColorChange} items={hairColorItems} label="Hair Color" value={formData?.hairColor} />
               </Box>
             </Box>
           </Paper>
