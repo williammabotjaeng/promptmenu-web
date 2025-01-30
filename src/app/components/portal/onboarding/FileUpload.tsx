@@ -13,9 +13,10 @@ import { TalentProfileData } from '@/types/TalentProfileData';
 export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats, maxSize, onFileSelect }) => {
 
     const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
-    const [headshot, setHeadshot] = useState(talentData?.headshot || '');
+    
     const [cookies, setCookie, removeCookie] = useCookies(['headshotBlobUrl']);
-
+    const [headshot, setHeadshot] = useState(cookies['headshotBlobUrl'] || '');
+    
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');

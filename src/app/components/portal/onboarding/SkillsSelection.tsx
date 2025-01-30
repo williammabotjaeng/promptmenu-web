@@ -40,9 +40,9 @@ const skills: SkillType[] = [
 
 const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
-    const [selectedSkills, setSelectedSkills] = useState<SkillType[]>([]);
-
     const [cookies, setCookie] = useCookies(['skills']);
+
+    const [selectedSkills, setSelectedSkills] = useState<SkillType[]>(Array.from(cookies['skills']) || []);
 
     const router = useRouter();
 
