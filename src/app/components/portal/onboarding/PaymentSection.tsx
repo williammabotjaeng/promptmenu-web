@@ -85,6 +85,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               fullWidth
               placeholder="PayPal Email"
               variant="outlined"
+              value={paymentDetails.paypalEmail}
               sx={{
                 backgroundColor: 'white',
                 borderRadius: '8px',
@@ -171,6 +172,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
               fullWidth
               placeholder="Card Number"
               variant="outlined"
+              value={paymentDetails.ccNumber}
               sx={{
                 mb: 2,
                 backgroundColor: 'white',
@@ -191,6 +193,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
                   fullWidth
                   placeholder="MM/YY"
                   variant="outlined"
+                  value={paymentDetails.ccExpiry}
                   sx={{
                     backgroundColor: 'white',
                     borderRadius: '8px',
@@ -209,6 +212,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
                 <TextField
                   fullWidth
                   placeholder="CVC"
+                  value={paymentDetails.ccCVC}
                   variant="outlined"
                   sx={{
                     backgroundColor: 'white',
