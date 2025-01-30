@@ -180,61 +180,59 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
             <Image src={talentData?.additional_images[2]} width={250} height={250} alt="Photo 3" />
           </Box></>)}
 
-        <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
+        {talentData?.portfolio_video?.file && (<><Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold', textAlign: { xs: 'center' } }}>
           Video Showreel
-        </Typography>
-        <Box
+        </Typography><Box
           sx={{
             position: 'relative',
             borderRadius: '4px',
             height: { xs: '200px', md: '400px' },
             marginBottom: 2,
-            overflow: 'hidden', // Ensures the video doesn't overflow the box
+            overflow: 'hidden',
           }}
         >
-          {/* Video Background */}
-          <video
-            src={String(talentData?.portfolio_video?.file)}
-            autoPlay
-            loop
-            muted
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              zIndex: 1, 
-            }}
-          ></video>
+            {/* Video Background */}
+            <video
+              src={String(talentData?.portfolio_video?.file)}
+              autoPlay
+              loop
+              muted
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                zIndex: 1,
+              }}
+            ></video>
 
-          {/* Overlay */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(255, 255, 255, 0.5)', 
-              zIndex: 2, 
-            }}
-          ></Box>
+            {/* Overlay */}
+            <Box
+              sx={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                zIndex: 2,
+              }}
+            ></Box>
 
-          {/* Play Icon */}
-          <PlayCircleOutlineIcon
-            sx={{
-              color: '#977342',
-              fontSize: { xs: '150px', md: '50px' },
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)', 
-              zIndex: 3, 
-            }}
-          />
-        </Box>
+            {/* Play Icon */}
+            <PlayCircleOutlineIcon
+              sx={{
+                color: '#977342',
+                fontSize: { xs: '150px', md: '50px' },
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 3,
+              }} />
+          </Box></>)}
 
         <Typography variant="h6" sx={{ marginBottom: 2, fontSize: '20px', fontWeight: 'semi-bold' }}>
           Documents

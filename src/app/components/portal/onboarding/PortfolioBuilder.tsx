@@ -1,12 +1,15 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Typography, Container, Paper, Button } from '@mui/material';
+import { Box, Typography, Container, Paper, Button, Snackbar, Alert } from '@mui/material';
 import { PortfolioUploadSection } from '@/components/portal/onboarding/PortfolioUploadSection';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import PhotoGrid from '@/components/portal/onboarding/PhotoGrid';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
+import { useState } from 'react';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -20,6 +23,12 @@ const steps = [
 ];
 
 export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
+
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
   const router = useRouter();
 
   const onClose = () => {
@@ -27,12 +36,22 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
   };
 
   const handleContinue = () => {
-    setActiveStep(activeStep + 1);
+    if (talentData?.additional_images || talentData?.portfolio_pdf || talentData?.portfolio_video) {
+      setActiveStep(activeStep + 1);
+    } else {
+      setSnackbarMessage('Add at least 1 Portfolio Item.');
+      setSnackbarOpen(true);
+    }
+    
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  }
 
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: 'black' }}>
@@ -89,6 +108,17 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({ activeStep, se
           </Typography>
         </Box>
       </Box>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={"error"} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
