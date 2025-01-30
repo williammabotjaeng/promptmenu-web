@@ -9,7 +9,7 @@ import WebIcon from '@mui/icons-material/Web';
 
 import { SocialInputProps } from '@/types/Props/SocialInputProps';
 
-export const SocialInput: React.FC<SocialInputProps> = ({ icon, placeholder, alt }) => {
+export const SocialInput: React.FC<SocialInputProps> = ({ icon, placeholder, alt, value, onChange }) => {
   const renderIcon = (iconName: string) => {
     switch (iconName) {
       case 'instagram':
@@ -29,6 +29,8 @@ export const SocialInput: React.FC<SocialInputProps> = ({ icon, placeholder, alt
       placeholder={placeholder}
       aria-label={placeholder}
       variant="outlined"
+      value={value}
+      onChange={onChange}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">

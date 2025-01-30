@@ -26,6 +26,11 @@ const socialInputs = [
 
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
+  const [socialData, setSocialData] = React.useState({
+    instagram: '',
+    tiktok: '',
+    website: '',
+  });
 
   const onClose = () => {
     router.push('/portal');
@@ -37,6 +42,14 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+
+  const handleSocialInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSocialData((prevData) => ({
+      ...prevData,
+      [field]: value,
+    }));
   };
 
   return (
@@ -52,7 +65,12 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 4 }}>
             {socialInputs.map((input, index) => (
-              <SocialInput key={index} {...input} />
+              <SocialInput
+                key={index}
+                {...input}
+                value={socialData[input.icon as keyof typeof socialData]}
+                onChange={handleSocialInputChange(input.icon)}
+              />
             ))}
           </Box>
         </Paper>
@@ -60,14 +78,14 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
 
       {/* Navigation Buttons */}
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', paddingX: 2, marginTop: 4, marginLeft: { md: 40 }, width: { xs: '100%', md: '52%' }, alignItems: 'center' }}>
-        <Button 
-          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 }, width: { xs: '100%', md: '20%' }  }} 
+        <Button
+          sx={{ color: '#977342', border: '2px solid #977342', '&:hover': { color: '#fff' }, marginBottom: { xs: 1, md: 0 }, width: { xs: '100%', md: '20%' } }}
           onClick={handleBack}
         >
           Back
         </Button>
-        <Button 
-          sx={{ color: '#000', backgroundColor: '#CEAB76', width: { xs: '100%', md: '20%' } }} 
+        <Button
+          sx={{ color: '#000', backgroundColor: '#CEAB76', width: { xs: '100%', md: '20%' } }}
           onClick={handleContinue}
         >
           Continue
