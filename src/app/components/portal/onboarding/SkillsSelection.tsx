@@ -7,6 +7,8 @@ import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import { SkillType } from '@/types/Props/SkillTagProps';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
 
 const steps = [
     { number: 1, title: 'Headshot', isActive: false },
@@ -40,13 +42,22 @@ const skills: SkillType[] = [
 
 const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
+    const { talentData, setTalentData} = useStore(useTalentOnboardingStore);
+
     const [cookies, setCookie] = useCookies(['skills']);
 
-    const [selectedSkills, setSelectedSkills] = useState<SkillType[]>(Array.from(cookies['skills']) || []);
+    const [selectedSkills, setSelectedSkills] = useState<SkillType[]>(talentData?.skills || []);
 
     const router = useRouter();
 
     const handleContinue = () => {
+        setTalentData({
+            skills: selectedSkills,
+            website: talentData?.website,
+            social_media_links: talentData?.social_media_links,
+            user: talentData?.user,
+            headshot: talentData?.headshot
+        })
         setActiveStep(activeStep + 1);
     };
     const handleBack = () => {
@@ -71,6 +82,14 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
         }
 
         setCookie('skills', JSON.stringify(selectedSkills));
+
+        setTalentData({
+            skills: selectedSkills,
+            website: talentData?.website,
+            social_media_links: talentData?.social_media_links,
+            user: talentData?.user,
+            headshot: talentData?.headshot
+        })
     };
 
     return (

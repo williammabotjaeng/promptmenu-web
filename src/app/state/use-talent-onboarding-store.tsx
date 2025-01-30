@@ -8,6 +8,7 @@ import { BankDetails } from '@/types/Onboarding/Talent/BankDetails';
 import { PaymentMethods } from '@/types/Onboarding/Talent/PaymentMethods';
 import { ProfileSocials } from '@/types/Onboarding/Talent/ProfileSocials';
 import { TalentProfileData } from '@/types/TalentProfileData';
+import { SkillType } from '@/types/Props/SkillTagProps';
 
 interface TalentOnboardingState {
     personalInfo: PersonalInfo;

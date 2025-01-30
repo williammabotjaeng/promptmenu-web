@@ -1,3 +1,5 @@
+import { SkillType } from "./Props/SkillTagProps";
+
 export interface TalentProfileData {
     website: string;
     social_media_links: any;
@@ -10,7 +12,7 @@ export interface TalentProfileData {
     phone_number?: string | null; 
     whatsapp_number?: string | null;
     nationality?: string | null; 
-    skills?: string[]; 
+    skills?: SkillType[]; 
     height?: number | null; 
     weight?: number | null; 
     eyeColor?: string | null;
