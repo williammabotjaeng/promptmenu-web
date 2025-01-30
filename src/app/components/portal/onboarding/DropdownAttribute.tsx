@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Box } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Box, Typography } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'; 
 import { DropdownAttributeProps } from '@/types/Props/DropdownAttributeProps';
 
 export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, value }) => {
   return (
     <FormControl variant="outlined" sx={{ mb: 2 }}>
-      <InputLabel id={`${label.toLowerCase()}-select-label`} sx={{ color: '#977342' }}>
+      <Typography id={`${label.toLowerCase()}-select-label`} sx={{ color: '#977342' }}>
         {label}
-      </InputLabel>
+      </Typography>
       <Select
         labelId={`${label.toLowerCase()}-select-label`}
         id={`${label.toLowerCase()}-select`}
@@ -18,8 +18,19 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
           bgcolor: 'black',
           borderRadius: '8px',
           width: { xs: '100%', md: '24vw' },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: 'transparent',
+            },
+            '&:hover fieldset': {
+              borderColor: 'transparent', 
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: 'transparent', 
+            },
+          },
           '& .MuiSelect-select': {
-            color: '#977342',
+            color: 'transparent',
             display: 'flex',
             alignItems: 'center',
           },
