@@ -41,6 +41,9 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({ activeStep, se
 
   const handleContinue = () => {
     setActiveStep(activeStep + 1);
+    setCookie('website', socialData.website);
+    setCookie('tiktok', socialData.tiktok);
+    setCookie('instagram', socialData.instagram);
   };
 
   const handleBack = () => {

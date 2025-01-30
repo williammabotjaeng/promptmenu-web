@@ -21,6 +21,11 @@ const steps = [
 export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
 
+  const handleFileSelect = (file: File) => {
+    console.log('File selected:', file);
+    // Perform additional actions with the file (e.g., upload to server)
+  };
+
   const onClose = () => {
     router.push('/portal');
   };
@@ -43,8 +48,8 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({ activeStep, setActiv
           ID Document
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center' }}>
-          <UploadSection title="Front Side" />
-          <UploadSection title="Back Side" />
+          <UploadSection title="Front Side" onFileSelect={handleFileSelect} />
+          <UploadSection title="Back Side" onFileSelect={handleFileSelect} />
         </Box>
       </Paper>
 
