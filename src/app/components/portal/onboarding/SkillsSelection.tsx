@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Typography, TextField, Button, Chip } from '@mui/material';
+import { Box, Typography, TextField, Button, Chip, Snackbar, Alert } from '@mui/material';
 import { SkillTag } from '@/components/portal/onboarding/SkillTag';
 import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
 import { useRouter } from 'next/navigation';
@@ -48,6 +48,10 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
 
     const [selectedSkills, setSelectedSkills] = useState<SkillType[]>(talentData?.skills || []);
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
     const router = useRouter();
 
     const handleContinue = () => {
@@ -58,7 +62,13 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
             user: talentData?.user,
             headshot: talentData?.headshot
         })
-        setActiveStep(activeStep + 1);
+        
+        if (selectedSkills && selectedSkills?.length > 0) {
+            setActiveStep(activeStep + 1);
+        } else {
+            setSnackbarMessage('Please Select a Skill.');
+            setSnackbarOpen(true);
+        }
     };
     const handleBack = () => {
         if (activeStep > 0) {
@@ -91,6 +101,10 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
             headshot: talentData?.headshot
         })
     };
+
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    }
 
     return (
         <Box sx={{ display: 'flex', overflow: 'hidden', flexDirection: 'column', backgroundColor: 'white' }}>
@@ -142,6 +156,17 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveS
                     Step {activeStep + 1} of 8 - Skills
                 </Typography>
             </Box>
+            {/* Snackbar for feedback */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+            >
+                <Alert onClose={handleSnackbarClose} severity={"error"} sx={{ width: '100%' }}>
+                {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Box>
     );
 };
