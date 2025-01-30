@@ -3,16 +3,20 @@ import { FormControl, InputLabel, Select, MenuItem, Box, Typography } from '@mui
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'; 
 import { DropdownAttributeProps } from '@/types/Props/DropdownAttributeProps';
 
-export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, value }) => {
+export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ items, label, value, onChange }) => {
   return (
     <FormControl variant="outlined" sx={{ mb: 2 }}>
-      <Typography id={`${label.toLowerCase()}-select-label`} sx={{ color: '#977342' }}>
+      {/* Label */}
+      <Typography id={`${label.toLowerCase()}-select-label`} sx={{ color: '#977342', mb: 1 }}>
         {label}
       </Typography>
+
+      {/* Dropdown */}
       <Select
         labelId={`${label.toLowerCase()}-select-label`}
         id={`${label.toLowerCase()}-select`}
         value={value}
+        onChange={onChange}
         displayEmpty
         sx={{
           bgcolor: 'black',
@@ -30,7 +34,7 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
             },
           },
           '& .MuiSelect-select': {
-            color: 'transparent',
+            color: value ? '#fff' : '#977342', 
             display: 'flex',
             alignItems: 'center',
           },
@@ -41,21 +45,17 @@ export const DropdownAttribute: React.FC<DropdownAttributeProps> = ({ label, val
           </Box>
         )}
       >
+        {/* Placeholder */}
         <MenuItem disabled value="">
           <em>Select an option</em>
         </MenuItem>
-        <MenuItem disabled value="black">
-          <em>Black</em>
-        </MenuItem>
-        <MenuItem disabled value="brown">
-          <em>Brown</em>
-        </MenuItem>
-        <MenuItem disabled value="blonde">
-          <em>Blonde</em>
-        </MenuItem>
-        <MenuItem disabled value="brunette">
-          <em>Brunette</em>
-        </MenuItem>
+
+        {/* Dynamically Render Items */}
+        {items.map((item) => (
+          <MenuItem key={item.value} value={item.value}>
+            {item.label}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
