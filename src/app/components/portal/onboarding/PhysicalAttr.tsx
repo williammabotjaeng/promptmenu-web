@@ -45,6 +45,24 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
     setActiveStep(activeStep - 1);
   };
 
+  const handleHeightChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const value = event.target.value as string;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      height: value,
+    }));
+  };
+
+  const handleWeightChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+    const value = event.target.value as string;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      weight: value,
+    }));
+  };
+
   const handleEyeColorChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     const value = event.target.value as string;
 
@@ -91,8 +109,8 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', marginTop: 1, width: '100%' }}>
               <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, flexWrap: 'wrap', gap: 2 }}>
-                <AttributeInput label="Height" placeholder="cm" />
-                <AttributeInput label="Weight" placeholder="kg" />
+                <AttributeInput value={Number(formData.height)} onChange={handleHeightChange} label="Height" placeholder="cm" />
+                <AttributeInput value={Number(formData.weight)} onChange={handleWeightChange} label="Weight" placeholder="kg" />
               </Box>
               <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, flexWrap: 'wrap', gap: 2, marginTop: 4, color: '#977342' }}>
                 <DropdownAttribute onChange={handleEyeColorChange} items={eyeColorItems} label="Eye Color" value={formData?.eyeColor} />
