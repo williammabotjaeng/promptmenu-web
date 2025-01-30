@@ -39,7 +39,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
     physicalAttributes: {
         height: null,
         weight: null,
-        ethnicity: null,
+        eyeColor: null,
+        hairColor: null
     },
     paymentMethods: {
         payment_method: 'creditCard',
@@ -80,7 +81,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         skills: [],
         height: null,
         weight: null,
-        ethnicity: null,
+        eyeColor: null,
+        hairColor: null,
         government_id: null,
         banking_details: null,
         portfolio_pdf: null,
@@ -110,7 +112,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         physicalAttributes: {
             height: null,
             weight: null,
-            ethnicity: null,
+            eyeColor: null,
+            hairColor: null,
         },
         governmentID: null,
         bankDetails: {
@@ -148,7 +151,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
             skills: [],
             height: null,
             weight: null,
-            ethnicity: null,
+            eyeColor: null,
+            hairColor: null,
             government_id: null,
             banking_details: null,
             portfolio_pdf: null,

@@ -13,7 +13,8 @@ export interface TalentProfileData {
     skills?: string[]; 
     height?: number | null; 
     weight?: number | null; 
-    ethnicity?: string | null; 
+    eyeColor?: string | null;
+    hairColor?: string | null;
     government_id?: string | null; 
     banking_details?: string | null; 
     portfolio_pdf?: File | null; 
