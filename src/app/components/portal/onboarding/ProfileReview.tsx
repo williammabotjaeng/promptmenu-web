@@ -188,7 +188,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: { md: 4 }, width: '95%', ml: { md: 4 } }}>
         <Button
           sx={{ color: '#977342', border: '1px solid #977342', backgroundColor: '#000', mt: { xs: 2 }, '&:hover': { color: 'white' } }}
-          onClick={handleContinue}
+          onClick={handleBack}
         >
           Go Back
         </Button>

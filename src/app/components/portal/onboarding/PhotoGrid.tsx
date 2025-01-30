@@ -4,14 +4,23 @@ import * as React from 'react';
 import { Box, IconButton } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
+import { useStore } from 'zustand';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 
 const PhotoGrid: React.FC = () => {
-  const [images, setImages] = useState<string[]>([]);
+
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore); 
+
+  const [images, setImages] = useState<string[]>(talentData?.additional_images || []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files);
     const newImages = files.map(file => URL.createObjectURL(file));
     setImages(prevImages => [...prevImages, ...newImages]);
+    setTalentData({
+      ...talentData,
+      additional_images: newImages
+    })
   };
 
   return (

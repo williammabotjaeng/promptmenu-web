@@ -21,7 +21,7 @@ export interface TalentProfileData {
     government_id_back?: string | null;  
     banking_details?: string | null; 
     portfolio_pdf?: File | null; 
-    additional_images?: Record<string, any> | null; 
+    additional_images?: string[] | null; 
     is_verified?: boolean; 
     verification_notification_sent?: boolean; 
     created_at?: string; 
