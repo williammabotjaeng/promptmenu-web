@@ -21,11 +21,13 @@ const Dashboard = () => {
 
   const { user, updateUser } = useAuth();
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(['ssh_session_id', 'user_role']);
+  const [cookies, setCookie] = useCookies(['ssh_session_id', 'user_role', 'onboarding_presented']);
 
   let user_role = cookies['user_role'];
 
   const user_roles = ['client', 'talent', 'influencer'];
+
+  const onboardingPresented = cookies['onboarding_presented'] || false;
 
   const [openModal, setOpenModal] = useState(true); 
   const [loading, setLoading] = useState(false);
@@ -58,8 +60,13 @@ const Dashboard = () => {
     } else {
         if (user_role === 'client') {
             console.log("It's a client");
-            setLoading(false);
-            router.push('/dashboard');
+            if (!onboardingPresented) {
+                router.push('/company-profile');
+              }
+            setTimeout(() => {
+              setLoading(false)
+            }, 500);
+            // router.push('/dashboard');
         } else if (user_role === 'talent' || user_role === 'influencer') {
             console.log("It's talent");
             setLoading(false);
@@ -68,7 +75,7 @@ const Dashboard = () => {
     }
 
     setLoading(false);
-}, [user_role, user_roles, router]);
+}, [user_role, router]);
 
   if (loading) return <Loading />;
 
