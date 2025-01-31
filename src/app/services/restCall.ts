@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
 export const restCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH', body: any = null, accessToken: string) => {
     
     const response = await axiosInstance({
-    url: `http://localhost:8000${endpoint}`,
+    url: `https://3.92.56.80:8000${endpoint}`,
     method,
     data: body,
     headers: {

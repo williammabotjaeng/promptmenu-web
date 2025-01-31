@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 export const apiCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH', body: any = null) => {
 
   const response = await axiosInstance({
-    url: `http://localhost:8000${endpoint}`,
+    url: `https://3.92.56.80:8000${endpoint}`,
     method,
     data: body,
     headers: {
