@@ -331,6 +331,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Box>
 
                 {/* Address Field */}
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                 <Grid item xs={12} sm={6}>
                   <Autocomplete
                     freeSolo
@@ -345,7 +346,8 @@ export const CompanyRegisterForm: React.FC = () => {
                     }}
                     sx={{
                       backgroundColor: 'white',
-                      color: 'black'
+                      color: 'black',
+                      borderRadius: '6px'
                     }}
                     renderInput={(params) => (
                       <TextField
@@ -356,14 +358,16 @@ export const CompanyRegisterForm: React.FC = () => {
                         fullWidth
                         variant="outlined"
                         className="custom-input"
-                        sx={inputStyles}
+                        sx={[inputStyles, {
+                          borderRadius: '6px'
+                        }]}
                       />
                     )}
                   />
                 </Grid>
 
                 {/* Company Name Field */}
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{ ml: 4 }}>
                   <TextField
                     label={<Typography variant="body1">Company Name</Typography>}
                     name="company_name"
@@ -372,11 +376,16 @@ export const CompanyRegisterForm: React.FC = () => {
                     fullWidth
                     onChange={handleChange}
                     className="custom-input"
-                    sx={inputStyles}
+                    sx={[inputStyles, {
+                      backgroundColor: 'white',
+                      borderRadius: '6px'
+                    }]}
                   />
                 </Grid>
+                </Box>
 
                 {/* Telephone Number Field */}
+                <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body1">Telephone Number</Typography>
                   <PhoneInput
@@ -408,8 +417,8 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Email Field */}
-                <Grid item xs={12} sm={6}>
-                  <Typography color='black'>Email</Typography>
+                <Grid item xs={12} sm={6} sx={{ ml: 4 }}>
+                  <Typography sx={{ color: "#977342" }}>Email</Typography>
                   <TextField
                     label={<Typography variant="body1">Email</Typography>}
                     type="email"
@@ -419,11 +428,16 @@ export const CompanyRegisterForm: React.FC = () => {
                     fullWidth
                     onChange={handleChange}
                     className="custom-input"
-                    sx={inputStyles}
+                    sx={[inputStyles, {
+                      backgroundColor: 'white',
+                      borderRadius: '6px'
+                    }]}
                   />
                 </Grid>
+                </Box>
 
                 {/* Contact Person */}
+                <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2 }}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label={<Typography variant="body1">Contact Person</Typography>}
@@ -433,12 +447,15 @@ export const CompanyRegisterForm: React.FC = () => {
                     fullWidth
                     onChange={handleChange}
                     className="custom-input"
-                    sx={inputStyles}
+                    sx={[inputStyles, {
+                      backgroundColor: 'white',
+                      borderRadius: '6px'
+                    }]}
                   />
                 </Grid>
 
                 {/* Job Title */}
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{ ml: 4 }}>
                   <TextField
                     label={<Typography variant="body1">Job Title</Typography>}
                     name="job_title"
@@ -447,11 +464,16 @@ export const CompanyRegisterForm: React.FC = () => {
                     fullWidth
                     onChange={handleChange}
                     className="custom-input"
-                    sx={inputStyles}
+                    sx={[inputStyles, {
+                      backgroundColor: 'white',
+                      borderRadius: '6px'
+                    }]}
                   />
                 </Grid>
+                </Box>
 
                 {/* Mobile Number */}
+                <Box sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}>
                 <Grid item xs={12} sm={6}>
                   <Typography variant="body1">Mobile Number</Typography>
                   <PhoneInput
@@ -483,7 +505,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* WhatsApp Number Field (conditional) */}
-                <Grid item xs={12} sm={6} style={{ display: !useWhatsApp ? 'block' : 'none' }}>
+                <Grid item xs={12} sm={6} sx={{ display: !useWhatsApp ? 'block' : 'none', ml: 4 }}>
                   <Typography variant="body1">WhatsApp Number</Typography>
                   <PhoneInput
                     country={'ae'}
@@ -506,7 +528,7 @@ export const CompanyRegisterForm: React.FC = () => {
                     placeholder="Enter your WhatsApp number"
                   />
                 </Grid>
-
+                </Box>
 
                 {/* Terms of Payment */}
                 <Grid item xs={12}>
