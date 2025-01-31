@@ -3,4 +3,5 @@ export interface PhysicalAttributes {
     weight?: string | null;
     eyeColor?: string | null;
     hairColor?: string | null;
+    ethnicity?: string | null;
 }
