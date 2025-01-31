@@ -20,25 +20,29 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import Autocomplete from '@mui/material/Autocomplete';
 
+import WorkIcon from '@mui/icons-material/Work'; 
+import CampaignIcon from '@mui/icons-material/Campaign';
+import StarsIcon from '@mui/icons-material/Stars';
+import LanguageIcon from '@mui/icons-material/Language';
+import PostAddIcon from '@mui/icons-material/PostAdd'; 
+import PeopleIcon from '@mui/icons-material/People'; 
+
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const features = [
   {
-    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/5c5bfd1ec12c04f279f21f2648c74866d0b0282e771fabdd8fe37da008bc7b31?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    text: "Access exclusive casting calls",
-    alt: "Casting calls icon"
+    text: "Showcase your company to top talent",
+    alt: "Showcase icon"
   },
   {
-    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c5defcacc66dabe2be6ffd54da4ea88231a7030e6df7a6e3e05df7ad124aaedb?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    text: "Professional portfolio management",
-    alt: "Portfolio management icon"
+    text: "Post jobs and manage applications",
+    alt: "Job posting icon"
   },
   {
-    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0cd76d0fce7ef8ee48c4c02ce39a649bf4d2e533f796c4f3db98c8e90fbc7062?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    text: "International opportunities",
-    alt: "International opportunities icon"
+    text: "Connect with casting directors and productions",
+    alt: "Connections icon"
   }
 ];
 
@@ -235,50 +239,57 @@ export const CompanyRegisterForm: React.FC = () => {
       <Grid container spacing={4}>
         {/* Left Column */}
         <Grid item xs={12} md={4}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
-              <Link href="/">
-                <Image
-                  src={SSHGoldLogo.src}
-                  alt="Staffing Solutions Logo"
-                  width={200}
-                  height={204}
-                  style={{ opacity: 0.5, overflow: 'hidden' }}
-                />
-              </Link>
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 'bold',
-                  color: '#977342',
-                  fontSize: '20px',
-                  opacity: 0.3,
-                  position: 'absolute',
-                  left: '155%',
-                  top: '36%',
-                  transform: 'translate(-50%, -100%)',
-                  width: '150%'
-                }}
-              >
-                Staffing Solutions Hub
-              </Typography>
-            </Box>
-            <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#fff', fontSize: '48px', mb: 2 }}>
-              Join the Winning <span style={{ display: 'block', color: '#977342' }}>Talent Network</span>
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
-              Connect with top casting directors, agencies, and <span style={{ display: 'block' }}>productions across the Middle East</span>
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
-              {features.map((feature, index) => (
-                <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
-                  <Avatar src={feature.iconSrc} alt={feature.alt} sx={{ width: 24, height: 24 }} />
-                  <Typography variant="body2" color="white">{feature.text}</Typography>
-                </Box>
-              ))}
-            </Box>
+  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+    <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
+      <Link href="/">
+        <Image
+          src={SSHGoldLogo.src}
+          alt="Staffing Solutions Logo"
+          width={200}
+          height={204}
+          style={{ opacity: 0.5, overflow: 'hidden' }}
+        />
+      </Link>
+      <Typography
+        variant="h4"
+        sx={{
+          fontWeight: 'bold',
+          color: '#977342',
+          fontSize: '20px',
+          opacity: 0.3,
+          position: 'absolute',
+          left: '155%',
+          top: '36%',
+          transform: 'translate(-50%, -100%)',
+          width: '150%'
+        }}
+      >
+        Staffing Solutions Hub
+      </Typography>
+    </Box>
+    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#fff', fontSize: '48px', mb: 2 }}>
+      Build Your <span style={{ display: 'block', color: '#977342' }}>Company Profile</span>
+    </Typography>
+    <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
+      Showcase your company to top talent and connect with casting directors, agencies, and productions across the Middle East.
+    </Typography>
+    <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
+      Take the next step and create your company profile to start posting jobs, managing applications, and finding the perfect talent for your projects.
+    </Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
+      
+        {features.map((feature, index) => (
+          <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
+            {/* Replace Avatar with an appropriate MUI icon */}
+            {index === 0 && <StarsIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
+            {index === 1 && <CampaignIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
+            {index === 2 && <LanguageIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
+            <Typography variant="body2" color="white">{feature.text}</Typography>
           </Box>
-        </Grid>
+        ))}
+    </Box>
+  </Box>
+</Grid>
 
         {/* Right Column */}
         <Grid item xs={12} md={8}>

@@ -12,23 +12,24 @@ import { useCookies } from "react-cookie";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
+import CampaignIcon from '@mui/icons-material/Campaign';
+import StarsIcon from '@mui/icons-material/Stars';
+import LanguageIcon from '@mui/icons-material/Language';
+
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const features = [
   {
-    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/5c5bfd1ec12c04f279f21f2648c74866d0b0282e771fabdd8fe37da008bc7b31?apiKey=7fae980a988640eea8add1e49a5d542e&",
     text: "Access exclusive casting calls",
     alt: "Casting calls icon"
   },
   {
-    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c5defcacc66dabe2be6ffd54da4ea88231a7030e6df7a6e3e05df7ad124aaedb?apiKey=7fae980a988640eea8add1e49a5d542e&",
     text: "Professional portfolio management",
     alt: "Portfolio management icon"
   },
   {
-    iconSrc: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0cd76d0fce7ef8ee48c4c02ce39a649bf4d2e533f796c4f3db98c8e90fbc7062?apiKey=7fae980a988640eea8add1e49a5d542e&",
     text: "International opportunities",
     alt: "International opportunities icon"
   }
@@ -214,7 +215,9 @@ export const RegisterForm: React.FC = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
               {features.map((feature, index) => (
                 <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
-                  <Avatar src={feature.iconSrc} alt={feature.alt} sx={{ width: 24, height: 24 }} />
+                  {index === 0 && <StarsIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
+                  {index === 1 && <CampaignIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
+                  {index === 2 && <LanguageIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
                   <Typography variant="body2" color="white">{feature.text}</Typography>
                 </Box>
               ))}
