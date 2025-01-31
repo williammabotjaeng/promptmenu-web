@@ -300,9 +300,21 @@ export const CompanyRegisterForm: React.FC = () => {
             </Typography>
             <form onSubmit={handleSubmit} method="POST">
               <Box sx={{ display: 'flex', flexDirection: 'row', mb: 2 }}>
+                {/* Nationality Field */}
+                <Grid item xs={12} sm={3} md={6}>
+                  <FormControl required>
+                    <div className="country-dropdown-container">
+                      <CountryDropdown
+                        value={nationality}
+                        onChange={handleCountryChange}
+                        className="custom-input country-dropdown"
+                      />
+                    </div>
+                  </FormControl>
+                </Grid>
                 {/* State/Province/Region Field */}
-                <Grid item xs={12} sm={3}>
-                  <FormControl fullWidth required sx={{
+                <Grid item xs={12} sm={3} md={6} sx={{ ml: 4 }}>
+                  <FormControl required sx={{
                     height: '9.5vh'
                   }}>
                     <RegionDropdown
@@ -317,18 +329,6 @@ export const CompanyRegisterForm: React.FC = () => {
                   </FormControl>
                 </Grid>
                 </Box>
-                {/* Nationality Field */}
-                <Grid item xs={12} sm={3}>
-                  <FormControl fullWidth required>
-                    <div className="country-dropdown-container">
-                      <CountryDropdown
-                        value={nationality}
-                        onChange={handleCountryChange}
-                        className="custom-input country-dropdown"
-                      />
-                    </div>
-                  </FormControl>
-                </Grid>
 
                 {/* Address Field */}
                 <Grid item xs={12} sm={6}>
@@ -753,7 +753,7 @@ export const CompanyRegisterForm: React.FC = () => {
                     color="success"
                     style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
                   >
-                    <Typography variant="body1">Register</Typography>
+                    <Typography variant="body1">Create Company</Typography>
                   </Button>
                 </Grid>
                 </form>
