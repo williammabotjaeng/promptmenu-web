@@ -341,7 +341,7 @@ export const CompanyRegisterForm: React.FC = () => {
                     }}
                     onChange={(event, newValue) => {
                       setAddressInputValue(newValue);
-                      handleChange({ target: { name: 'address', value: newValue } });
+                      handleChange(null);
                     }}
                     sx={{
                       backgroundColor: 'white',
