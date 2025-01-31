@@ -533,7 +533,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Box>
 
                 {/* Terms of Payment */}
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ mt: 2 }}>
                   <Typography variant="body1">
                     Terms of payment are 50% advance, 50% on project completion.
                   </Typography>
@@ -573,7 +573,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Preferred Payment Method */}
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ mt: 2 }}>
                   <FormControl component="fieldset">
                     <Typography variant="body1">Preferred Payment Method</Typography>
                     <FormControlLabel
@@ -623,7 +623,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
 
                 {/* Email Field */}
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{ mt: 2 }}>
                   <Typography variant='body1'>Accounts Department Email</Typography>
                   <TextField
                     label={<Typography variant="body1">Accounts Department Email</Typography>}
@@ -638,7 +638,7 @@ export const CompanyRegisterForm: React.FC = () => {
                   />
                 </Grid>
 
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ mt: 2 }}>
                   {/* Trade License Column */}
                   <Grid item xs={6}>
                     <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
@@ -707,6 +707,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Password */}
+                <Box sx={{ display: 'flex', flexDirection: 'row', mt: 2}}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     label={<Typography variant="body1">Password</Typography>}
@@ -722,7 +723,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Confirm Password */}
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{ ml: 2 }}>
                   <TextField
                     label={<Typography variant="body1">Confirm Password</Typography>}
                     type="password"
@@ -735,38 +736,17 @@ export const CompanyRegisterForm: React.FC = () => {
                     sx={inputStyles}
                   />
                 </Grid>
-
-                {/* Influencer Question */}
-                {userRole === 'talent' && (<Grid item xs={12}>
-                  <Typography variant="h5">
-                    Are you a Popular influencer?
-                  </Typography>
-                  <RadioGroup row value={isInfluencer} onChange={handleInfluencerChange}>
-                    <FormControlLabel
-                      control={<Radio sx={{
-                        color: 'white'
-                      }} color="success" />}
-                      label="Yes"
-                      value="yes"
-                    />
-                    <FormControlLabel
-                      control={<Radio sx={{
-                        color: 'white'
-                      }} color="success" />}
-                      label="No"
-                      value="no"
-                    />
-                  </RadioGroup>
-                </Grid>)}
+                </Box>
 
                 {/* Submit Button */}
                 <Grid item xs={12}>
                   <FormControlLabel
                     control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
-                      color: 'white'
-                    }} className="custom-input" />}
+                      color: 'white',
+                      mt: 2
+                    }} />}
                     label={
-                      <Typography variant="body1">
+                      <Typography variant="body1" sx={{ mt: 2 }}>
                         By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
                       </Typography>
                     }
