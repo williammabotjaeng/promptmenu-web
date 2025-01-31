@@ -27,6 +27,8 @@ import LanguageIcon from '@mui/icons-material/Language';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import PeopleIcon from '@mui/icons-material/People';
 
+import '@/styles/register-form.css';
+
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
