@@ -10,7 +10,7 @@ import { useAuth } from '@/providers/auth-providers';
 import '@/styles/globals.css';
 import { CompanyRegisterForm } from '@/components/CompanyRegisterForm';
 
-const Register: React.FC = () => {
+const CompanyProfile: React.FC = () => {
   const { register } = useAuth();
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -37,4 +37,4 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+export default CompanyProfile;

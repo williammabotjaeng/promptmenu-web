@@ -234,7 +234,7 @@ export const CompanyRegisterForm: React.FC = () => {
     <Box sx={{ padding: 4, backgroundColor: 'transparent' }}>
       <Grid container spacing={4}>
         {/* Left Column */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
               <Link href="/">
@@ -281,7 +281,7 @@ export const CompanyRegisterForm: React.FC = () => {
         </Grid>
 
         {/* Right Column */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={8}>
           <Box sx={{ backgroundColor: '#ffffff1a', padding: 4, borderRadius: 2 }}>
             <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
               Create Your Company Profile
