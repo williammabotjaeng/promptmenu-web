@@ -12,5 +12,5 @@ export const privateRoutes: string[] = [
   ];
 
   export const hybridRoutes: string[] = [
-      '/about', '/about', '/jobs', '/talent'
+      '/about', '/about', '/jobs', '/talent', '/contact'
   ];
