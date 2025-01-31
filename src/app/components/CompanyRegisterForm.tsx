@@ -315,7 +315,7 @@ export const CompanyRegisterForm: React.FC = () => {
                   </FormControl>
                 </Grid>
                 {/* State/Province/Region Field */}
-                <Grid item xs={12} sm={12} md={6} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} md={6} sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}>
                   <FormControl required sx={{
                     height: '9.5vh'
                   }}>
@@ -366,7 +366,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Company Name Field */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}>
                   <TextField
                     label={<Typography variant="body1">Company Name</Typography>}
                     name="company_name"
@@ -454,7 +454,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Job Title */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}>
                   <TextField
                     label={<Typography variant="body1">Job Title</Typography>}
                     name="job_title"
@@ -669,10 +669,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
                   {/* VAT Certificate Column */}
                   <Grid item xs={6}>
-                    <Box  alignItems="center" sx={{
-                      display: 'flex', 
-                      flex: 1,
-                      flexDirection: { xs: 'column', md: 'row' },
+                  <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
                       border: '4px dotted black',
                       margin: '4px',
                       borderRadius: '12px',
@@ -724,7 +721,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Confirm Password */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 2 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 2 }, mt: { md: 0, xs: 2 } }}>
                   <TextField
                     label={<Typography variant="body1">Confirm Password</Typography>}
                     type="password"
