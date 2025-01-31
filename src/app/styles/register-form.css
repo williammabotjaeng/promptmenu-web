@@ -25,7 +25,7 @@
   color: white;
 }
 
-.custom-checkbox.Mui-checked+.MuiFormControlLabel-label {
+.custom-checkbox.Mui-checked + .MuiFormControlLabel-label {
   color: black;
 }
 
@@ -41,8 +41,33 @@
   height: 100%;
   width: 75%;
   padding: 10px;
+  border-radius: 6px;
 }
 
+.region-dropdown {
+  flex: 1;
+  width: 27vw;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* Media Query for Tablet and Mobile Screens */
+@media (max-width: 768px) {
+  .country-dropdown-container {
+    width: 100%; 
+    flex-direction: column; 
+  }
+
+  .country-dropdown {
+    width: 100%; 
+  }
+
+  .region-dropdown {
+    width: 138%; 
+  }
+}
+
+/* Hide the asterisk for required fields */
 .MuiFormLabel-asterisk {
   display: none !important;
 }

@@ -301,9 +301,9 @@ export const CompanyRegisterForm: React.FC = () => {
               Create Your Company Profile
             </Typography>
             <form onSubmit={handleSubmit} method="POST">
-              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mb: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', mb: 2 }}>
                 {/* Nationality Field */}
-                <Grid item xs={12} sm={3} md={6}>
+                <Grid item xs={12} sm={12} md={6}>
                   <FormControl required>
                     <Box sx={{ width: { xs: '100%'} }} className="country-dropdown-container">
                       <CountryDropdown
@@ -315,7 +315,7 @@ export const CompanyRegisterForm: React.FC = () => {
                   </FormControl>
                 </Grid>
                 {/* State/Province/Region Field */}
-                <Grid item xs={12} sm={3} md={6} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} md={6} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
                   <FormControl required sx={{
                     height: '9.5vh'
                   }}>
@@ -323,10 +323,7 @@ export const CompanyRegisterForm: React.FC = () => {
                       country={nationality}
                       value={region}
                       onChange={handleRegionChange}
-                      className="custom-input country-dropdown"
-                      style={{
-                        width: '19vw'
-                      }}
+                      className="region-dropdown"
                     />
                   </FormControl>
                 </Grid>
@@ -334,7 +331,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
                 {/* Address Field */}
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <Autocomplete
                     freeSolo
                     options={addressOptions.map(option => option?.display_name)}
@@ -369,7 +366,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Company Name Field */}
-                <Grid item xs={12} sm={6} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
                   <TextField
                     label={<Typography variant="body1">Company Name</Typography>}
                     name="company_name"
@@ -388,7 +385,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
                 {/* Telephone Number Field */}
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 1 }}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <Typography variant="body1">Telephone Number</Typography>
                   <PhoneInput
                     country={'ae'}
@@ -419,7 +416,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Email Field */}
-                <Grid item xs={12} sm={6} sx={{ ml: { md: 4 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 } }}>
                   <Typography sx={{ color: "#977342" }}>Email</Typography>
                   <TextField
                     label={<Typography variant="body1">Email</Typography>}
@@ -440,7 +437,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
                 {/* Contact Person */}
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 2 }}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <TextField
                     label={<Typography variant="body1">Contact Person</Typography>}
                     name="contact_person"
@@ -457,7 +454,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Job Title */}
-                <Grid item xs={12} sm={6} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { xs: 2 } }}>
                   <TextField
                     label={<Typography variant="body1">Job Title</Typography>}
                     name="job_title"
@@ -476,7 +473,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
                 {/* Mobile Number */}
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 1 }}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <Typography variant="body1">Mobile Number</Typography>
                   <PhoneInput
                     country={'ae'}
@@ -508,7 +505,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* WhatsApp Number Field (conditional) */}
-                <Grid item xs={12} sm={6} sx={{ display: !useWhatsApp ? 'block' : 'none', ml: { md: 4 } }}>
+                <Grid item xs={12} sm={12} sx={{ display: !useWhatsApp ? 'block' : 'none', ml: { md: 4 } }}>
                   <Typography variant="body1">WhatsApp Number</Typography>
                   <PhoneInput
                     country={'ae'}
@@ -624,7 +621,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
 
                 {/* Email Field */}
-                <Grid item xs={12} sm={6} sx={{ mt: 2 }}>
+                <Grid item xs={12} sm={12} sx={{ mt: 2 }}>
                   <Typography variant='body1'>Accounts Department Email</Typography>
                   <TextField
                     label={<Typography variant="body1">Accounts Department Email</Typography>}
@@ -712,7 +709,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
                 {/* Password */}
                 <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 2}}>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={12}>
                   <TextField
                     label={<Typography variant="body1">Password</Typography>}
                     type="password"
@@ -727,7 +724,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Confirm Password */}
-                <Grid item xs={12} sm={6} sx={{ ml: { md: 2 }, mt: { xs: 2 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 2 }, mt: { xs: 2 } }}>
                   <TextField
                     label={<Typography variant="body1">Confirm Password</Typography>}
                     type="password"
