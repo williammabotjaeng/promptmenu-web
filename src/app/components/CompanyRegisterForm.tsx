@@ -20,12 +20,12 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import WorkIcon from '@mui/icons-material/Work'; 
+import WorkIcon from '@mui/icons-material/Work';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import StarsIcon from '@mui/icons-material/Stars';
 import LanguageIcon from '@mui/icons-material/Language';
-import PostAddIcon from '@mui/icons-material/PostAdd'; 
-import PeopleIcon from '@mui/icons-material/People'; 
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import PeopleIcon from '@mui/icons-material/People';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -235,61 +235,62 @@ export const CompanyRegisterForm: React.FC = () => {
   }
 
   return (
+    <>
     <Box sx={{ padding: 4, backgroundColor: 'transparent' }}>
       <Grid container spacing={4}>
         {/* Left Column */}
         <Grid item xs={12} md={4}>
-  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-    <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
-      <Link href="/">
-        <Image
-          src={SSHGoldLogo.src}
-          alt="Staffing Solutions Logo"
-          width={200}
-          height={204}
-          style={{ opacity: 0.5, overflow: 'hidden' }}
-        />
-      </Link>
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: 'bold',
-          color: '#977342',
-          fontSize: '20px',
-          opacity: 0.3,
-          position: 'absolute',
-          left: '155%',
-          top: '36%',
-          transform: 'translate(-50%, -100%)',
-          width: '150%'
-        }}
-      >
-        Staffing Solutions Hub
-      </Typography>
-    </Box>
-    <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#fff', fontSize: '48px', mb: 2 }}>
-      Build Your <span style={{ display: 'block', color: '#977342' }}>Company Profile</span>
-    </Typography>
-    <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
-      Showcase your company to top talent and connect with casting directors, agencies, and productions across the Middle East.
-    </Typography>
-    <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
-      Take the next step and create your company profile to start posting jobs, managing applications, and finding the perfect talent for your projects.
-    </Typography>
-    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
-      
-        {features.map((feature, index) => (
-          <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
-            {/* Replace Avatar with an appropriate MUI icon */}
-            {index === 0 && <StarsIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
-            {index === 1 && <CampaignIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
-            {index === 2 && <LanguageIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
-            <Typography variant="body2" color="white">{feature.text}</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+            <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
+              <Link href="/">
+                <Image
+                  src={SSHGoldLogo.src}
+                  alt="Staffing Solutions Logo"
+                  width={200}
+                  height={204}
+                  style={{ opacity: 0.5, overflow: 'hidden' }}
+                />
+              </Link>
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 'bold',
+                  color: '#977342',
+                  fontSize: '20px',
+                  opacity: 0.3,
+                  position: 'absolute',
+                  left: '155%',
+                  top: '36%',
+                  transform: 'translate(-50%, -100%)',
+                  width: '150%'
+                }}
+              >
+                Staffing Solutions Hub
+              </Typography>
+            </Box>
+            <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#fff', fontSize: '48px', mb: 2 }}>
+              Build Your <span style={{ display: 'block', color: '#977342' }}>Company Profile</span>
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
+              Showcase your company to top talent and connect with casting directors, agencies, and productions across the Middle East.
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
+              Take the next step and create your company profile to start posting jobs, managing applications, and finding the perfect talent for your projects.
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
+
+              {features.map((feature, index) => (
+                <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
+                  {/* Replace Avatar with an appropriate MUI icon */}
+                  {index === 0 && <StarsIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
+                  {index === 1 && <CampaignIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
+                  {index === 2 && <LanguageIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
+                  <Typography variant="body2" color="white">{feature.text}</Typography>
+                </Box>
+              ))}
+            </Box>
           </Box>
-        ))}
-    </Box>
-  </Box>
-</Grid>
+        </Grid>
 
         {/* Right Column */}
         <Grid item xs={12} md={8}>
@@ -298,7 +299,7 @@ export const CompanyRegisterForm: React.FC = () => {
               Create Your Company Profile
             </Typography>
             <form onSubmit={handleSubmit} method="POST">
-              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row', mb: 2 }}>
                 {/* State/Province/Region Field */}
                 <Grid item xs={12} sm={3}>
                   <FormControl fullWidth required sx={{
@@ -315,7 +316,7 @@ export const CompanyRegisterForm: React.FC = () => {
                     />
                   </FormControl>
                 </Grid>
-
+                </Box>
                 {/* Nationality Field */}
                 <Grid item xs={12} sm={3}>
                   <FormControl fullWidth required>
@@ -755,69 +756,70 @@ export const CompanyRegisterForm: React.FC = () => {
                     <Typography variant="body1">Register</Typography>
                   </Button>
                 </Grid>
-          </Box>
-        </form>
-    </Box>
+                </form>
+              </Box>
         </Grid >
       </Grid >
-  <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400', fontSize: { xs: '12px' } }}>
-    © 2025 Staffing Solutions Hub. All rights reserved.
-  </Box>
-{/* Snackbar for notifications */ }
-<Snackbar
-  open={snackbarOpen}
-  autoHideDuration={6000}
-  onClose={handleSnackbarClose}
-  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-  sx={{
-    '& .MuiSnackbarContent-root': {
-      borderRadius: '8px',
-      padding: '16px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-      width: { xs: '90%', sm: '400px' },
-      margin: '0 auto',
-      backgroundColor: '#ffffff',
-    },
-  }}
->
-  <Alert
-    onClose={handleSnackbarClose}
-    severity={snackbarSeverity}
-    sx={{
-      width: '100%',
-      backgroundColor: '#ffffff',
-      color: '#333', 
-      borderRadius: '8px',
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-      padding: '16px',
-      display: 'flex',
-      flexDirection: 'column', 
-      alignItems: 'flex-start', 
-    }}
-  >
-    {/* Display the list of messages */}
-    {snackbarMessage.split('\n').map((message, index) => (
-      <div
-        key={index}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0',
+      
+      <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400', fontSize: { xs: '12px' } }}>
+        © 2025 Staffing Solutions Hub. All rights reserved.
+      </Box>
+      {/* Snackbar for notifications */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{
+          '& .MuiSnackbarContent-root': {
+            borderRadius: '8px',
+            padding: '16px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+            width: { xs: '90%', sm: '400px' },
+            margin: '0 auto',
+            backgroundColor: '#ffffff',
+          },
         }}
       >
-        <span
-          style={{
-            marginRight: '8px',
-            fontSize: '18px',
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{
+            width: '100%',
+            backgroundColor: '#ffffff',
+            color: '#333',
+            borderRadius: '8px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+            padding: '16px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
           }}
         >
-          {message.startsWith('✅') ? '✅' : '❌'}
-        </span>
-        <span>{message.slice(2).trim()}</span>
-      </div>
-    ))}
-  </Alert>
-</Snackbar>
+          {/* Display the list of messages */}
+          {snackbarMessage.split('\n').map((message, index) => (
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0',
+              }}
+            >
+              <span
+                style={{
+                  marginRight: '8px',
+                  fontSize: '18px',
+                }}
+              >
+                {message.startsWith('✅') ? '✅' : '❌'}
+              </span>
+              <span>{message.slice(2).trim()}</span>
+            </div>
+          ))}
+        </Alert>
+      </Snackbar>
     </Box >
+    </>
   );
 };
