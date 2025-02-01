@@ -57,8 +57,11 @@ export const LoginForm: React.FC = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-
-        await login(formData.email, formData.password);
+        const cleanEmail = formData.email.trim();
+        const cleanPass = formData.password.trim();
+        console.log("Clean Email", cleanEmail.length);
+        console.log("Clean Pass", cleanPass.length);
+        await login(cleanEmail, cleanPass);
 
         setSnackbarMessage("Login successful! Redirecting...");
         setSnackbarSeverity("success");
