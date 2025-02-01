@@ -9,7 +9,7 @@ import { useAuth } from "@/providers/auth-providers";
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import { useCookies } from "react-cookie";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
 
 import CampaignIcon from '@mui/icons-material/Campaign';
@@ -51,6 +51,8 @@ export const RegisterForm: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
   const [cookies, setCookie] = useCookies(['username', 'email']);
+
+  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -149,7 +151,7 @@ export const RegisterForm: React.FC = () => {
 
 
         setTimeout(() => {
-          redirect('/otp')
+          router.push('/otp')
         }, 2000);
 
       } catch (error: any) {

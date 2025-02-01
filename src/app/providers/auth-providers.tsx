@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('lastname', data?.tokens?.lastname, { path: '/', maxAge: 604800 });
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
-      redirect('/dashboard'); 
+      router.push('/dashboard'); 
     },
     onError: (error) => {
       console.error('Login error: ', error);
@@ -114,7 +114,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeCookie('ssh_session_id', { path: '/' });
       removeCookie('user_role', { path: '/' });
       removeCookie('username', { path: '/' });
-      redirect('/login'); 
+      router.push('/login'); 
     },
     onError: (error) => {
       console.error('Logout error: ', error);
