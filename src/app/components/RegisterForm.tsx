@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar, Grid } from "@mui/material";
+import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar, Grid, InputAdornment, IconButton } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import Image from 'next/image';
@@ -9,12 +9,13 @@ import { useAuth } from "@/providers/auth-providers";
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 import { useCookies } from "react-cookie";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 
 import CampaignIcon from '@mui/icons-material/Campaign';
 import StarsIcon from '@mui/icons-material/Stars';
 import LanguageIcon from '@mui/icons-material/Language';
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -50,9 +51,13 @@ export const RegisterForm: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
-  const [cookies, setCookie] = useCookies(['username', 'email']);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const router = useRouter();
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+
+  const [cookies, setCookie] = useCookies(['username', 'email']);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -151,7 +156,7 @@ export const RegisterForm: React.FC = () => {
 
 
         setTimeout(() => {
-          router.push('/otp')
+          redirect('/otp')
         }, 2000);
 
       } catch (error: any) {
@@ -218,8 +223,8 @@ export const RegisterForm: React.FC = () => {
               {features.map((feature, index) => (
                 <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
                   {index === 0 && <StarsIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
-                  {index === 1 && <CampaignIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
-                  {index === 2 && <LanguageIcon sx={{ color: '#CEAB76', fontSize: 24 }} />} 
+                  {index === 1 && <CampaignIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
+                  {index === 2 && <LanguageIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
                   <Typography variant="body2" color="white">{feature.text}</Typography>
                 </Box>
               ))}
@@ -363,9 +368,10 @@ export const RegisterForm: React.FC = () => {
                     },
                   }}
                 />
+                {/* Password Field */}
                 <TextField
                   label="Password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   id="password"
                   name="password"
                   variant="outlined"
@@ -393,11 +399,20 @@ export const RegisterForm: React.FC = () => {
                         borderColor: '#977342',
                       },
                     },
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={togglePasswordVisibility} edge="end">
+                          {showPassword ? <VisibilityOff sx={{ color: '#977342' }} /> : <Visibility sx={{ color: '#977342' }} />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
                 />
+
+                {/* Confirm Password Field */}
                 <TextField
                   label="Confirm Password"
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   id="confirmPassword"
                   name="confirmPassword"
                   variant="outlined"
@@ -425,6 +440,13 @@ export const RegisterForm: React.FC = () => {
                         borderColor: '#977342',
                       },
                     },
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={toggleConfirmPasswordVisibility} edge="end">
+                          {showConfirmPassword ? <VisibilityOff sx={{ color: '#977342' }} /> : <Visibility sx={{ color: '#977342' }} />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
                 />
                 <FormControlLabel
@@ -471,7 +493,7 @@ export const RegisterForm: React.FC = () => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
             width: { xs: '90%', sm: '400px' },
             margin: '0 auto',
-            backgroundColor: '#ffffff', // Set background to white
+            backgroundColor: '#ffffff', 
           },
         }}
       >
@@ -480,14 +502,14 @@ export const RegisterForm: React.FC = () => {
           severity={snackbarSeverity}
           sx={{
             width: '100%',
-            backgroundColor: '#ffffff', // White background for the Alert
-            color: '#333', // Dark text for better readability
+            backgroundColor: '#ffffff', 
+            color: '#333', 
             borderRadius: '8px',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             padding: '16px',
             display: 'flex',
-            flexDirection: 'column', // Organize content vertically
-            alignItems: 'flex-start', // Align text to the left
+            flexDirection: 'column', 
+            alignItems: 'flex-start', 
           }}
         >
           {/* Display the list of messages */}
@@ -497,7 +519,7 @@ export const RegisterForm: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0', 
+                marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0',
               }}
             >
               <span

@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, Grid, IconButton, InputAdornment, TextField, Typography } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { Facebook, Instagram, Twitter } from '@mui/icons-material';
+import { Facebook, Instagram, Twitter, Visibility, VisibilityOff } from '@mui/icons-material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTiktok } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
@@ -32,6 +32,10 @@ export const LoginForm: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,18 +61,15 @@ export const LoginForm: React.FC = () => {
 
     if (Object.keys(newErrors).length === 0) {
       try {
-        const cleanEmail = formData.email.trim();
-        const cleanPass = formData.password.trim();
-        console.log("Clean Email", cleanEmail.length);
-        console.log("Clean Pass", cleanPass.length);
-        await login(cleanEmail, cleanPass);
+
+        await login(formData.email, formData.password);
 
         setSnackbarMessage("Login successful! Redirecting...");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
-        
+
         router.push('/dashboard');
-        
+
       } catch (error) {
         console.error("Login failed:", error);
         setSnackbarMessage("Login failed. Please check your credentials.");
@@ -91,7 +92,7 @@ export const LoginForm: React.FC = () => {
       <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', padding: { xs: 1, md: 4 } }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: { xs: 1, md: 12 } }}>
           <Link href="/">
-          <Image src={SSHGoldLogo} alt="Logo" width={200} height={200} style={{ cursor: 'pointer', opacity: .3 }} />
+            <Image src={SSHGoldLogo} alt="Logo" width={200} height={200} style={{ cursor: 'pointer', opacity: .3 }} />
           </Link>
           <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16 }, alignItems: { md: 'none', xs: 'center' } }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
@@ -138,7 +139,7 @@ export const LoginForm: React.FC = () => {
               />
               <TextField
                 label="Password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 name="password"
                 placeholder="Enter your password"
                 fullWidth
@@ -157,17 +158,21 @@ export const LoginForm: React.FC = () => {
                     color: '#977342',
                     '& .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
-                      color: '#977342'
                     },
                     '&:hover .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
-                      color: '#977342'
                     },
                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                       borderColor: '#977342',
-                      color: '#977342'
                     },
                   },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? <VisibilityOff sx={{ color: '#977342' }} /> : <Visibility sx={{ color: '#977342' }} />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
