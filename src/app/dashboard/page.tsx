@@ -52,8 +52,8 @@ const Dashboard = () => {
     console.log("User Role:", user_role);
     setLoading(true);
 
-    if (!user_role) {
-        console.log("User role:", user_role);
+    if (user_role === "None") {
+        console.log("User role:", typeof(user_role));
         console.log("Check:", !user_role);
         setLoading(false);
         setOpenModal(true);
