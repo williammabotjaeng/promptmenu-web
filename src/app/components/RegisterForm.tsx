@@ -53,6 +53,7 @@ export const RegisterForm: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
@@ -69,7 +70,6 @@ export const RegisterForm: React.FC = () => {
   const validateForm = () => {
     const { firstname, lastname, email, username, password, confirmPassword } = formData;
 
-    // Validation rules
     const requirements = [
       {
         check: firstname && lastname && email && username && password && confirmPassword,
@@ -105,29 +105,13 @@ export const RegisterForm: React.FC = () => {
       },
     ];
 
-    // Evaluate all requirements
-    const results = requirements.map((requirement) => ({
-      met: requirement.check,
-      message: requirement.message,
-    }));
+    const unmetRequirements = requirements.filter((requirement) => !requirement.check);
 
-    // Separate met and unmet requirements
-    const unmetRequirements = results.filter((result) => !result.met);
-    const metRequirements = results.filter((result) => result.met);
+    if (unmetRequirements.length > 0) {
+      return unmetRequirements.map((req) => req.message);
+    }
 
-    // Build feedback message
-    const feedback = [
-      ...metRequirements.map((req) => `✅ ${req.message}`),
-      ...unmetRequirements.map((req) => `❌ ${req.message}`),
-    ].join("\n");
-
-    // Show feedback in snackbar
-    setSnackbarMessage(feedback);
-    setSnackbarSeverity(unmetRequirements.length > 0 ? "error" : "success");
-    setSnackbarOpen(true);
-
-    // Return validation result
-    return unmetRequirements.length === 0;
+    return [];
   };
 
   const { register } = useAuth();
@@ -137,42 +121,49 @@ export const RegisterForm: React.FC = () => {
 
     console.log("Form Data", formData);
 
+    const errors = validateForm();
+
+    if (errors.length > 0) {
+      console.error("Validation Errors:", errors);
+      setSnackbarMessage(errors.join("\n"));
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+      return;
+    }
+
     setCookie("username", formData.username);
 
-    if (validateForm()) {
-      try {
+    try {
+      await register(
+        formData.username,
+        formData.password,
+        formData.email,
+        formData.firstname,
+        formData.lastname
+      );
 
-        await register(
-          formData.username,
-          formData.password,
-          formData.email,
-          formData.firstname,
-          formData.lastname,
-        );
+      setLoginSuccess(true);
 
-        setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
+      setSnackbarMessage('Registration successful! Redirecting to OTP Page...');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
 
+      setTimeout(() => {
+        redirect('/otp');
+      }, 2000);
+    } catch (error: any) {
+      console.error('Registration failed:', error);
+      let errorMessage = 'Registration failed. Please try again.';
 
-        setTimeout(() => {
-          redirect('/otp')
-        }, 2000);
-
-      } catch (error: any) {
-        console.error('Registration failed:', error);
-        let errorMessage = 'Registration failed. Please try again.';
-
-        if (error?.response) {
-          if (error?.response.data.message.includes('unique constraint')) {
-            errorMessage = 'Email or username already exists.';
-          }
+      if (error?.response) {
+        if (error?.response.data.message.includes('unique constraint')) {
+          errorMessage = 'Email or username already exists.';
         }
-
-        setSnackbarMessage(errorMessage);
-        setSnackbarSeverity('error');
-        setSnackbarOpen(true);
       }
+
+      setSnackbarMessage(errorMessage);
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
 
@@ -481,7 +472,7 @@ export const RegisterForm: React.FC = () => {
         © 2025 Staffing Solutions Hub. All rights reserved.
       </Box>
       {/* Snackbar for notifications */}
-      <Snackbar
+      {!loginSuccess && (<Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
@@ -493,7 +484,7 @@ export const RegisterForm: React.FC = () => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
             width: { xs: '90%', sm: '400px' },
             margin: '0 auto',
-            backgroundColor: '#ffffff', 
+            backgroundColor: '#ffffff', // Set background to white
           },
         }}
       >
@@ -502,14 +493,14 @@ export const RegisterForm: React.FC = () => {
           severity={snackbarSeverity}
           sx={{
             width: '100%',
-            backgroundColor: '#ffffff', 
+            backgroundColor: '#ffffff',
             color: '#333', 
             borderRadius: '8px',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            padding: '16px',
+            padding: '8px',
             display: 'flex',
             flexDirection: 'column', 
-            alignItems: 'flex-start', 
+            alignItems: 'flex-start',
           }}
         >
           {/* Display the list of messages */}
@@ -525,16 +516,28 @@ export const RegisterForm: React.FC = () => {
               <span
                 style={{
                   marginRight: '8px',
-                  fontSize: '18px',
+                  fontSize: '16px',
                 }}
               >
                 {message.startsWith('✅') ? '✅' : '❌'}
               </span>
-              <span>{message.slice(2).trim()}</span>
+              <span>{message.trim()}</span>
             </div>
           ))}
         </Alert>
-      </Snackbar>
+      </Snackbar>)}
+      {loginSuccess && (
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      )}
     </Box>
   );
 };

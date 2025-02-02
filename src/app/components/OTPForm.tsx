@@ -13,6 +13,7 @@ import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { eventNames } from 'process';
 import Link from 'next/link';
+import SSHGoldLogo from '@/assets/GoldLogo.png';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -40,29 +41,29 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
 
   const validateForm = () => {
 
-    const storedUsername = cookies['username']; 
-  
+    const storedUsername = cookies['username'];
+
     if (username !== storedUsername) {
       setSnackbarMessage('Username does not match.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       return false;
     }
-  
+
     if (!otp) {
       setSnackbarMessage('OTP is required.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       return false;
     }
-  
+
     if (!/^\d{6}$/.test(otp)) {
       setSnackbarMessage('OTP must be exactly 6 digits and numeric.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
       return false;
     }
-  
+
     return true;
   };
 
@@ -70,35 +71,35 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
     e.preventDefault();
     console.log("OTP Data", username, otp);
     if (validateForm()) {
-        try {
-          await verifyOtp(username, otp);
+      try {
+        await verifyOtp(username, otp);
 
-          setSnackbarMessage('OTP verification successful!');
-          setSnackbarSeverity('success');
-          setSnackbarOpen(true);
+        setSnackbarMessage('OTP verification successful!');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
 
 
-          setSnackbarMessage("Login successful! Redirecting...");
-          setSnackbarSeverity("success");
-          setSnackbarOpen(true);
+        setSnackbarMessage("Login successful! Redirecting...");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
 
-          setTimeout(() => {
-              router.push('/dashboard');
-          }, 2000);
-        } catch (error: any) {
-          console.error('Registration failed:', error);
-          let errorMessage = 'Registration failed. Please try again.';
-  
-          if (error?.response) {
-            if (error?.response.data.message.includes('unique constraint')) {
-              errorMessage = 'Email or username already exists.';
-            }
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 2000);
+      } catch (error: any) {
+        console.error('Registration failed:', error);
+        let errorMessage = 'Registration failed. Please try again.';
+
+        if (error?.response) {
+          if (error?.response.data.message.includes('unique constraint')) {
+            errorMessage = 'Email or username already exists.';
           }
-  
-          setSnackbarMessage(errorMessage);
-          setSnackbarSeverity('error');
-          setSnackbarOpen(true);
         }
+
+        setSnackbarMessage(errorMessage);
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+      }
     }
   };
 
@@ -114,12 +115,13 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
       {/* Left Column */}
       <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', padding: { xs: 1, md: 4 } }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', padding: { xs: 1, md: 12 } }}>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c3fc10b45272c7c3f40000cb49e896f62fd831f2d1f6075f068d38a771d3152f?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt="Company logo"
-            style={{ maxWidth: '204px', marginBottom: '20px' }}
-          />
+          <Link href="/">
+            <img
+              loading="lazy"
+              src={SSHGoldLogo.src}
+              alt="Background fashion event"
+              style={{ width: '50%', height: '50%', opacity: 0.5, objectFit: 'cover', position: 'relative', top: 0, left: 0 }}
+            /></Link>
           <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', mt: { xs: 0, md: 16 } }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#977342', marginBottom: 2 }}>
               Verify One Time Pin
@@ -210,79 +212,79 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
           {/* Social Icons */}
           <Box sx={{ position: 'absolute', bottom: 16, left: 16, display: 'flex', gap: 2 }}>
             <Link href="https://web.facebook.com/people/Staffing-Solutions-Hub/61568735786489" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <Facebook />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <Facebook />
+              </Button>
             </Link>
             <Link href="https://www.instagram.com/staffingsolutionshub" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <Instagram />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <Instagram />
+              </Button>
             </Link>
             <Link href="https://x.com/staffinghub_ae" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <Twitter />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <Twitter />
+              </Button>
             </Link>
             <Link href="https://www.tiktok.com/@staffingsolutionshub" target="_blank">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: 'white',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: '#977342',
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: 'white',
                   color: 'white',
-                },
-              }}
-            >
-              <FontAwesomeIcon style={{ fontSize: '24px' }} icon={faTiktok} />
-            </Button>
+                  '&:hover': {
+                    backgroundColor: '#977342',
+                    color: 'white',
+                  },
+                }}
+              >
+                <FontAwesomeIcon style={{ fontSize: '24px' }} icon={faTiktok} />
+              </Button>
             </Link>
           </Box>
-          
+
         </Box>
       </Grid>
       {/* Snackbar for feedback */}
       <Snackbar
-            open={snackbarOpen}
-            autoHideDuration={6000}
-            onClose={handleSnackbarClose}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          >
-            <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
-              {snackbarMessage}
-            </Alert>
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
       </Snackbar>
     </Grid>
   );

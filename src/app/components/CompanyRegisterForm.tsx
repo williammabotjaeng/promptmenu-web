@@ -201,6 +201,11 @@ export const CompanyRegisterForm: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const handleMapChange = (e: { target: { name: string; value: any } }) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
   const [useWhatsApp, setUseWhatsApp] = useState(true);
 
   const handleWhatsAppChange = (event: any) => {
@@ -341,7 +346,7 @@ export const CompanyRegisterForm: React.FC = () => {
                     }}
                     onChange={(event, newValue) => {
                       setAddressInputValue(newValue);
-                      handleChange(null);
+                      handleMapChange({ target: { name: 'address', value: newValue } });
                     }}
                     sx={{
                       backgroundColor: 'white',
@@ -417,9 +422,9 @@ export const CompanyRegisterForm: React.FC = () => {
 
                 {/* Email Field */}
                 <Grid item xs={12} sm={12} sx={{ ml: { md: 4 } }}>
-                  <Typography sx={{ color: "#977342" }}>Email</Typography>
+                  <Typography sx={{ color: "#977342" }}>Company Email</Typography>
                   <TextField
-                    label={<Typography variant="body1">Email</Typography>}
+                    label={<Typography variant="body1">Company Email</Typography>}
                     type="email"
                     name="email"
                     placeholder="Enter your email"
@@ -703,38 +708,6 @@ export const CompanyRegisterForm: React.FC = () => {
                     fontSize: '10px'
                   }}>Only Image and PDF Files allowed.</Typography>
                 </Grid>
-
-                {/* Password */}
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 2}}>
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    label={<Typography variant="body1">Password</Typography>}
-                    type="password"
-                    name="password"
-                    placeholder="Enter your password"
-                    required
-                    fullWidth
-                    onChange={handleChange}
-                    className="custom-input"
-                    sx={inputStyles}
-                  />
-                </Grid>
-
-                {/* Confirm Password */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 2 }, mt: { md: 0, xs: 2 } }}>
-                  <TextField
-                    label={<Typography variant="body1">Confirm Password</Typography>}
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Re-enter your password"
-                    required
-                    fullWidth
-                    onChange={handleChange}
-                    className="custom-input"
-                    sx={inputStyles}
-                  />
-                </Grid>
-                </Box>
 
                 {/* Submit Button */}
                 <Grid item xs={12}>

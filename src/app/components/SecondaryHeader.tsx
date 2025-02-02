@@ -1,16 +1,19 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer } from '@mui/material';
+import { AppBar, Toolbar, Button, Box, IconButton, Drawer } from '@mui/material';
+import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
 
-const Header: React.FC = () => {
+const SecondaryHeader: React.FC = () => {
+  const [cookies] = useCookies(["ssh_session_id"]);
+  const sessionID = cookies['ssh_session_id'];
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
 
-  const menuItems = (
+  const loggedInMenuItems = (
     <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <Link href="/" passHref>
         <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%' }}>Home</Button>
@@ -23,6 +26,51 @@ const Header: React.FC = () => {
       </Link>
       <Link href="/settings" passHref>
         <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%' }}>Settings</Button>
+      </Link>
+    </Box>
+  );
+
+  const loggedOutMenuItems = (
+    <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
+      <Link href="/jobs" passHref>
+        <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Jobs</Button>
+      </Link>
+      <Link href="/talents" passHref>
+        <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Talent</Button>
+      </Link>
+      <Link href="/about" passHref>
+        <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>About SSH</Button>
+      </Link>
+      <Link href="/contact" passHref>
+        <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Contact Us</Button>
+      </Link>
+      <Link href="/login" passHref>
+        <Button 
+          sx={{ 
+            textTransform: 'none', 
+            color: '#977342', 
+            fontSize: '16px', 
+            width: '100%',
+            '&:hover': {
+              backgroundColor: '#CEAB76', 
+              color: '#fff'
+            }
+          }}
+        >
+          Login
+        </Button>
       </Link>
     </Box>
   );
@@ -41,20 +89,80 @@ const Header: React.FC = () => {
             alt=""
             style={{ width: '74px', height: 'auto', marginLeft: '16px' }}
           />
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2, mb: 2 }}>
-            <Link href="/" passHref>
-              <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Home</Button>
-            </Link>
-            <Link href="/messages" passHref>
-              <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Messages</Button>
-            </Link>
-            <Link href="/auditions" passHref>
-              <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Auditions</Button>
-            </Link>
-            <Link href="/settings" passHref>
-              <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px' }}>Settings</Button>
-            </Link>
-          </Box>
+        </Box>
+
+        {/* Desktop Menu */}
+        <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+          {sessionID ? (
+            <>
+              <Link href="/" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Home</Button>
+              </Link>
+              <Link href="/messages" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Messages</Button>
+              </Link>
+              <Link href="/auditions" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Auditions</Button>
+              </Link>
+              <Link href="/settings" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Settings</Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/jobs" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Jobs</Button>
+              </Link>
+              <Link href="/talents" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Talent</Button>
+              </Link>
+              <Link href="/about" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>About SSH</Button>
+              </Link>
+              <Link href="/contact" passHref>
+                <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    } }}>Contact Us</Button>
+              </Link>
+              <Link href="/login" passHref>
+                <Button 
+                  sx={{ 
+                    textTransform: 'none', 
+                    color: '#977342', 
+                    fontSize: '16px',
+                    '&:hover': {
+                      backgroundColor: '#CEAB76', 
+                      color: '#fff'
+                    }
+                  }}
+                >
+                  Login
+                </Button>
+              </Link>
+            </>
+          )}
         </Box>
 
         {/* Hamburger Menu Icon */}
@@ -71,21 +179,11 @@ const Header: React.FC = () => {
 
         {/* Drawer for mobile menu */}
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
-          {menuItems}
+          {sessionID ? loggedInMenuItems : loggedOutMenuItems}
         </Drawer>
-
-        {/* Right-side Image */}
-        <Box sx={{ alignItems: 'center', m: 4 }}>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt=""
-            style={{ width: '89px' }}
-          />
-        </Box>
       </Toolbar>
     </AppBar>
   );
 };
 
-export default Header;
+export default SecondaryHeader;
