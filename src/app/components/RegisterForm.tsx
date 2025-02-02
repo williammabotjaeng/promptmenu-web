@@ -154,6 +154,10 @@ export const RegisterForm: React.FC = () => {
     } catch (error: any) {
       console.error('Registration failed:', error);
       let errorMessage = 'Registration failed. Please try again.';
+      
+      setSnackbarMessage(errorMessage);
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
 
       if (error?.response) {
         if (error?.response.data.message.includes('unique constraint')) {
