@@ -29,6 +29,9 @@ export const Header: React.FC = () => {
       <Link href="/about" passHref>
         <Button sx={{ color: 'black', width: '100%' }}>About</Button>
       </Link>
+      <Link href="/jobs" passHref>
+        <Button sx={{ color: 'black', width: '100%' }}>Jobs</Button>
+      </Link>
       <Link href="/talent" passHref>
         <Button sx={{ color: 'black', width: '100%' }}>Talents</Button>
       </Link>
@@ -91,6 +94,9 @@ export const Header: React.FC = () => {
           </Link>
           <Link href="/about" passHref>
             <Button sx={{ color: 'white' }}>About</Button>
+          </Link>
+          <Link href="/jobs" passHref>
+            <Button sx={{ color: 'white' }}>Jobs</Button>
           </Link>
           <Link href="/talent" passHref>
             <Button sx={{ color: 'white' }}>Talents</Button>

@@ -7,8 +7,8 @@ import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
 
 export const WhiteHeader: React.FC = () => {
-  const [cookies] = useCookies(["access"]);
-  const accessToken = cookies['access'];
+  const [cookies] = useCookies(["ssh_session_id"]);
+  const sessionID = cookies['ssh_session_id'];
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const toggleDrawer = (open: boolean) => () => {
@@ -31,7 +31,7 @@ export const WhiteHeader: React.FC = () => {
           Join Now
         </Button>
       </Link>
-      {!accessToken && (
+      {!sessionID && (
         <Link href="/login" passHref>
           <Button 
             sx={{ 
@@ -55,7 +55,7 @@ export const WhiteHeader: React.FC = () => {
       <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         {/* Logo and Title Section */}
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Link href={accessToken ? '/dashboard' : '/'} passHref>
+          <Link href={sessionID ? '/dashboard' : '/'} passHref>
             <Image src={SSHGoldLogo} alt="Logo" width={60} height={60} style={{ cursor: 'pointer' }} />
           </Link>
           <Typography variant="h6" sx={{ color: '#977342', marginLeft: '10px', fontWeight: 'bold' }}>

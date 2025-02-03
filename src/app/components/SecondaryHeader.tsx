@@ -38,7 +38,7 @@ const SecondaryHeader: React.FC = () => {
                       color: '#fff'
                     } }}>Jobs</Button>
       </Link>
-      <Link href="/talents" passHref>
+      <Link href="/talent" passHref>
         <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%', '&:hover': {
                       backgroundColor: '#CEAB76', 
                       color: '#fff'
