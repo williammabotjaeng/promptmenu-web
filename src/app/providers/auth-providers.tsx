@@ -114,6 +114,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeCookie('ssh_session_id', { path: '/' });
       removeCookie('user_role', { path: '/' });
       removeCookie('username', { path: '/' });
+      removeCookie('onboarding_presented', { path: '/' });
+      removeCookie('firstname', { path: '/' });
+      removeCookie('lastname', { path: '/' });
       router.push('/login'); 
     },
     onError: (error) => {
