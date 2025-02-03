@@ -72,6 +72,7 @@ const Portal: React.FC = () => {
 
   useEffect(() => {
       setLoading(true);
+      console.log("onboarding type:", typeof(onboardingPresented));
       if (!onboardingPresented) {
         if (user_role === 'talent') {
           router.push('/talent-onboarding');
