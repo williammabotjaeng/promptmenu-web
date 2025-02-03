@@ -83,7 +83,7 @@ const Portal: React.FC = () => {
       setTimeout(() => {
         setLoading(false)
       }, 500);
-  }, []);
+  }, [cookies]);
 
   if (loading) return <Loading />;
 
