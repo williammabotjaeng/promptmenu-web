@@ -9,7 +9,7 @@ import { ProfileTask } from '@/components/portal/ProfileTask';
 import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress, IconButton, Drawer } from '@mui/material';
 import Sticky from 'react-sticky-el';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
 import Loading from '@/components/Loading';
@@ -77,9 +77,10 @@ const Portal: React.FC = () => {
         console.log("Inside the condition, UserRole:", user_role);
         console.log("Check result:", user_role === 'talent');
         if (user_role === 'talent') {
-          router.push('/talent-onboarding');
+          console.log("About to redirect");
+          redirect('/talent-onboarding');
         } else if (user_role === 'influencer') {
-          router.push('/influencer-onboarding')
+          redirect('/influencer-onboarding')
         }
       }
       console.log("Outside the check, UserRole:", user_role);
