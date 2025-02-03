@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Link from 'next/link';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer, Divider } from '@mui/material';
 import Image from 'next/image';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import { useCookies } from 'react-cookie';
@@ -16,39 +16,186 @@ export const WhiteHeader: React.FC = () => {
   };
 
   const menuItems = (
-    <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-      <Link href="/talents" passHref>
-        <Button sx={{ color: '#4B5563', width: '100%', textTransform: 'none' }}>Talents</Button>
-      </Link>
-      <Link href="/dashboard" passHref>
-        <Button sx={{ color: '#4B5563', width: '100%', textTransform: 'none' }}>Dashboard</Button>
-      </Link>
-      <Link href="/portal" passHref>
-        <Button sx={{ color: '#977342', width: '100%', textTransform: 'none' }}>Jane Doe</Button>
-      </Link>
-      <Link href="/register" passHref>
-        <Button className="px-6 rounded primary" sx={{ backgroundColor: '#977342', color: '#ffffff', width: '100%' }}>
-          Join Now
-        </Button>
-      </Link>
-      {!sessionID && (
-        <Link href="/login" passHref>
-          <Button 
-            sx={{ 
-              color: '#977342',
-              width: '100%',
-              '&:hover': {
-                backgroundColor: '#CEAB76', 
-                color: '#fff', 
-              },
-            }}
-          >
-            Login
-          </Button>
-        </Link>
-      )}
-    </Box>
-  );
+      <Box
+        sx={{
+          width: 240, 
+          padding: 2, 
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2, 
+        }}
+        onClick={toggleDrawer(false)}
+        onKeyDown={toggleDrawer(false)}
+      >
+        {/* Header Section */}
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 'bold',
+            color: '#977342',
+            textAlign: 'center',
+            marginBottom: 2,
+          }}
+        >
+          {sessionID ? 'Welcome, Jane Doe' : 'Welcome to SSH'}
+        </Typography>
+  
+        <Divider sx={{ marginBottom: 2 }} />
+  
+        {/* Menu Items */}
+        {sessionID ? (
+          // Logged-in menu items
+          <>
+            <Link href="/talent" passHref>
+              <Button
+                sx={{
+                  color: '#4B5563',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                }}
+              >
+                Talents
+              </Button>
+            </Link>
+            <Link href="/dashboard" passHref>
+              <Button
+                sx={{
+                  color: '#4B5563',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                }}
+              >
+                Dashboard
+              </Button>
+            </Link>
+            <Link href="/portal" passHref>
+              <Button
+                sx={{
+                  color: '#977342',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                }}
+              >
+                Jane Doe
+              </Button>
+            </Link>
+            <Link href="/register" passHref>
+              <Button
+                sx={{
+                  backgroundColor: '#977342',
+                  color: '#ffffff',
+                  justifyContent: 'center',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                  '&:hover': {
+                    backgroundColor: '#CEAB76',
+                  },
+                }}
+              >
+                Join Now
+              </Button>
+            </Link>
+          </>
+        ) : (
+          // Logged-out menu items
+          <>
+            <Link href="/talent" passHref>
+              <Button
+                sx={{
+                  color: '#4B5563',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                  textAlign: 'center',
+                  '&:hover': {
+                    color: 'white'
+                  }
+                }}
+              >
+                Talents
+              </Button>
+            </Link>
+            <Link href="/jobs" passHref>
+              <Button
+                sx={{
+                  color: '#4B5563',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                  textAlign: 'center',
+                  '&:hover': {
+                    color: 'white'
+                  }
+                }}
+              >
+                Jobs
+              </Button>
+            </Link>
+            <Link href="/about" passHref>
+              <Button
+                sx={{
+                  color: '#4B5563',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                  textAlign: 'center',
+                  '&:hover': {
+                    color: 'white'
+                  }
+                }}
+              >
+                About
+              </Button>
+            </Link>
+            <Link href="/contact" passHref>
+              <Button
+                sx={{
+                  color: '#4B5563',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                  textAlign: 'center',
+                  '&:hover': {
+                    color: 'white'
+                  }
+                }}
+              >
+                Contact
+              </Button>
+            </Link>
+            <Link href="/login" passHref>
+              <Button
+                sx={{
+                  color: '#977342',
+                  justifyContent: 'flex-start',
+                  textTransform: 'none',
+                  fontSize: '16px',
+                  padding: '10px 16px',
+                  textAlign: 'center',
+                  '&:hover': {
+                    backgroundColor: '#CEAB76',
+                    color: '#fff',
+                  },
+                }}
+              >
+                Login
+              </Button>
+            </Link>
+          </>
+        )}
+      </Box>
+    );
 
   return (
     <AppBar position="static" sx={{ backgroundColor: '#fff', padding: '10px 0' }}>
