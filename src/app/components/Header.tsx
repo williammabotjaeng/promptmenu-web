@@ -24,19 +24,29 @@ export const Header: React.FC = () => {
   const menuItems = (
     <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
       <Link href="/" passHref>
-        <Button sx={{ color: 'black', width: '100%' }}>Home</Button>
+        <Button sx={{ color: 'black', width: '100%', '&:hover': {
+                    color: 'white'
+                  } }}>Home</Button>
       </Link>
       <Link href="/about" passHref>
-        <Button sx={{ color: 'black', width: '100%' }}>About</Button>
+        <Button sx={{ color: 'black', width: '100%', '&:hover': {
+                    color: 'white'
+                  } }}>About</Button>
       </Link>
       <Link href="/jobs" passHref>
-        <Button sx={{ color: 'black', width: '100%' }}>Jobs</Button>
+        <Button sx={{ color: 'black', width: '100%', '&:hover': {
+                    color: 'white'
+                  } }}>Jobs</Button>
       </Link>
       <Link href="/talent" passHref>
-        <Button sx={{ color: 'black', width: '100%' }}>Talents</Button>
+        <Button sx={{ color: 'black', width: '100%', '&:hover': {
+                    color: 'white'
+                  } }}>Talents</Button>
       </Link>
       <Link href="/contact" passHref>
-        <Button sx={{ color: 'black', width: '100%' }}>Contact</Button>
+        <Button sx={{ color: 'black', width: '100%', '&:hover': {
+                    color: 'white'
+                  } }}>Contact</Button>
       </Link>
       <Link href="/register" passHref>
         <Button className="px-6 rounded primary" sx={{ backgroundColor: '#977342', color: '#ffffff', width: '100%' }}>
@@ -90,22 +100,32 @@ export const Header: React.FC = () => {
         {/* Navigation Menu for larger screens */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: '20px', alignItems: 'center' }}>
           <Link href="/" passHref>
-            <Button sx={{ color: 'white' }}>Home</Button>
+            <Button sx={{ color: 'white', '&:hover': {
+                    color: 'white'
+                  } }}>Home</Button>
           </Link>
           <Link href="/about" passHref>
-            <Button sx={{ color: 'white' }}>About</Button>
+            <Button sx={{ color: 'white', '&:hover': {
+                    color: 'white'
+                  } }}>About</Button>
           </Link>
           <Link href="/jobs" passHref>
             <Button sx={{ color: 'white' }}>Jobs</Button>
           </Link>
           <Link href="/talent" passHref>
-            <Button sx={{ color: 'white' }}>Talents</Button>
+            <Button sx={{ color: 'white', '&:hover': {
+                    color: 'white'
+                  } }}>Talents</Button>
           </Link>
           <Link href="/contact" passHref>
-            <Button sx={{ color: 'white' }}>Contact</Button>
+            <Button sx={{ color: 'white', '&:hover': {
+                    color: 'white'
+                  }}}>Contact</Button>
           </Link>
           <Link href="/register" passHref>
-            <Button className="px-6 rounded primary" sx={{ backgroundColor: '#977342', color: '#ffffff' }}>
+            <Button className="px-6 rounded primary" sx={{ backgroundColor: '#977342', color: '#ffffff', '&:hover': {
+                    color: 'white'
+                  } }}>
               Join Now
             </Button>
           </Link>
