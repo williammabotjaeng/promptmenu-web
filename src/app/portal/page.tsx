@@ -74,12 +74,15 @@ const Portal: React.FC = () => {
       setLoading(true);
       console.log("onboarding type:", typeof(onboardingPresented));
       if (!onboardingPresented) {
+        console.log("Inside the condition, UserRole:", user_role);
+        console.log("Check result:", user_role === 'talent');
         if (user_role === 'talent') {
           router.push('/talent-onboarding');
         } else if (user_role === 'influencer') {
           router.push('/influencer-onboarding')
         }
       }
+      console.log("Outside the check, UserRole:", user_role);
       setTimeout(() => {
         setLoading(false)
       }, 500);
