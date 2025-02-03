@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { AppBar, Toolbar, Button, Box, IconButton, Drawer } from '@mui/material';
 import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
+import SSHGoldLogo from '@/assets/GoldLogo.png';
 
 const SecondaryHeader: React.FC = () => {
   const [cookies] = useCookies(["ssh_session_id"]);
@@ -85,7 +86,7 @@ const SecondaryHeader: React.FC = () => {
           </Box>
           <img
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/5b94bb5bbafa47172ac9d071b32e3d505cde4e70fd24ac105bdfe6df97d51c1b?apiKey=7fae980a988640eea8add1e49a5d542e&"
+            src={SSHGoldLogo?.src}
             alt=""
             style={{ width: '74px', height: 'auto', marginLeft: '16px' }}
           />
