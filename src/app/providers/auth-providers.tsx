@@ -96,7 +96,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('firstname', data?.tokens?.firstname, { path: '/', maxAge: 604800 });
       setCookie('lastname', data?.tokens?.lastname, { path: '/', maxAge: 604800 });
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
-      setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
+      setCookie('ssh_session_id', data?.session_id, { path: '/', maxAge: 604800 });
     },
     onError: (error) => {
       console.error('OTP verification error: ', error);
