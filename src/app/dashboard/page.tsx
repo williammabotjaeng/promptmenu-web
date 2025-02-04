@@ -11,7 +11,7 @@ import Header from "@/components/dashboard/Header";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import useAuthStore from "@/state/use-auth-store";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { PersonAdd, Star } from "@mui/icons-material";
 import Work from "@mui/icons-material/Work";
@@ -70,7 +70,7 @@ const Dashboard = () => {
         } else if (user_role === 'talent' || user_role === 'influencer') {
             console.log("It's talent");
             setLoading(false);
-            router.push('/portal');
+            redirect('/portal');
         }
     }
 
