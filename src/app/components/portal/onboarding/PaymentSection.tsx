@@ -29,9 +29,8 @@ export const skillsRequiringPhysicalAttributes: string[] = [
 ];
 
 const paymentMethodsTab = [
-  { label: "Credit Card", value: "creditCard" },
-  { label: "Bank Account", value: "bankAccount" },
-  { label: "PayPal", value: "paypal" }
+  { label: "Bank Transfer", value: "bankAccount" },
+  { label: "via PayPal", value: "paypal" }
 ];
 
 export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
@@ -212,72 +211,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
         return (
           <Box sx={{ mt: 4 }}>
             <Typography variant="body1" sx={{ mb: 2, color: '#977342' }}>
-              Enter your credit card details:
+              Please select a valid payment method.
             </Typography>
-            <TextField
-              fullWidth
-              placeholder="Card Number"
-              variant="outlined"
-              value={paymentDetails.ccNumber || ''}
-              onChange={handleInputChange('ccNumber')}
-              sx={{
-                mb: 2,
-                backgroundColor: 'white',
-                borderRadius: '8px',
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#977342',
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#CEAB76',
-                  },
-                },
-              }}
-            />
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  placeholder="MM/YY"
-                  variant="outlined"
-                  value={paymentDetails.ccExpiry || ''}
-                  onChange={handleInputChange('ccExpiry')}
-                  sx={{
-                    backgroundColor: 'white',
-                    borderRadius: '8px',
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: '#977342',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#CEAB76',
-                      },
-                    },
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  placeholder="CVC"
-                  value={paymentDetails.ccCVC || ''}
-                  onChange={handleInputChange('ccCVC')}
-                  variant="outlined"
-                  sx={{
-                    backgroundColor: 'white',
-                    borderRadius: '8px',
-                    '& .MuiOutlinedInput-root': {
-                      '& fieldset': {
-                        borderColor: '#977342',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#CEAB76',
-                      },
-                    },
-                  }}
-                />
-              </Grid>
-            </Grid>
           </Box>
         );
     }
@@ -305,7 +240,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({ activeStep, setA
             textAlign: 'center',
           }}
         >
-          Payment Methods
+          How would you like to get Paid?
         </Typography>
 
         <Paper
