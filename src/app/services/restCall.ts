@@ -7,6 +7,7 @@ import useTokenStore from '@/state/use-token-store';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const X_API_KEY = process.env.NEXT_PUBLIC_X_API_KEY; 
+const APP_ENV = process.env.NEXT_PUBLIC_ENV;
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -15,7 +16,7 @@ const axiosInstance = axios.create({
 export const restCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH', body: any = null, accessToken: string) => {
     
     const response = await axiosInstance({
-    url: `https://api.staffingsolutionshub.com${endpoint}`,
+    url: APP_ENV === 'local' ? `http://localhost:8000${endpoint}` : `https://api.staffingsolutionshub.com${endpoint}`,
     method,
     data: body,
     headers: {
