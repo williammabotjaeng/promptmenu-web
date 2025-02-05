@@ -5,4 +5,6 @@ export interface PersonalInfo {
     gender?: string | null;
     phone_number?: string | null;
     whatsapp_number?: string | null;
+    legalFullName?: string | null;
+    stageName?: string | null;
 }

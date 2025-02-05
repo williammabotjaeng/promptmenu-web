@@ -36,6 +36,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         gender: 'male',
         phone_number: null,
         whatsapp_number: null,
+        legalFullName: null,
+        stageName: null
     },
     physicalAttributes: {
         height: null,
@@ -95,7 +97,9 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         created_at: '',
         updated_at: '',
         website: '',
-        social_media_links: undefined
+        social_media_links: undefined,
+        legalFullName: '',
+        stageName: ''
     },
     setPersonalInfo: (data) => set({ personalInfo: data }),
     setPhysicalAttributes: (data) => set({ physicalAttributes: data }),
@@ -166,7 +170,9 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
             created_at: '',
             updated_at: '',
             website: '',
-            social_media_links: undefined
+            social_media_links: undefined,
+            legalFullName: '',
+            stageName: ''
         },
     }),
 }));

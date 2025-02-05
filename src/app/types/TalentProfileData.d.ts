@@ -1,6 +1,8 @@
 import { SkillType } from "./Props/SkillTagProps";
 
 export interface TalentProfileData {
+  legalFullName: string;
+  stageName: string;
   website: string;
   social_media_links: any;
   user: string | null;

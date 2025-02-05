@@ -70,11 +70,8 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
 
   const handleContinue = () => {
     setTalentData({
+      ...talentData,
       skills: selectedSkills,
-      website: talentData?.website,
-      social_media_links: talentData?.social_media_links,
-      user: talentData?.user,
-      headshot: talentData?.headshot,
     });
 
     if (selectedSkills && selectedSkills?.length > 0) {
@@ -118,11 +115,8 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
     setCookie("skills", JSON.stringify(selectedSkills));
 
     setTalentData({
+      ...talentData,
       skills: selectedSkills,
-      website: talentData?.website,
-      social_media_links: talentData?.social_media_links,
-      user: talentData?.user,
-      headshot: talentData?.headshot,
     });
   };
 

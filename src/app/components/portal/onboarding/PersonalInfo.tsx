@@ -1,183 +1,200 @@
-"use client";
+import React, { useState } from "react";
+import { Box, Typography, TextField, Button, Snackbar, Alert } from "@mui/material";
+import { useRouter } from "next/router";
+import { useStore } from "zustand";
+import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
+import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 
-import React, { useState, useEffect } from 'react';
-import { Box, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button, Snackbar, Alert, Typography } from '@mui/material';
-import { useStore } from 'zustand';
-import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+const PersonalInfo: React.FC<OnboardingStepProps> = ({
+  activeStep,
+  setActiveStep,
+}) => {
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
-const PersonalInformation = ({ activeStep }) => {
-    const { personalInfo, setPersonalInfo } = useStore(useTalentOnboardingStore);
-    
-    const [formData, setFormData] = useState({
-        firstname: '',
-        lastname: '',
-        phone_number: '',
-        whatsapp_number: '',
-        gender: '',
-        date_of_birth: null,
+  const [personalInfo, setPersonalInfo] = useState({
+    legalFullName: talentData?.legalFullName || "",
+    stageName: talentData?.stageName || "",
+    date_of_birth: talentData?.date_of_birth || "",
+  });
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  const router = useRouter();
+
+  const handleInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPersonalInfo({ ...personalInfo, [field]: event.target.value });
+  };
+
+  const handleContinue = () => {
+    const { legalFullName, stageName, date_of_birth } = personalInfo;
+
+    if (!legalFullName || !stageName || !date_of_birth) {
+      setSnackbarMessage("Please fill out all fields.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    setTalentData({
+      ...talentData,
+      legalFullName,
+      stageName,
+      date_of_birth,
     });
 
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+    setActiveStep(activeStep + 1);
+  };
 
-    useEffect(() => {
-        if (personalInfo) {
-            console.log("personal info", personalInfo);
-            setFormData({
-                firstname: personalInfo.firstname || '',
-                lastname: personalInfo.lastname || '',
-                phone_number: personalInfo.phone_number || '',
-                whatsapp_number: personalInfo.whatsapp_number || '',
-                gender: personalInfo.gender || '',
-                date_of_birth: personalInfo.date_of_birth ? new Date(personalInfo.date_of_birth) : null,
-            });
-        }
-    }, [personalInfo]);
+  const handleBack = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
+    } else {
+      router.push("/portal");
+    }
+  };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
-    const handleDateChange = (newValue) => {
-        setFormData((prev) => ({
-            ...prev,
-            date_of_birth: newValue,
-        }));
-    };
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "white",
+        padding: 4,
+      }}
+    >
+      {/* Header Section */}
+      <Typography
+        variant="h5"
+        sx={{
+          textAlign: "center",
+          color: "#ceab76",
+          marginBottom: 4,
+        }}
+      >
+        Personal Information
+      </Typography>
 
-    const handleSave = () => {
-        try {
-            setPersonalInfo(formData);
-            setSnackbarMessage('Personal Information Saved Successfully');
-            setSnackbarSeverity('success');
-        } catch (error) {
-            setSnackbarMessage('Error Saving your Information');
-            setSnackbarSeverity('error');
-        } finally {
-            setSnackbarOpen(true);
-        }
-    };
+      {/* Form Fields */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 3,
+        }}
+      >
+        <TextField
+          fullWidth
+          label="Legal Full Name"
+          variant="outlined"
+          value={personalInfo.legalFullName}
+          onChange={handleInputChange("legalFullName")}
+          sx={{
+            backgroundColor: "white",
+            borderRadius: "8px",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#977342",
+              },
+              "&:hover fieldset": {
+                borderColor: "#CEAB76",
+              },
+            },
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Stage Name"
+          variant="outlined"
+          value={personalInfo.stageName}
+          onChange={handleInputChange("stageName")}
+          sx={{
+            backgroundColor: "white",
+            borderRadius: "8px",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#977342",
+              },
+              "&:hover fieldset": {
+                borderColor: "#CEAB76",
+              },
+            },
+          }}
+        />
+        <TextField
+          fullWidth
+          label="Date of Birth"
+          type="date"
+          variant="outlined"
+          value={personalInfo.date_of_birth}
+          onChange={handleInputChange("date_of_birth")}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          sx={{
+            backgroundColor: "white",
+            borderRadius: "8px",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#977342",
+              },
+              "&:hover fieldset": {
+                borderColor: "#CEAB76",
+              },
+            },
+          }}
+        />
+      </Box>
 
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
-    };
+      {/* Navigation Buttons */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: 4,
+        }}
+      >
+        <Button
+          sx={{
+            color: "#977342",
+            border: "2px solid #977342",
+            "&:hover": { color: "#fff" },
+          }}
+          onClick={handleBack}
+        >
+          Back
+        </Button>
+        <Button
+          sx={{
+            color: "#000",
+            backgroundColor: "#CEAB76",
+          }}
+          onClick={handleContinue}
+        >
+          Continue
+        </Button>
+      </Box>
 
-    return (
-        <>
-            {activeStep === 0 && (
-                <Box className="w-full mx-auto">
-                    <Typography variant="h6" sx={{
-                        color: 'black'
-                    }}>Verify your Personal Information.</Typography>
-                    <br />
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="Firstname"
-                                placeholder="Enter your Firstname"
-                                variant="outlined"
-                                name="firstname"
-                                value={formData.firstname}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="Lastname"
-                                placeholder="Enter your Lastname"
-                                variant="outlined"
-                                name="lastname"
-                                value={formData.lastname}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="Phone Number"
-                                placeholder="Enter your phone number"
-                                variant="outlined"
-                                name="phone_number"
-                                value={formData.phone_number}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                label="WhatsApp Number"
-                                placeholder="Enter your WhatsApp number"
-                                variant="outlined"
-                                name="whatsapp_number"
-                                value={formData.whatsapp_number}
-                                onChange={handleInputChange}
-                            />
-                        </Grid>
-                        {/* Gender Field */}
-                        <Grid item xs={12} sm={6}>
-                            <FormControl fullWidth>
-                                <InputLabel id="gender-label">Gender</InputLabel>
-                                <Select
-                                    labelId="gender-label"
-                                    id="gender"
-                                    name="gender"
-                                    value={formData.gender}
-                                    onChange={handleInputChange}
-                                >
-                                    <MenuItem value="male">Male</MenuItem>
-                                    <MenuItem value="female">Female</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    label="Date of Birth"
-                                    value={formData.date_of_birth}
-                                    onChange={handleDateChange}
-                                />
-                            </LocalizationProvider>
-                        </Grid>
-                    </Grid>
-                    <Button
-                        variant="contained"
-                        onClick={handleSave}
-                        sx={{
-                            backgroundColor: 'black',
-                            color: '#977342',
-                            position: 'absolute',
-                            top: '16px',
-                            right: '16px',
-                            '&:hover': {
-                                backgroundColor: '#CEAB76', 
-                                color: '#000', 
-                            },
-                        }}
-                    >
-                        Save this step
-                    </Button>
-
-                    {/* Snackbar for notifications */}
-                    <Snackbar
-                        open={snackbarOpen}
-                        autoHideDuration={6000}
-                        onClose={handleSnackbarClose}
-                        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-                    >
-                        <Alert onClose={handleSnackbarClose} sx={{ width: '100%', color: '#977342', backgroundColor: 'black' }}>
-                            {snackbarMessage}
-                        </Alert>
-                    </Snackbar>
-                </Box>
-            )}
-        </>
-    );
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="error"
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
 };
 
-export default PersonalInformation;
+export default PersonalInfo;
