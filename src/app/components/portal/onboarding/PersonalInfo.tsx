@@ -12,29 +12,20 @@ import { useStore } from "zustand";
 import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
-
-const steps = [
-  { number: 1, title: "Headshot", isActive: true },
-  { number: 2, title: "Skills", isActive: false },
-  { number: 3, title: "Payment", isActive: false },
-  { number: 4, title: "Attributes", isActive: false },
-  { number: 5, title: "Social", isActive: false },
-  { number: 6, title: "ID", isActive: false },
-  { number: 7, title: "Portfolio", isActive: false },
-  { number: 8, title: "Review", isActive: false },
-];
+import { InputAdornment } from "@mui/material";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 const InfluencerSteps = [
-    { number: 1, title: "Headshot", isActive: true },
-    { number: 2, title: "Personal Info", isActive: false },
-    { number: 3, title: "Skills", isActive: false },
-    { number: 4, title: "Payment", isActive: false },
-    { number: 5, title: "Attributes", isActive: false },
-    { number: 6, title: "Social", isActive: false },
-    { number: 7, title: "ID", isActive: false },
-    { number: 8, title: "Portfolio", isActive: false },
-    { number: 9, title: "Review", isActive: false },
-  ];
+  { number: 1, title: "Headshot", isActive: false },
+  { number: 2, title: "Personal Info", isActive: false },
+  { number: 3, title: "Skills", isActive: true },
+  { number: 4, title: "Payment", isActive: false },
+  { number: 5, title: "Attributes", isActive: false },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+  { number: 9, title: "Review", isActive: false },
+];
 
 const PersonalInfo: React.FC<OnboardingStepProps> = ({
   activeStep,
@@ -108,7 +99,12 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
     >
       {/* Header Section */}
       <OnboardingHeader steps={InfluencerSteps} onClose={onClose} />
-      <Typography variant="h6" sx={{ color: '#CEAB76', textAlign: 'center', marginBottom: 2 }}>Personal Information</Typography>
+      <Typography
+        variant="h6"
+        sx={{ color: "#CEAB76", textAlign: "center", marginBottom: 2 }}
+      >
+        Personal Information
+      </Typography>
 
       {/* Form Section */}
       <Box
@@ -118,10 +114,10 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
           gap: 3,
           padding: 4,
           backgroundColor: "#000",
-          border: '1px solid #CEAB76',
+          border: "1px solid #CEAB76",
           borderRadius: "8px",
           margin: "auto",
-          width: { xs: "100%", sm: '90%', md: '800px' },
+          width: { xs: "100%", sm: "90%", md: "800px" },
           boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
         }}
       >
@@ -133,30 +129,30 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
           onChange={handleInputChange("legalFullName")}
           sx={{
             backgroundColor: "black",
-            color: '#977342',
+            color: "#977342",
             borderRadius: "8px",
-            width: { sm: '100%' },
+            width: { sm: "100%" },
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
                 borderColor: "#977342",
-                color: '#977342',
+                color: "#977342",
               },
               "&:hover fieldset": {
                 borderColor: "#CEAB76",
-                color: '#977342',
+                color: "#977342",
               },
             },
           }}
           InputLabelProps={{
             sx: {
-              color: "#977342", 
+              color: "#977342",
             },
           }}
           InputProps={{
             sx: {
-              color: "#977342", 
+              color: "#977342",
               "&::placeholder": {
-                color: "#977342", 
+                color: "#977342",
               },
             },
           }}
@@ -169,7 +165,7 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
           onChange={handleInputChange("stageName")}
           sx={{
             backgroundColor: "black",
-            color: '#977342',
+            color: "#977342",
             borderRadius: "8px",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
@@ -182,14 +178,14 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
           }}
           InputLabelProps={{
             sx: {
-              color: "#977342", 
+              color: "#977342",
             },
           }}
           InputProps={{
             sx: {
-              color: "#977342", 
+              color: "#977342",
               "&::placeholder": {
-                color: "#977342", 
+                color: "#977342",
               },
             },
           }}
@@ -203,7 +199,7 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
           onChange={handleInputChange("date_of_birth")}
           sx={{
             backgroundColor: "black",
-            color: '#977342',
+            color: "#977342",
             borderRadius: "8px",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
@@ -212,6 +208,10 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
               "&:hover fieldset": {
                 borderColor: "#CEAB76",
               },
+            },
+            "& input::-webkit-calendar-picker-indicator": {
+              filter: "invert(56%) sepia(34%) saturate(746%) hue-rotate(0deg)", 
+              cursor: "pointer", 
             },
           }}
           InputLabelProps={{
@@ -280,18 +280,18 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
         </Button>
       </Box>
       <Typography
-          variant="caption"
-          sx={{
-            paddingX: 2,
-            paddingY: 1,
-            marginBottom: 0,
-            color: "gray",
-            textAlign: "center",
-          }}
-        >
-          Step {activeStep + 1} of 8 - Headshot Upload
-        </Typography>
-        <br />
+        variant="caption"
+        sx={{
+          paddingX: 2,
+          paddingY: 1,
+          marginBottom: 0,
+          color: "gray",
+          textAlign: "center",
+        }}
+      >
+        Step {activeStep + 1} of 8 - Headshot Upload
+      </Typography>
+      <br />
       {/* Snackbar for feedback */}
       <Snackbar
         open={snackbarOpen}
