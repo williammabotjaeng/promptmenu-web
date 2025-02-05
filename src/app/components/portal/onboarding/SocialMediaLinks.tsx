@@ -40,6 +40,18 @@ const steps = [
   { number: 8, title: "Review", isActive: false },
 ];
 
+const InfluencerSteps = [
+  // { number: 1, title: "Headshot", isActive: false },
+  { number: 2, title: "Personal Info", isActive: false },
+  { number: 3, title: "Skills", isActive: false },
+  { number: 4, title: "Payment", isActive: false },
+  { number: 5, title: "Attributes", isActive: false },
+  { number: 6, title: "Social Accounts", isActive: true },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+  { number: 9, title: "Review", isActive: false },
+];
+
 const defaultSocialInputs = [
   {
     icon: "instagram",
@@ -72,6 +84,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
     "facebook",
     "instagram",
     "linkedin",
+    "user_role"
   ]);
   const [socialData, setSocialData] = React.useState({
     instagram: "",
@@ -84,6 +97,8 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [additionalInputs, setAdditionalInputs] = useState([]);
+
+  const userRole = cookies["user_role"];
 
   const onClose = () => {
     router.push("/portal");
@@ -115,6 +130,10 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
     } else {
       setActiveStep(activeStep - 2);
     }
+  };
+
+  const handleSkip = () => {
+    setActiveStep(activeStep + 1);
   };
 
   const handleSocialInputChange =
@@ -168,7 +187,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
       }}
     >
       {/* Header Section */}
-      <OnboardingHeader steps={steps} onClose={onClose} />
+      <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
 
       {/* Social Media Links Section */}
       <Box
@@ -249,20 +268,24 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
             {allSocialPlatforms
               .filter(
                 (platform) =>
-                  platform.icon === "other" || 
-                  (!defaultSocialInputs.some((input) => input.icon === platform.icon) &&
-                    !additionalInputs.some((input) => input.icon === platform.icon))
+                  platform.icon === "other" ||
+                  (!defaultSocialInputs.some(
+                    (input) => input.icon === platform.icon
+                  ) &&
+                    !additionalInputs.some(
+                      (input) => input.icon === platform.icon
+                    ))
               )
               .map((platform, index) => (
                 <ListItem
                   key={index}
                   component="div"
                   sx={{
-                    cursor: 'pointer',
-                    '&:hover': {
-                      color: 'white',
-                      backgroundColor: '#977342'
-                    }
+                    cursor: "pointer",
+                    "&:hover": {
+                      color: "white",
+                      backgroundColor: "#977342",
+                    },
                   }}
                   onClick={() => handleAddPlatform(platform)}
                 >
@@ -270,7 +293,6 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
                 </ListItem>
               ))}
           </List>
-          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
@@ -311,6 +333,19 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
           onClick={handleContinue}
         >
           Continue
+        </Button>
+        <Button
+          sx={{
+            color: "#977342",
+            border: "2px solid #977342",
+            "&:hover": { color: "#fff" },
+            width: { xs: "100%", md: "auto" },
+            marginBottom: { xs: 1, md: 0 },
+            mt: { xs: 1 },
+          }}
+          onClick={handleSkip}
+        >
+          Skip for Now
         </Button>
       </Box>
 
