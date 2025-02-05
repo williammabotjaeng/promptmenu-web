@@ -1,6 +1,7 @@
-import { SkillType } from "./Props/SkillTagProps";
+import { SkillType, NicheType } from "./Props/SkillTagProps";
 
 export interface TalentProfileData {
+  niches: NicheType[];
   legalFullName: string;
   stageName: string;
   website: string;

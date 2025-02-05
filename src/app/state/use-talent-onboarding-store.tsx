@@ -99,7 +99,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         website: '',
         social_media_links: undefined,
         legalFullName: '',
-        stageName: ''
+        stageName: '',
+        niches: []
     },
     setPersonalInfo: (data) => set({ personalInfo: data }),
     setPhysicalAttributes: (data) => set({ physicalAttributes: data }),
@@ -172,7 +173,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
             website: '',
             social_media_links: undefined,
             legalFullName: '',
-            stageName: ''
+            stageName: '',
+            niches: []
         },
     }),
 }));
