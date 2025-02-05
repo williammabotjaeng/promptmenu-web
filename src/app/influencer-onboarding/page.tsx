@@ -31,6 +31,7 @@ import { PaymentSection } from "@/components/portal/onboarding/PaymentSection";
 import { PortfolioBuilder } from "@/components/portal/onboarding/PortfolioBuilder";
 import { useAuth } from "@/providers/auth-providers";
 import PersonalInfo from "@/components/portal/onboarding/PersonalInfo";
+import FollowerCount from "@/components/portal/onboarding/FollowerCount";
 
 const InfluencerOnboarding: React.FC = () => {
   const router = useRouter();
@@ -258,17 +259,24 @@ const InfluencerOnboarding: React.FC = () => {
       )}
 
       {activeStep === 6 && (
-        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
+        <FollowerCount
+          activeStep={activeStep}
+          setActiveStep={setActiveStep}
+        />
       )}
 
       {activeStep === 7 && (
+        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 8 && (
         <PortfolioBuilder
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />
       )}
 
-      {activeStep === 8 && (
+      {activeStep === 9 && (
         <ProfileReview activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
     </Box>
