@@ -42,6 +42,10 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
     }
   };
 
+  const handleSkip = () => {
+    setActiveStep(activeStep + 1);
+  };
+
   const handleBack = () => {
     if (activeStep > 0) {
       setActiveStep(activeStep - 1);
@@ -104,11 +108,24 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
                 sx={{
                   color: '#000',
                   backgroundColor: '#CEAB76',
-                  width: { xs: '100%', md: 'auto' } // Full width on mobile
+                  width: { xs: '100%', md: 'auto' } 
                 }}
                 onClick={handleContinue}
               >
                 Continue
+              </Button>
+              <Button
+                sx={{
+                  color: '#977342',
+                  border: '2px solid #977342',
+                  '&:hover': { color: '#fff' },
+                  width: { xs: '100%', md: 'auto' },
+                  marginBottom: { xs: 1, md: 0 },
+                  mt: { xs: 1 }
+                }}
+                onClick={handleSkip}
+              >
+                Skip for Now
               </Button>
             </Box>
           </Paper>
