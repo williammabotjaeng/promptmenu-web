@@ -97,7 +97,7 @@ const renderIcon = (iconName: string) => {
   }
 };
 
-const EngagementRate: React.FC<OnboardingStepProps> = ({
+const FollowerCount: React.FC<OnboardingStepProps> = ({
   activeStep,
   setActiveStep,
 }) => {
@@ -112,7 +112,7 @@ const EngagementRate: React.FC<OnboardingStepProps> = ({
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const handleEngagementRateChange =
+  const handleFollowerCountChange =
     (platform: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       setEngagementRates({
         ...engagementRates,
@@ -209,7 +209,7 @@ const EngagementRate: React.FC<OnboardingStepProps> = ({
                       placeholder={`Average Engagement Rate (%)`}
                       variant="outlined"
                       value={engagementRates[platform.icon] || ""}
-                      onChange={handleEngagementRateChange(platform.icon)}
+                      onChange={handleFollowerCountChange(platform.icon)}
                       InputProps={{
                         sx: {
                           bgcolor: "black",
@@ -301,4 +301,4 @@ const EngagementRate: React.FC<OnboardingStepProps> = ({
   );
 };
 
-export default EngagementRate;
+export default FollowerCount;
