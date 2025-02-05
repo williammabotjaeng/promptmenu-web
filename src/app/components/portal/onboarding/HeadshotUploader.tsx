@@ -7,6 +7,7 @@ import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
 import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: true },
@@ -19,6 +20,18 @@ const steps = [
   { number: 8, title: 'Review', isActive: false }
 ];
 
+const InfluencerSteps = [
+  { number: 1, title: "Headshot", isActive: true },
+  { number: 2, title: "Personal Info", isActive: false },
+  { number: 3, title: "Skills", isActive: false },
+  { number: 4, title: "Payment", isActive: false },
+  { number: 5, title: "Attributes", isActive: false },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+  { number: 9, title: "Review", isActive: false },
+];
+
 const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
   const { talentData } = useStore(useTalentOnboardingStore);
@@ -26,6 +39,10 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
+  const [cookies] = useCookies(['user_role']);
+
+  const userRole = cookies['user_role'];
 
   const router = useRouter();
 
@@ -66,7 +83,7 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', height: '100%' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black' }}>
         {/* Header Section */}
-        <OnboardingHeader steps={steps} onClose={onClose} />
+        <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
 
         {/* Upload Form Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: { xs: 2, md: 4 } }}>
