@@ -32,7 +32,7 @@ const OnboardingHeader: React.FC<OnboardingHeaderProps> = ({ steps, onClose }) =
 
       {/* Menu Icon for Drawer on smaller screens */}
       <IconButton onClick={toggleDrawer(true)} sx={{ color: '#977342', display: { xs: 'block', md: 'none' }, marginRight: '20px' }}>
-        <MenuIcon />
+        <MenuIcon /><Typography>&nbsp;Progress</Typography>
       </IconButton>
 
       {/* Steps Section for larger screens */}
