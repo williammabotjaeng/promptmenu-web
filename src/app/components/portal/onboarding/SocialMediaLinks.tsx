@@ -56,6 +56,7 @@ const allSocialPlatforms = [
   { icon: "facebook", placeholder: "Facebook Profile URL" },
   { icon: "linkedin", placeholder: "LinkedIn Profile URL" },
   { icon: "pinterest", placeholder: "Pinterest Profile URL" },
+  { icon: "other", placeholder: "Other Social Profile URL" },
 ];
 
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
@@ -135,11 +136,6 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
       // linkedin: cookies.linkedin || '',
     });
   }, [cookies]);
-
-  useEffect(() => {
-    setLoading(true);
-    setTimeout(() => setLoading(false), 500);
-  }, [additionalInputs])
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -253,12 +249,9 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
             {allSocialPlatforms
               .filter(
                 (platform) =>
-                  !defaultSocialInputs.some(
-                    (input) => input.icon === platform.icon
-                  ) &&
-                  !additionalInputs.some(
-                    (input) => input.icon === platform.icon
-                  )
+                  platform.icon === "other" || 
+                  (!defaultSocialInputs.some((input) => input.icon === platform.icon) &&
+                    !additionalInputs.some((input) => input.icon === platform.icon))
               )
               .map((platform, index) => (
                 <ListItem
@@ -277,6 +270,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
                 </ListItem>
               ))}
           </List>
+          
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose}>Cancel</Button>
