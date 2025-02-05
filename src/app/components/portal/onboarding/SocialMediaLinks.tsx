@@ -27,6 +27,7 @@ import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import { skillsRequiringPhysicalAttributes } from "./PaymentSection";
 import { useStore } from "zustand";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import Loading from "@/components/Loading";
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -56,6 +57,7 @@ const allSocialPlatforms = [
   { icon: "linkedin", placeholder: "LinkedIn Profile URL" },
   { icon: "pinterest", placeholder: "Pinterest Profile URL" },
 ];
+
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
   activeStep,
   setActiveStep,
@@ -79,6 +81,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [additionalInputs, setAdditionalInputs] = useState([]);
 
   const onClose = () => {
@@ -133,6 +136,11 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
     });
   }, [cookies]);
 
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 500);
+  }, [additionalInputs])
+
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -146,9 +154,12 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
   };
 
   const handleAddPlatform = (platform: any) => {
+    console.log("Platform instance:", platform);
     setAdditionalInputs((prev) => [...prev, platform]);
     setDialogOpen(false);
   };
+
+  if (loading) return <Loading />;
 
   return (
     <Box
@@ -193,7 +204,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
               textAlign: "center",
             }}
           >
-            Social Media
+            Social Media Accounts
           </Typography>
           <Box
             sx={{
@@ -253,6 +264,13 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
                 <ListItem
                   key={index}
                   component="div"
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                      color: 'white',
+                      backgroundColor: '#977342'
+                    }
+                  }}
                   onClick={() => handleAddPlatform(platform)}
                 >
                   <ListItemText primary={platform.placeholder} />

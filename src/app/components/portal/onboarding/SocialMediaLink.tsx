@@ -8,7 +8,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTiktok } from '@fortawesome/free-brands-svg-icons';
+import { faTiktok, faYoutube, faPinterest } from '@fortawesome/free-brands-svg-icons';
 import DefaultIcon from '@mui/icons-material/AccountCircle'; 
 
 export const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({ icon, username }) => {
@@ -24,6 +24,10 @@ export const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({ icon, username
         return <LinkedInIcon />;
       case 'tiktok':
         return <FontAwesomeIcon icon={faTiktok} />;
+      case 'youtube':
+        return <FontAwesomeIcon icon={faYoutube} />;
+      case 'pinterest':
+        return <FontAwesomeIcon icon={faPinterest} />;
       default:
         return <DefaultIcon />;
     }
