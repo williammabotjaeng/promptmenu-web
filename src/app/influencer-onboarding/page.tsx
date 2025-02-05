@@ -33,6 +33,7 @@ import { useAuth } from "@/providers/auth-providers";
 import PersonalInfo from "@/components/portal/onboarding/PersonalInfo";
 import FollowerCount from "@/components/portal/onboarding/FollowerCount";
 import EngagementRate from "@/components/portal/onboarding/EngagementRate";
+import AudienceDemographics from "@/components/portal/onboarding/AudienceDemographics";
 
 const InfluencerOnboarding: React.FC = () => {
   const router = useRouter();
@@ -265,17 +266,21 @@ const InfluencerOnboarding: React.FC = () => {
       )}
 
       {activeStep === 8 && (
-        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
+        <AudienceDemographics activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 9 && (
+        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 10 && (
         <PortfolioBuilder
           activeStep={activeStep}
           setActiveStep={setActiveStep}
         />
       )}
 
-      {activeStep === 10 && (
+      {activeStep === 11 && (
         <ProfileReview activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
     </Box>
