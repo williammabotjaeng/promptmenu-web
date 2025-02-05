@@ -17,8 +17,8 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 const InfluencerSteps = [
   { number: 1, title: "Headshot", isActive: false },
-  { number: 2, title: "Personal Info", isActive: false },
-  { number: 3, title: "Skills", isActive: true },
+  { number: 2, title: "Personal Info", isActive: true },
+  { number: 3, title: "Skills", isActive: false },
   { number: 4, title: "Payment", isActive: false },
   { number: 5, title: "Attributes", isActive: false },
   { number: 6, title: "Social", isActive: false },
