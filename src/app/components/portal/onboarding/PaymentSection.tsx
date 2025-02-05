@@ -259,7 +259,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
         return (
           <Box sx={{ mt: 4 }}>
             <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
-              Please select a valid payment method.
+              Please select your preferred payment method.
             </Typography>
           </Box>
         );

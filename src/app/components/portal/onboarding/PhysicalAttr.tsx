@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
 import { useEffect, useState } from 'react';
 import { useStore } from 'zustand';
+import { useCookies } from 'react-cookie';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { hairColorItems, eyeColorItems } from '@/types/Props/DropdownAttributeProps';
 
@@ -21,6 +22,18 @@ const steps = [
   { number: 8, title: 'Review', isActive: false }
 ];
 
+const InfluencerSteps = [
+  { number: 1, title: "Headshot", isActive: false },
+  { number: 2, title: "Personal Info", isActive: false },
+  { number: 3, title: "Skills", isActive: false },
+  { number: 4, title: "Payment", isActive: false },
+  { number: 5, title: "Attributes", isActive: true },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+  { number: 9, title: "Review", isActive: false },
+];
+
 export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
   const router = useRouter();
   const { physicalAttributes, setPhysicalAttributes } = useStore(useTalentOnboardingStore);
@@ -30,6 +43,9 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
     hairColor: '',
     eyeColor: ''
   });
+  const [cookies] = useCookies(['user_role']);
+
+  const userRole = cookies['user_role'];
 
 
   const onClose = () => {
@@ -99,7 +115,7 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({ activeStep, 
     <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'black', flexGrow: 1 }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', backgroundColor: 'black', paddingBottom: '24px' }}>
         {/* Header Section */}
-        <OnboardingHeader steps={steps} onClose={onClose} />
+        <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
 
         {/* Physical Attributes Section */}
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingX: { xs: 2, md: 4 }, paddingTop: 4 }}>
