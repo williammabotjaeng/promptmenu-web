@@ -180,7 +180,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
           >
             {userRole === "talent"
               ? `Professional Skills`
-              : `Any Additional Skills?`}
+              : `Any relevant certifications or special skills?`}
           </Typography>
           <Box
             sx={{
