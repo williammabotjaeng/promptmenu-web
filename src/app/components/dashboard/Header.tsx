@@ -22,6 +22,13 @@ const Header = () => {
     setDrawerOpen(open);
   };
 
+  const handleClick = (text: string) => {
+    if (text === 'Post Event') {
+      router.push('/post-event');
+    }
+    router.push(`/{text}`);
+  }
+
   const handleLogout = () => {
     console.log("Logout");
     logout();
@@ -29,7 +36,7 @@ const Header = () => {
 
   const menuItems = (
     <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-      {['Dashboard', 'Events', 'Jobs', 'Talents', 'Messages'].map((text) => (
+      {['Dashboard', 'Post Event', 'Events', 'Jobs', 'Talents', 'Messages'].map((text) => (
         <Button
           key={text}
           sx={{
@@ -37,6 +44,7 @@ const Header = () => {
             width: '100%',
             '&:hover': { color: 'white' }
           }}
+          onClick={handleClick(text)}
         >
           {text}
         </Button>
@@ -80,7 +88,7 @@ const Header = () => {
         {/* Flex container for menu items and right-side image */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
           <nav>
-            {['Dashboard', 'Events', 'Jobs', 'Talents', 'Messages'].map((text) => (
+            {['Dashboard', 'Post Event', 'Events', 'Jobs', 'Talents', 'Messages'].map((text) => (
               <Button
                 key={text}
                 sx={{
@@ -88,6 +96,7 @@ const Header = () => {
                   '&:hover': { color: 'white' },
                   marginLeft: '16px'
                 }}
+                onClick={handleClick(text)}
               >
                 {text}
               </Button>
