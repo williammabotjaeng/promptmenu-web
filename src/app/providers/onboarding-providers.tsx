@@ -14,7 +14,7 @@ import CompanyInfo from '@/components/dashboard/onboarding/CompanyInfo';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 
 interface OnboardingContextType {
-  createTalentProfile: () => Promise<void>;
+  createTalentProfile: (talentData) => Promise<void>;
   createCompany: (companyDataObj) => Promise<void>;
   updateCompany: (companyId: string, data: CompanyData) => Promise<void>;
   updateTalentProfile: (profileId: string, data: TalentProfileData) => Promise<void>;
@@ -69,26 +69,9 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
-    mutationFn: async () => {
+    mutationFn: async (talentData: any) => {
       console.log("personal info", personalInfo);
-      return await restCall('/portal/talent-profile/create/', 'POST', {
-        username: cookies['username'],
-        headshot: cookies['headshotBlobUrl'],
-        firstname: personalInfo?.firstname,
-        lastname: personalInfo?.lastname,
-        date_of_birth: formattedDate,
-        gender: personalInfo?.gender,
-        phone_number: personalInfo?.phone_number,
-        nationality: cookies['nationality'],
-        skills: cookies['skills'],
-        height: physicalAttributes?.height,
-        weight: physicalAttributes?.weight,
-        ethnicity: physicalAttributes?.ethnicity,
-        government_id: cookies['governmentIDUrl'],
-        banking_details: JSON.stringify(bankDetails),
-        portfolio_pdf: null,
-        additional_images: null
-      }, accessToken);
+      return await restCall('/portal/talent-profile/create/', 'POST', talentData, accessToken);
     },
     onSuccess: (data) => {
       console.log('Talent profile created successfully', data);
@@ -147,8 +130,8 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     console.log('Profile progress updated to: ', progress);
   };
 
-  const createTalentProfile = async () => {
-    await createTalentProfileMutation.mutateAsync();
+  const createTalentProfile = async (talentData) => {
+    await createTalentProfileMutation.mutateAsync(talentData);
   };
 
   const createCompany = async (companyDataObj) => {

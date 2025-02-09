@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Paper, Typography, Divider, Button } from '@mui/material';
+import { Box, Paper, Typography, Divider, Button, backdropClasses } from '@mui/material';
 import { StepItem } from '@/components/portal/onboarding/StepItem';
 import { DocumentItem } from '@/components/portal/onboarding/DocumentItem';
 import { SocialMediaLink } from '@/components/portal/onboarding/SocialMediaLink';
@@ -24,6 +24,8 @@ import { useEffect } from 'react';
 import { skillsRequiringPhysicalAttributes } from './PaymentSection';
 import moment from 'moment';
 import { useCookies } from 'react-cookie';
+import { uploadFileToS3 } from '@/services/s3UploadUtils';
+import { useOnboarding } from '@/providers/onboarding-providers';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -64,9 +66,14 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
 
   const { talentData, paymentMethods, physicalAttributes } = useStore(useTalentOnboardingStore);
 
+  const { createTalentProfile } = useOnboarding();
+
   const [cookies, setCookie] = useCookies([
-    'tiktok', 'instagram', 'website'
+    'tiktok', 'instagram', 'website', 'username', 'access'
   ]);
+
+  const userName = cookies['username'];
+  const accessToken = cookies['access'];
 
   const router = useRouter();
 
@@ -85,6 +92,48 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
   const hasPhysicalAttributeSkill = talentData.skills.some(skill =>
         skillsRequiringPhysicalAttributes.includes(skill.name)
   );
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission
+  
+    try {
+      
+      const headshotFileName = await uploadFileToS3(
+        talentData?.headshot, 
+        "headshot", 
+        userName, 
+        accessToken
+      );
+  
+      const frontIDFileName = await uploadFileToS3(
+        talentData?.government_id_front, 
+        "front_id", 
+        userName, 
+        accessToken
+      );
+
+      const backIDFileName = await uploadFileToS3(
+        talentData?.government_id_back, 
+        "back_id", 
+        userName, 
+        accessToken
+      );
+  
+      const companyData = {
+        ...talentData, 
+        username: userName,
+        headshot: headshotFileName, 
+        government_id_front: frontIDFileName, 
+        government_id_back: backIDFileName
+      };
+  
+      await createTalentProfile(companyData);
+  
+      console.log("Talent data submitted successfully!");
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    }
+  };
 
   return (
     <Box sx={{
