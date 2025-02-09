@@ -23,7 +23,7 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
         backgroundColor: '#fff',
         paddingBottom: '40px',
         width: '100%',
-        paddingX: { xs: 2, sm: 4 }, // Responsive horizontal padding
+        paddingX: { xs: 2, sm: 4 }, 
       }}
     >
       {/* Header with Step Navigation */}
@@ -34,7 +34,7 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
           display: 'flex',
           flexDirection: 'column',
           borderRadius: '8px',
-          width: { xs: '100%', sm: '60%' }, // Full width on small screens
+          width: { xs: '100%', sm: '60%' }, 
           padding: 2,
           boxShadow: '0px 4px 10px rgba(156, 163, 175, 0.5)',
         }}
@@ -45,7 +45,6 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
           <Typography variant="h5" sx={{ color: '#977342', marginBottom: 2, fontSize: { xs: '20px', sm: '24px' }, fontWeight: 'bold' }}>
             Create New Event
           </Typography>
-          <Typography variant="body1" sx={{ marginBottom: 1, mt: 2, color: '#374151' }}>Event Title</Typography>
           <TextField
             label="Event Title"
             variant="outlined"
@@ -60,7 +59,6 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
             fullWidth
             sx={{ marginBottom: 2 }}
           />
-          <Typography variant="body1" sx={{ marginBottom: 1, color: '#374151' }}>Location</Typography>
           <TextField
             label="Location"
             variant="outlined"
