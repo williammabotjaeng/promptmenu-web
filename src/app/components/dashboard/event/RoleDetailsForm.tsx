@@ -20,8 +20,8 @@ const RoleDetailsForm: React.FC = () => {
     >
       <SectionHeader>Role Details</SectionHeader>
       <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, color: 'black' }}>
-        <LabelledInput label="Role Title" id="roleTitle" />
-        <LabelledTextArea label="Detailed Description" id="detailedDescription" />
+        <LabelledInput label="Role Title"  />
+        <LabelledTextArea label="Detailed Description"  />
       </Box>
     </Paper>
   );
