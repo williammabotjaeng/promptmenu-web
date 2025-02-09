@@ -36,11 +36,7 @@ const DemographicsForm = () => {
           color: 'black',
         }}
       >
-        <GenderSelector 
-          label="Gender" 
-          value="Any" 
-          imageSrc="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/3a544052ff3a223b44b5b722cc0cceac6f027791bf450cb52f3df85844734282?apiKey=7fae980a988640eea8add1e49a5d542e&" 
-        />
+        <GenderSelector label={"Gender Preference"} />
         <Box 
           sx={{ 
             display: 'flex', 
