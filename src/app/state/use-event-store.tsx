@@ -108,6 +108,8 @@ const useEventStore = create<EventStoreState>((set) => ({
       eventRole: {
         skill: '',
         openings: 0,
+        title: '',
+        description: ''
       },
     }),
 }));
