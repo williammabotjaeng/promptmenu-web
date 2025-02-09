@@ -3,23 +3,26 @@ import { Box, Button, Typography } from '@mui/material';
 import { EventUploadSection } from '@/components/dashboard/event/EventUploadSection';
 import HeaderWithProgressBar from '@/components/dashboard/event/HeaderWithProgressBar';
 import { PostEventStepProps } from '@/types/Props/PostEventStepProps';
+import EventIconOne from '@/assets/event_icon_one.svg';
+import EventIconTwo from '@/assets/event_icon_two.svg';
+import EventIconThree from '@/assets/event_icon_three.svg';
 
 const uploadSections = [
     {
         title: 'Poster Upload',
-        icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c9cb08ccc0f6963f31697d1404addcab98b49964ba926f8a04f7413c67d2ef41?apiKey=7fae980a988640eea8add1e49a5d542e&',
+        icon: EventIconThree?.src,
         buttonText: 'Browse Files',
         description: 'Drag and drop your poster here or'
     },
     {
         title: 'Photos Upload',
-        icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/fa434d1823f81b8237ab966a891f147ddb96b8f1d4ebf7abd46a991f5e05d778?apiKey=7fae980a988640eea8add1e49a5d542e&',
+        icon: EventIconTwo?.src,
         buttonText: 'Select Photos',
         description: 'Upload multiple photos'
     },
     {
         title: 'Videos Upload',
-        icon: 'https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/4c05f86ba7f3ad0c21eef05c91b75187359070c929b36c59ae07108db1cc9c04?apiKey=7fae980a988640eea8add1e49a5d542e&',
+        icon: EventIconOne?.src,
         buttonText: 'Select Videos',
         description: 'Upload multiple videos'
     }
@@ -72,10 +75,10 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                         Upload Media
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <EventUploadSection {...uploadSections[0]} />
+                        <EventUploadSection type="single" mediaType="photo" {...uploadSections[0]} />
                         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
-                            <EventUploadSection {...uploadSections[1]} />
-                            <EventUploadSection {...uploadSections[2]} />
+                            <EventUploadSection type="multiple" mediaType="photo" {...uploadSections[1]} />
+                            <EventUploadSection type="single" mediaType="video" {...uploadSections[2]} />
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
