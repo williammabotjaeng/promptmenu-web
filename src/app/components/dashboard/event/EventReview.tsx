@@ -22,11 +22,12 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
     const handleSubmit = async () => {
         await createEvent({
             organizer: userName,
-            event_title: eventDetails?.eventTitle,
-            event_description: eventDetails?.description,
+            capacity: 0,
+            title: eventDetails?.eventTitle,
+            description: eventDetails?.description,
             location: eventDetails?.location,
-            start_date_time: eventDetails?.startDateTime,
-            end_date_time: eventDetails?.endDateTime,
+            start_time: eventDetails?.startDateTime,
+            end_time: eventDetails?.endDateTime,
             accomodation_provided: eventDetails?.accommodationProvided,
             transport_provided: eventDetails?.transportProvided,
             meals_provided: eventDetails?.mealsProvided,
