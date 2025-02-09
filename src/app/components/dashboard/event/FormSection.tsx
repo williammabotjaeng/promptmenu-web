@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -11,8 +11,10 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
+import { useStore } from "zustand";
+import useEventStore from "@/state/use-event-store";
 
-interface Question {
+export interface Question {
   id: string;
   label: string;
   placeholder: string;
@@ -20,6 +22,7 @@ interface Question {
 }
 
 const FormSection: React.FC = () => {
+  const { eventRole, setEventRole } = useStore(useEventStore);
   const [questions, setQuestions] = useState<Question[]>([
     { id: "question1", label: "Question 1", placeholder: "Enter your question", inputType: "text" },
   ]);
@@ -54,6 +57,10 @@ const FormSection: React.FC = () => {
       inputType: newQuestionType,
     };
     setQuestions([...questions, newQuestion]);
+    setEventRole({
+      ...eventRole,
+      questions: questions
+    });
     setDialogOpen(false);
     setNewQuestionLabel("");
   };

@@ -1,3 +1,4 @@
+import { Question } from '@/components/dashboard/event/FormSection';
 import { create } from 'zustand';
 
 interface EventDetails {
@@ -9,12 +10,6 @@ interface EventDetails {
   mealsProvided: boolean;
   transportProvided: boolean;
   accommodationProvided: boolean;
-}
-
-export interface Question {
-    question: string;
-    answer: string;
-    type: string;
 }
 
 export interface EventMediaType {
