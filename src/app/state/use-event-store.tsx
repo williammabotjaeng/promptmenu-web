@@ -22,10 +22,10 @@ interface EventRole {
   openings: number;
   title: string;
   description: string;
-  gender: string;
+  genders: string[];
   minAge: number;
   maxAge: number;
-  ethnicity: string;
+  ethnicities: string[];
 }
 
 interface EventStoreState {
@@ -64,10 +64,10 @@ const useEventStore = create<EventStoreState>((set) => ({
       openings: 0,
       title: '',
       description: '',
-      gender: '',
+      genders: [],
       minAge: 0,
       maxAge: 0,
-      ethnicity: ''
+      ethnicities: []
   },
 
   setEventDetails: (updates) =>
@@ -118,10 +118,10 @@ const useEventStore = create<EventStoreState>((set) => ({
           openings: 0,
           title: '',
           description: '',
-          gender: '',
+          genders: [],
           minAge: 0,
           maxAge: 0,
-          ethnicity: ''
+          ethnicities: []
       },
     }),
 }));

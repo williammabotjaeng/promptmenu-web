@@ -1,23 +1,27 @@
 import * as React from "react";
-import { Box, Typography, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
-import { useState } from "react";
+import { Box, Typography, Select, MenuItem, FormControl, InputLabel, Chip } from "@mui/material";
 import { useStore } from "zustand";
 import useEventStore from "@/state/use-event-store";
+import CloseIcon from "@mui/icons-material/Close";
 
 type GenderSelectorProps = {
   label: string;
 };
 
-const GenderSelector: React.FC<GenderSelectorProps> = ({
-  label,
-}) => {
-  
-  const { eventRole, setEventRole } = useStore(useEventStore);
+const GenderSelector: React.FC<GenderSelectorProps> = ({ label }) => {
+  const { eventRole, setEventRole } = useStore(useEventStore); 
+  const [genders, setGenders] = React.useState<string[]>(Array.from(eventRole?.genders) || []); 
 
-  const [gender, setGender] = useState("male");
-  
   const handleChange = (event: React.ChangeEvent<any>) => {
-    setGender(event.target.value as string); 
+    const selectedGenders = event.target.value as string[];
+    setGenders(selectedGenders); 
+    setEventRole({ ...eventRole, genders: selectedGenders }); 
+  };
+
+  const handleDelete = (genderToDelete: string) => {
+    const updatedGenders = genders.filter((gender) => gender !== genderToDelete);
+    setGenders(updatedGenders); 
+    setEventRole({ ...eventRole, genders: updatedGenders }); 
   };
 
   return (
@@ -30,13 +34,26 @@ const GenderSelector: React.FC<GenderSelectorProps> = ({
         {label}
       </Typography>
 
-      {/* Select Dropdown */}
+      {/* Multi-Select Dropdown */}
       <FormControl fullWidth sx={{ bgcolor: "white", borderRadius: "8px" }}>
         <InputLabel id="gender-select-label">{label}</InputLabel>
         <Select
           labelId="gender-select-label"
-          value={gender}
+          multiple
+          value={genders}
           onChange={handleChange}
+          renderValue={(selected) => (
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+              {(selected as string[]).map((value) => (
+                <Chip
+                  key={value}
+                  label={value}
+                  onDelete={() => handleDelete(value)} 
+                  deleteIcon={<CloseIcon />}
+                />
+              ))}
+            </Box>
+          )}
           sx={{
             borderRadius: "8px",
             padding: "8px 10px",

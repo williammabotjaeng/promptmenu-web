@@ -50,11 +50,7 @@ const DemographicsForm = () => {
           <AgeSelector label="Minimum Age" />
           <AgeSelector label="Maximum Age" />
         </Box>
-        <EthnicitySelector 
-          label="Ethnicity" 
-          value="All Ethnicities" 
-          imageSrc="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/13086ebea5f8380d161435bb28c2e9eb0400079c9838445d129aa81e22877af4?apiKey=7fae980a988640eea8add1e49a5d542e&" 
-        />
+        <EthnicitySelector label={"Preferred Ethnicities"} />
       </Box>
     </Box>
   );

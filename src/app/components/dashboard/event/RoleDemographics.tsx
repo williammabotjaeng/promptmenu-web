@@ -22,7 +22,7 @@ const RoleDemographics: React.FC<PostEventStepProps> = ({ activeStep, setActiveS
                 flexDirection: 'column',
                 backgroundColor: 'white',
                 justifyContent: 'center',
-                padding: { xs: 2, md: 4 }, // Responsive padding
+                padding: { xs: 2, md: 4 }, 
                 pb: { xs: 3, md: 4 },
             }}
         >
