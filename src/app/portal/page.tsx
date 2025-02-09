@@ -194,12 +194,12 @@ const Portal: React.FC = () => {
               <CardContent>
                 <Grid container justifyContent="space-between" alignItems="center">
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Profile Completion</Typography>
-                  <Typography variant="body1" sx={{ color: '#977342' }}>85%</Typography>
+                  <Typography variant="body1" sx={{ color: '#977342' }}>{(talentProfile?.profile_progress * 100)}%</Typography>
                 </Grid>
                 <Box sx={{ marginTop: 2 }}>
                   <LinearProgress
                     variant="determinate"
-                    value={85}
+                    value={(talentProfile?.profile_progress * 100)}
                     sx={{
                       height: '8px',
                       borderRadius: '4px',
