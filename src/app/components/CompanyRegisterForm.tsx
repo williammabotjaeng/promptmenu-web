@@ -445,7 +445,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 </Grid>
 
                 {/* Email Field */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 } }}>
+                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: 1 }}>
                   <Typography sx={{ color: "#977342" }}>Company Email</Typography>
                   <TextField
                     label={<Typography variant="body1">Company Email</Typography>}
