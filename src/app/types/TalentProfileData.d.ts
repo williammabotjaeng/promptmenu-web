@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { SkillType, NicheType } from "./Props/SkillTagProps";
+import { UserNotification } from "@/components/portal/NotificationDropdown";
 
 export interface TalentProfileData {
   profile_progress: number;
@@ -22,6 +23,7 @@ export interface TalentProfileData {
   whatsapp_number?: string | null;
   nationality?: string | null;
   skills?: SkillType[];
+  notifications?: UserNotification[];
   height?: number | null;
   weight?: number | null;
   eyeColor?: string | null;

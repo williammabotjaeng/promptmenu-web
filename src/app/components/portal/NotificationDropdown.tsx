@@ -21,12 +21,12 @@ const menuItemStyle = {
   },
 };
 
-interface NotificationContent {
+export interface NotificationContent {
   body: string;
   action_item: string;
 }
 
-interface UserNotification {
+export interface UserNotification {
   id: number;
   label: string;
   contents: NotificationContent;
