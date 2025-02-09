@@ -11,6 +11,12 @@ interface EventDetails {
   accommodationProvided: boolean;
 }
 
+export interface Question {
+    question: string;
+    answer: string;
+    type: string;
+}
+
 export interface EventMediaType {
   eventPromoVideo: File | string | null;
   eventPhotos: File[] | string[] | null;
@@ -30,6 +36,7 @@ interface EventRole {
   dailyPay: number;
   projectPay: number;
   paymentTerms: string;
+  questions: Question[];
 }
 
 interface EventStoreState {
