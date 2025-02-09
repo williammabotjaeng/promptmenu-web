@@ -11,17 +11,17 @@ import { useEffect, useState } from 'react';
 
 export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
  
-  const [eventTitle, setEventTitle] = React.useState<string>('');
-  const [description, setDescription] = React.useState<string>('');
-  const [location, setLocation] = React.useState<string>('');
-  const [startDateTime, setStartDateTime] = React.useState<string>('');
-  const [endDateTime, setEndDateTime] = React.useState<string>('');
-  const [error, setError] = React.useState<string | null>(null);
-  const [mealsProvided, setMealsProvided] = useState(false);
-  const [transportProvided, setTransportProvided] = useState(false);
-  const [accommodationProvided, setAccommodationProvided] = useState(false);
-
   const { eventDetails, setEventDetails } = useStore(useEventStore);
+
+  const [eventTitle, setEventTitle] = React.useState<string>(eventDetails?.eventTitle || '');
+  const [description, setDescription] = React.useState<string>(eventDetails?.description || '');
+  const [location, setLocation] = React.useState<string>(eventDetails?.eventTitle || '');
+  const [startDateTime, setStartDateTime] = React.useState<string>(eventDetails?.startDateTime || '');
+  const [endDateTime, setEndDateTime] = React.useState<string>(eventDetails?.endDateTime || '');
+  const [error, setError] = React.useState<string | null>(null);
+  const [mealsProvided, setMealsProvided] = useState<boolean | null>(eventDetails?.mealsProvided || false);
+  const [transportProvided, setTransportProvided] = useState<boolean | null>(eventDetails?.transportProvided || false);
+  const [accommodationProvided, setAccommodationProvided] = useState<boolean | null>(eventDetails?.accommodationProvided || false);
 
   const handleContinue = () => {
     if (!eventTitle || !description || !location || !startDateTime || !endDateTime) {
