@@ -15,7 +15,7 @@ import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 
 interface OnboardingContextType {
   createTalentProfile: () => Promise<void>;
-  createCompany: () => Promise<void>;
+  createCompany: (companyDataObj) => Promise<void>;
   updateCompany: (companyId: string, data: CompanyData) => Promise<void>;
   updateTalentProfile: (profileId: string, data: TalentProfileData) => Promise<void>;
   updateProfileProgress: (progress: number) => Promise<void>;
@@ -67,23 +67,6 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const formattedDate = formatDateToYYYYMMDD(personalInfo?.date_of_birth);
 
-  const companyData = {
-    username: cookies['username'],
-    name: companyInfo?.name,
-    slogan: companyInfo?.slogan,
-    description: companyInfo?.description,
-    address: contactInfo?.address,
-    phone_number: contactInfo?.phone_number,
-    whatsapp_number: contactInfo?.whatsapp_number,
-    // payment_method: JSON.stringify(paymentMethod),
-    website: socialMediaLinks?.website,
-    social_media_links: {
-      facebook: socialMediaLinks?.social_media_links?.facebook,
-      instagram: socialMediaLinks?.social_media_links?.instagram,
-      linkedin: socialMediaLinks?.social_media_links?.linkedin
-    }
-  };
-
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
     mutationFn: async () => {
@@ -118,9 +101,9 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const createCompanyMutation = useMutation({
     mutationKey: ['create_company'],
-    mutationFn: async () => {
-      console.log("Company Data", companyData);
-      return await restCall('/dashboard/company/create/', 'POST', companyData, accessToken);
+    mutationFn: async (companyDataObj: any) => {
+      console.log("Company Data", companyDataObj);
+      return await restCall('/dashboard/company/create/', 'POST', companyDataObj, accessToken);
     },
     onSuccess: () => {
       console.log('Company created successfully');
@@ -168,8 +151,8 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     await createTalentProfileMutation.mutateAsync();
   };
 
-  const createCompany = async () => {
-    await createCompanyMutation.mutateAsync();
+  const createCompany = async (companyDataObj) => {
+    await createCompanyMutation.mutateAsync(companyDataObj);
   };
 
   const updateCompany = async (companyId: string, data: CompanyData) => {

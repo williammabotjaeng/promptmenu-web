@@ -28,6 +28,11 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import PeopleIcon from '@mui/icons-material/People';
 
 import '@/styles/register-form.css';
+import { uploadFileToS3 } from "@/services/s3UploadUtils";
+import { access } from "fs";
+
+import { useStore } from "zustand";
+import { OnboardingProvider, useOnboarding } from "@/providers/onboarding-providers";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -63,7 +68,7 @@ export const CompanyRegisterForm: React.FC = () => {
   const [nationality, setNationality] = useState('');
   const [region, setRegion] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
-  const [cookies, setCookie] = useCookies(['nationality', 'vatPdf', 'tradePdf', 'user_role']);
+  const [cookies, setCookie] = useCookies(['nationality', 'vatPdf', 'tradePdf', 'user_role', 'access', 'username']);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
@@ -79,7 +84,11 @@ export const CompanyRegisterForm: React.FC = () => {
   const [addressOptions, setAddressOptions] = useState([]);
   const [addressInputValue, setAddressInputValue] = useState('');
 
+  const { createCompany } = useOnboarding();
+
   const userRole = cookies['user_role'];
+  const accessToken = cookies['access'];
+  const userName = cookies['username'];
 
   const [formData, setFormData] = useState({
     username: '',
@@ -237,9 +246,25 @@ export const CompanyRegisterForm: React.FC = () => {
     setSnackbarOpen(false);
   };
 
-  function handleSubmit(event: any): void {
-    throw new Error("Function not implemented.");
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault(); 
+  
+    try {
+      const vatCertificateFileName = await uploadFileToS3(formData.vat_certificate, "vat_certificate", userName, accessToken);
+      const tradeLicenseFileName = await uploadFileToS3(formData.trade_license, "trade_license", userName, accessToken);
+  
+      const companyData = {
+        ...formData,
+        vat_certificate: vatCertificateFileName,
+        trade_license: tradeLicenseFileName,
+      };
+  
+      createCompany(companyData);
+
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    }
+  };
 
   return (
     <>
