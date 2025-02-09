@@ -82,7 +82,8 @@ const useEventStore = create<EventStoreState>((set) => ({
       hourlyPay: 0,
       dailyPay: 0,
       projectPay: 0,
-      paymentTerms: ''
+      paymentTerms: '',
+      questions: []
   },
 
   setEventDetails: (updates) =>
@@ -140,7 +141,8 @@ const useEventStore = create<EventStoreState>((set) => ({
           hourlyPay: 0,
           dailyPay: 0,
           projectPay: 0,
-          paymentTerms: ''
+          paymentTerms: '',
+          questions: []
       },
     }),
 }));
