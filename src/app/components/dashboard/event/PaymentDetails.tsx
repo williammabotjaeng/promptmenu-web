@@ -5,8 +5,15 @@ import { PaymentInput } from './PaymentInput';
 import { Box, Typography, Button } from '@mui/material';
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import RoleHeaderWithProgressBar from './RoleHeaderWithProgressBar';
+import { useState } from 'react';
+import { useStore } from 'zustand';
+import useEventStore from '@/state/use-event-store';
 
 export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
+
+    const { eventRole, setEventRole } = useStore(useEventStore);
+
+    const [paymentTerms, setPaymentTerms] = useState(eventRole?.paymentTerms || '');
   
     const handleContinue = () => {
         setActiveStep(activeStep + 1);
@@ -14,6 +21,14 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
+    }
+
+    function handlePaymentTerms(event: React.ChangeEvent<any>): void {
+        setPaymentTerms(event?.target?.value);
+        setEventRole({
+            ...eventRole,
+            paymentTerms: event?.target?.value
+        });
     }
 
     return (
@@ -45,9 +60,9 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, width: '100%', color: 'black' }}>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                        <PaymentInput label="Per Hour" id="perHour" />
-                        <PaymentInput label="Per Day" id="perDay" />
-                        <PaymentInput label="Per Project" id="perProject" />
+                        <PaymentInput label="Per Hour" id="hourlyPay" />
+                        <PaymentInput label="Per Day" id="dailyPay" />
+                        <PaymentInput label="Per Project" id="projectPay" />
                     </Box>
                     
                     <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
@@ -65,6 +80,8 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
                                 width: '100%', 
                                 resize: 'none' 
                             }}
+                            onChange={handlePaymentTerms}
+                            value={paymentTerms}
                             aria-label="Enter payment terms"
                         />
                     </Box>
