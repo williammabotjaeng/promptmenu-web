@@ -31,7 +31,6 @@ import '@/styles/register-form.css';
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { access } from "fs";
 
-import { useStore } from "zustand";
 import { OnboardingProvider, useOnboarding } from "@/providers/onboarding-providers";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
