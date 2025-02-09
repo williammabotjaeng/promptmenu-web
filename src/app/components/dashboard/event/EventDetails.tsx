@@ -29,6 +29,17 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
       return;
     }
     setError(null); 
+    setEventDetails({
+      eventTitle,
+      description,
+      location,
+      startDateTime,
+      endDateTime,
+      mealsProvided,
+      transportProvided,
+      accommodationProvided,
+    });
+    
     setActiveStep(activeStep + 1);
   };
 
