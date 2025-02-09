@@ -13,14 +13,7 @@ interface EventDetails {
 
 interface EventStoreState {
   eventDetails: EventDetails;
-  setEventTitle: (title: string) => void;
-  setDescription: (description: string) => void;
-  setLocation: (location: string) => void;
-  setStartDateTime: (dateTime: string) => void;
-  setEndDateTime: (dateTime: string) => void;
-  setMealsProvided: (provided: boolean) => void;
-  setTransportProvided: (provided: boolean) => void;
-  setAccommodationProvided: (provided: boolean) => void;
+  setEventDetails: (updates: Partial<EventDetails>) => void;
   clearEventDetails: () => void;
 }
 
@@ -35,14 +28,10 @@ const useEventStore = create<EventStoreState>((set) => ({
     transportProvided: false,
     accommodationProvided: false,
   },
-  setEventTitle: (title) => set((state) => ({ eventDetails: { ...state.eventDetails, eventTitle: title } })),
-  setDescription: (description) => set((state) => ({ eventDetails: { ...state.eventDetails, description } })),
-  setLocation: (location) => set((state) => ({ eventDetails: { ...state.eventDetails, location } })),
-  setStartDateTime: (dateTime) => set((state) => ({ eventDetails: { ...state.eventDetails, startDateTime: dateTime } })),
-  setEndDateTime: (dateTime) => set((state) => ({ eventDetails: { ...state.eventDetails, endDateTime: dateTime } })),
-  setMealsProvided: (provided) => set((state) => ({ eventDetails: { ...state.eventDetails, mealsProvided: provided } })),
-  setTransportProvided: (provided) => set((state) => ({ eventDetails: { ...state.eventDetails, transportProvided: provided } })),
-  setAccommodationProvided: (provided) => set((state) => ({ eventDetails: { ...state.eventDetails, accommodationProvided: provided } })),
+  setEventDetails: (updates) =>
+    set((state) => ({
+      eventDetails: { ...state.eventDetails, ...updates }, 
+    })),
   clearEventDetails: () =>
     set({
       eventDetails: {

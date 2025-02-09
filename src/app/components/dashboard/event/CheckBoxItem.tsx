@@ -1,15 +1,20 @@
 import * as React from 'react';
 import { Checkbox, FormControlLabel, Box } from '@mui/material';
-import { CheckboxItemProps } from '@/types/Props/CheckboxItemProps';
 
-export const CheckboxItem: React.FC<CheckboxItemProps> = ({ label }) => {
+interface ExtendedCheckboxItemProps {
+  label: string;
+  value: boolean;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const CheckboxItem: React.FC<ExtendedCheckboxItemProps> = ({ label, value, onChange }) => {
   return (
     <Box 
       sx={{ 
         display: 'flex', 
         alignItems: 'center', 
         paddingY: 1, 
-        flexDirection: { xs: 'column', sm: 'row' }, // Stack on small screens, row on larger
+        flexDirection: { xs: 'column', sm: 'row' }, 
         justifyContent: 'flex-start' 
       }}
     >
@@ -17,6 +22,8 @@ export const CheckboxItem: React.FC<CheckboxItemProps> = ({ label }) => {
         control={
           <Checkbox
             id={label.toLowerCase().replace(/\s/g, '-')}
+            checked={value} 
+            onChange={onChange} 
             sx={{
               '&.Mui-checked': {
                 color: '#4B5563',
@@ -26,7 +33,7 @@ export const CheckboxItem: React.FC<CheckboxItemProps> = ({ label }) => {
           />
         }
         label={label}
-        sx={{ marginLeft: { xs: 0, sm: 1 }, marginTop: { xs: 1, sm: 0 } }} // Adjust margins for responsiveness
+        sx={{ marginLeft: { xs: 0, sm: 1 }, marginTop: { xs: 1, sm: 0 } }}
       />
     </Box>
   );
