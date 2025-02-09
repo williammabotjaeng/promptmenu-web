@@ -17,13 +17,21 @@ export interface EventMediaType {
   eventPoster: File | string | null;
 }
 
+interface EventRole {
+  skill: string;
+  openings: number;
+}
+
 interface EventStoreState {
   eventDetails: EventDetails;
   eventMedia: EventMediaType;
+  eventRole: EventRole;
   setEventDetails: (updates: Partial<EventDetails>) => void;
   setEventMedia: (title: keyof EventMediaType, value: File | File[]) => void;
+  setEventRole: (updates: Partial<EventRole>) => void;
   clearEventDetails: () => void;
   clearEventMedia: () => void;
+  clearEventRole: () => void;
 }
 
 const useEventStore = create<EventStoreState>((set) => ({
@@ -45,6 +53,11 @@ const useEventStore = create<EventStoreState>((set) => ({
     eventPoster: null,
   },
 
+  eventRole: {
+    skill: '',
+    openings: 0,
+  },
+
   setEventDetails: (updates) =>
     set((state) => ({
       eventDetails: { ...state.eventDetails, ...updates },
@@ -56,6 +69,11 @@ const useEventStore = create<EventStoreState>((set) => ({
         ...state.eventMedia,
         [title]: Array.isArray(value) ? [...value] : value,
       },
+    })),
+
+  setEventRole: (updates) =>
+    set((state) => ({
+      eventRole: { ...state.eventRole, ...updates },
     })),
 
   clearEventDetails: () =>
@@ -71,13 +89,21 @@ const useEventStore = create<EventStoreState>((set) => ({
         accommodationProvided: false,
       },
     }),
-  
+
   clearEventMedia: () =>
     set({
       eventMedia: {
         eventPromoVideo: null,
         eventPhotos: [],
         eventPoster: null,
+      },
+    }),
+
+  clearEventRole: () =>
+    set({
+      eventRole: {
+        skill: '',
+        openings: 0,
       },
     }),
 }));
