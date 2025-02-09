@@ -27,10 +27,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
             const objectUrl = URL.createObjectURL(file);
             setHeadshot(objectUrl);
             setTalentData({
+                ...talentData,
                 headshot: objectUrl,
-                website: '',
-                social_media_links: undefined,
-                user: ''
             });
             setCookie('headshotBlobUrl', objectUrl);
             setSnackbarMessage('Headshot Uploaded Successfully');
