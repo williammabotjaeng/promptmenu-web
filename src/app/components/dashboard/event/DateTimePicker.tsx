@@ -17,7 +17,7 @@ export const DateTimePicker: React.FC<{ label: string }> = ({ label }) => {
         {label}
       </Typography>
       <TextField
-        type="date"
+        type="datetime-local"
         value={selectedDate}
         onChange={handleDateChange}
         variant="outlined"

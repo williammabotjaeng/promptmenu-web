@@ -34,7 +34,7 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
           display: 'flex',
           flexDirection: 'column',
           borderRadius: '8px',
-          width: { xs: '100%', sm: '60%' }, 
+          width: { xs: '100%', sm: '80%' }, 
           padding: 2,
           boxShadow: '0px 4px 10px rgba(156, 163, 175, 0.5)',
         }}
@@ -65,7 +65,7 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
             fullWidth
             sx={{ marginBottom: 2 }}
           />
-          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, marginBottom: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1, marginBottom: 2 }}>
             <DateTimePicker label="Start Date & Time" />
             <DateTimePicker label="End Date & Time" />
           </Box>
