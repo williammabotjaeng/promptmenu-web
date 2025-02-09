@@ -23,7 +23,7 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
   onProceed,
 }) => {
   const { eventMedia, setEventMedia } = useEventStore();
-  const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = React.useState<any[]>([]);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [cookies, setCookie] = useCookies([
     "event_poster",
@@ -38,33 +38,6 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
   eventPromoVideo: 'event_video',
 };
 
-// Handle file selection
-const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  if (event.target.files) {
-    const filesArray = Array.from(event.target.files);
-
-    // Map the title to the corresponding cookie name
-    const cookieKey = titleToCookieMap[title];
-
-    if (type === 'single') {
-      const file = filesArray[0];
-      setSelectedFiles([file]);
-      setEventMedia(title, file);
-
-      // Convert file to a blob URL and set it as a cookie
-      const blobUrl = URL.createObjectURL(file);
-      setCookie(cookieKey, blobUrl, { path: '/' }); 
-    } else {
-      setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
-      setEventMedia(title, [...(eventMedia[title] as File[]), ...filesArray]); 
-
-      // Convert files to blob URLs and set them as a cookie (array of URLs)
-      const blobUrls = filesArray.map((file) => URL.createObjectURL(file));
-      setCookie(cookieKey, JSON.stringify(blobUrls), { path: '/' });
-    }
-  }
-};
-
   // Trigger file input click
   const handleButtonClick = () => {
     fileInputRef.current?.click(); // Use useRef to trigger the file input
@@ -73,6 +46,63 @@ const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   // Handle proceed action
   const handleProceed = () => {
     onProceed();
+  };
+
+  // Initialize selected files from the store or cookies
+  React.useEffect(() => {
+    const cookieKey = titleToCookieMap[title];
+    const storedMedia = eventMedia[title];
+
+    if (storedMedia) {
+      // Initialize from the store
+      if (type === "single" && storedMedia instanceof File) {
+        setSelectedFiles([storedMedia]);
+      } else if (type === "multiple" && Array.isArray(storedMedia)) {
+        setSelectedFiles(storedMedia);
+      }
+    } else if (cookies[cookieKey]) {
+      // Initialize from cookies
+      if (type === "single") {
+        const blobUrl = cookies[cookieKey];
+        const file = new File([], "file_from_cookie", { type: "application/octet-stream" }); // Placeholder file
+        setSelectedFiles([file]);
+        setEventMedia(title, file);
+      } else if (type === "multiple") {
+        const blobUrls = JSON.parse(cookies[cookieKey]);
+        const files = blobUrls.map(
+          (url: string) => new File([], "file_from_cookie", { type: "application/octet-stream" }) 
+        );
+        setSelectedFiles(files);
+        setEventMedia(title, files);
+      }
+    }
+  }, [title, type, eventMedia, cookies, setEventMedia]);
+
+  // Handle file selection
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const filesArray = Array.from(event.target.files);
+
+      // Map the title to the corresponding cookie name
+      const cookieKey = titleToCookieMap[title];
+
+      if (type === "single") {
+        const file = filesArray[0];
+        setSelectedFiles([file]);
+        setEventMedia(title, file);
+
+        // Convert file to a blob URL and set it as a cookie
+        const blobUrl = URL.createObjectURL(file);
+        setCookie(cookieKey, blobUrl, { path: "/" });
+      } else {
+        setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
+        setEventMedia(title, [...(eventMedia[title] as File[]), ...filesArray]);
+
+        // Convert files to blob URLs and set them as a cookie (array of URLs)
+        const blobUrls = filesArray.map((file) => URL.createObjectURL(file));
+        setCookie(cookieKey, JSON.stringify(blobUrls), { path: "/" });
+      }
+    }
   };
 
   return (

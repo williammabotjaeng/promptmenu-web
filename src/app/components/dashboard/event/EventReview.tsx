@@ -8,7 +8,7 @@ import useEventStore from "@/state/use-event-store";
 
 export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
-    const { eventMedia } = useStore(useEventStore);
+    const { eventMedia, eventDetails } = useStore(useEventStore);
 
     const handleContinue = () => {
         setActiveStep(activeStep + 1);
@@ -20,6 +20,7 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
 
     React.useEffect(() => {
         console.log("Event Media:", eventMedia);
+        console.log("Event Details:", eventDetails);
     }, []);
     
     return (
