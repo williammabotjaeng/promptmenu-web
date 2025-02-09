@@ -46,7 +46,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
             headshot: null,
             website: '',
             social_media_links: undefined,
-            user: ''
+            user: '',
+            niches: [],
+            legalFullName: '',
+            stageName: ''
         });
 
         setSnackbarMessage('Headshot Deleted Successfully');
