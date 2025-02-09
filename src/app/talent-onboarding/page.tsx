@@ -88,7 +88,7 @@ const TalentOnboarding: React.FC = () => {
     uploadPortfolioVideo();
     uploadHeadshot();
     uploadID();
-    createTalentProfile();
+    // createTalentProfile();
   }
 
   const fileTypeMapping = {

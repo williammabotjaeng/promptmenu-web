@@ -93,8 +93,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         skillsRequiringPhysicalAttributes.includes(skill.name)
   );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+  const submitProfile = async (e) => {
+    e.preventDefault();
   
     try {
       
@@ -119,7 +119,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         accessToken
       );
   
-      const companyData = {
+      const userTalentData = {
         ...talentData, 
         username: userName,
         headshot: headshotFileName, 
@@ -127,7 +127,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         government_id_back: backIDFileName
       };
   
-      await createTalentProfile(companyData);
+      await createTalentProfile(userTalentData);
   
       console.log("Talent data submitted successfully!");
     } catch (error) {
@@ -302,7 +302,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         </Button>
         <Button
           sx={{ color: '#fff', backgroundColor: '#977342', mt: { xs: 1 }, mb: { xs: 2 } }}
-          onClick={handleContinue}
+          onClick={submitProfile}
         >
           Submit for Review
         </Button>

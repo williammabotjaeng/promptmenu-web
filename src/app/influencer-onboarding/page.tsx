@@ -101,7 +101,7 @@ const InfluencerOnboarding: React.FC = () => {
     uploadPortfolioVideo();
     uploadHeadshot();
     uploadID();
-    createTalentProfile();
+    // createTalentProfile();
   };
 
   const fileTypeMapping = {
