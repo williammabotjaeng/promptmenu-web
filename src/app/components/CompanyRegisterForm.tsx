@@ -90,18 +90,13 @@ export const CompanyRegisterForm: React.FC = () => {
   const userName = cookies['username'];
 
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
+    username: userName,
     email: '',
-    date_of_birth: '',
-    user_role: '',
-    firstname: '',
-    lastname: '',
-    gender: 'male',
+    user_role: userRole,
     phonenumber: '',
-    nationality: phoneNumber,
-    has_accepted: hasAccepted,
-    is_influencer: isInfluencer,
+    nationality: '',
+    has_accepted: '',
+    is_influencer: '',
     whatsapp_number: '',
     preferred_payment_methods: '',
     vat_certificate: '',
@@ -114,7 +109,6 @@ export const CompanyRegisterForm: React.FC = () => {
     contact_person: '',
     state_province_region: '',
     company_name: ''
-
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -147,6 +141,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
   const handlePhoneChange = (e) => {
     const { name, value } = e.target || {};
+    console.log("Phone, Name, Value:", name, value);
     if (name) {
       setPhoneNumber(value);
     }
@@ -162,6 +157,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
   const handleMobileChange = (e) => {
     const { name, value } = e.target || {};
+    console.log("Name, Value:", name, value);
     if (name) {
       setMobileNumber(value);
     }
@@ -169,6 +165,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
   const handleWhatsAppNumberChange = (e) => {
     const { name, value } = e.target || {};
+    console.log("Name, Value:", name, value);
     if (name) {
       setWhatsappNumber(value);
     }
@@ -187,11 +184,13 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   const handleCountryChange = (val: React.SetStateAction<string>) => {
+    console.log("Country Value:", val)
     setNationality(val);
     setRegion('');
   };
 
   const handleRegionChange = (val) => {
+    console.log("Region Value:", val);
     setRegion(val);
   };
 
@@ -206,6 +205,7 @@ export const CompanyRegisterForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log("Field, Value:", name, value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -254,9 +254,21 @@ export const CompanyRegisterForm: React.FC = () => {
   
       const companyData = {
         ...formData,
+        username: userName,
+        nationality: nationality,
+        state_province_region: region,
+        has_accepted: hasAccepted,
+        is_influencer: isInfluencer,
+        phonenumber: phoneNumber,
         vat_certificate: vatCertificateFileName,
         trade_license: tradeLicenseFileName,
+        mobile_number: mobileNumber,
+        whatsapp_number: whatsappNumber,
+        accept_std_payment_terms: agreement, 
+        preferred_payment_methods: preferredPaymentMethods
       };
+
+      console.log("Company Data:", companyData);
   
       createCompany(companyData);
 
