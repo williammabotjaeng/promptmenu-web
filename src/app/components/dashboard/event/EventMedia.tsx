@@ -6,6 +6,7 @@ import { PostEventStepProps } from '@/types/Props/PostEventStepProps';
 import EventIconOne from '@/assets/event_icon_one.svg';
 import EventIconTwo from '@/assets/event_icon_two.svg';
 import EventIconThree from '@/assets/event_icon_three.svg';
+import { EventMediaType } from '@/state/use-event-store';
 
 const uploadSections = [
     {
@@ -37,6 +38,12 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     }
+
+    const titleMapping: Record<keyof EventMediaType, string> = {
+        eventPromoVideo: 'Promo Video',
+        eventPhotos: 'Event Photos',
+        eventPoster: 'Event Poster',
+      };
 
     return (
         <Box
@@ -75,10 +82,34 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                         Upload Media
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <EventUploadSection type="single" mediaType="photo" {...uploadSections[0]} />
+                        <EventUploadSection 
+                            onProceed={null} 
+                            type="single" 
+                            mediaType="photo" 
+                            title={"eventPoster"} 
+                            icon={uploadSections[0]?.icon} 
+                            buttonText={uploadSections[0]?.title} 
+                            description={uploadSections[0]?.description}  
+                        />
                         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
-                            <EventUploadSection type="multiple" mediaType="photo" {...uploadSections[1]} />
-                            <EventUploadSection type="single" mediaType="video" {...uploadSections[2]} />
+                            <EventUploadSection 
+                                onProceed={null} 
+                                type="multiple" 
+                                mediaType="photo" 
+                                title={"eventPhotos"}
+                                icon={uploadSections[1]?.icon}
+                                buttonText={uploadSections[1]?.title}
+                                description={uploadSections[1]?.description}
+                             />
+                            <EventUploadSection 
+                                onProceed={null} 
+                                type="single" 
+                                mediaType="video" 
+                                title={"eventPromoVideo"}
+                                buttonText={uploadSections[2]?.title}
+                                icon={uploadSections[2]?.icon}
+                                description={uploadSections[2]?.description} 
+                            />
                         </Box>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>

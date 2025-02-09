@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Box, Typography, Button, Grid } from '@mui/material';
-import useEventStore from '@/state/use-event-store';
+import useEventStore, { EventMediaType } from '@/state/use-event-store';
 
 interface EventUploadSectionProps {
-  title: keyof EventMedia; // Determines which media field to update
+  title: keyof EventMediaType; 
   icon: string;
   buttonText: string;
   description: string;
-  type: 'single' | 'multiple'; // Single or multiple file upload
-  mediaType: 'photo' | 'video'; // Determines if the media is a photo or video
-  onProceed: () => void; // Handler to be called when proceeding
+  type: 'single' | 'multiple'; 
+  mediaType: 'photo' | 'video'; 
+  onProceed: () => void;
 }
 
 export const EventUploadSection: React.FC<EventUploadSectionProps> = ({

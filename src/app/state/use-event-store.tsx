@@ -11,23 +11,23 @@ interface EventDetails {
   accommodationProvided: boolean;
 }
 
-interface EventMedia {
-  eventPromoVideo: File | null;
-  eventPhotos: File[];
-  eventPoster: File | null;
+export interface EventMediaType {
+  eventPromoVideo: File | string | null;
+  eventPhotos: File[] | string[] | null;
+  eventPoster: File | string | null;
 }
 
 interface EventStoreState {
   eventDetails: EventDetails;
-  eventMedia: EventMedia;
+  eventMedia: EventMediaType;
   setEventDetails: (updates: Partial<EventDetails>) => void;
-  setEventMedia: (title: keyof EventMedia, value: File | File[]) => void;
+  setEventMedia: (title: keyof EventMediaType, value: File | File[]) => void;
   clearEventDetails: () => void;
   clearEventMedia: () => void;
 }
 
 const useEventStore = create<EventStoreState>((set) => ({
-  // Initial state for event details
+ 
   eventDetails: {
     eventTitle: '',
     description: '',
@@ -38,18 +38,18 @@ const useEventStore = create<EventStoreState>((set) => ({
     transportProvided: false,
     accommodationProvided: false,
   },
-  // Initial state for event media
+
   eventMedia: {
     eventPromoVideo: null,
     eventPhotos: [],
     eventPoster: null,
   },
-  // Setter for event details
+
   setEventDetails: (updates) =>
     set((state) => ({
       eventDetails: { ...state.eventDetails, ...updates },
     })),
-  // Setter for event media
+
   setEventMedia: (title, value) =>
     set((state) => ({
       eventMedia: {
@@ -57,7 +57,7 @@ const useEventStore = create<EventStoreState>((set) => ({
         [title]: Array.isArray(value) ? [...value] : value,
       },
     })),
-  // Clear event details
+
   clearEventDetails: () =>
     set({
       eventDetails: {
@@ -71,7 +71,7 @@ const useEventStore = create<EventStoreState>((set) => ({
         accommodationProvided: false,
       },
     }),
-  // Clear event media
+  
   clearEventMedia: () =>
     set({
       eventMedia: {
