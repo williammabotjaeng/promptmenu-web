@@ -165,7 +165,7 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
                                                             </Box>
                                                             <EventDetailItem
                                                                 label="Assistance Provided"
-                                                                value={`Meals: ${eventDetails?.mealsProvided}, Transportation ${eventDetails?.transportProvided}, Accommodation: ${eventDetails?.accommodationProvided}`}
+                                                                value={`Meals: ${eventDetails?.mealsProvided ? "Yes" : "No"}, Transportation ${eventDetails?.transportProvided ? "Yes" : "No"}, Accommodation: ${eventDetails?.accommodationProvided ? "Yes" : "No"}`}
                                                             />
                                                         </Box>
                                                     </Box>
