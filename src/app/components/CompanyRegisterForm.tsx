@@ -108,7 +108,7 @@ export const CompanyRegisterForm: React.FC = () => {
     job_title: '',
     contact_person: '',
     state_province_region: '',
-    company_name: ''
+    name: ''
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -393,7 +393,7 @@ export const CompanyRegisterForm: React.FC = () => {
                 <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}>
                   <TextField
                     label={<Typography variant="body1">Company Name</Typography>}
-                    name="company_name"
+                    name="name"
                     placeholder="Enter your company name"
                     required
                     fullWidth
