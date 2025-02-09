@@ -26,6 +26,10 @@ interface EventRole {
   minAge: number;
   maxAge: number;
   ethnicities: string[];
+  hourlyPay: number;
+  dailyPay: number;
+  projectPay: number;
+  paymentTerms: string;
 }
 
 interface EventStoreState {
@@ -67,7 +71,11 @@ const useEventStore = create<EventStoreState>((set) => ({
       genders: [],
       minAge: 0,
       maxAge: 0,
-      ethnicities: []
+      ethnicities: [],
+      hourlyPay: 0,
+      dailyPay: 0,
+      projectPay: 0,
+      paymentTerms: ''
   },
 
   setEventDetails: (updates) =>
@@ -121,7 +129,11 @@ const useEventStore = create<EventStoreState>((set) => ({
           genders: [],
           minAge: 0,
           maxAge: 0,
-          ethnicities: []
+          ethnicities: [],
+          hourlyPay: 0,
+          dailyPay: 0,
+          projectPay: 0,
+          paymentTerms: ''
       },
     }),
 }));
