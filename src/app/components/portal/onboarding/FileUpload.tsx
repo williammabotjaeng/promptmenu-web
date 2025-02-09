@@ -43,13 +43,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ title, supportedFormats,
         setHeadshot(null);
         removeCookie('headshotBlobUrl');
         setTalentData({
+            ...talentData,
             headshot: null,
-            website: '',
-            social_media_links: undefined,
-            user: '',
-            niches: [],
-            legalFullName: '',
-            stageName: ''
         });
 
         setSnackbarMessage('Headshot Deleted Successfully');
