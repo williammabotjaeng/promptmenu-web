@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { TextField, Box, Typography } from '@mui/material';
 
-export const DateTimePicker: React.FC<{ label: string }> = ({ label }) => {
-  const [selectedDate, setSelectedDate] = React.useState<string>('');
+interface DateTimePickerProps {
+  label: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
-  };
-
+export const DateTimePicker: React.FC<DateTimePickerProps> = ({ label, value, onChange }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
       <Typography 
@@ -18,8 +18,8 @@ export const DateTimePicker: React.FC<{ label: string }> = ({ label }) => {
       </Typography>
       <TextField
         type="datetime-local"
-        value={selectedDate}
-        onChange={handleDateChange}
+        value={value}
+        onChange={onChange}
         variant="outlined"
         fullWidth
         sx={{ marginTop: 1 }}
