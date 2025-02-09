@@ -123,25 +123,25 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
                                                         <Box sx={{ mt: 2 }}>
                                                             <EventDetailItem
                                                                 label="Event Title"
-                                                                value="Dubai Fashion Week 2025"
+                                                                value={eventDetails?.eventTitle || ''}
                                                             />
                                                             <EventDetailItem
                                                                 label="Description"
-                                                                value="Luxury fashion event showcasing international designers"
+                                                                value={eventDetails?.description || ''}
                                                             />
                                                             <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
                                                                 <EventDetailItem
                                                                     label="Start Date"
-                                                                    value="March 15, 2025"
+                                                                    value={eventDetails?.startDateTime || ''}
                                                                 />
                                                                 <EventDetailItem
                                                                     label="End Date"
-                                                                    value="March 20, 2025"
+                                                                    value={eventDetails?.endDateTime || ''}
                                                                 />
                                                             </Box>
                                                             <EventDetailItem
                                                                 label="Assistance Provided"
-                                                                value="Meals, Transportation, Accommodation"
+                                                                value={`Meals: ${eventDetails?.mealsProvided}, Transportation ${eventDetails?.transportProvided}, Accommodation: ${eventDetails?.accommodationProvided}`}
                                                             />
                                                         </Box>
                                                     </Box>
