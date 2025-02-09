@@ -15,6 +15,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Loading from '@/components/Loading';
 import NotificationDropdown from '@/components/portal/NotificationDropdown';
 import ProfileDropdown from '@/components/portal/ProfileDropdown';
+import { useTalentProfile } from '@/providers/talent-profile-provider';
+import moment from 'moment';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -66,12 +68,15 @@ const Portal: React.FC = () => {
 
   const router = useRouter();
 
+  const { fetchTalentProfile, talentProfile } = useTalentProfile();
+
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
 
   useEffect(() => {
       setLoading(true);
+      fetchTalentProfile();
       console.log("onboarding type:", typeof(onboardingPresented));
       if (!onboardingPresented) {
         console.log("Inside the condition, UserRole:", user_role);
@@ -139,7 +144,7 @@ const Portal: React.FC = () => {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px', md: '24px' }, marginLeft: { xs: 4 } }}>Welcome, {firstName}!</Typography>
-                <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px', md: '24px'}, marginLeft: { xs: 4 }  }}>Last login: March 15, 2025</Typography>
+                <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px', md: '24px'}, marginLeft: { xs: 4 }  }}>Profile Updated: <span style={{ color: '#6B7280' }}>{talentProfile?.updated_at ? moment(talentProfile.updated_at).fromNow() : 'N/A'}</span></Typography>
               </Grid>
               <Grid item xs={4} sx={{
                 display: 'flex',
