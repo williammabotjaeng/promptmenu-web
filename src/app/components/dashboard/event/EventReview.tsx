@@ -3,8 +3,12 @@ import { Box, Button, Typography } from "@mui/material";
 import { EventDetailItem } from "@/components/dashboard/event/EventDetailItem";
 import HeaderWithProgressBar from "@/components/dashboard/event/HeaderWithProgressBar";
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
+import { useStore } from "zustand";
+import useEventStore from "@/state/use-event-store";
 
 export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
+
+    const { eventMedia } = useStore(useEventStore);
 
     const handleContinue = () => {
         setActiveStep(activeStep + 1);
@@ -13,6 +17,10 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     }
+
+    React.useEffect(() => {
+        console.log("Event Media:", eventMedia);
+    }, []);
     
     return (
         <Box

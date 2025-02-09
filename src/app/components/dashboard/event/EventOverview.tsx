@@ -3,13 +3,22 @@ import { Box, Button, Typography } from "@mui/material";
 import { EventDetails } from "./EventDetails";
 import { RoleCard } from "./RoleCard";
 import EventDetailsSection from "./EventDetailsSection";
+import useEventStore from "@/state/use-event-store";
+import { useStore } from "zustand";
 
 const EventOverview: React.FC = () => {
+
+    const { setEventDetails, eventDetails } = useStore(useEventStore);
+
     const progressSteps = [
         { label: "Create Event", hasIcon: true },
         { label: "Create Role", hasIcon: true },
         { label: "Ready to Publish", hasIcon: false }
     ];
+
+    React.useEffect(() => {
+        console.log("Event Details:", eventDetails);
+    }, [eventDetails]);
 
     return (
         <Box

@@ -7,6 +7,7 @@ import EventIconOne from '@/assets/event_icon_one.svg';
 import EventIconTwo from '@/assets/event_icon_two.svg';
 import EventIconThree from '@/assets/event_icon_three.svg';
 import { EventMediaType } from '@/state/use-event-store';
+import { useCookies } from 'react-cookie';
 
 const uploadSections = [
     {
@@ -31,7 +32,14 @@ const uploadSections = [
 
 export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
+    const [cookies] = useCookies([
+        'event_video',
+        'event_photos',
+        'event_poster'
+    ]);
+
     const handleContinue = () => {
+        
         setActiveStep(activeStep + 1);
     }
 
@@ -76,14 +84,14 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                         sx={{
                             color: '#CEAB76',
                             marginBottom: 2,
-                            textAlign: 'center', // Center the title
+                            textAlign: 'center', 
                         }}
                     >
                         Upload Media
                     </Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <EventUploadSection 
-                            onProceed={null} 
+                            onProceed={handleContinue} 
                             type="single" 
                             mediaType="photo" 
                             title={"eventPoster"} 
@@ -93,7 +101,7 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                         />
                         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
                             <EventUploadSection 
-                                onProceed={null} 
+                                onProceed={handleContinue} 
                                 type="multiple" 
                                 mediaType="photo" 
                                 title={"eventPhotos"}
@@ -102,7 +110,7 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
                                 description={uploadSections[1]?.description}
                              />
                             <EventUploadSection 
-                                onProceed={null} 
+                                onProceed={handleContinue} 
                                 type="single" 
                                 mediaType="video" 
                                 title={"eventPromoVideo"}
