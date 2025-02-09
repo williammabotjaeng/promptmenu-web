@@ -29,7 +29,10 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
             end_date_time: eventDetails?.endDateTime,
             accomodation_provided: eventDetails?.accommodationProvided,
             transport_provided: eventDetails?.transportProvided,
-            meals_provided: eventDetails?.mealsProvided
+            meals_provided: eventDetails?.mealsProvided,
+            event_poster: eventMedia?.eventPoster,
+            event_photos: eventMedia?.eventPhotos,
+            event_video: eventMedia?.eventPromoVideo
         });
         setActiveStep(activeStep + 1);
     }
