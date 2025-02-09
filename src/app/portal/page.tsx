@@ -17,6 +17,7 @@ import NotificationDropdown from '@/components/portal/NotificationDropdown';
 import ProfileDropdown from '@/components/portal/ProfileDropdown';
 import { useTalentProfile } from '@/providers/talent-profile-provider';
 import moment from 'moment';
+import SSHGoldLogo from '@/assets/GoldLogo.png';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -105,7 +106,7 @@ const Portal: React.FC = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', padding: 2, backgroundColor: '#000' }}>
               <img
                 loading="lazy"
-                src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/1557d19b22b0cfa5efbb3f91eee577159998e27e492dd95100a6ef5a73d76f46?apiKey=7fae980a988640eea8add1e49a5d542e&"
+                src={SSHGoldLogo?.src}
                 alt="Logo"
                 style={{ width: '109px', marginBottom: '16px' }}
               />
@@ -144,7 +145,7 @@ const Portal: React.FC = () => {
             <Grid container spacing={2} alignItems="center">
               <Grid item xs={8}>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: { xs: '16px', md: '24px' }, marginLeft: { xs: 4 } }}>Welcome, {firstName}!</Typography>
-                <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px', md: '24px'}, marginLeft: { xs: 4 }  }}>Profile Updated: <span style={{ color: '#6B7280' }}>{talentProfile?.updated_at ? moment(talentProfile.updated_at).fromNow() : 'N/A'}</span></Typography>
+                <Typography variant="body1" sx={{ color: 'gray.600', fontSize: { xs: '12px', md: '16px'}, marginLeft: { xs: 4 }  }}>Profile Updated: <span style={{ color: '#6B7280' }}>{talentProfile?.updated_at ? moment(talentProfile.updated_at).fromNow() : 'N/A'}</span></Typography>
               </Grid>
               <Grid item xs={4} sx={{
                 display: 'flex',
