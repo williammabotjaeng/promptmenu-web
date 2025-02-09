@@ -29,12 +29,7 @@ const sidebarItems = [
   { icon: "settings", label: "Settings", href: '/dashboard' }
 ];
 
-const stats = [
-  { title: "Profile Views", value: "1,234", icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
-  { title: "Applied Jobs", value: "28", icon: "work", subtitle: "4 pending responses", subtitleColor: "#6B7280" },
-  { title: "Upcoming Auditions", value: "3", icon: "theaters", subtitle: "Next: March 18", subtitleColor: "#CEAB76" },
-  { title: "Unread Messages", value: "5", icon: "mail", subtitle: "2 urgent", subtitleColor: "#EF4444" }
-];
+
 
 const jobs = [
   {
@@ -94,6 +89,13 @@ const Portal: React.FC = () => {
         setLoading(false)
       }, 500);
   }, [cookies]);
+
+  const stats = [
+    { title: "Profile Views", value: talentProfile?.profile_views, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
+    { title: "Applied Jobs", value: talentProfile?.profile_views, icon: "work", subtitle: "4 pending responses", subtitleColor: "#6B7280" },
+    { title: "Upcoming Auditions", value: talentProfile?.profile_views, icon: "theaters", subtitle: "Next: March 18", subtitleColor: "#CEAB76" },
+    { title: "Unread Messages", value: talentProfile?.profile_views, icon: "mail", subtitle: "2 urgent", subtitleColor: "#EF4444" }
+  ];
 
   if (loading) return <Loading />;
 
@@ -177,7 +179,7 @@ const Portal: React.FC = () => {
               </CardContent>
             </Card>
 
-            <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
+            {talentProfile?.upcoming_auditions > 0 && (<Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Upcoming Auditions</Typography>
                 <br />
@@ -189,18 +191,18 @@ const Portal: React.FC = () => {
                   location="Dubai Studio City"
                 />
               </CardContent>
-            </Card>
+            </Card>)}
 
             <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1, backgroundColor: 'white' }}>
               <CardContent>
                 <Grid container justifyContent="space-between" alignItems="center">
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Profile Completion</Typography>
-                  <Typography variant="body1" sx={{ color: '#977342' }}>{(talentProfile?.profile_progress * 100)}%</Typography>
+                  <Typography variant="body1" sx={{ color: '#977342' }}>{(Number(talentProfile?.profile_progress) * 100)}%</Typography>
                 </Grid>
                 <Box sx={{ marginTop: 2 }}>
                   <LinearProgress
                     variant="determinate"
-                    value={(talentProfile?.profile_progress * 100)}
+                    value={(Number(talentProfile?.profile_progress) * 100)}
                     sx={{
                       height: '8px',
                       borderRadius: '4px',

@@ -1,7 +1,12 @@
+import { ReactNode } from "react";
 import { SkillType, NicheType } from "./Props/SkillTagProps";
 
 export interface TalentProfileData {
-  profile_progress: ReactNode;
+  profile_progress: number;
+  profile_views: number;
+  applied_jobs: number;
+  upcoming_auditions: number;
+  unread_messages: number;
   niches: NicheType[];
   legalFullName: string;
   stageName: string;
