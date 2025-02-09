@@ -154,7 +154,7 @@ const Portal: React.FC = () => {
                 flexDirection: 'row',
                 justifyContent: 'flex-end'
               }}>
-                <NotificationDropdown />
+                <NotificationDropdown notifications={null} />
                 <ProfileDropdown />
               </Grid>
             </Grid>
