@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Box, Typography, Button, Grid } from '@mui/material';
+import useEventStore from '@/state/use-event-store';
 
 interface EventUploadSectionProps {
-  title: string;
+  title: keyof EventMedia; // Determines which media field to update
   icon: string;
   buttonText: string;
   description: string;
-  type: 'single' | 'multiple';
-  mediaType: 'photo' | 'video';
+  type: 'single' | 'multiple'; // Single or multiple file upload
+  mediaType: 'photo' | 'video'; // Determines if the media is a photo or video
+  onProceed: () => void; // Handler to be called when proceeding
 }
 
 export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
@@ -17,23 +19,34 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
   description,
   type,
   mediaType,
+  onProceed,
 }) => {
-  const [state, setState] = React.useState<Record<string, File[]>>({});
+  const { eventMedia, setEventMedia } = useEventStore();
+  const [selectedFiles, setSelectedFiles] = React.useState<File[]>([]);
+  const fileInputRef = React.useRef<HTMLInputElement>(null); // useRef for file input
 
   // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
-      setState((prevState) => ({
-        ...prevState,
-        [title]: type === 'single' ? [filesArray[0]] : [...(prevState[title] || []), ...filesArray],
-      }));
+      if (type === 'single') {
+        setSelectedFiles([filesArray[0]]);
+        setEventMedia(title, filesArray[0]); // Update store for single file
+      } else {
+        setSelectedFiles((prevFiles) => [...prevFiles, ...filesArray]);
+        setEventMedia(title, [...(eventMedia[title] as File[]), ...filesArray]); // Update store for multiple files
+      }
     }
   };
 
   // Trigger file input click
   const handleButtonClick = () => {
-    document.getElementById(`file-upload-input-${title}`)?.click();
+    fileInputRef.current?.click(); // Use useRef to trigger the file input
+  };
+
+  // Handle proceed action
+  const handleProceed = () => {
+    onProceed(); // Call the parent-provided handler
   };
 
   return (
@@ -129,7 +142,7 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
           </Button>
           {/* Hidden file input */}
           <input
-            id={`file-upload-input-${title}`}
+            ref={fileInputRef} // Attach useRef to the file input
             type="file"
             style={{ display: 'none' }}
             onChange={handleFileChange}
@@ -138,11 +151,11 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
         </Box>
         {/* Display uploaded files */}
         <Box sx={{ marginTop: 3, width: '100%' }}>
-          {type === 'single' && state[title]?.length > 0 && (
+          {type === 'single' && selectedFiles.length > 0 && (
             <Box sx={{ textAlign: 'center' }}>
               {mediaType === 'photo' ? (
                 <img
-                  src={URL.createObjectURL(state[title][0])}
+                  src={URL.createObjectURL(selectedFiles[0])}
                   alt="Uploaded"
                   style={{
                     maxWidth: '100%',
@@ -159,15 +172,15 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
                     borderRadius: '8px',
                   }}
                 >
-                  <source src={URL.createObjectURL(state[title][0])} type={state[title][0].type} />
+                  <source src={URL.createObjectURL(selectedFiles[0])} type={selectedFiles[0].type} />
                   Your browser does not support the video tag.
                 </video>
               )}
             </Box>
           )}
-          {type === 'multiple' && state[title]?.length > 0 && (
+          {type === 'multiple' && selectedFiles.length > 0 && (
             <Grid container spacing={2}>
-              {state[title].map((file, index) => (
+              {selectedFiles.map((file, index) => (
                 <Grid item xs={6} sm={4} md={3} key={index}>
                   {mediaType === 'photo' ? (
                     <img
@@ -197,6 +210,20 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
             </Grid>
           )}
         </Box>
+        <Button
+          variant="contained"
+          onClick={handleProceed}
+          sx={{
+            marginTop: 2,
+            backgroundColor: '#977342',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#CEAB76',
+            },
+          }}
+        >
+          Proceed
+        </Button>
       </Box>
     </Box>
   );
