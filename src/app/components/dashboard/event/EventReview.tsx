@@ -5,12 +5,32 @@ import HeaderWithProgressBar from "@/components/dashboard/event/HeaderWithProgre
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import { useStore } from "zustand";
 import useEventStore from "@/state/use-event-store";
+import PhotoGrid from "@/components/dashboard/event/PhotoGrid";
+import { useEvent } from "@/providers/event-provider";
+import { useCookies } from "react-cookie";
 
 export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
     const { eventMedia, eventDetails } = useStore(useEventStore);
 
-    const handleContinue = () => {
+    const { createEvent } = useEvent();
+
+    const [cookies] = useCookies(['username']);
+
+    const userName = cookies['username'];
+
+    const handleSubmit = async () => {
+        await createEvent({
+            organizer: userName,
+            event_title: eventDetails?.eventTitle,
+            event_description: eventDetails?.description,
+            location: eventDetails?.location,
+            start_date_time: eventDetails?.startDateTime,
+            end_date_time: eventDetails?.endDateTime,
+            accomodation_provided: eventDetails?.accommodationProvided,
+            transport_provided: eventDetails?.transportProvided,
+            meals_provided: eventDetails?.mealsProvided
+        });
         setActiveStep(activeStep + 1);
     }
 
@@ -164,18 +184,7 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
                                                         >
                                                             Uploaded Media
                                                         </Typography>
-                                                        <Box
-                                                            component="img"
-                                                            loading="lazy"
-                                                            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/e07a0c65ece06411e8df11d9f665193106ac52493d3cbe206845d01d043743f9?apiKey=7fae980a988640eea8add1e49a5d542e&"
-                                                            alt="Event preview"
-                                                            sx={{
-                                                                objectFit: 'contain',
-                                                                mt: 2,
-                                                                width: '100%',
-                                                                aspectRatio: '1.52'
-                                                            }}
-                                                        />
+                                                        <PhotoGrid />
                                                     </Box>
                                                 </Box>
                                             </Box>
@@ -214,7 +223,7 @@ export const EventReview: React.FC<PostEventStepProps> = ({ activeStep, setActiv
                                                             backgroundColor: '#CEAB76'
                                                         }
                                                     }}
-                                                    onClick={handleContinue}
+                                                    onClick={handleSubmit}
                                                 >
                                                     Submit Event
                                                 </Button>

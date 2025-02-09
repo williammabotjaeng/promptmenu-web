@@ -12,6 +12,7 @@ import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 interface EventContextType {
   event: EventData | null;
   fetchEvent: () => Promise<void>;
+  createEvent: (eventData) => Promise<void>;
   updateEvent: (eventId: string, data: EventData) => Promise<void>;
 }
 
@@ -33,6 +34,20 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     enabled: false, 
   });
 
+  const createEventMutation = useMutation({
+    mutationKey: ['create_event'],
+    mutationFn: async (eventData) => {
+      console.log("Create Event Data:", eventData);
+      return await restCall('/dashboard/events/create/', 'POST', eventData, accessToken);
+    },
+    onSuccess: (data) => {
+      console.log('Event created successfully', data);
+    },
+    onError: (error) => {
+      console.error('Error creating event: ', error);
+    },
+  });
+
   const updateEventMutation = useMutation({
     mutationKey: ['update_event'],
     mutationFn: async ({ eventId, data }: { eventId: string; data: EventData }) => {
@@ -50,12 +65,16 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     await fetchEventMutation.refetch();
   };
 
+  const createEvent = async (eventData) => {
+    await createEventMutation.mutateAsync(eventData);
+  };
+
   const updateEvent = async (eventId: string, data: EventData) => {
     await updateEventMutation.mutateAsync({ eventId, data });
   };
 
   return (
-    <EventContext.Provider value={{ event: fetchEventMutation.data, fetchEvent, updateEvent }}>
+    <EventContext.Provider value={{ event: fetchEventMutation.data, fetchEvent, createEvent, updateEvent }}>
       {children}
     </EventContext.Provider>
   );
