@@ -10,23 +10,47 @@ const fileTypeMapping = {
 };
 
 const getFileExtension = (blob) => {
+  console.log("File Actual Type:", blob);
   return fileTypeMapping[blob.type] || "bin";
 };
 
-export const uploadFileToS3 = async (
-  file,
-  filePrefix,
-  username,
-  accessToken
-) => {
+// Function to fetch a file from a URL and convert it to a Blob
+const fetchFileAsBlob = async (fileUrl) => {
+  try {
+    const response = await fetch(fileUrl);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch file: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+    console.log("Fetched Blob:", blob);
+    return blob;
+  } catch (error) {
+    console.error("Error fetching file as Blob:", error);
+    throw error;
+  }
+};
+
+// Updated uploadFileToS3 function
+export const uploadFileToS3 = async (file, filePrefix, username, accessToken) => {
+  console.log("File to Upload:", file);
+
   if (!file) {
     console.error(`${filePrefix} file is missing.`);
     return null;
   }
 
-  const fileType = file.type;
-  const fileExtension = getFileExtension(file);
+  const response = await fetch(file); 
+  const fileBlob = await response.blob();
+
+  console.log("File Blob:", fileBlob);
+
+  const fileType = (await fileBlob).type;
+  const fileExtension = getFileExtension(fileBlob);
   const fileName = `${filePrefix}_${username}_${Date.now()}.${fileExtension}`;
+
+  console.log("Generated Filename:", fileName);
 
   try {
     const response = await restCall(
@@ -39,7 +63,7 @@ export const uploadFileToS3 = async (
     const { url } = response;
 
     if (url) {
-      const uploadResponse = await axios.put(url, file, {
+      const uploadResponse = await axios.put(url, fileBlob, {
         headers: {
           "Content-Type": fileType,
         },
@@ -47,7 +71,7 @@ export const uploadFileToS3 = async (
 
       if (uploadResponse.status === 200) {
         console.log(`${filePrefix} uploaded successfully!`);
-        return fileName; 
+        return fileName; // Return the file name to save in the database
       } else {
         console.error(
           `${filePrefix} upload failed:`,

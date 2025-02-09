@@ -172,13 +172,11 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   const handleCountryChange = (val: React.SetStateAction<string>) => {
-    console.log("Country Value:", val)
     setNationality(val);
     setRegion('');
   };
 
   const handleRegionChange = (val) => {
-    console.log("Region Value:", val);
     setRegion(val);
   };
 
@@ -193,7 +191,6 @@ export const CompanyRegisterForm: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log("Field, Value:", name, value);
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
@@ -237,8 +234,8 @@ export const CompanyRegisterForm: React.FC = () => {
     e.preventDefault(); 
   
     try {
-      const vatCertificateFileName = await uploadFileToS3(formData.vat_certificate, "vat_certificate", userName, accessToken);
-      const tradeLicenseFileName = await uploadFileToS3(formData.trade_license, "trade_license", userName, accessToken);
+      const vatCertificateFileName = await uploadFileToS3(cookies['vatPdf'], "vat_certificate", userName, accessToken);
+      const tradeLicenseFileName = await uploadFileToS3(cookies['tradePdf'], "trade_license", userName, accessToken);
   
       const companyData = {
         ...formData,
@@ -255,8 +252,6 @@ export const CompanyRegisterForm: React.FC = () => {
         accept_std_payment_terms: agreement, 
         preferred_payment_methods: preferredPaymentMethods
       };
-
-      console.log("Company Data:", companyData);
   
       createCompany(companyData);
 
