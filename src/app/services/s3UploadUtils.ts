@@ -60,6 +60,8 @@ export const uploadFileToS3 = async (file, filePrefix, username, accessToken) =>
       accessToken
     );
 
+    console.log("S3 Response:", response);
+
     const { url } = response;
 
     if (url) {
