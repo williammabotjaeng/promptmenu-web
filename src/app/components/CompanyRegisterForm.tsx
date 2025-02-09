@@ -140,11 +140,7 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   const handlePhoneChange = (e) => {
-    const { name, value } = e.target || {};
-    console.log("Phone, Name, Value:", name, value);
-    if (name) {
-      setPhoneNumber(value);
-    }
+    setPhoneNumber(e);
   };
 
   const handlePreferredPaymentMethodChange = (event) => {
@@ -156,19 +152,11 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   const handleMobileChange = (e) => {
-    const { name, value } = e.target || {};
-    console.log("Name, Value:", name, value);
-    if (name) {
-      setMobileNumber(value);
-    }
+      setMobileNumber(e);
   };
 
   const handleWhatsAppNumberChange = (e) => {
-    const { name, value } = e.target || {};
-    console.log("Name, Value:", name, value);
-    if (name) {
-      setWhatsappNumber(value);
-    }
+    setWhatsappNumber(e);
   };
 
   const handleVatPdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
