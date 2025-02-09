@@ -14,14 +14,9 @@ const GenderSelector: React.FC<GenderSelectorProps> = ({ label }) => {
 
   const handleChange = (event: React.ChangeEvent<any>) => {
     const selectedGenders = event.target.value as string[];
+    console.log("Genders", [...selectedGenders])
     setGenders(selectedGenders); 
     setEventRole({ ...eventRole, genders: selectedGenders }); 
-  };
-
-  const handleDelete = (genderToDelete: string) => {
-    const updatedGenders = genders.filter((gender) => gender !== genderToDelete);
-    setGenders(updatedGenders); 
-    setEventRole({ ...eventRole, genders: updatedGenders }); 
   };
 
   return (
@@ -48,8 +43,6 @@ const GenderSelector: React.FC<GenderSelectorProps> = ({ label }) => {
                 <Chip
                   key={value}
                   label={value}
-                  onDelete={() => handleDelete(value)} 
-                  deleteIcon={<CloseIcon />}
                 />
               ))}
             </Box>

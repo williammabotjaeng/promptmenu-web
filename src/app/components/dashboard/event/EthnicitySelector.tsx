@@ -26,15 +26,6 @@ const EthnicitySelector: React.FC<EthnicitySelectorProps> = ({ label }) => {
     });
   };
 
-  const handleDelete = (ethnicityToDelete: string) => {
-    const updatedEthnicities = ethnicities.filter((ethnicity) => ethnicity !== ethnicityToDelete);
-    setEthnicities(updatedEthnicities); // Update local state
-    setEventRole({
-      ...eventRole,
-      ethnicities: updatedEthnicities, // Update Zustand store
-    });
-  };
-
   // Common ethnicities in the UAE
   const ethnicitiesList = [
     "Emirati",
@@ -74,8 +65,6 @@ const EthnicitySelector: React.FC<EthnicitySelectorProps> = ({ label }) => {
                 <Chip
                   key={value}
                   label={value}
-                  onDelete={() => handleDelete(value)} // Add delete functionality
-                  deleteIcon={<CloseIcon />}
                 />
               ))}
             </Box>
