@@ -37,7 +37,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
           color: "#977342",
           fontSize: { xs: "20px", md: "24px" },
           fontWeight: "bold",
-          textAlign: "center",
+          textAlign: "left",
         }}
       >
         Application Deadline
@@ -48,28 +48,13 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
       <Box
         sx={{
           display: "flex",
-          justifyContent: "flex-end",
-          padding: 2,
+          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: "space-evenly",
+          padding: 4,
           mt: 2,
           mr: { md: 26 },
         }}
       >
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#977342",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "#fff",
-              border: "1px solid #977342",
-              color: "#977342",
-            },
-          }}
-          onClick={handleContinue}
-        >
-          Next Step
-          <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
-        </Button>
         <Button
           variant="contained"
           sx={{
@@ -86,6 +71,22 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
           onClick={handleBack}
         >
           Go Back
+        </Button>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#977342",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#fff",
+              border: "1px solid #977342",
+              color: "#977342",
+            },
+          }}
+          onClick={handleContinue}
+        >
+          Next Step
+          <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
         </Button>
       </Box>
     </Box>
