@@ -46,6 +46,17 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                 }}
             >
                 <Button
+                    variant="contained"
+                    sx={{ 
+                        backgroundColor: '#977342', 
+                        color: 'white', 
+                        '&:hover': { backgroundColor: '#fff', border: '1px solid #977342', color: '#977342' } 
+                    }}
+                    onClick={handleBack}
+                >
+                    Go Back
+                </Button>
+                <Button
                     onClick={handleBack}
                     variant="outlined" 
                     sx={{
