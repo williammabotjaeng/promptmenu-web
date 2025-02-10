@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useStore } from "zustand";
 import useEventStore from "@/state/use-event-store";
+import { useCookies } from "react-cookie";
 
 export interface Question {
   id: string;
@@ -23,7 +24,8 @@ export interface Question {
 
 const FormSection: React.FC = () => {
   const { eventRole, setEventRole } = useStore(useEventStore);
-  const [questions, setQuestions] = useState<Question[]>([
+  const [cookies, setCookie] = useCookies(['questions']);
+  const [questions, setQuestions] = useState<Question[]>(eventRole?.questions || [
     { id: "question1", label: "Question 1", placeholder: "Enter your question", inputType: "text" },
   ]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -64,6 +66,10 @@ const FormSection: React.FC = () => {
     setDialogOpen(false);
     setNewQuestionLabel("");
   };
+
+  useEffect(() => {
+      setCookie('questions', questions);
+  }, [questions]);
 
   return (
     <Box

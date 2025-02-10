@@ -3,10 +3,21 @@ import { Box, Button } from "@mui/material";
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import RoleHeaderWithProgressBar from "@/components/dashboard/event/RoleHeaderWithProgressBar";
 import FormSection from "@/components/dashboard/event/FormSection";
+import { useCookies } from "react-cookie";
+import { useStore } from "zustand";
+import useEventStore from "@/state/use-event-store";
 
 const Questions: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
+    const [cookies] = useCookies(['questions']);
+
+    const { eventRole, setEventRole } = useStore(useEventStore);
+
     const handleContinue = () => {
+        setEventRole({
+            ...eventRole,
+            questions: Array.from(cookies['questions'])
+        })
         setActiveStep(activeStep + 1);
     }
 

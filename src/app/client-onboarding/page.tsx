@@ -45,7 +45,7 @@ const ClientOnboarding: React.FC = () => {
   };
 
   const handleSubmit = async () => {
-    createCompany();  
+    // createCompany();  
     router.push('/dashboard');
   };
 
