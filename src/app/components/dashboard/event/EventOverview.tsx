@@ -5,6 +5,7 @@ import { RoleCard } from "./RoleCard";
 import EventDetailsSection from "./EventDetailsSection";
 import useEventStore from "@/state/use-event-store";
 import { useStore } from "zustand";
+import MediaGrid from "./MediaGrid";
 
 const EventOverview: React.FC = () => {
   const { eventDetails } = useStore(useEventStore);
@@ -65,12 +66,7 @@ const EventOverview: React.FC = () => {
           >
             Uploaded Media
           </Typography>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/4a807c2845d0f1dbd5c1f135ef03eb195cf92cd51d9bc1bc861ba3d9d2519db0?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt="Event media"
-            style={{ width: "100%", borderRadius: "8px", marginTop: "16px" }}
-          />
+          <MediaGrid />
         </Box>
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", marginTop: 4 }}>
