@@ -12,6 +12,7 @@ import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 interface EventContextType {
   event: EventData | null;
   fetchEvent: () => Promise<void>;
+  getRoles: () => Promise<void>;
   createEvent: (eventData) => Promise<void>;
   updateEvent: (eventId: string, data: any) => Promise<void>;
 }
@@ -62,6 +63,25 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     },
   });
 
+  const getRolesMutation = useMutation({
+    mutationKey: ["get_roles"],
+    mutationFn: async () => {
+      const response = await restCall("/dashboard/events/roles/", "GET", {}, accessToken);
+      console.log("Roles Response", response);
+      return response;
+    },
+    onSuccess: (data) => {
+      console.log("Roles fetched successfully", data);
+    },
+    onError: (error) => {
+      console.error("Error fetching roles: ", error);
+    },
+  });
+
+  const getRoles = async () => {
+    return await getRolesMutation.mutateAsync();
+  };
+
   const fetchEvent = async () => {
     await fetchEventMutation.refetch();
   };
@@ -75,7 +95,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <EventContext.Provider value={{ event: fetchEventMutation.data, fetchEvent, createEvent, updateEvent }}>
+    <EventContext.Provider value={{ event: fetchEventMutation.data, fetchEvent, createEvent, updateEvent, getRoles }}>
       {children}
     </EventContext.Provider>
   );
