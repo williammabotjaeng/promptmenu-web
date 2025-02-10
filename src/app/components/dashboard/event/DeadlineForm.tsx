@@ -1,11 +1,10 @@
 import * as React from "react";
 import { DateTimePicker } from "./DeadlineDateTimePicker";
-import { DeadlineFormProps } from "@/types/Props/DeadlineFormProps";
 import { Box, TextField, Typography } from "@mui/material";
 import { useStore } from "zustand";
 import useEventStore from "@/state/use-event-store";
 
-export const DeadlineForm: React.FC<DeadlineFormProps> = () => {
+export const DeadlineForm: React.FC = () => {
   const { eventRole, setEventRole } = useStore(useEventStore);
 
   const [formData, setFormData] = React.useState({
@@ -14,7 +13,6 @@ export const DeadlineForm: React.FC<DeadlineFormProps> = () => {
     notes: eventRole.notes || "",
   });
 
-  // Handle input changes and update both local state and Zustand store
   const handleChange = (field: keyof typeof formData, value: string) => {
     const updatedFormData = { ...formData, [field]: value };
     setFormData(updatedFormData);
@@ -64,7 +62,7 @@ export const DeadlineForm: React.FC<DeadlineFormProps> = () => {
         <TextField
           id="notes"
           value={formData.notes}
-          onChange={(e) => handleChange("notes", e.target.value)} // Update notes
+          onChange={(e) => handleChange("notes", e.target.value)} 
           multiline
           rows={4}
           variant="outlined"

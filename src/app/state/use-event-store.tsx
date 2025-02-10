@@ -19,7 +19,7 @@ export interface EventMediaType {
   eventPoster: File | string | null;
 }
 
-interface EventRole {
+export interface EventRole {
   skill: string;
   openings: number;
   title: string;

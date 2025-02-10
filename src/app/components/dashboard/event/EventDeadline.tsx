@@ -4,12 +4,27 @@ import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import { DeadlineForm } from "@/components/dashboard/event/DeadlineForm";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeadlineHeaderWithProgressBar from "./DeadlineHeaderWithProgressBar";
+import { useStore } from "zustand";
+import useEventStore, { EventRole } from "@/state/use-event-store";
 
 const EventDeadline: React.FC<PostEventStepProps> = ({
   activeStep,
   setActiveStep,
 }) => {
+
+  const { eventRole, eventDetails } = useStore(useEventStore);
+
   const handleContinue = () => {
+
+    const { eventRole, setEventDetails, clearEventRole } = useStore(useEventStore);
+  
+    setEventDetails({
+      ...eventDetails,
+      roles: [...eventDetails.roles, eventRole], 
+    });
+  
+    clearEventRole();
+  
     setActiveStep(activeStep + 1);
   };
 
@@ -43,7 +58,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
         Application Deadline
       </Typography>
       <br />
-      <DeadlineForm onSubmit={null} />
+      <DeadlineForm />
       {/* Submit Button */}
       <Box
         sx={{
