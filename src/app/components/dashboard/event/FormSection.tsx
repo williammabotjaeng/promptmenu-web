@@ -19,15 +19,24 @@ export interface Question {
   id: string;
   label: string;
   placeholder: string;
+  questionText: string;
   inputType: "text" | "shortAnswer" | "multipleChoice";
 }
 
 const FormSection: React.FC = () => {
   const { eventRole, setEventRole } = useStore(useEventStore);
   const [cookies, setCookie] = useCookies(['questions']);
-  const [questions, setQuestions] = useState<Question[]>(eventRole?.questions || [
-    { id: "question1", label: "Question 1", placeholder: "Enter your question", inputType: "text" },
+  const [questions, setQuestions] = useState<Question[]>(cookies['questions'] || 
+    [
+    { 
+      id: "question1", 
+      label: "Question 1", 
+      placeholder: "Enter your question", 
+      questionText: "", 
+      inputType: "text" 
+    },
   ]);
+  
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [newQuestionType, setNewQuestionType] = useState<"text" | "shortAnswer" | "multipleChoice">("text");
@@ -56,20 +65,31 @@ const FormSection: React.FC = () => {
       id: `question${questions.length + 1}`,
       label: newQuestionLabel || `Question ${questions.length + 1}`,
       placeholder: "Enter your answer",
+      questionText: "",
       inputType: newQuestionType,
     };
-    setQuestions([...questions, newQuestion]);
+    const updatedQuestions = [...questions, newQuestion];
+    setQuestions(updatedQuestions);
     setEventRole({
       ...eventRole,
-      questions: questions
+      questions: updatedQuestions, 
     });
     setDialogOpen(false);
     setNewQuestionLabel("");
   };
 
-  useEffect(() => {
-      setCookie('questions', questions);
-  }, [questions]);
+  // Update questionText for a specific question
+  const handleQuestionTextChange = (id: string, newText: string) => {
+    const updatedQuestions = questions.map((question) =>
+      question.id === id ? { ...question, questionText: newText } : question
+    );
+    setQuestions(updatedQuestions);
+    setEventRole({
+      ...eventRole,
+      questions: updatedQuestions, 
+    });
+    setCookie('questions', updatedQuestions);
+  };
 
   return (
     <Box
@@ -99,6 +119,8 @@ const FormSection: React.FC = () => {
             <TextField
               id={question.id}
               placeholder={question.placeholder}
+              value={question.questionText}
+              onChange={(e) => handleQuestionTextChange(question.id, e.target.value)} 
               variant="outlined"
               fullWidth
               sx={{ mb: 2, color: "black", fontWeight: "bold" }}
