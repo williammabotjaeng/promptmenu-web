@@ -36,6 +36,7 @@ export interface EventRole {
   hardDeadline: string;
   softDeadline: string;
   notes: string;
+  created_at: string;
 }
 
 interface EventStoreState {
@@ -86,7 +87,8 @@ const useEventStore = create<EventStoreState>((set) => ({
     questions: [],
     hardDeadline: '',
     softDeadline: '',
-    notes: ''
+    notes: '',
+    created_at: ''
   },
 
   setEventDetails: (updates) =>
@@ -149,7 +151,8 @@ const useEventStore = create<EventStoreState>((set) => ({
         questions: [],
         hardDeadline: '',
         softDeadline: '',
-        notes: ''
+        notes: '',
+        created_at: ''
       },
     }),
 }));

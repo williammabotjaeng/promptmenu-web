@@ -17,7 +17,7 @@ export const LabelledInput: React.FC<LabelledInputProps> = ({ label }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRoleTitle(e?.target?.value);
-    setEventRole({ title: e.target.value }); 
+    setEventRole({ title: e.target.value, created_at: Date.now().toLocaleString() }); 
   };
 
   return (

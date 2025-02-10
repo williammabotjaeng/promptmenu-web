@@ -100,7 +100,12 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         social_media_links: undefined,
         legalFullName: '',
         stageName: '',
-        niches: []
+        niches: [],
+        profile_progress: 0,
+        profile_views: 0,
+        applied_jobs: 0,
+        upcoming_auditions: 0,
+        unread_messages: 0
     },
     setPersonalInfo: (data) => set({ personalInfo: data }),
     setPhysicalAttributes: (data) => set({ physicalAttributes: data }),
@@ -174,7 +179,12 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
             social_media_links: undefined,
             legalFullName: '',
             stageName: '',
-            niches: []
+            niches: [],
+            profile_progress: 0,
+            profile_views: 0,
+            applied_jobs: 0,
+            upcoming_auditions: 0,
+            unread_messages: 0
         },
     }),
 }));

@@ -6,6 +6,7 @@ import EventDetailsSection from "./EventDetailsSection";
 import useEventStore from "@/state/use-event-store";
 import { useStore } from "zustand";
 import MediaGrid from "./MediaGrid";
+import moment from "moment";
 
 const EventOverview: React.FC = () => {
   const { eventDetails } = useStore(useEventStore);
@@ -101,7 +102,7 @@ const EventOverview: React.FC = () => {
               role.maxAge
             } years`} 
             location={eventDetails.location} 
-            postedTime="2 days ago" 
+            postedTime={moment(role?.created_at).fromNow()} 
             salary={`AED ${role.dailyPay || role.hourlyPay || role.projectPay}`} 
           />
         ))}
