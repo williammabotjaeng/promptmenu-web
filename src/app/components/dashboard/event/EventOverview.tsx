@@ -8,7 +8,7 @@ import { useStore } from "zustand";
 
 const EventOverview: React.FC = () => {
 
-    const { setEventDetails, eventDetails } = useStore(useEventStore);
+    const { eventDetails } = useStore(useEventStore);
 
     const progressSteps = [
         { label: "Create Event", hasIcon: true },

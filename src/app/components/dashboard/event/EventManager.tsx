@@ -54,7 +54,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     }}
                     onClick={handleBack}
                 >
-                    Go Back
+                 Go Back
                 </Button>
                 <Button
                     onClick={handleBack}

@@ -10,6 +10,7 @@ interface EventDetails {
   mealsProvided: boolean;
   transportProvided: boolean;
   accommodationProvided: boolean;
+  roles: EventRole[];
 }
 
 export interface EventMediaType {
@@ -60,6 +61,7 @@ const useEventStore = create<EventStoreState>((set) => ({
     mealsProvided: false,
     transportProvided: false,
     accommodationProvided: false,
+    roles: []
   },
 
   eventMedia: {
@@ -116,6 +118,7 @@ const useEventStore = create<EventStoreState>((set) => ({
         mealsProvided: false,
         transportProvided: false,
         accommodationProvided: false,
+        roles: []
       },
     }),
 
