@@ -13,14 +13,14 @@ interface EventContextType {
   event: EventData | null;
   fetchEvent: () => Promise<void>;
   createEvent: (eventData) => Promise<void>;
-  updateEvent: (eventId: string, data: EventData) => Promise<void>;
+  updateEvent: (eventId: string, data: any) => Promise<void>;
 }
 
 const EventContext = createContext<EventContextType | null>(null);
 
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const [cookies] = useCookies(['access', 'username']);
+  const [cookies, setCookie] = useCookies(['access', 'username', 'event_id']);
   const accessToken = cookies['access'];
   const userName = cookies['username'];
 
@@ -42,6 +42,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     },
     onSuccess: (data) => {
       console.log('Event created successfully', data);
+      setCookie('event_id', data?.id);
     },
     onError: (error) => {
       console.error('Error creating event: ', error);

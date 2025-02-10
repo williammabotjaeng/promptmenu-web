@@ -6,11 +6,40 @@ import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import OverviewHeaderWithProgressBar from "@/components/dashboard/event/OverviewHeaderWithProgressBar";
 import RoleDetailsForm from "@/components/dashboard/event/RoleDetailsForm";
 import EventOverview from "./EventOverview";
+import { useStore } from "zustand";
+import { useRouter, redirect } from "next/navigation";
+import useEventStore from "@/state/use-event-store";
+import { useEvent } from "@/providers/event-provider";
+import { useCookies } from "react-cookie";
 
 const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
-    const handleContinue = () => {
-        setActiveStep(activeStep + 1);
+    const { eventDetails, eventMedia } = useStore(useEventStore);
+    const [cookies] = useCookies(['event_id']);
+    const router = useRouter();
+
+    const eventID = cookies['event_id'];
+
+    const { updateEvent } = useEvent();
+
+    const handlePublish = async () => {
+        const eventData = {
+            ...eventDetails,
+            ...eventMedia,
+            status: 'live'
+        }
+        await updateEvent(eventID, eventData);
+        redirect('/dashboard');
+    }
+
+    const handleSaveDraft = async () => {
+        const eventData = {
+            ...eventDetails,
+            ...eventMedia,
+            status: 'draft'
+        }
+        await updateEvent(eventID, eventData);
+        redirect('/dashboard');
     }
 
     const handleBack = () => {
@@ -24,11 +53,11 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                 flexDirection: 'column',
                 backgroundColor: 'white',
                 justifyContent: 'center',
-                padding: { xs: 2, md: 4 }, // Responsive padding
+                padding: { xs: 2, md: 4 }, 
                 pb: { xs: 3, md: 4 },
-                width: '100%', // Full width
-                maxWidth: '800px', // Max width for larger screens
-                margin: '0 auto', // Center the box
+                width: '100%', 
+                maxWidth: '800px', 
+                margin: '0 auto', 
             }}
         >
             <OverviewHeaderWithProgressBar progressValue={100} />
@@ -57,13 +86,13 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                  Go Back
                 </Button>
                 <Button
-                    onClick={handleBack}
+                    onClick={handleSaveDraft}
                     variant="outlined" 
                     sx={{
                         mr: 2, 
                         color: '#977342',
                         border: '1px solid #977342',
-                        width: { xs: '120px', md: '160px' }, // Responsive width
+                        width: { xs: '120px', md: '160px' }, 
                         backgroundColor: 'white',
                         '&:hover': {
                             color: '#CEAB76',
@@ -76,7 +105,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     Save for Later
                 </Button>
                 <Button
-                    onClick={handleContinue}
+                    onClick={handlePublish}
                     variant="contained"
                     sx={{
                         backgroundColor: '#977342',
