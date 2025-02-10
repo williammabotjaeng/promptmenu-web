@@ -32,6 +32,9 @@ interface EventRole {
   projectPay: number;
   paymentTerms: string;
   questions: Question[];
+  hardDeadline: string;
+  softDeadline: string;
+  notes: string;
 }
 
 interface EventStoreState {
@@ -66,19 +69,22 @@ const useEventStore = create<EventStoreState>((set) => ({
   },
 
   eventRole: {
-      skill: '',
-      openings: 0,
-      title: '',
-      description: '',
-      genders: [],
-      minAge: 0,
-      maxAge: 0,
-      ethnicities: [],
-      hourlyPay: 0,
-      dailyPay: 0,
-      projectPay: 0,
-      paymentTerms: '',
-      questions: []
+    skill: '',
+    openings: 0,
+    title: '',
+    description: '',
+    genders: [],
+    minAge: 0,
+    maxAge: 0,
+    ethnicities: [],
+    hourlyPay: 0,
+    dailyPay: 0,
+    projectPay: 0,
+    paymentTerms: '',
+    questions: [],
+    hardDeadline: '',
+    softDeadline: '',
+    notes: ''
   },
 
   setEventDetails: (updates) =>
@@ -125,19 +131,22 @@ const useEventStore = create<EventStoreState>((set) => ({
   clearEventRole: () =>
     set({
       eventRole: {
-          skill: '',
-          openings: 0,
-          title: '',
-          description: '',
-          genders: [],
-          minAge: 0,
-          maxAge: 0,
-          ethnicities: [],
-          hourlyPay: 0,
-          dailyPay: 0,
-          projectPay: 0,
-          paymentTerms: '',
-          questions: []
+        skill: '',
+        openings: 0,
+        title: '',
+        description: '',
+        genders: [],
+        minAge: 0,
+        maxAge: 0,
+        ethnicities: [],
+        hourlyPay: 0,
+        dailyPay: 0,
+        projectPay: 0,
+        paymentTerms: '',
+        questions: [],
+        hardDeadline: '',
+        softDeadline: '',
+        notes: ''
       },
     }),
 }));
