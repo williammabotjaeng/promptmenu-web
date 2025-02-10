@@ -39,11 +39,11 @@ const EventOverview: React.FC = () => {
             </Box>
             <Box sx={{ display: 'flex', flexDirection: 'row', backgroundColor: 'white', borderRadius: '8px' }}>
                 <EventDetailsSection
-                    title="Dubai Fashion Week 2025"
-                    description="Luxury fashion event showcasing international designers"
-                    startDate="March 15, 2025"
-                    endDate="March 20, 2025"
-                    assistance="Meals, Transportation, Accommodation"
+                    title={eventDetails?.eventTitle}
+                    description={eventDetails?.description}
+                    startDate={eventDetails?.startDateTime}
+                    endDate={eventDetails?.endDateTime}
+                    assistance={`${eventDetails?.accommodationProvided ? "Accomodation " : ""}${eventDetails?.transportProvided ? " Transport " : ""}${eventDetails?.mealsProvided ? " Meals " : ""}`}
                 />
                 <Box sx={{ marginTop: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#977342' }}>
