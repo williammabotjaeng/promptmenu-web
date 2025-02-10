@@ -18,6 +18,9 @@ import ProfileDropdown from '@/components/portal/ProfileDropdown';
 import { useTalentProfile } from '@/providers/talent-profile-provider';
 import moment from 'moment';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
+import { useEvent } from '@/providers/event-provider';
+import useLocalRolesStore from '@/state/use-local-roles-store';
+import { useStore } from 'zustand';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -62,9 +65,13 @@ const Portal: React.FC = () => {
 
   const onboardingPresented = cookies['onboarding_presented'] || false;
 
+  const { roles } = useStore(useLocalRolesStore);
+
   const router = useRouter();
 
   const { fetchTalentProfile, talentProfile } = useTalentProfile();
+
+  const { getRoles } = useEvent();
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -154,7 +161,7 @@ const Portal: React.FC = () => {
                 flexDirection: 'row',
                 justifyContent: 'flex-end'
               }}>
-                <NotificationDropdown notifications={talentProfile?.notifications} />
+                <NotificationDropdown notifications={talentProfile?.notifications || null} />
                 <ProfileDropdown />
               </Grid>
             </Grid>
@@ -169,8 +176,8 @@ const Portal: React.FC = () => {
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
                 <Box sx={{ marginTop: 2 }}>
-                  {jobs.map((job, index) => (
-                    <JobCard key={index} {...job} />
+                  {roles.map((job, index) => (
+                    <JobCard key={index} title={""} location={""} tags={""} />
                   ))}
                 </Box>
                 <Button sx={{ marginTop: 2, backgroundColor: 'white', color: '#977342' }}>

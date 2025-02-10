@@ -8,6 +8,7 @@ import { useCookies } from 'react-cookie';
 import { EventData } from '@/types/EventData';
 import { useStore } from 'zustand';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
+import useLocalRolesStore from '@/state/use-local-roles-store';
 
 interface EventContextType {
   event: EventData | null;
@@ -24,6 +25,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [cookies, setCookie] = useCookies(['access', 'username', 'event_id']);
   const accessToken = cookies['access'];
   const userName = cookies['username'];
+  const { setRoles } = useStore(useLocalRolesStore);
 
   const fetchEventMutation = useQuery({
     queryKey: ['fetch_event'],
@@ -71,6 +73,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       return response;
     },
     onSuccess: (data) => {
+      setRoles(data);
       console.log("Roles fetched successfully", data);
     },
     onError: (error) => {

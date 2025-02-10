@@ -40,7 +40,7 @@ const Header: React.FC = () => {
 
         {/* Menu on the right */}
         <Box sx={{ display: 'flex', gap: '20px' }}>
-          <NotificationDropdown />
+          <NotificationDropdown notifications={null} />
           <ProfileDropdown />
           <Link href="/browse-jobs" passHref>
             <Button 

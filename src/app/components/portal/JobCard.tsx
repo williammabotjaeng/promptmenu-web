@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Box, Button, Typography, Chip, Paper } from '@mui/material';
 import { PortalJobCardProps } from '@/types/Props/PortalJobCardProps';
 
-export const JobCard: React.FC<PortalJobCardProps> = ({ title, location, tags }) => {
+export const JobCard: React.FC<any> = ({ title, location, tags }) => {
   return (
     <Paper elevation={3} sx={{ padding: 2, backgroundColor: 'white', borderRadius: '8px', marginBottom: 2 }}>
       <Box display="flex" flexDirection="column">
