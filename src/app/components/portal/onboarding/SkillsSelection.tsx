@@ -67,7 +67,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
 }) => {
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
-  const [cookies, setCookie] = useCookies(["skills", "user_role"]);
+  const [cookies, setCookie] = useCookies(["user_role"]);
 
   const [selectedSkills, setSelectedSkills] = useState<SkillType[]>(
     talentData?.skills || []
@@ -124,8 +124,6 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
     } else {
       setSelectedSkills([...selectedSkills, skill]);
     }
-
-    setCookie("skills", JSON.stringify(selectedSkills));
 
     setTalentData({
       ...talentData,

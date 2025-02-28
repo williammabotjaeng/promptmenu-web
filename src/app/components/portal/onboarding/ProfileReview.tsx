@@ -39,30 +39,6 @@ const steps = [
   { number: 8, title: 'Review', isActive: true }
 ];
 
-const skills = ['Acting', 'Modeling', 'Dancing', 'Singing'];
-
-const attributes = [
-  { label: 'Height', value: '175 cm' },
-  { label: 'Weight', value: '65 kg' },
-  { label: 'Hair Color', value: 'Brown' },
-  { label: 'Eye Color', value: 'Blue' }
-];
-
-const socialLinks = [
-  { icon: 'instagram', username: '@talentname' },
-  { icon: 'tiktok', username: '@talentname' }
-];
-
-const documents = [
-  { title: 'Acting_Resume.pdf', date: 'Updated Jan 20, 2025' },
-  { title: 'Portfolio_2025.pdf', date: 'Updated Jan 22, 2025' }
-];
-
-const idDocs = [
-  { title: 'ID_Doc_front.pdf', date: 'Updated Jan 20, 2025' },
-  { title: 'ID_Doc_back.pdf', date: 'Updated Jan 20, 2025' }
-];
-
 export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setActiveStep }) => {
 
   const { talentData, paymentMethods, physicalAttributes } = useStore(useTalentOnboardingStore);
@@ -80,10 +56,6 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
 
   const onClose = () => {
     router.push('/portal');
-  };
-
-  const handleContinue = () => {
-    setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
@@ -127,6 +99,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
         government_id_front: frontIDFileName, 
         government_id_back: backIDFileName
       };
+
+      console.log("User Talent Data:", userTalentData);
   
       await createTalentProfile(userTalentData);
   
