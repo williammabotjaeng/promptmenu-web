@@ -29,7 +29,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
             status: 'live'
         }
         await updateEvent(eventID, eventData);
-        redirect('/dashboard');
+        redirect('/event-success');
     }
 
     const handleSaveDraft = async () => {

@@ -26,6 +26,7 @@ import moment from 'moment';
 import { useCookies } from 'react-cookie';
 import { uploadFileToS3 } from '@/services/s3UploadUtils';
 import { useOnboarding } from '@/providers/onboarding-providers';
+import { redirect } from 'next/navigation';
 
 const steps = [
   { number: 1, title: 'Headshot', isActive: false },
@@ -129,7 +130,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
   
       await createTalentProfile(userTalentData);
   
-      console.log("Talent data submitted successfully!");
+      redirect('/talent-success');
+
     } catch (error) {
       console.error("Error during form submission:", error);
     }
