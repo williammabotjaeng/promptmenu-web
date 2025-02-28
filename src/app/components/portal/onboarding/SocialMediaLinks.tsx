@@ -76,20 +76,18 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
   setActiveStep,
 }) => {
   const router = useRouter();
-  const { talentData } = useStore(useTalentOnboardingStore);
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
   const [cookies, setCookie] = useCookies([
-    "website",
-    "twitter",
-    "tiktok",
-    "facebook",
-    "instagram",
-    "linkedin",
     "user_role"
   ]);
   const [socialData, setSocialData] = React.useState({
     instagram: "",
     tiktok: "",
     website: "",
+    twitter: "",
+    facebook: "",
+    linkedin: "",
+    other: []
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -109,9 +107,10 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
       (value) => value === ""
     );
 
-    setCookie("website", socialData.website);
-    setCookie("tiktok", socialData.tiktok);
-    setCookie("instagram", socialData.instagram);
+    setTalentData({
+      ...talentData,
+      social_media_links: socialData,
+    });
 
     if (!areAllFieldsEmpty) {
       setActiveStep(activeStep + 1);
@@ -137,22 +136,28 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
   };
 
   const handleSocialInputChange =
-    (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value = event.target.value;
-      setSocialData((prevData) => ({
+  (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    setSocialData((prevData) => {
+      
+      if (field === "other") {
+        return {
+          ...prevData,
+          other: [...prevData.other, value], 
+        };
+      }
+
+      return {
         ...prevData,
         [field]: value,
-      }));
-    };
+      };
+    });
+  };
 
   useEffect(() => {
     setSocialData({
-      website: cookies.website || "",
-      tiktok: cookies.tiktok || "",
-      // twitter: cookies.twitter || '',
-      // facebook: cookies.facebook || '',
-      instagram: cookies.instagram || "",
-      // linkedin: cookies.linkedin || '',
+      ...talentData?.social_media_links
     });
   }, [cookies]);
 
