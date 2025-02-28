@@ -71,23 +71,31 @@ const allSocialPlatforms = [
   { icon: "other", placeholder: "Other Social Profile URL" },
 ];
 
+interface SocialData {
+  instagram: string;
+  tiktok: string;
+  website: string;
+  twitter: string;
+  facebook: string;
+  linkedin: string;
+  other?: string[]; 
+}
+
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
   activeStep,
   setActiveStep,
 }) => {
   const router = useRouter();
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
-  const [cookies, setCookie] = useCookies([
-    "user_role"
-  ]);
-  const [socialData, setSocialData] = React.useState({
+  const [cookies, setCookie] = useCookies(["user_role"]);
+  const [socialData, setSocialData] = React.useState<SocialData>({
     instagram: "",
     tiktok: "",
     website: "",
     twitter: "",
     facebook: "",
     linkedin: "",
-    other: []
+    other: [],
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -135,31 +143,30 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
     setActiveStep(activeStep + 1);
   };
 
-  const handleSocialInputChange =
-  (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOtherInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-
-    setSocialData((prevData) => {
-      
-      if (field === "other") {
-        return {
-          ...prevData,
-          other: [...prevData.other, value], 
-        };
-      }
-
-      return {
+  
+    setSocialData((prevData) => ({
+      ...prevData,
+      other: [...prevData?.other, value], 
+    }));
+  };
+  
+  const handleStandardInputChange =
+    (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event?.target?.value;
+  
+      setSocialData((prevData) => ({
         ...prevData,
         [field]: value,
-      };
-    });
-  };
+      }));
+    };
 
   useEffect(() => {
     setSocialData({
-      ...talentData?.social_media_links
+      ...talentData?.social_media_links,
     });
-  }, [cookies]);
+  }, [talentData]);
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -192,7 +199,10 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
       }}
     >
       {/* Header Section */}
-      <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
+      <OnboardingHeader
+        steps={userRole === "influencer" ? InfluencerSteps : steps}
+        onClose={onClose}
+      />
 
       {/* Social Media Links Section */}
       <Box
@@ -234,22 +244,22 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
               gap: 3,
             }}
           >
-            {defaultSocialInputs.map((input, index) => (
-              <SocialInput
-                key={index}
-                {...input}
-                value={socialData[input.icon as keyof typeof socialData]}
-                onChange={handleSocialInputChange(input.icon)}
-              />
-            ))}
-            {additionalInputs.map((input, index) => (
-              <SocialInput
-                key={index}
-                {...input}
-                value={socialData[input.icon as keyof typeof socialData]}
-                onChange={handleSocialInputChange(input.icon)}
-              />
-            ))}
+            {[...defaultSocialInputs, ...additionalInputs].map(
+              (input, index) => (
+                <SocialInput
+                  key={index}
+                  {...input}
+                  value={
+                    socialData[input.icon as keyof typeof socialData] || ""
+                  }
+                  onChange={
+                    input.icon === "other"
+                      ? handleOtherInputChange
+                      : handleStandardInputChange(input.icon)
+                  }
+                />
+              )
+            )}
           </Box>
           <IconButton
             sx={{
