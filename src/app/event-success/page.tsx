@@ -9,7 +9,7 @@ import { useWindowSize } from "react-use";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 
-const TalentSuccess: React.FC = () => {
+const EventSuccess: React.FC = () => {
   const { width, height } = useWindowSize();
   const router = useRouter();
   const [cookies] = useCookies(["user_role"]);
@@ -59,10 +59,10 @@ const TalentSuccess: React.FC = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <Typography variant="h4" sx={{ fontSize: isTabletOrMobile ? "22px" : null}} fontWeight="bold" gutterBottom>
-            You have Successfully Created your Talent Profile!
+            You have Successfully Created your Event Profile!
           </Typography>
           <Typography variant="body1" sx={{ fontSize: isTabletOrMobile ? "12px" : null}} color="textSecondary">
-            Thank you for completing the onboarding process.
+            Thank you for casting on SSH.
           </Typography>
         </motion.div>
 
@@ -78,7 +78,7 @@ const TalentSuccess: React.FC = () => {
             onClick={handleNavigateToDashboard}
             sx={{ marginTop: 4 }}
           >
-            Proceed to {userRole === 'talent' ? 'Talent' : 'Influencer'} Portal
+            Proceed to Dashboard
           </Button>
         </motion.div>
       </Box>
@@ -86,4 +86,4 @@ const TalentSuccess: React.FC = () => {
   );
 };
 
-export default TalentSuccess;
+export default EventSuccess;
