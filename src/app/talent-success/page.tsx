@@ -16,7 +16,7 @@ const TalentSuccess: React.FC = () => {
   const isTabletOrMobile = useMediaQuery("(max-width: 768px)");
 
   const handleNavigateToDashboard = () => {
-    router.push("/dashboard");
+    router.push("/portal");
   };
 
   return (

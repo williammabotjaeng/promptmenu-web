@@ -59,7 +59,7 @@ const EventSuccess: React.FC = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <Typography variant="h4" sx={{ fontSize: isTabletOrMobile ? "22px" : null}} fontWeight="bold" gutterBottom>
-            You have Successfully Created your Event Profile!
+            You have Successfully Created your Event!
           </Typography>
           <Typography variant="body1" sx={{ fontSize: isTabletOrMobile ? "12px" : null}} color="textSecondary">
             Thank you for casting on SSH.

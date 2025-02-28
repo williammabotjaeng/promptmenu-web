@@ -255,6 +255,8 @@ export const CompanyRegisterForm: React.FC = () => {
   
       createCompany(companyData);
 
+      redirect("/company-success");
+
     } catch (error) {
       console.error("Error during form submission:", error);
     }
