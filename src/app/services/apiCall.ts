@@ -13,7 +13,7 @@ const axiosInstance = axios.create({
 export const apiCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH', body: any = null) => {
 
   const response = await axiosInstance({
-    url: APP_ENV === 'local' ? `http://localhost:8000${endpoint}` : `https://api.staffingsolutionshub.com${endpoint}`,
+    url: APP_ENV === 'local' ? `https://localhost:8000${endpoint}` : `https://api.staffingsolutionshub.com${endpoint}`,
     method,
     data: body,
     headers: {
