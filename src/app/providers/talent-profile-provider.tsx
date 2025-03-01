@@ -8,6 +8,7 @@ import { useCookies } from 'react-cookie';
 import { TalentProfileData } from '@/types/TalentProfileData';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { csrfRestCall } from '@/services/csrfRestCall';
 
 interface TalentProfileContextType {
   talentProfile: TalentProfileData | null;
@@ -20,9 +21,10 @@ const TalentProfileContext = createContext<TalentProfileContextType | null>(null
 
 export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const [cookies] = useCookies(['access', 'username']);
+  const [cookies] = useCookies(['access', 'username', 'csrftoken']);
   const accessToken = cookies['access'];
   const userName = cookies['username'];
+  const csrfToken = cookies['csrftoken'];
 
   const [signedUrls, setSignedUrls] = useState<Record<string, string> | null>(null);
 
@@ -101,7 +103,7 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
         };
 
         try {
-          const response = await restCall(
+          const response = await csrfRestCall(
             `/portal/talent-assets/get-signed-urls/`,
             'POST',
             { filenames: [
@@ -112,9 +114,10 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
               talentAssets.portfolioVideo,
               ...talentAssets.additionalImages,
             ] },
-            accessToken
+            accessToken,
+            csrfToken
           );
-
+          console.log("Signed URLs:", response.signed_urls);
           setSignedUrls(response.signed_urls);
         } catch (error) {
           console.error('Error fetching signed URLs:', error);

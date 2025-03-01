@@ -91,6 +91,7 @@ const Portal: React.FC = () => {
         }
       }
       console.log("Outside the check, UserRole:", user_role);
+      console.log("Signed URLS:", signedUrls);
       setTimeout(() => {
         setLoading(false)
       }, 500);
