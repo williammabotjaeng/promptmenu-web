@@ -81,41 +81,81 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
 
   const submitProfile = async (e) => {
     e.preventDefault();
-
+  
     try {
+      // Upload headshot
       const headshotFileName = await uploadFileToS3(
         talentData?.headshot,
         "headshot",
         userName,
         accessToken
       );
-
+  
+      // Upload government ID front
       const frontIDFileName = await uploadFileToS3(
         talentData?.government_id_front,
         "front_id",
         userName,
         accessToken
       );
-
+  
+      // Upload government ID back
       const backIDFileName = await uploadFileToS3(
         talentData?.government_id_back,
         "back_id",
         userName,
         accessToken
       );
+  
+      // Upload portfolio PDF and assign file name to fileName property
+      if (talentData?.portfolio_pdf?.file) {
+        const portfolioPDFFileName = await uploadFileToS3(
+          talentData.portfolio_pdf.file,
+          "portfolio_pdf",
+          userName,
+          accessToken
+        );
+        talentData.portfolio_pdf.fileName = portfolioPDFFileName; // Assign file name
+      }
 
+      
+  
+      // Upload portfolio video and assign file name to fileName property
+      if (talentData?.portfolio_video?.file) {
+        const portfolioVideoFileName = await uploadFileToS3(
+          talentData.portfolio_video.file,
+          "portfolio_video",
+          userName,
+          accessToken
+        );
+        talentData.portfolio_video.fileName = portfolioVideoFileName; // Assign file name
+      }
+  
+      // Upload additional images
+      const additionalImagesNames = await Promise.all(
+        (talentData?.additional_images || []).map((image, index) =>
+          uploadFileToS3(image, `additional_image_${index}`, userName, accessToken)
+        )
+      );
+  
+      // Create user talent data object
       const userTalentData = {
         ...talentData,
         username: userName,
         headshot: headshotFileName,
         government_id_front: frontIDFileName,
         government_id_back: backIDFileName,
+        additional_images: additionalImagesNames,
+        portfolio_pdf: talentData?.portfolio_pdf?.fileName,
+        portfolio_video: talentData?.portfolio_video?.fileName
       };
-
+  
       console.log("User Talent Data:", userTalentData);
-
+  
+      // Submit the talent profile
       await createTalentProfile(userTalentData);
-
+  
+      // Redirect to success page
       redirect("/talent-success");
     } catch (error) {
       console.error("Error during form submission:", error);
