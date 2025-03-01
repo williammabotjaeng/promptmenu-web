@@ -137,6 +137,10 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
           uploadFileToS3(image, `additional_image_${index}`, userName, accessToken)
         )
       );
+
+      const handleSkip = () => {
+        setActiveStep(activeStep + 1);
+      };
   
       // Create user talent data object
       const userTalentData = {
@@ -147,7 +151,11 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
         government_id_back: backIDFileName,
         additional_images: additionalImagesNames,
         portfolio_pdf: talentData?.portfolio_pdf?.fileName,
-        portfolio_video: talentData?.portfolio_video?.fileName
+        portfolio_video: talentData?.portfolio_video?.fileName,
+        eye_color: talentData?.eyeColor,
+        hair_color: talentData?.hairColor,
+        weight: talentData?.weight,
+        height: talentData?.height
       };
   
       console.log("User Talent Data:", userTalentData);
