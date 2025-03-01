@@ -69,7 +69,7 @@ const Portal: React.FC = () => {
 
   const router = useRouter();
 
-  const { fetchTalentProfile, talentProfile } = useTalentProfile();
+  const { fetchTalentProfile, talentProfile, signedUrls } = useTalentProfile();
 
   const { getRoles } = useEvent();
 
@@ -80,7 +80,6 @@ const Portal: React.FC = () => {
   useEffect(() => {
       setLoading(true);
       fetchTalentProfile();
-      console.log("onboarding type:", typeof(onboardingPresented));
       if (!onboardingPresented) {
         console.log("Inside the condition, UserRole:", user_role);
         console.log("Check result:", user_role === 'talent');
@@ -162,7 +161,7 @@ const Portal: React.FC = () => {
                 justifyContent: 'flex-end'
               }}>
                 <NotificationDropdown notifications={talentProfile?.notifications || null} />
-                <ProfileDropdown />
+                <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstName[0]?.toUpperCase()} />
               </Grid>
             </Grid>
 

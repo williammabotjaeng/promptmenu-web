@@ -5,7 +5,15 @@ import { Avatar, Box, Menu, MenuItem } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/auth-providers';
 
-const ProfileDropdown: React.FC = () => {
+interface ProfileDropdownProps {
+    profilePicture: string;
+    placeholderLetter: string;
+}
+
+const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
+    profilePicture,
+    placeholderLetter
+}) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { logout } = useAuth();
     const router = useRouter();
@@ -30,8 +38,8 @@ const ProfileDropdown: React.FC = () => {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { xs: 'flex-start', md: 'start' } }}>
             <Avatar
-                alt="Profile Picture"
-                src="/path/to/profile/picture.jpg"
+                alt={placeholderLetter}
+                src={profilePicture}
                 onClick={handleClick}
                 sx={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'white', color: '#977342', border: '1px solid #977342' }}
             />

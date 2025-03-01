@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { restCall } from '@/services/restCall';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 
 interface TalentProfileContextType {
   talentProfile: TalentProfileData | null;
+  signedUrls: Record<string, string> | null;
   fetchTalentProfile: () => Promise<void>;
   updateTalentProfile: (profileId: string, data: TalentProfileData) => Promise<void>;
 }
@@ -22,6 +23,8 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
   const [cookies] = useCookies(['access', 'username']);
   const accessToken = cookies['access'];
   const userName = cookies['username'];
+
+  const [signedUrls, setSignedUrls] = useState<Record<string, string> | null>(null);
 
   const {
     setPersonalInfo,
@@ -83,8 +86,52 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     await updateTalentProfileMutation.mutateAsync({ profileId, data });
   };
 
+  useEffect(() => {
+    const fetchSignedUrls = async () => {
+      if (fetchTalentProfileQuery.data) {
+        const talentProfile = fetchTalentProfileQuery.data;
+
+        const talentAssets = {
+          headshot: talentProfile.headshot,
+          governmentIdFront: talentProfile.government_id_front,
+          governmentIdBack: talentProfile.government_id_back,
+          portfolioPdf: talentProfile.portfolio_pdf.fileName,
+          portfolioVideo: talentProfile.portfolio_video.fileName,
+          additionalImages: talentProfile.additional_images,
+        };
+
+        try {
+          const response = await restCall(
+            `/portal/talent-assets/get-signed-urls/`,
+            'POST',
+            { filenames: [
+              talentAssets.headshot,
+              talentAssets.governmentIdFront,
+              talentAssets.governmentIdBack,
+              talentAssets.portfolioPdf,
+              talentAssets.portfolioVideo,
+              ...talentAssets.additionalImages,
+            ] },
+            accessToken
+          );
+
+          setSignedUrls(response.signed_urls);
+        } catch (error) {
+          console.error('Error fetching signed URLs:', error);
+        }
+      }
+    };
+
+    fetchSignedUrls();
+  }, [fetchTalentProfileQuery.data]); 
+
   return (
-    <TalentProfileContext.Provider value={{ talentProfile: fetchTalentProfileQuery.data, fetchTalentProfile, updateTalentProfile }}>
+    <TalentProfileContext.Provider value={{ 
+      talentProfile: fetchTalentProfileQuery.data, 
+      signedUrls, 
+      fetchTalentProfile, 
+      updateTalentProfile 
+    }}>
       {children}
     </TalentProfileContext.Provider>
   );
