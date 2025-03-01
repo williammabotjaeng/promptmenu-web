@@ -31,7 +31,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [cookies, setCookie, removeCookie] = useCookies([
     'access', 'refresh', 'ssh_session_id', 
     'user_role', 'username', 'firstname', 
-    'lastname', 'onboarding_presented'
+    'lastname', 'onboarding_presented',
+    'skills', 'headshotBlobUrl', 'sshsessionid',
+    'instagram', 'tiktok', 'vatPdf', 'tradePdf', 'website'
   ]);
 
   const accessToken = cookies?.access;
@@ -52,6 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('user_role', data?.tokens?.user_role, { path: '/', maxAge: 604800 });
       setCookie('firstname', data?.tokens?.firstname, { path: '/', maxAge: 604800 });
       setCookie('lastname', data?.tokens?.lastname, { path: '/', maxAge: 604800 });
+      setCookie('username', data?.username, { path: '/', maxAge: 604800 });
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
       router.push('/dashboard'); 
@@ -117,6 +120,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeCookie('onboarding_presented', { path: '/' });
       removeCookie('firstname', { path: '/' });
       removeCookie('lastname', { path: '/' });
+      removeCookie('skills', { path: '/' });
+      removeCookie('headshotBlobUrl', { path: '/' });
+      removeCookie('sshsessionid', { path: '/' });
+      removeCookie('instagram', { path: '/' });
+      removeCookie('tiktok', { path: '/' });
+      removeCookie('website', { path: '/' });
+      removeCookie('vatPdf', { path: '/' });
+      removeCookie('tradePdf', { path: '/' });
       router.push('/login'); 
     },
     onError: (error) => {

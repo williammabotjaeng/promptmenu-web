@@ -3,7 +3,8 @@ import { restCall } from "./restCall";
 
 const fileTypeMapping = {
   "image/png": "png",
-  "image/jpeg": "jpg",
+  "image/jpeg": "jpeg",
+  "image/jpg": "jpg",
   "application/pdf": "pdf",
   "image/gif": "gif",
   "video/mp4": "mp4",
