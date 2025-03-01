@@ -35,14 +35,16 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
         router.push(route);
     };
 
+    console.log("Placeholder Letter:", placeholderLetter);
+
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: { xs: 'flex-start', md: 'start' } }}>
             <Avatar
                 alt={placeholderLetter}
-                src={profilePicture}
+                src={profilePicture || undefined}
                 onClick={handleClick}
                 sx={{ cursor: 'pointer', marginRight: '10px', backgroundColor: 'white', color: '#977342', border: '1px solid #977342' }}
-            />
+            >{!profilePicture && placeholderLetter}</Avatar>
             <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
