@@ -46,7 +46,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({ activeStep, setAc
   const { createTalentProfile } = useOnboarding();
 
   const [cookies, setCookie] = useCookies([
-    'tiktok', 'instagram', 'website', 'username', 'access'
+    'username', 'access'
   ]);
 
   const userName = cookies['username'];

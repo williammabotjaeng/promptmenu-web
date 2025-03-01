@@ -75,7 +75,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     },
     onSuccess: (data) => {
       console.log('Talent profile created successfully', data);
-      router.push('/dashboard');
+      router.push('/talent-success');
     },
     onError: (error) => {
       console.error('Error creating talent profile: ', error);
@@ -90,7 +90,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     },
     onSuccess: () => {
       console.log('Company created successfully');
-      router.push('/dashboard');
+      router.push('/company-success');
     },
     onError: (error) => {
       console.error('Error creating company: ', error);
