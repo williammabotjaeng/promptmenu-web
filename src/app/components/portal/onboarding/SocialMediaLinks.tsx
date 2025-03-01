@@ -68,7 +68,7 @@ const allSocialPlatforms = [
   { icon: "facebook", placeholder: "Facebook Profile URL" },
   { icon: "linkedin", placeholder: "LinkedIn Profile URL" },
   { icon: "pinterest", placeholder: "Pinterest Profile URL" },
-  { icon: "other", placeholder: "Other Social Profile URL" },
+  // { icon: "other", placeholder: "Other Social Profile URL" },
 ];
 
 interface SocialData {
@@ -78,7 +78,7 @@ interface SocialData {
   twitter: string;
   facebook: string;
   linkedin: string;
-  other?: string[]; 
+  // other?: string[]; 
 }
 
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
@@ -95,7 +95,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
     twitter: "",
     facebook: "",
     linkedin: "",
-    other: [],
+    // other: [],
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -143,14 +143,14 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
     setActiveStep(activeStep + 1);
   };
 
-  const handleOtherInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+  // const handleOtherInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = event.target.value;
   
-    setSocialData((prevData) => ({
-      ...prevData,
-      other: [...prevData?.other, value], 
-    }));
-  };
+  //   setSocialData((prevData) => ({
+  //     ...prevData,
+  //     other: [...prevData?.other, value], 
+  //   }));
+  // };
   
   const handleStandardInputChange =
     (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -253,9 +253,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
                     socialData[input.icon as keyof typeof socialData] || ""
                   }
                   onChange={
-                    input.icon === "other"
-                      ? handleOtherInputChange
-                      : handleStandardInputChange(input.icon)
+                    handleStandardInputChange(input.icon)
                   }
                 />
               )
@@ -283,7 +281,6 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
             {allSocialPlatforms
               .filter(
                 (platform) =>
-                  platform.icon === "other" ||
                   (!defaultSocialInputs.some(
                     (input) => input.icon === platform.icon
                   ) &&

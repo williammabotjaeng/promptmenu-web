@@ -42,8 +42,8 @@ export const SocialInput: React.FC<SocialInputProps> = ({
         return <WebIcon sx={{ fontSize: "18px", color: "#977342" }} />;
       case 'tiktok':
         return <FontAwesomeIcon icon={faTiktok} style={{ fontSize: "18px", color: "#977342" }} />;
-      case "other":
-        return <OtherIcon sx={{ fontSize: "18px", color: "#977342" }} />;
+      /* case "other":
+        return <OtherIcon sx={{ fontSize: "18px", color: "#977342" }} />; */
       default:
         return null;
     }
