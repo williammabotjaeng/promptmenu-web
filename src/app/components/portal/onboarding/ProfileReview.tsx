@@ -152,10 +152,10 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
         additional_images: additionalImagesNames,
         portfolio_pdf: talentData?.portfolio_pdf?.fileName,
         portfolio_video: talentData?.portfolio_video?.fileName,
-        eye_color: talentData?.eyeColor,
-        hair_color: talentData?.hairColor,
-        weight: talentData?.weight,
-        height: talentData?.height
+        eye_color: physicalAttributes?.eyeColor,
+        hair_color: physicalAttributes?.hairColor,
+        weight: physicalAttributes?.weight,
+        height: physicalAttributes?.height
       };
   
       console.log("User Talent Data:", userTalentData);
