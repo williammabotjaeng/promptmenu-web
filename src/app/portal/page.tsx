@@ -80,6 +80,7 @@ const Portal: React.FC = () => {
   useEffect(() => {
       setLoading(true);
       fetchTalentProfile();
+      getRoles();
       if (!onboardingPresented) {
         console.log("Inside the condition, UserRole:", user_role);
         console.log("Check result:", user_role === 'talent');
@@ -176,7 +177,7 @@ const Portal: React.FC = () => {
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
                 <Box sx={{ marginTop: 2 }}>
-                  {roles.map((job, index) => (
+                  {roles?.map((job, index) => (
                     <JobCard key={index} title={""} location={""} tags={""} />
                   ))}
                 </Box>

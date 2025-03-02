@@ -82,7 +82,7 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
         }}
       >
         {/* Form Content */}
-        <Box sx={{ padding: 2 }}>
+        <Box sx={{ padding: 2, width: '100%' }}>
           <Typography
             variant="h5"
             sx={{
@@ -125,7 +125,7 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
           <Box
             sx={{
               display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
+              flexDirection: { xs: 'column', sm: 'column', md: 'row' },
               gap: 1,
               marginBottom: 2,
             }}

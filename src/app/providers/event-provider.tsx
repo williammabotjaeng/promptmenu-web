@@ -55,7 +55,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const updateEventMutation = useMutation({
     mutationKey: ['update_event'],
     mutationFn: async ({ eventId, data }: { eventId: string; data: EventData }) => {
-      return await restCall(`/dashboard/event/update/${eventId}/`, 'PUT', data, accessToken);
+      console.log("Event Data:", data);
+      return await restCall(`/dashboard/events/${eventId}/edit/`, 'PUT', data, accessToken);
     },
     onSuccess: (data) => {
       console.log('Event updated successfully', data);

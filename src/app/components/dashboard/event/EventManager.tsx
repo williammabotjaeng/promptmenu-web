@@ -15,10 +15,11 @@ import { useCookies } from "react-cookie";
 const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
     const { eventDetails, eventMedia } = useStore(useEventStore);
-    const [cookies] = useCookies(['event_id']);
+    const [cookies] = useCookies(['event_id', 'username']);
     const router = useRouter();
 
     const eventID = cookies['event_id'];
+    const userName = cookies['username'];
 
     const { updateEvent } = useEvent();
 
@@ -26,6 +27,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
         const eventData = {
             ...eventDetails,
             ...eventMedia,
+            organizer: userName,
             status: 'live'
         }
         await updateEvent(eventID, eventData);
