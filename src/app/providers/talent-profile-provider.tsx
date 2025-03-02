@@ -102,6 +102,8 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
           additionalImages: talentProfile.additional_images,
         };
 
+        console.log("Talent Assets:", talentAssets);
+
         try {
           const response = await csrfRestCall(
             `/portal/talent-assets/get-signed-urls/`,
@@ -117,7 +119,7 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
             accessToken,
             csrfToken
           );
-          console.log("Signed URLs:", response.signed_urls);
+          console.log("Signed URLs:", response);
           setSignedUrls(response.signed_urls);
         } catch (error) {
           console.error('Error fetching signed URLs:', error);
