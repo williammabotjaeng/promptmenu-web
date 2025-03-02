@@ -1,18 +1,38 @@
-import * as React from 'react';
-import Link from 'next/link';
-import { AppBar, Toolbar, Typography, Button, Box, IconButton, Drawer, Divider } from '@mui/material';
-import Image from 'next/image';
-import SSHGoldLogo from '@/assets/GoldLogo.png';
-import { useCookies } from 'react-cookie';
-import MenuIcon from '@mui/icons-material/Menu';
+import * as React from "react";
+import Link from "next/link";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  IconButton,
+  Drawer,
+  Divider,
+} from "@mui/material";
+import Image from "next/image";
+import SSHGoldLogo from "@/assets/GoldLogo.png";
+import { useCookies } from "react-cookie";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useAuth } from "@/providers/auth-providers";
 
 export const WhiteHeader: React.FC = () => {
-  const [cookies] = useCookies(["ssh_session_id"]);
-  const sessionID = cookies['ssh_session_id'];
+  const [cookies] = useCookies(["ssh_session_id", "username"]);
+
+  const sessionID = cookies["ssh_session_id"];
+  const userName = cookies["username"];
+
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+
+  const { logout } = useAuth();
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
+  };
+
+  const handleLogout = () => {
+    console.log("Logout");
+    logout();
   };
 
   const menuItems = (
@@ -20,8 +40,8 @@ export const WhiteHeader: React.FC = () => {
       sx={{
         width: 240,
         padding: 2,
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
         gap: 2,
       }}
       onClick={toggleDrawer(false)}
@@ -31,13 +51,13 @@ export const WhiteHeader: React.FC = () => {
       <Typography
         variant="h6"
         sx={{
-          fontWeight: 'bold',
-          color: '#977342',
-          textAlign: 'center',
+          fontWeight: "bold",
+          color: "#977342",
+          textAlign: "center",
           marginBottom: 2,
         }}
       >
-        {sessionID ? 'Welcome, Jane Doe' : 'Welcome to SSH'}
+        {sessionID ? "Welcome, Jane Doe" : "Welcome to SSH"}
       </Typography>
 
       <Divider sx={{ marginBottom: 2 }} />
@@ -49,11 +69,11 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/talent" passHref>
             <Button
               sx={{
-                color: '#4B5563',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
+                color: "#4B5563",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
               }}
             >
               Talents
@@ -62,11 +82,11 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/dashboard" passHref>
             <Button
               sx={{
-                color: '#4B5563',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
+                color: "#4B5563",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
               }}
             >
               Dashboard
@@ -75,11 +95,11 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/portal" passHref>
             <Button
               sx={{
-                color: '#977342',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
+                color: "#977342",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
               }}
             >
               Jane Doe
@@ -88,14 +108,14 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/register" passHref>
             <Button
               sx={{
-                backgroundColor: '#977342',
-                color: '#ffffff',
-                justifyContent: 'center',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
-                '&:hover': {
-                  backgroundColor: '#CEAB76',
+                backgroundColor: "#977342",
+                color: "#ffffff",
+                justifyContent: "center",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
+                "&:hover": {
+                  backgroundColor: "#CEAB76",
                 },
               }}
             >
@@ -109,15 +129,15 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/talent" passHref>
             <Button
               sx={{
-                color: '#4B5563',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
-                textAlign: 'center',
-                '&:hover': {
-                  color: 'white'
-                }
+                color: "#4B5563",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
+                textAlign: "center",
+                "&:hover": {
+                  color: "white",
+                },
               }}
             >
               Talents
@@ -126,15 +146,15 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/jobs" passHref>
             <Button
               sx={{
-                color: '#4B5563',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
-                textAlign: 'center',
-                '&:hover': {
-                  color: 'white'
-                }
+                color: "#4B5563",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
+                textAlign: "center",
+                "&:hover": {
+                  color: "white",
+                },
               }}
             >
               Jobs
@@ -143,15 +163,15 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/about" passHref>
             <Button
               sx={{
-                color: '#4B5563',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
-                textAlign: 'center',
-                '&:hover': {
-                  color: 'white'
-                }
+                color: "#4B5563",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
+                textAlign: "center",
+                "&:hover": {
+                  color: "white",
+                },
               }}
             >
               About
@@ -160,15 +180,15 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/contact" passHref>
             <Button
               sx={{
-                color: '#4B5563',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
-                textAlign: 'center',
-                '&:hover': {
-                  color: 'white'
-                }
+                color: "#4B5563",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
+                textAlign: "center",
+                "&:hover": {
+                  color: "white",
+                },
               }}
             >
               Contact
@@ -177,15 +197,15 @@ export const WhiteHeader: React.FC = () => {
           <Link href="/login" passHref>
             <Button
               sx={{
-                color: '#977342',
-                justifyContent: 'flex-start',
-                textTransform: 'none',
-                fontSize: '16px',
-                padding: '10px 16px',
-                textAlign: 'center',
-                '&:hover': {
-                  backgroundColor: '#CEAB76',
-                  color: '#fff',
+                color: "#977342",
+                justifyContent: "flex-start",
+                textTransform: "none",
+                fontSize: "16px",
+                padding: "10px 16px",
+                textAlign: "center",
+                "&:hover": {
+                  backgroundColor: "#CEAB76",
+                  color: "#fff",
                 },
               }}
             >
@@ -201,31 +221,31 @@ export const WhiteHeader: React.FC = () => {
     <AppBar
       position="static"
       sx={{
-        backgroundColor: '#fff',
-        padding: { xs: '8px 16px', md: '10px 24px' }, // Responsive padding
-        boxShadow: 'none', // Remove default AppBar shadow
-        borderBottom: '1px solid #e0e0e0', // Add subtle border for separation
+        backgroundColor: "#fff",
+        padding: { xs: "8px 16px", md: "10px 24px" }, // Responsive padding
+        boxShadow: "none", // Remove default AppBar shadow
+        borderBottom: "1px solid #e0e0e0", // Add subtle border for separation
       }}
     >
-      <Toolbar sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
+      <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
         {/* Logo and Title Section */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Link href={sessionID ? '/dashboard' : '/'} passHref>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Link href={sessionID ? "/dashboard" : "/"} passHref>
             <Image
               src={SSHGoldLogo}
               alt="Logo"
               width={60}
               height={60}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             />
           </Link>
           <Typography
             variant="h6"
             sx={{
-              color: '#977342',
-              marginLeft: '10px',
-              fontWeight: 'bold',
-              fontSize: { xs: '16px', md: '20px' }, // Responsive font size
+              color: "#977342",
+              marginLeft: "10px",
+              fontWeight: "bold",
+              fontSize: { xs: "16px", md: "20px" }, // Responsive font size
             }}
           >
             Staffing Solutions Hub
@@ -240,8 +260,8 @@ export const WhiteHeader: React.FC = () => {
           aria-label="menu"
           onClick={toggleDrawer(true)}
           sx={{
-            display: { xs: 'block', md: 'none' }, // Show only on small screens
-            color: '#977342',
+            display: { xs: "block", md: "none" }, // Show only on small screens
+            color: "#977342",
           }}
         >
           <MenuIcon />
@@ -250,9 +270,9 @@ export const WhiteHeader: React.FC = () => {
         {/* Navigation Menu for Larger Screens */}
         <Box
           sx={{
-            display: { xs: 'none', md: 'flex' }, // Hide on small screens
-            gap: '20px',
-            alignItems: 'center',
+            display: { xs: "none", md: "flex" }, // Hide on small screens
+            gap: "20px",
+            alignItems: "center",
           }}
         >
           {sessionID ? (
@@ -261,10 +281,10 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/talents" passHref>
                 <Button
                   sx={{
-                    color: '#4B5563',
-                    textTransform: 'none',
-                    fontSize: '16px',
-                    '&:hover': { color: '#fff' },
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
                   }}
                 >
                   Talents
@@ -273,10 +293,10 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/dashboard" passHref>
                 <Button
                   sx={{
-                    color: '#4B5563',
-                    textTransform: 'none',
-                    fontSize: '16px',
-                    '&:hover': { color: '#fff' },
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
                   }}
                 >
                   Dashboard
@@ -285,14 +305,30 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/services" passHref>
                 <Button
                   sx={{
-                    color: '#977342',
-                    textTransform: 'none',
-                    fontSize: '16px',
+                    color: "#977342",
+                    textTransform: "none",
+                    "&:hover": { color: "#fff", backgroundColor: "#CEAB76" },
+                    fontSize: "16px",
                   }}
                 >
-                  Jane Doe
+                  {userName}
                 </Button>
               </Link>
+              {sessionID && (
+                <Box
+                  sx={{
+                    color: "#977342",
+                    "&:hover": { color: "#fff", backgroundColor: "#CEAB76" },
+                    textAlign: "center",
+                    cursor: "pointer",
+                    borderRadius: "8px",
+                    padding: '10px'
+                  }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Box>
+              )}
             </>
           ) : (
             // Logged-out menu items
@@ -300,10 +336,10 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/talent" passHref>
                 <Button
                   sx={{
-                    color: '#4B5563',
-                    textTransform: 'none',
-                    fontSize: '16px',
-                    '&:hover': { color: '#fff' },
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
                   }}
                 >
                   Talents
@@ -312,10 +348,10 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/jobs" passHref>
                 <Button
                   sx={{
-                    color: '#4B5563',
-                    textTransform: 'none',
-                    fontSize: '16px',
-                    '&:hover': { color: '#fff' },
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
                   }}
                 >
                   Jobs
@@ -324,10 +360,10 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/about" passHref>
                 <Button
                   sx={{
-                    color: '#4B5563',
-                    textTransform: 'none',
-                    fontSize: '16px',
-                    '&:hover': { color: '#fff' },
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
                   }}
                 >
                   About
@@ -336,10 +372,10 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/contact" passHref>
                 <Button
                   sx={{
-                    color: '#4B5563',
-                    textTransform: 'none',
-                    fontSize: '16px',
-                    '&:hover': { color: '#fff' },
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
                   }}
                 >
                   Contact
@@ -348,12 +384,12 @@ export const WhiteHeader: React.FC = () => {
               <Link href="/login" passHref>
                 <Button
                   sx={{
-                    color: '#977342',
-                    textTransform: 'none',
-                    fontSize: '16px',
-                    '&:hover': {
-                      backgroundColor: '#CEAB76',
-                      color: '#fff',
+                    color: "#977342",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": {
+                      backgroundColor: "#CEAB76",
+                      color: "#fff",
                     },
                   }}
                 >
@@ -367,7 +403,7 @@ export const WhiteHeader: React.FC = () => {
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
               alt=""
-              style={{ width: '89px', marginLeft: '16px' }}
+              style={{ width: "89px", marginLeft: "16px" }}
             />
           )}
         </Box>
@@ -379,7 +415,7 @@ export const WhiteHeader: React.FC = () => {
         open={drawerOpen}
         onClose={toggleDrawer(false)}
         sx={{
-          '& .MuiDrawer-paper': {
+          "& .MuiDrawer-paper": {
             width: 300, // Set drawer width
             padding: 2, // Add padding inside the drawer
           },
@@ -391,14 +427,14 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/talent" passHref>
               <Button
                 sx={{
-                  color: '#4B5563',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    color: 'white'
-                  }
+                  color: "#4B5563",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    color: "white",
+                  },
                 }}
               >
                 Talents
@@ -407,14 +443,14 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/dashboard" passHref>
               <Button
                 sx={{
-                  color: '#4B5563',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    color: 'white'
-                  }
+                  color: "#4B5563",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    color: "white",
+                  },
                 }}
               >
                 Dashboard
@@ -423,18 +459,30 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/services" passHref>
               <Button
                 sx={{
-                  color: '#977342',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    color: 'white'
-                  }
+                  color: "#977342",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    color: "white",
+                  },
                 }}
               >
-                Jane Doe
+                {userName}
               </Button>
+              {sessionID && (
+                <Button
+                  sx={{
+                    color: "#977342",
+                    "&:hover": { color: "#fff", backgroundColor: "#CEAB76" },
+                    width: "100%",
+                  }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              )}
             </Link>
           </>
         ) : (
@@ -443,14 +491,14 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/talent" passHref>
               <Button
                 sx={{
-                  color: '#4B5563',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    color: 'white'
-                  }
+                  color: "#4B5563",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    color: "white",
+                  },
                 }}
               >
                 Talents
@@ -459,14 +507,14 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/jobs" passHref>
               <Button
                 sx={{
-                  color: '#4B5563',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    color: 'white'
-                  }
+                  color: "#4B5563",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    color: "white",
+                  },
                 }}
               >
                 Jobs
@@ -475,14 +523,14 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/about" passHref>
               <Button
                 sx={{
-                  color: '#4B5563',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    color: 'white'
-                  }
+                  color: "#4B5563",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    color: "white",
+                  },
                 }}
               >
                 About
@@ -491,14 +539,14 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/contact" passHref>
               <Button
                 sx={{
-                  color: '#4B5563',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    color: 'white'
-                  }
+                  color: "#4B5563",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    color: "white",
+                  },
                 }}
               >
                 Contact
@@ -507,14 +555,14 @@ export const WhiteHeader: React.FC = () => {
             <Link href="/login" passHref>
               <Button
                 sx={{
-                  color: '#977342',
-                  justifyContent: 'flex-start',
-                  textTransform: 'none',
-                  fontSize: '16px',
-                  padding: '10px 16px',
-                  '&:hover': {
-                    backgroundColor: '#CEAB76',
-                    color: '#fff',
+                  color: "#977342",
+                  justifyContent: "flex-start",
+                  textTransform: "none",
+                  fontSize: "16px",
+                  padding: "10px 16px",
+                  "&:hover": {
+                    backgroundColor: "#CEAB76",
+                    color: "#fff",
                   },
                 }}
               >

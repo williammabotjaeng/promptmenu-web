@@ -11,12 +11,14 @@ import NotificationDropdown from '@/components/dashboard/NotificationDropdown';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [cookies] = useCookies(['access']);
+  const [cookies] = useCookies(['access', 'ssh_session_id']);
   const { logout } = useAuth();
 
   const router = useRouter();
 
   const accessToken = cookies?.access;
+
+  const sessionID = cookies?.ssh_session_id;
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -51,7 +53,7 @@ const Header = () => {
           {text}
         </Button>
       ))}
-      {accessToken && (
+      {sessionID && (
         <Button
           sx={{
             color: '#977342',

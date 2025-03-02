@@ -4,15 +4,23 @@ import { AppBar, Toolbar, Button, Box, IconButton, Drawer } from '@mui/material'
 import { useCookies } from 'react-cookie';
 import MenuIcon from '@mui/icons-material/Menu';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
+import { useAuth } from '@/providers/auth-providers';
 
 const SecondaryHeader: React.FC = () => {
   const [cookies] = useCookies(["ssh_session_id"]);
   const sessionID = cookies['ssh_session_id'];
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
+  const { logout } = useAuth();
+
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
+
+  const handleLogout = () => {
+    console.log("Logout");
+    logout();
+  }
 
   const loggedInMenuItems = (
     <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
@@ -28,6 +36,18 @@ const SecondaryHeader: React.FC = () => {
       <Link href="/settings" passHref>
         <Button sx={{ textTransform: 'none', color: '#977342', fontSize: '16px', width: '100%' }}>Settings</Button>
       </Link>
+      {sessionID && (
+              <Button
+                sx={{
+                  color: '#977342',
+                  '&:hover': { color: '#fff', backgroundColor: '#CEAB76' },
+                  width: '100%'
+                }}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            )}
     </Box>
   );
 
