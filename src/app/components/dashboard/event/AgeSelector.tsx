@@ -1,28 +1,17 @@
 import * as React from "react";
 import { Box, TextField, Typography } from "@mui/material";
-import { useStore } from "zustand";
-import useEventStore from "@/state/use-event-store";
 
 type AgeSelectorProps = {
-  label: string;
+  label: string; 
+  value: number | string; 
+  onChange: (newValue: number | string) => void;
+  error?: string; 
 };
 
-const AgeSelector: React.FC<AgeSelectorProps> = ({ label }) => {
-  const { eventRole, setEventRole } = useStore(useEventStore); 
-  const [age, setAge] = React.useState<number | string>(
-    label === "Minimum Age" ? eventRole.minAge || "" : eventRole.maxAge || ""
-  ); 
-
+const AgeSelector: React.FC<AgeSelectorProps> = ({ label, value, onChange, error }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newAge = event.target.value === "" ? "" : parseInt(event.target.value, 10);
-    setAge(newAge); 
-
-    // Update Zustand store based on label
-    if (label === "Minimum Age") {
-      setEventRole({ ...eventRole, minAge: Number(newAge) });
-    } else if (label === "Maximum Age") {
-      setEventRole({ ...eventRole, maxAge: Number(newAge) });
-    }
+    const newValue = event.target.value === "" ? "" : parseInt(event.target.value, 10);
+    onChange(newValue); 
   };
 
   return (
@@ -35,9 +24,11 @@ const AgeSelector: React.FC<AgeSelectorProps> = ({ label }) => {
       </Typography>
       <TextField
         type="number"
-        value={age}
+        value={value}
         onChange={handleChange}
         variant="outlined"
+        error={!!error} 
+        helperText={error}
         sx={{
           marginTop: 2,
           bgcolor: "white",
@@ -45,7 +36,7 @@ const AgeSelector: React.FC<AgeSelectorProps> = ({ label }) => {
           height: "50px",
           "& .MuiOutlinedInput-root": {
             border: "1px solid",
-            borderColor: "grey.300",
+            borderColor: error ? "red" : "grey.300", 
           },
         }}
         inputProps={{

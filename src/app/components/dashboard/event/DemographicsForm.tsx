@@ -1,54 +1,124 @@
 import * as React from "react";
-import GenderSelector from './GenderSelector';
-import AgeSelector from './AgeSelector';
-import EthnicitySelector from './EthnicitySelector';
+import GenderSelector from "./GenderSelector";
+import AgeSelector from "./AgeSelector";
+import EthnicitySelector from "./EthnicitySelector";
 import { Box, Typography } from "@mui/material";
 
 const DemographicsForm = () => {
+  const [minAge, setMinAge] = React.useState<number | string>("");
+  const [maxAge, setMaxAge] = React.useState<number | string>("");
+  const [minAgeError, setMinAgeError] = React.useState<string>("");
+  const [maxAgeError, setMaxAgeError] = React.useState<string>("");
+
+  const validateAges = (
+    newMinAge: number | string,
+    newMaxAge: number | string
+  ) => {
+    let minError = "";
+    let maxError = "";
+
+    if (
+      newMinAge !== "" &&
+      (Number(newMinAge) < 0 || Number(newMinAge) > 100)
+    ) {
+      minError = "Minimum age must be between 0 and 100.";
+    }
+
+    if (
+      newMaxAge !== "" &&
+      (Number(newMaxAge) < 0 || Number(newMaxAge) > 100)
+    ) {
+      maxError = "Maximum age must be between 0 and 100.";
+    }
+
+    if (
+      newMinAge !== "" &&
+      newMaxAge !== "" &&
+      Number(newMinAge) >= Number(newMaxAge)
+    ) {
+      minError = "Minimum age must be less than maximum age.";
+      maxError = "Maximum age must be greater than minimum age.";
+    }
+
+    if (
+      newMinAge !== "" &&
+      newMaxAge !== "" &&
+      Number(newMinAge) === Number(newMaxAge)
+    ) {
+      minError = "Minimum and maximum ages cannot be equal.";
+      maxError = "Minimum and maximum ages cannot be equal.";
+    }
+
+    setMinAgeError(minError);
+    setMaxAgeError(maxError);
+
+    return !minError && !maxError;
+  };
+
+  const handleMinAgeChange = (newMinAge: number | string) => {
+    setMinAge(newMinAge);
+    validateAges(newMinAge, maxAge);
+  };
+
+  const handleMaxAgeChange = (newMaxAge: number | string) => {
+    setMaxAge(newMaxAge);
+    validateAges(minAge, newMaxAge);
+  };
+
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignSelf: 'center',
+        display: "flex",
+        flexDirection: "column",
+        alignSelf: "center",
         padding: { xs: 2, md: 4 },
         marginTop: 3,
         marginLeft: { xs: 0, md: 4 },
-        maxWidth: '100%',
-        bgcolor: 'white',
-        borderRadius: '16px',
-        boxShadow: '0px 4px 6px rgba(0,0,0,0.1)',
-        width: { xs: '100%', md: '768px' }, 
+        maxWidth: "100%",
+        bgcolor: "white",
+        borderRadius: "16px",
+        boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+        width: { xs: "100%", md: "768px" },
       }}
     >
-      <Typography 
-        variant="h4" 
-        sx={{ paddingBottom: 1.5, color: '#977342', fontWeight: 'bold' }}
+      <Typography
+        variant="h4"
+        sx={{ paddingBottom: 1.5, color: "#977342", fontWeight: "bold" }}
       >
         Demographics
       </Typography>
       <Box
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           marginTop: 2,
-          width: '100%',
-          color: 'black',
+          width: "100%",
+          color: "black",
         }}
       >
         <GenderSelector label={"Gender Preference"} />
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            flexWrap: 'wrap', 
-            gap: 2, 
-            marginTop: 2, 
-            fontSize: { xs: '0.75rem', md: '0.875rem' }, 
-            fontWeight: 'medium',
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 2,
+            marginTop: 2,
+            fontSize: { xs: "0.75rem", md: "0.875rem" },
+            fontWeight: "medium",
           }}
         >
-          <AgeSelector label="Minimum Age" />
-          <AgeSelector label="Maximum Age" />
+          <AgeSelector
+            label="Minimum Age"
+            value={minAge}
+            onChange={handleMinAgeChange}
+            error={minAgeError}
+          />
+          <AgeSelector
+            label="Maximum Age"
+            value={maxAge}
+            onChange={handleMaxAgeChange}
+            error={maxAgeError}
+          />
         </Box>
         <EthnicitySelector label={"Preferred Ethnicities"} />
       </Box>
