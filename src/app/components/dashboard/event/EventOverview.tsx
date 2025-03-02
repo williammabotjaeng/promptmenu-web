@@ -26,7 +26,7 @@ const EventOverview: React.FC<EventOverviewProps> = ({
   ];
 
   const handleAddRole = () => {
-    setActiveStep(activeStep - 4);
+    setActiveStep(activeStep - 6);
   }
 
   React.useEffect(() => {

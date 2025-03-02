@@ -21,6 +21,7 @@ export const RoleCard: React.FC<RoleCardProps> = ({
         border: '1px solid #E0E0E0',
         backgroundColor: 'white',
         boxShadow: 1,
+        mb: { xs: 2, sm: 2, md: 0},
         transition: 'transform 0.2s',
         '&:hover': {
           transform: 'scale(1.02)',
