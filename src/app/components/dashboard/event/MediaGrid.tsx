@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { useStore } from "zustand";
@@ -6,7 +6,6 @@ import useEventStore from "@/state/use-event-store";
 
 const MediaGrid: React.FC = () => {
   const { eventDetails, eventMedia } = useStore(useEventStore);
-
   return (
     <Box sx={{ marginTop: 2 }}>
       <Typography variant="h6" sx={{ fontWeight: "bold", color: "#977342" }}>

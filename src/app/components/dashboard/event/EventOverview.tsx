@@ -60,9 +60,9 @@ const EventOverview: React.FC = () => {
             eventDetails?.mealsProvided ? " Meals " : ""
           }`}
         />
-        <Box sx={{ marginTop: 2 }}>
+        {/* <Box sx={{ marginTop: 2 }}>
           <MediaGrid />
-        </Box>
+        </Box> */}
       </Box>
       <Box sx={{ display: "flex", flexDirection: "column", marginTop: 4 }}>
         <Box
