@@ -39,7 +39,7 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
     ]);
 
     const handleContinue = () => {
-        
+        console.log("Cookies:", cookies);
         setActiveStep(activeStep + 1);
     }
 

@@ -16,12 +16,20 @@ import { uploadFileToS3 } from "@/services/s3UploadUtils";
 const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
     const { eventDetails, eventMedia } = useStore(useEventStore);
-    const [cookies] = useCookies(['event_id', 'username', 'access']);
+    const [cookies] = useCookies([
+      'event_id', 'username', 
+      'access', 'event_video',
+      'event_photos','event_poster'
+    ]);
+
     const router = useRouter();
 
     const eventID = cookies['event_id'];
     const userName = cookies['username'];
     const accessToken = cookies['access'];
+    const eventPhotos = Array.from(cookies['event_photos'])
+    const eventVideo = cookies['event_video']
+    const eventPoster = cookies['event_poster']
 
     const { updateEvent } = useEvent();
 
@@ -29,14 +37,14 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
         try {
           // Upload event photos
           const eventPhotosNames = await Promise.all(
-            eventMedia?.eventPhotos?.map((photo, index) =>
+            eventPhotos?.map((photo, index) =>
               uploadFileToS3(photo, `event_photo_${index}`, userName, accessToken)
             )
           );
       
           // Upload event poster
           const eventPosterName = await uploadFileToS3(
-            eventMedia?.eventPoster,
+            eventPoster,
             "event_poster",
             userName,
             accessToken
@@ -44,7 +52,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
       
           // Upload event video
           const eventVideoName = await uploadFileToS3(
-            eventMedia?.eventPromoVideo,
+            eventVideo,
             "event_video",
             userName,
             accessToken
@@ -74,14 +82,14 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
         try {
           // Upload event photos
           const eventPhotosNames = await Promise.all(
-            eventMedia?.eventPhotos?.map((photo, index) =>
+            eventPhotos?.map((photo, index) =>
               uploadFileToS3(photo, `event_photo_${index}`, userName, accessToken)
             )
           );
       
           // Upload event poster
           const eventPosterName = await uploadFileToS3(
-            eventMedia?.eventPoster,
+            eventPoster,
             "event_poster",
             userName,
             accessToken
@@ -89,7 +97,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
       
           // Upload event video
           const eventVideoName = await uploadFileToS3(
-            eventMedia?.eventPromoVideo,
+            eventVideo,
             "event_video",
             userName,
             accessToken

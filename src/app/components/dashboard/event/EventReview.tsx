@@ -18,43 +18,12 @@ export const EventReview: React.FC<PostEventStepProps> = ({
 
   const { createEvent } = useEvent();
 
-  const [cookies] = useCookies(["username", "access"]);
+  const [cookies] = useCookies(["username"]);
 
   const userName = cookies["username"];
 
-  const accessToken = cookies["access"];
-
-  const uploadPhotosToS3 = async (photosArray, userName, accessToken) => {
-    try {
-      const uploadedPhotos = await Promise.all(
-        photosArray.map((photo) =>
-          uploadFileToS3(photo, "event_photos", userName, accessToken)
-        )
-      );
-      return uploadedPhotos;
-    } catch (error) {
-      console.error("Error uploading event photos:", error);
-      throw error;
-    }
-  };
-
   const handleSubmit = async () => {
-    const eventPosterS3 = uploadFileToS3(
-      eventMedia?.eventPoster,
-      "event_poster",
-      userName,
-      accessToken
-    );
-    const eventVideoS3 = uploadFileToS3(
-      eventMedia?.eventPromoVideo,
-      "event_video",
-      userName,
-      accessToken
-    );
 
-    const photosArray = [...eventMedia?.eventPhotos];
-
-    const eventPhotosS3 = uploadPhotosToS3(photosArray, userName, accessToken);
     const localSlug = eventDetails?.eventTitle
       .toLowerCase()
       .trim()
@@ -74,9 +43,6 @@ export const EventReview: React.FC<PostEventStepProps> = ({
       accomodation_provided: eventDetails?.accommodationProvided,
       transport_provided: eventDetails?.transportProvided,
       meals_provided: eventDetails?.mealsProvided,
-      event_poster: eventPosterS3,
-      event_photos: eventPhotosS3,
-      event_video: eventVideoS3,
     });
 
     setActiveStep(activeStep + 1);
