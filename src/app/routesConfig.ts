@@ -8,7 +8,8 @@ export const privateRoutes: string[] = [
       '/company-success',
       '/talent-success',
       '/event-success',
-      '/events'
+      '/events',
+      '/messages'
   ];
 
   export const publicRoutes: string[] = [

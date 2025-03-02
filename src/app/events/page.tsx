@@ -20,7 +20,7 @@ import GreyFooter from "@/components/GreyFooter";
 import SecondaryHeader from "@/components/SecondaryHeader";
 import Footer from "@/components/Footer";
 
-const Dashboard = () => {
+const Events = () => {
 
   const { user, updateUser } = useAuth();
   const router = useRouter();
@@ -115,4 +115,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Events;
