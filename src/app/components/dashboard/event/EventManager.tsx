@@ -27,7 +27,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     const eventID = cookies['event_id'];
     const userName = cookies['username'];
     const accessToken = cookies['access'];
-    const eventPhotos = Array.from(cookies['event_photos'])
+    const eventPhotos = Array?.from(cookies['event_photos'])
     const eventVideo = cookies['event_video']
     const eventPoster = cookies['event_poster']
 
@@ -72,7 +72,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
           await updateEvent(eventID, eventData);
       
           // Redirect to the success page
-          redirect("/event-success");
+          router.push("/event-success");
         } catch (error) {
           console.error("Error during event publication:", error);
         }
@@ -105,6 +105,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     
           const eventData = {
             ...eventDetails,
+            organizer: userName,
             event_photos: eventPhotosNames,
             event_poster: eventPosterName,
             event_video: eventVideoName,
@@ -113,7 +114,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
       
           await updateEvent(eventID, eventData);
       
-          redirect("/dashboard");
+          router.push("/dashboard");
         } catch (error) {
           console.error("Error during event draft save:", error);
         }
@@ -138,7 +139,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
             }}
         >
             <OverviewHeaderWithProgressBar progressValue={100} />
-            <EventOverview />
+            <EventOverview activeStep={activeStep} setActiveStep={setActiveStep} />
             <Box
                 sx={{
                     display: 'flex',

@@ -8,7 +8,15 @@ import { useStore } from "zustand";
 import MediaGrid from "./MediaGrid";
 import moment from "moment";
 
-const EventOverview: React.FC = () => {
+interface EventOverviewProps {
+  activeStep: number;
+  setActiveStep: (step: number) => void; 
+}
+
+const EventOverview: React.FC<EventOverviewProps> = ({
+  activeStep,
+  setActiveStep
+}) => {
   const { eventDetails } = useStore(useEventStore);
 
   const progressSteps = [
@@ -16,6 +24,10 @@ const EventOverview: React.FC = () => {
     { label: "Create Role", hasIcon: true },
     { label: "Ready to Publish", hasIcon: false },
   ];
+
+  const handleAddRole = () => {
+    setActiveStep(activeStep - 4);
+  }
 
   React.useEffect(() => {
     console.log("Event Details:", eventDetails);
@@ -83,6 +95,7 @@ const EventOverview: React.FC = () => {
                 color: "white",
               },
             }}
+            onClick={handleAddRole}
           >
             + Add Role
           </Button>
