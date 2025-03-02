@@ -31,9 +31,7 @@ const GenderSelector: React.FC<GenderSelectorProps> = ({ label }) => {
 
       {/* Multi-Select Dropdown */}
       <FormControl fullWidth sx={{ bgcolor: "white", borderRadius: "8px" }}>
-        <InputLabel id="gender-select-label">{label}</InputLabel>
         <Select
-          labelId="gender-select-label"
           multiple
           value={genders}
           onChange={handleChange}
