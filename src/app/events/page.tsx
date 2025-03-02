@@ -16,6 +16,9 @@ import { useCookies } from "react-cookie";
 import { PersonAdd, Star } from "@mui/icons-material";
 import Work from "@mui/icons-material/Work";
 import Loading from "@/components/Loading";
+import GreyFooter from "@/components/GreyFooter";
+import SecondaryHeader from "@/components/SecondaryHeader";
+import Footer from "@/components/Footer";
 
 const Dashboard = () => {
 
@@ -107,64 +110,7 @@ const Dashboard = () => {
 
         </Grid>
       </Box>
-      {/* Modal for user options */}
-      {user_role ? null : (<Dialog open={openModal} onClose={handleCloseModal} sx={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: 2,
-        maxWidth: '90%', 
-        margin: 'auto', 
-      }}>
-        <DialogTitle sx={{ textAlign: 'center', padding: 2 }}>What are you looking for on SSH?</DialogTitle>
-        <DialogContent>
-          <Typography sx={{
-            textAlign: 'center'
-          }} variant="body1">Please select one of the options below:</Typography>
-        </DialogContent>
-        <DialogActions sx={{
-          flexDirection: { xs: 'column', md: 'row' },
-          justifyContent: { xs: 'center', md: 'space-evenly' }, 
-          alignItems: 'center' 
-        }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
-            <PersonAdd sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
-            <Button onClick={() => handleOptionClick("client")} sx={{
-              color: '#fff',
-              backgroundColor: '#977342',
-              '&:hover': {
-                color: '#fff',
-                backgroundColor: '#CEAB76',
-                border: '1px solid #CEAB76'
-              }
-            }}>Hire Talent</Button>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
-            <Work sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
-            <Button onClick={() => handleOptionClick("talent")} sx={{
-              color: '#fff',
-              backgroundColor: '#977342',
-              '&:hover': {
-                color: '#fff',
-                backgroundColor: '#CEAB76',
-                border: '1px solid #CEAB76'
-              }
-            }}>Find Work</Button>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: 1 }}>
-            <Star sx={{ fontSize: { xs: 30, md: 60 }, color: '#977342' }} />
-            <Button onClick={() => handleOptionClick("influencer")} sx={{
-              color: '#fff',
-              backgroundColor: '#977342',
-              '&:hover': {
-                color: '#fff',
-                backgroundColor: '#CEAB76',
-                border: '1px solid #CEAB76'
-              }
-            }}>I'm an Influencer</Button>
-          </Box>
-        </DialogActions>
-      </Dialog>)}
+      <GreyFooter />
     </Box>
   );
 };
