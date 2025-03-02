@@ -11,38 +11,105 @@ import { useRouter, redirect } from "next/navigation";
 import useEventStore from "@/state/use-event-store";
 import { useEvent } from "@/providers/event-provider";
 import { useCookies } from "react-cookie";
+import { uploadFileToS3 } from "@/services/s3UploadUtils";
 
 const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
     const { eventDetails, eventMedia } = useStore(useEventStore);
-    const [cookies] = useCookies(['event_id', 'username']);
+    const [cookies] = useCookies(['event_id', 'username', 'access']);
     const router = useRouter();
 
     const eventID = cookies['event_id'];
     const userName = cookies['username'];
+    const accessToken = cookies['access'];
 
     const { updateEvent } = useEvent();
 
     const handlePublish = async () => {
-        const eventData = {
+        try {
+          // Upload event photos
+          const eventPhotosNames = await Promise.all(
+            eventMedia?.eventPhotos?.map((photo, index) =>
+              uploadFileToS3(photo, `event_photo_${index}`, userName, accessToken)
+            )
+          );
+      
+          // Upload event poster
+          const eventPosterName = await uploadFileToS3(
+            eventMedia?.eventPoster,
+            "event_poster",
+            userName,
+            accessToken
+          );
+      
+          // Upload event video
+          const eventVideoName = await uploadFileToS3(
+            eventMedia?.eventPromoVideo,
+            "event_video",
+            userName,
+            accessToken
+          );
+      
+          // Create the updated event data object
+          const eventData = {
             ...eventDetails,
-            ...eventMedia,
+            event_photos: eventPhotosNames,
+            event_poster: eventPosterName,
+            event_video: eventVideoName,
             organizer: userName,
-            status: 'live'
+            status: "live",
+          };
+      
+          // Update the event
+          await updateEvent(eventID, eventData);
+      
+          // Redirect to the success page
+          redirect("/event-success");
+        } catch (error) {
+          console.error("Error during event publication:", error);
         }
-        await updateEvent(eventID, eventData);
-        redirect('/event-success');
-    }
-
-    const handleSaveDraft = async () => {
-        const eventData = {
+      };
+      
+      const handleSaveDraft = async () => {
+        try {
+          // Upload event photos
+          const eventPhotosNames = await Promise.all(
+            eventMedia?.eventPhotos?.map((photo, index) =>
+              uploadFileToS3(photo, `event_photo_${index}`, userName, accessToken)
+            )
+          );
+      
+          // Upload event poster
+          const eventPosterName = await uploadFileToS3(
+            eventMedia?.eventPoster,
+            "event_poster",
+            userName,
+            accessToken
+          );
+      
+          // Upload event video
+          const eventVideoName = await uploadFileToS3(
+            eventMedia?.eventPromoVideo,
+            "event_video",
+            userName,
+            accessToken
+          );
+    
+          const eventData = {
             ...eventDetails,
-            ...eventMedia,
-            status: 'draft'
+            event_photos: eventPhotosNames,
+            event_poster: eventPosterName,
+            event_video: eventVideoName,
+            status: "draft",
+          };
+      
+          await updateEvent(eventID, eventData);
+      
+          redirect("/dashboard");
+        } catch (error) {
+          console.error("Error during event draft save:", error);
         }
-        await updateEvent(eventID, eventData);
-        redirect('/dashboard');
-    }
+      };
 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
