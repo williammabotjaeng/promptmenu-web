@@ -38,7 +38,10 @@ const DeadlineHeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ p
     <Box sx={{ marginBottom: 4, mt: 4, width: { xs: '100%', md: '60%' }, position: 'relative' }}>
       {!isLargeScreen && (
         <IconButton onClick={toggleDrawer(true)} sx={{ position: 'absolute', top: 0, left: 0 }}>
-          <MenuIcon sx={{ color: '#977342' }} />
+          <MenuIcon sx={{ color: '#977342' }} /><Typography sx={{
+            fontSize: "10px",
+            color: "#977342"
+          }}>Check Progress</Typography>
         </IconButton>
       )}
 

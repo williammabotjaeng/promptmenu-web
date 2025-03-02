@@ -61,12 +61,6 @@ const EventOverview: React.FC = () => {
           }`}
         />
         <Box sx={{ marginTop: 2 }}>
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: "bold", color: "#977342" }}
-          >
-            Uploaded Media
-          </Typography>
           <MediaGrid />
         </Box>
       </Box>

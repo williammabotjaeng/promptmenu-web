@@ -92,6 +92,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     variant="outlined" 
                     sx={{
                         mr: 2, 
+                        ml: { xs: 2, sm: 2, md: 0 },
                         color: '#977342',
                         border: '1px solid #977342',
                         width: { xs: '120px', md: '160px' }, 
