@@ -108,14 +108,14 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
           const response = await csrfRestCall(
             `/portal/talent-assets/get-signed-urls/`,
             'POST',
-            { filenames: [
-              talentAssets.headshot,
-              talentAssets.governmentIdFront,
-              talentAssets.governmentIdBack,
-              talentAssets.portfolioPdf,
-              talentAssets.portfolioVideo,
-              ...talentAssets.additionalImages,
-            ] },
+            { filenames: {
+              headshot: talentAssets.headshot,
+              government_id_front: talentAssets.governmentIdFront,
+              government_id_back: talentAssets.governmentIdBack,
+              portfolio_pdf: talentAssets.portfolioPdf,
+              portfolio_video: talentAssets.portfolioVideo,
+              additional_images: [...talentAssets.additionalImages],
+             } },
             accessToken,
             csrfToken
           );
