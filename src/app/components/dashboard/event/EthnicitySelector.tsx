@@ -53,9 +53,7 @@ const EthnicitySelector: React.FC<EthnicitySelectorProps> = ({ label }) => {
 
       {/* Multi-Select Dropdown */}
       <FormControl fullWidth sx={{ bgcolor: "white", borderRadius: "8px" }}>
-        <InputLabel id="ethnicity-select-label">{label}</InputLabel>
         <Select
-          labelId="ethnicity-select-label"
           multiple
           value={ethnicities}
           onChange={handleChange}
