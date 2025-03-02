@@ -17,10 +17,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "@/providers/auth-providers";
 
 export const WhiteHeader: React.FC = () => {
-  const [cookies] = useCookies(["ssh_session_id", "username"]);
+  const [cookies] = useCookies(["ssh_session_id", "username", "user_role"]);
 
   const sessionID = cookies["ssh_session_id"];
   const userName = cookies["username"];
+  const userRole = cookies["user_role"];
 
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
@@ -31,191 +32,8 @@ export const WhiteHeader: React.FC = () => {
   };
 
   const handleLogout = () => {
-    console.log("Logout");
     logout();
   };
-
-  const menuItems = (
-    <Box
-      sx={{
-        width: 240,
-        padding: 2,
-        display: "flex",
-        flexDirection: "column",
-        gap: 2,
-      }}
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      {/* Header Section */}
-      <Typography
-        variant="h6"
-        sx={{
-          fontWeight: "bold",
-          color: "#977342",
-          textAlign: "center",
-          marginBottom: 2,
-        }}
-      >
-        {sessionID ? "Welcome, Jane Doe" : "Welcome to SSH"}
-      </Typography>
-
-      <Divider sx={{ marginBottom: 2 }} />
-
-      {/* Menu Items */}
-      {sessionID ? (
-        // Logged-in menu items
-        <>
-          <Link href="/talent" passHref>
-            <Button
-              sx={{
-                color: "#4B5563",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-              }}
-            >
-              Talents
-            </Button>
-          </Link>
-          <Link href="/dashboard" passHref>
-            <Button
-              sx={{
-                color: "#4B5563",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-              }}
-            >
-              Dashboard
-            </Button>
-          </Link>
-          <Link href="/portal" passHref>
-            <Button
-              sx={{
-                color: "#977342",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-              }}
-            >
-              Jane Doe
-            </Button>
-          </Link>
-          <Link href="/register" passHref>
-            <Button
-              sx={{
-                backgroundColor: "#977342",
-                color: "#ffffff",
-                justifyContent: "center",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-                "&:hover": {
-                  backgroundColor: "#CEAB76",
-                },
-              }}
-            >
-              Join Now
-            </Button>
-          </Link>
-        </>
-      ) : (
-        // Logged-out menu items
-        <>
-          <Link href="/talent" passHref>
-            <Button
-              sx={{
-                color: "#4B5563",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-                textAlign: "center",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              Talents
-            </Button>
-          </Link>
-          <Link href="/jobs" passHref>
-            <Button
-              sx={{
-                color: "#4B5563",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-                textAlign: "center",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              Jobs
-            </Button>
-          </Link>
-          <Link href="/about" passHref>
-            <Button
-              sx={{
-                color: "#4B5563",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-                textAlign: "center",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              About
-            </Button>
-          </Link>
-          <Link href="/contact" passHref>
-            <Button
-              sx={{
-                color: "#4B5563",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-                textAlign: "center",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              Contact
-            </Button>
-          </Link>
-          <Link href="/login" passHref>
-            <Button
-              sx={{
-                color: "#977342",
-                justifyContent: "flex-start",
-                textTransform: "none",
-                fontSize: "16px",
-                padding: "10px 16px",
-                textAlign: "center",
-                "&:hover": {
-                  backgroundColor: "#CEAB76",
-                  color: "#fff",
-                },
-              }}
-            >
-              Login
-            </Button>
-          </Link>
-        </>
-      )}
-    </Box>
-  );
 
   return (
     <AppBar
@@ -230,7 +48,7 @@ export const WhiteHeader: React.FC = () => {
       <Toolbar sx={{ justifyContent: "space-between", alignItems: "center" }}>
         {/* Logo and Title Section */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Link href={sessionID ? "/dashboard" : "/"} passHref>
+          <Link href={sessionID ? (userRole === "client" ? "/dashboard" : "/portal") : "/"} passHref>
             <Image
               src={SSHGoldLogo}
               alt="Logo"
@@ -278,7 +96,7 @@ export const WhiteHeader: React.FC = () => {
           {sessionID ? (
             // Logged-in menu items
             <>
-              <Link href="/talents" passHref>
+              <Link href="/jobs" passHref>
                 <Button
                   sx={{
                     color: "#4B5563",
@@ -287,7 +105,7 @@ export const WhiteHeader: React.FC = () => {
                     "&:hover": { color: "#fff" },
                   }}
                 >
-                  Talents
+                  Jobs
                 </Button>
               </Link>
               <Link href="/dashboard" passHref>
@@ -333,7 +151,7 @@ export const WhiteHeader: React.FC = () => {
           ) : (
             // Logged-out menu items
             <>
-              <Link href="/talent" passHref>
+              <Link href="/" passHref>
                 <Button
                   sx={{
                     color: "#4B5563",
@@ -342,7 +160,7 @@ export const WhiteHeader: React.FC = () => {
                     "&:hover": { color: "#fff" },
                   }}
                 >
-                  Talents
+                  Home
                 </Button>
               </Link>
               <Link href="/jobs" passHref>
@@ -424,7 +242,7 @@ export const WhiteHeader: React.FC = () => {
         {sessionID ? (
           // Logged-in menu items
           <>
-            <Link href="/talent" passHref>
+            <Link href="/jobs" passHref>
               <Button
                 sx={{
                   color: "#4B5563",
@@ -437,7 +255,7 @@ export const WhiteHeader: React.FC = () => {
                   },
                 }}
               >
-                Talents
+                Jobs
               </Button>
             </Link>
             <Link href="/dashboard" passHref>
@@ -488,7 +306,7 @@ export const WhiteHeader: React.FC = () => {
         ) : (
           // Logged-out menu items
           <>
-            <Link href="/talent" passHref>
+            <Link href="/" passHref>
               <Button
                 sx={{
                   color: "#4B5563",
@@ -501,7 +319,7 @@ export const WhiteHeader: React.FC = () => {
                   },
                 }}
               >
-                Talents
+                Home
               </Button>
             </Link>
             <Link href="/jobs" passHref>

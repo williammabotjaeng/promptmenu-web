@@ -14,8 +14,12 @@ import SSHGoldLogo from "@/assets/GoldLogo.png";
 import { useAuth } from "@/providers/auth-providers";
 
 const SecondaryHeader: React.FC = () => {
-  const [cookies] = useCookies(["ssh_session_id"]);
+
+  const [cookies] = useCookies(["ssh_session_id", "user_role"]);
+
   const sessionID = cookies["ssh_session_id"];
+  const userRole = cookies["user_role"];
+
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const { logout } = useAuth();
@@ -35,7 +39,7 @@ const SecondaryHeader: React.FC = () => {
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      <Link href="/" passHref>
+      <Link href={userRole === "client" ? "/dashboard" : "/portal"} passHref>
         <Button
           sx={{
             textTransform: "none",
@@ -225,7 +229,7 @@ const SecondaryHeader: React.FC = () => {
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
           {sessionID ? (
             <>
-              <Link href="/" passHref>
+              <Link href={userRole === "client" ? "/dashboard" : "/portal"} passHref>
                 <Button
                   sx={{
                     textTransform: "none",
