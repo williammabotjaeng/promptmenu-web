@@ -19,7 +19,7 @@ const CompanyContext = createContext<CompanyContextType | null>(null);
 
 export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const [cookies] = useCookies(['access', 'username']);
+  const [cookies, setCookie] = useCookies(['access', 'username', 'company_id']);
   const accessToken = cookies['access'];
   const userName = cookies['username'];
 
@@ -33,6 +33,7 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
     queryFn: async () => {
       const response = await restCall(`/dashboard/company/retrieve/?username=${userName}`, 'GET', {}, accessToken);
       console.log("Company Response", response);
+      setCookie('company_id', response?.id);
       setCompanyInfo(response);
       return response;
     },
