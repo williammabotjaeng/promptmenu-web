@@ -8,15 +8,27 @@ import SSHGoldLogo from '@/assets/GoldLogo.png';
 import Image from 'next/image';
 import ProfileDropdown from '@/components/dashboard/ProfileDropdown';
 import NotificationDropdown from '@/components/dashboard/NotificationDropdown';
+import { useEvent } from '@/providers/event-provider';
+import { useTalentProfile } from '@/providers/talent-profile-provider';
+import { useStore } from 'zustand';
+import useLocalRolesStore from '@/state/use-local-roles-store';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [cookies] = useCookies(['access', 'ssh_session_id']);
+  const [cookies] = useCookies(['access', 'ssh_session_id', 'firstname']);
   const { logout } = useAuth();
+
+  const { roles } = useStore(useLocalRolesStore);
 
   const router = useRouter();
 
+  const { signedUrls } = useTalentProfile();
+
+  const { getRoles } = useEvent();
+
   const accessToken = cookies?.access;
+
+  const firstName = cookies?.firstname;
 
   const sessionID = cookies?.ssh_session_id;
 
@@ -114,7 +126,7 @@ const Header = () => {
                 justifyContent: 'flex-end'
               }}>
                 <NotificationDropdown />
-                <ProfileDropdown />
+                <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstName[0]?.toUpperCase()} />
               </Grid>
           </Box>
         </Box>

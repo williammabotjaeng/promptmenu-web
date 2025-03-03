@@ -1,73 +1,122 @@
 "use client";
 
-import React from 'react';
-import { Box, Typography, Card, CardContent, Chip } from '@mui/material';
-import { Avatar } from '@mui/material';
-import { JobCardProps } from '@/types/Props/JobCardProps';
+import * as React from "react";
+import { Box, Button, Typography, Chip, Paper, Stack } from "@mui/material";
+import { PortalJobCardProps } from "@/types/Props/PortalJobCardProps";
 
-export function JobCard({ title, status, requirements, location, daysAgo, salary }: JobCardProps) {
+export const JobCard: React.FC<PortalJobCardProps> = ({
+  title,
+  location,
+  hourlyPay,
+  dailyPay,
+  projectPay,
+  genders,
+  ethnicities,
+  skill,
+  openings,
+  hardDeadline,
+  minAge,
+  maxAge
+}) => {
   return (
-    <Card 
-      sx={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        padding: 2, 
-        borderRadius: '12px', 
-        border: '1px solid', 
-        borderColor: 'transparent', 
-        backgroundColor: 'rgba(0, 0, 0, 0)', 
-        width: '100%',
-        '@media (max-width: 600px)': {
-          padding: 1,
-        },
+    <Paper
+      elevation={3}
+      sx={{
+        padding: 2,
+        backgroundColor: "white",
+        borderRadius: "8px",
+        marginBottom: 2,
       }}
     >
-      <CardContent sx={{ display: 'flex', flexDirection: 'column' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black', fontSize: { xs: '1rem', md: '1.25rem' } }}>
-            {title}
-          </Typography>
-          <Chip
-            label={status}
-            sx={{
-              backgroundColor: status === 'Active' ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 193, 7, 0.1)',
-              color: status === 'Active' ? 'green' : '#977342',
-              fontSize: '0.75rem',
-              borderRadius: '12px',
-            }}
-          />
-        </Box>
-        <Typography variant="body2" sx={{ color: 'gray', marginTop: 1, fontSize: { xs: '0.8rem', md: '1rem' } }}>
-          {requirements}
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 2 }}>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Avatar
-                alt=""
-                src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/bfd648982e2202b569290b273b752a8734fbaeed4ed0cf44d433879d7d47fc53?apiKey=7fae980a988640eea8add1e49a5d542e&"
-                sx={{ width: 16, height: 16 }}
-              />
-              <Typography variant="body2" sx={{ color: 'gray', fontSize: { xs: '0.8rem', md: '1rem' } }}>
-                {location}
-              </Typography>
-            </Box>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Avatar
-                alt=""
-                src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/38268533ff7e6c03e460a7cb8adde4c43d3657810b778b66e3f42f4017a7a52f?apiKey=7fae980a988640eea8add1e49a5d542e&"
-                sx={{ width: 16, height: 16 }}
-              />
-              <Typography variant="body2" sx={{ color: 'gray', fontSize: { xs: '0.8rem', md: '1rem' } }}>
-                {daysAgo} days ago
-              </Typography>
-            </Box>
+      <Box display="flex" flexDirection="column">
+        {/* Title and Location */}
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", md: "row" }}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <Box display="flex" flexDirection="column" flexGrow={1}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: "black",
+                fontWeight: "bold",
+                fontSize: { xs: "1.2rem", md: "1.5rem" },
+              }}
+            >
+              {title} at {location}
+            </Typography>
           </Box>
-          <Typography variant="h6" sx={{ color: 'gray', fontSize: { xs: '1rem', md: '1.25rem' } }}>
-            {salary}
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "black",
+              color: "white",
+              marginTop: { xs: 2, md: 0 },
+              width: { xs: "100%", md: "auto" },
+            }}
+          >
+            Apply Now
+          </Button>
+        </Box>
+
+        {/* Pay Details */}
+        <Box mt={2}>
+          <Typography variant="body2" sx={{ color: "#4B5563" }}>
+            <strong>Pay:</strong> {hourlyPay ? `$${hourlyPay}/hour` : ""}
+            {dailyPay ? ` | $${dailyPay}/day` : ""}
+            {projectPay ? ` | $${projectPay}/project` : ""}
           </Typography>
         </Box>
-      </CardContent>
-    </Card>
+
+        {/* Preferred Genders and Ethnicities */}
+        <Box mt={2}>
+          <Typography variant="body2" sx={{ color: "#4B5563" }}>
+            <strong>Preferred Genders:</strong> {genders?.join(", ") || "Any"}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "#4B5563", mt: 1 }}>
+            <strong>Preferred Ethnicities:</strong>{" "}
+            {ethnicities?.join(", ") || "Any"}
+          </Typography>
+        </Box>
+
+        {/* Skills and Openings */}
+        <Box mt={2}>
+          <Typography variant="body2" sx={{ color: "#4B5563" }}>
+            <strong>Skills:</strong> {skill || "Not specified"}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "#4B5563", mt: 1 }}>
+            <strong>Openings:</strong> {openings || "Not specified"}
+          </Typography>
+          <Typography variant="body2" sx={{ color: "#4B5563", mt: 1 }}>
+            <strong>Age Range:</strong> {`${minAge} - ${maxAge}` || "Not specified"}
+          </Typography>
+        </Box>
+
+        {/* Hard Deadline */}
+        <Box mt={2}>
+          <Typography variant="body2" sx={{ color: "#4B5563" }}>
+            <strong>Application Deadline:</strong>{" "}
+            {hardDeadline || "Not specified"}
+          </Typography>
+        </Box>
+
+        {/* Ethnicities as Chips */}
+        <Box display="flex" gap={1} mt={2} flexWrap="wrap">
+          {ethnicities?.map((ethnicity, index) => (
+            <Chip
+              key={index}
+              label={ethnicity}
+              sx={{
+                backgroundColor: index === 0 ? "#CEAB76" : "#977342",
+                color: "white",
+                margin: "2px",
+              }}
+            />
+          ))}
+        </Box>
+      </Box>
+    </Paper>
   );
-}
+};
