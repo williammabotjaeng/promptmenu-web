@@ -22,7 +22,7 @@ const RoleRequirement: React.FC = () => {
   }
 
   const handleLocation = (event: any) => {
-    setOpenings(event?.target?.value);
+    setLocation(event?.target?.value);
     setEventRole({
       ...eventRole,
       location: event?.target?.value

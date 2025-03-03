@@ -3,12 +3,16 @@ import GenderSelector from "./GenderSelector";
 import AgeSelector from "./AgeSelector";
 import EthnicitySelector from "./EthnicitySelector";
 import { Box, Typography } from "@mui/material";
+import { useStore } from "zustand";
+import useEventStore from "@/state/use-event-store";
 
 const DemographicsForm = () => {
   const [minAge, setMinAge] = React.useState<number | string>("");
   const [maxAge, setMaxAge] = React.useState<number | string>("");
   const [minAgeError, setMinAgeError] = React.useState<string>("");
   const [maxAgeError, setMaxAgeError] = React.useState<string>("");
+
+  const { eventRole, setEventRole } = useStore(useEventStore);
 
   const validateAges = (
     newMinAge: number | string,
@@ -58,11 +62,19 @@ const DemographicsForm = () => {
   const handleMinAgeChange = (newMinAge: number | string) => {
     setMinAge(newMinAge);
     validateAges(newMinAge, maxAge);
+    setEventRole({
+      ...eventRole,
+      minAge: newMinAge
+    });
   };
 
   const handleMaxAgeChange = (newMaxAge: number | string) => {
     setMaxAge(newMaxAge);
     validateAges(minAge, newMaxAge);
+    setEventRole({
+      ...eventRole,
+      maxAge: newMaxAge
+    });
   };
 
   return (

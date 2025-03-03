@@ -26,8 +26,8 @@ export interface EventRole {
   description: string;
   location: string;
   genders: string[];
-  minAge: number;
-  maxAge: number;
+  minAge: number | string;
+  maxAge: number | string;
   ethnicities: string[];
   hourlyPay: number;
   dailyPay: number;

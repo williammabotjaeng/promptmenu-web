@@ -37,8 +37,12 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
       newErrors.projectPay = "Project rate cannot be less than daily rate.";
     }
 
+    if (dailyPay !== "" && hourlyPay !== "" && Number(dailyPay) < Number(hourlyPay)) {
+      newErrors.dailyPay = "Daily rate cannot be less than hourly rate.";
+    }
+
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
+    return Object.keys(newErrors).length === 0; 
   };
 
   const handleContinue = () => {
