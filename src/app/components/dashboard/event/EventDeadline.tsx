@@ -73,7 +73,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
           sx={{
             px: 4,
             py: 2,
-            mr: 4,
+            mr: { xs: null, sm: null, md: 4 },
             color: "#977342",
             backgroundColor: "#fff",
             "&:hover": {
@@ -90,6 +90,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
           sx={{
             backgroundColor: "#977342",
             color: "white",
+            mt: { xs: 2, sm: 2, md: 0 },
             "&:hover": {
               backgroundColor: "#fff",
               border: "1px solid #977342",
