@@ -10,6 +10,7 @@ import { useStore } from "zustand";
 import { useRouter, redirect } from "next/navigation";
 import useEventStore from "@/state/use-event-store";
 import { useEvent } from "@/providers/event-provider";
+import { useCompany } from "@/providers/company-provider";
 import { useCookies } from "react-cookie";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 
@@ -19,7 +20,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     const [cookies] = useCookies([
       'event_id', 'username', 
       'access', 'event_video',
-      'event_photos','event_poster'
+      'event_photos','event_poster',
+      'company_id'
     ]);
 
     const router = useRouter();
@@ -27,11 +29,14 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     const eventID = cookies['event_id'];
     const userName = cookies['username'];
     const accessToken = cookies['access'];
-    const eventPhotos = Array?.from(cookies['event_photos'])
-    const eventVideo = cookies['event_video']
-    const eventPoster = cookies['event_poster']
+    const eventPhotos = Array?.from(cookies['event_photos']);
+    const eventVideo = cookies['event_video'];
+    const eventPoster = cookies['event_poster'];
+    const companyId = cookies['company_id'];
 
     const { updateEvent } = useEvent();
+
+    const { updateCompany, company, fetchCompany } = useCompany();
 
     const handlePublish = async () => {
         try {
@@ -70,6 +75,15 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
       
           // Update the event
           await updateEvent(eventID, eventData);
+
+          fetchCompany();
+
+          const companyData = {
+            ...company,
+            total_jobs: eventDetails?.roles?.length
+          }
+
+          await updateCompany(companyId, companyData);
       
           // Redirect to the success page
           router.push("/event-success");

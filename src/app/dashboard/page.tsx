@@ -28,7 +28,7 @@ import { PersonAdd, Star } from "@mui/icons-material";
 import Work from "@mui/icons-material/Work";
 import Loading from "@/components/Loading";
 import useLocalRolesStore from "@/state/use-local-roles-store";
-import { useTalentProfile } from "@/providers/talent-profile-provider";
+import { useCompany } from "@/providers/company-provider";
 import { useEvent } from "@/providers/event-provider";
 import moment from "moment";
 import ApplicationsIcon from "@/assets/applications-icon.svg";
@@ -46,25 +46,27 @@ const Dashboard = () => {
     "firstname",
   ]);
 
+  const { fetchCompany, company } = useCompany();
+
   const [statsData, setStatsData] = useState([
     {
       title: "Total Jobs",
-      value: "248",
+      value: 0,
       icon: TotalJobsIcon?.src
     },
     {
       title: "Active Talents",
-      value: "1,842",
+      value: 0,
       icon: ActiveTalentsIcon?.src
     },
     {
       title: "Applications",
-      value: "3,642",
+      value: 0,
       icon: ApplicationsIcon?.src
     },
     {
       title: "Hired",
-      value: "892",
+      value: 0,
       icon: HiredIcon?.src
     }
   ]);
@@ -79,8 +81,6 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
 
   const { roles } = useStore(useLocalRolesStore);
-
-  const { signedUrls } = useTalentProfile();
 
   const { getRoles } = useEvent();
 
@@ -102,6 +102,9 @@ const Dashboard = () => {
     console.log("User Role:", user_role);
     setLoading(true);
     getRoles();
+    fetchCompany();
+
+    console.log("Company:", company);
 
     if (user_role === "None") {
       console.log("User role:", typeof user_role);
@@ -126,7 +129,7 @@ const Dashboard = () => {
     }
 
     setLoading(false);
-  }, [user_role, router, cookies]);
+  }, [user_role, router, cookies, company]);
 
   if (loading) return <Loading />;
 
