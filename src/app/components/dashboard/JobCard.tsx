@@ -3,6 +3,7 @@
 import * as React from "react";
 import { Box, Button, Typography, Chip, Paper, Stack } from "@mui/material";
 import { PortalJobCardProps } from "@/types/Props/PortalJobCardProps";
+import { useCookies } from "react-cookie";
 
 export const JobCard: React.FC<PortalJobCardProps> = ({
   title,
@@ -18,6 +19,13 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
   minAge,
   maxAge
 }) => {
+
+  const [cookies] = useCookies([
+    "user_role"
+  ]);
+
+  const userRole = cookies?.user_role;
+
   return (
     <Paper
       elevation={3}
@@ -57,7 +65,7 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
               width: { xs: "100%", md: "auto" },
             }}
           >
-            Apply Now
+            {userRole === 'client' ? 'Edit Job' : `Apply Now`}
           </Button>
         </Box>
 
