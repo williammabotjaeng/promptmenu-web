@@ -188,7 +188,7 @@ const Portal: React.FC = () => {
                         skill={job?.role?.skill}
                         hardDeadline={
                           job.role.hardDeadline
-                            ? `Deadline in ${moment.duration(moment(job.role.hardDeadline).diff(moment())).humanize()}`
+                            ? `Closes in ${moment.duration(moment(job.role.hardDeadline).diff(moment())).humanize()}`
                             : "No Deadline"
                         }
                         openings={job?.role?.openings}
