@@ -16,7 +16,7 @@ import {
 import { StatCard } from "@/components/dashboard/StatCard";
 import { JobCard } from "@/components/dashboard/JobCard";
 import { ActivityItem } from "@/components/dashboard/ActivityItem";
-import { recentJobs, statsData, recentActivities } from "@/data/index";
+import {  recentActivities } from "@/data/index";
 import { useAuth } from "@/providers/auth-providers";
 import Header from "@/components/dashboard/Header";
 import { useEffect, useState } from "react";
@@ -31,6 +31,10 @@ import useLocalRolesStore from "@/state/use-local-roles-store";
 import { useTalentProfile } from "@/providers/talent-profile-provider";
 import { useEvent } from "@/providers/event-provider";
 import moment from "moment";
+import ApplicationsIcon from "@/assets/applications-icon.svg";
+import HiredIcon from "@/assets/hired-icon.svg";
+import ActiveTalentsIcon from "@/assets/active-talents-icon.svg";
+import TotalJobsIcon from "@/assets/total-jobs-icon.svg";
 
 const Dashboard = () => {
   const { user, updateUser } = useAuth();
@@ -40,6 +44,29 @@ const Dashboard = () => {
     "user_role",
     "onboarding_presented",
     "firstname",
+  ]);
+
+  const [statsData, setStatsData] = useState([
+    {
+      title: "Total Jobs",
+      value: "248",
+      icon: TotalJobsIcon?.src
+    },
+    {
+      title: "Active Talents",
+      value: "1,842",
+      icon: ActiveTalentsIcon?.src
+    },
+    {
+      title: "Applications",
+      value: "3,642",
+      icon: ApplicationsIcon?.src
+    },
+    {
+      title: "Hired",
+      value: "892",
+      icon: HiredIcon?.src
+    }
   ]);
 
   let user_role = cookies["user_role"];
