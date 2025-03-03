@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 
 interface LocalRolesState {
-  roles: Array<string>; 
-  setRoles: (roles: Array<string>) => void; 
+  roles: Array<any>; 
+  setRoles: (roles: Array<any>) => void; 
   clearRoles: () => void; 
 }
 
 const useLocalRolesStore = create<LocalRolesState>((set) => ({
   roles: [], 
-  setRoles: (roles: Array<string>) => set({ roles }), 
+  setRoles: (roles: Array<any>) => set({ roles }), 
   clearRoles: () => set({ roles: [] }), 
 }));
 

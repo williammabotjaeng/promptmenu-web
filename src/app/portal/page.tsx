@@ -178,7 +178,24 @@ const Portal: React.FC = () => {
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
                 <Box sx={{ marginTop: 2 }}>
                   {roles?.map((job, index) => (
-                    <JobCard key={index} title={job?.role?.title} location={job?.role?.location} ethnicities={job?.role?.ethnicities} />
+                    <JobCard 
+                        key={index} 
+                        title={job?.role?.title} 
+                        location={job?.role?.location} 
+                        ethnicities={job?.role?.ethnicities}
+                        hourlyPay={job?.role?.hourlyPay}
+                        dailyPay={job?.role?.dailyPay}
+                        skill={job?.role?.skill}
+                        hardDeadline={
+                          job.role.hardDeadline
+                            ? `Deadline in ${moment.duration(moment(job.role.hardDeadline).diff(moment())).humanize()}`
+                            : "No Deadline"
+                        }
+                        openings={job?.role?.openings}
+                        genders={job?.role?.genders}
+                        maxAge={job?.role?.maxAge}
+                        minAge={job?.role?.minAge}
+                        />
                   ))}
                 </Box>
                 <Button sx={{ marginTop: 2, backgroundColor: 'white', color: '#977342' }}>
