@@ -15,7 +15,7 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
   const [hourlyPay, setHourlyPay] = useState<number | string>(eventRole?.hourlyPay || "");
   const [dailyPay, setDailyPay] = useState<number | string>(eventRole?.dailyPay || "");
   const [projectPay, setProjectPay] = useState<number | string>(eventRole?.projectPay || "");
-  const [paymentTerms, setPaymentTerms] = useState<number | string>(eventRole?.paymentTerms || "");
+  const [paymentTerms, setPaymentTerms] = useState<string>(eventRole?.paymentTerms || "");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const validateRates = () => {
@@ -52,6 +52,7 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
         hourlyPay: Number(hourlyPay),
         dailyPay: Number(dailyPay),
         projectPay: Number(projectPay),
+        paymentTerms: paymentTerms
       });
       setActiveStep(activeStep + 1);
     }
