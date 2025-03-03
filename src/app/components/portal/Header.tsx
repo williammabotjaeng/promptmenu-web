@@ -9,12 +9,15 @@ import { useAuth } from '@/providers/auth-providers';
 import { useRouter } from 'next/navigation';
 import ProfileDropdown from './ProfileDropdown';
 import NotificationDropdown from './NotificationDropdown';
+import { useTalentProfile } from '@/providers/talent-profile-provider';
 
 const Header: React.FC = () => {
   const [cookies] = useCookies(["access", "firstname", "lastname"]);
   const accessToken = cookies['access'];
   const firstName = cookies['firstname'] || 'User';
   const { logout } = useAuth(); 
+
+  const { signedUrls } = useTalentProfile();
 
   const router = useRouter();
 
@@ -41,7 +44,7 @@ const Header: React.FC = () => {
         {/* Menu on the right */}
         <Box sx={{ display: 'flex', gap: '20px' }}>
           <NotificationDropdown notifications={null} />
-          <ProfileDropdown />
+          <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstName[0]?.toUpperCase()} />
           <Link href="/browse-jobs" passHref>
             <Button 
               sx={{ 
