@@ -106,6 +106,19 @@ const Dashboard = () => {
 
     console.log("Company:", company);
 
+    if (company) {
+      console.log("Company:", company);
+
+      setStatsData((prevStats) =>
+        prevStats.map((stat) =>
+          stat.title === "Total Jobs"
+            ? { ...stat, value: company.total_jobs || 0 }
+            : stat
+        )
+      );
+    }
+    
+
     if (user_role === "None") {
       console.log("User role:", typeof user_role);
       console.log("Check:", !user_role);
