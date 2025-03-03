@@ -11,11 +11,21 @@ const RoleRequirement: React.FC = () => {
 
   const [openings, setOpenings] = useState(eventRole?.openings || 0);
 
+  const [location, setLocation] = useState(eventRole?.location || "");
+
   const handleOpeningsChange = (event: any) => {
     setOpenings(event?.target?.value);
     setEventRole({
       ...eventRole,
       openings: event?.target?.value
+    });
+  }
+
+  const handleLocation = (event: any) => {
+    setOpenings(event?.target?.value);
+    setEventRole({
+      ...eventRole,
+      location: event?.target?.value
     });
   }
 
@@ -89,6 +99,34 @@ const RoleRequirement: React.FC = () => {
                 },
               }}
               aria-label="Number of People Needed"
+            />
+          </Box>
+          <Box sx={{ flexDirection: "column", mt: 2 }}>
+            <Typography
+              variant="subtitle2"
+              sx={{
+                py: 1,
+                color: "black",
+                fontWeight: "bold",
+              }}
+            >
+              Location (City/Town)
+            </Typography>
+            <TextField
+              type="text"
+              id="location"
+              variant="outlined"
+              value={location}
+              onChange={handleLocation}
+              sx={{
+                mt: 1,
+                width: "100%",
+                borderRadius: "8px",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "8px",
+                },
+              }}
+              aria-label="Location (City/Town)"
             />
           </Box>
         </Box>
