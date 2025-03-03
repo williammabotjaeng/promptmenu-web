@@ -19,7 +19,7 @@ const CompanyContext = createContext<CompanyContextType | null>(null);
 
 export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(['access', 'username']);
+  const [cookies, setCookie] = useCookies(['access', 'username', 'company_id']);
   const accessToken = cookies['access'];
   const userName = cookies['username'];
 
@@ -33,6 +33,7 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
     queryFn: async () => {
       const response = await restCall(`/dashboard/company/retrieve/?username=${userName}`, 'GET', {}, accessToken);
       console.log("Company Response", response);
+      setCookie('company_id', response?.id);
       setCompanyInfo(response);
       return response;
     },
@@ -41,8 +42,9 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const updateCompanyMutation = useMutation({
     mutationKey: ['update_company'],
-    mutationFn: async ({ companyId, data }: { companyId: string; data: CompanyData }) => {
-      return await restCall(`/dashboard/company/update/${companyId}/`, 'PUT', data, accessToken);
+    mutationFn: async ({ username, data }: { username: string; data: CompanyData }) => {
+      console.log("ID and Data:", username, data);
+      return await restCall(`/dashboard/company/update/${username}/`, 'PUT', data, accessToken);
     },
     onSuccess: (data) => {
       console.log('Company updated successfully', data);
@@ -56,8 +58,8 @@ export const CompanyProvider: React.FC<{ children: React.ReactNode }> = ({ child
     await fetchCompanyMutation.refetch();
   };
 
-  const updateCompany = async (companyId: string, data: CompanyData) => {
-    await updateCompanyMutation.mutateAsync({ companyId, data });
+  const updateCompany = async (username: string, data: CompanyData) => {
+    await updateCompanyMutation.mutateAsync({ username, data });
   };
 
   return (

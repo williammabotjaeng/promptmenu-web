@@ -20,7 +20,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     const [cookies] = useCookies([
       'event_id', 'username', 
       'access', 'event_video',
-      'event_photos','event_poster'
+      'event_photos','event_poster',
+      'company_id'
     ]);
 
     const router = useRouter();
@@ -31,6 +32,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     const eventPhotos = Array?.from(cookies['event_photos']);
     const eventVideo = cookies['event_video'];
     const eventPoster = cookies['event_poster'];
+    const companyID = cookies['company_id'];
 
     const { updateEvent } = useEvent();
 
@@ -78,10 +80,11 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
 
           const companyData = {
             ...company,
-            total_jobs: eventDetails?.roles?.length
+            total_jobs: eventDetails?.roles?.length,
+            username: userName
           }
 
-          await updateCompany(userName, companyData);
+          await updateCompany(companyID, companyData);
       
           // Redirect to the success page
           router.push("/event-success");

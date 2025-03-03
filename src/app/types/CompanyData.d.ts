@@ -9,6 +9,7 @@ export interface CompanyData {
     whatsapp_number?: string | null; 
     payment_method?: string | null; 
     website?: string | null; 
+    total_jobs?: number | string;
     social_media_links?: Record<string, string> | null; 
     created_at?: string; 
     updated_at?: string; 

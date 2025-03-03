@@ -51,7 +51,7 @@ const Dashboard = () => {
   const [statsData, setStatsData] = useState([
     {
       title: "Total Jobs",
-      value: 0,
+      value: company?.total_jobs,
       icon: TotalJobsIcon?.src
     },
     {
