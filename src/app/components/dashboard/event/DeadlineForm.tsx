@@ -2,10 +2,17 @@ import * as React from "react";
 import { DateTimePicker } from "./DeadlineDateTimePicker";
 import { Box, TextField, Typography } from "@mui/material";
 import { useStore } from "zustand";
+import { useCookies } from "react-cookie";
 import useEventStore from "@/state/use-event-store";
 
 export const DeadlineForm: React.FC = () => {
   const { eventRole, setEventRole } = useStore(useEventStore);
+
+  const [cookies] = useCookies([
+    'company_id'
+  ]);
+
+  const companyID = cookies['company_id'];
 
   const [formData, setFormData] = React.useState({
     softDeadline: eventRole.softDeadline || "",
@@ -20,6 +27,7 @@ export const DeadlineForm: React.FC = () => {
     setEventRole({
       ...eventRole,
       ...updatedFormData,
+      company_id: companyID
     });
   };
 

@@ -37,6 +37,7 @@ export interface EventRole {
   hardDeadline: string;
   softDeadline: string;
   notes: string;
+  company_id: string | number;
   created_at: string;
 }
 
@@ -90,7 +91,8 @@ const useEventStore = create<EventStoreState>((set) => ({
     softDeadline: '',
     notes: '',
     created_at: '',
-    location: ''
+    location: '',
+    company_id: ''
   },
 
   setEventDetails: (updates) =>
@@ -155,7 +157,8 @@ const useEventStore = create<EventStoreState>((set) => ({
         softDeadline: '',
         notes: '',
         created_at: '',
-        location: ''
+        location: '',
+        company_id: ''
       },
     }),
 }));

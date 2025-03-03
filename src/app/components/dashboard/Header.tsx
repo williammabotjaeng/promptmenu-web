@@ -32,6 +32,8 @@ const Header = () => {
 
   const sessionID = cookies?.ssh_session_id;
 
+  const firstLetterUC = firstName[0]?.toUpperCase();
+
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
   };
@@ -126,7 +128,7 @@ const Header = () => {
                 justifyContent: 'flex-end'
               }}>
                 <NotificationDropdown />
-                <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstName[0]?.toUpperCase()} />
+                <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstLetterUC} />
               </Grid>
           </Box>
         </Box>

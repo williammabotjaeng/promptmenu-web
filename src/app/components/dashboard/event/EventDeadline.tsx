@@ -15,6 +15,8 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
   const { eventRole, eventDetails, setEventDetails, clearEventRole } = useStore(useEventStore);
 
   const handleContinue = () => {
+
+    
   
     setEventDetails({
       ...eventDetails,
