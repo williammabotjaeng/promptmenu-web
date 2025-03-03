@@ -4,6 +4,9 @@ import * as React from "react";
 import { Box, Button, Typography, Chip, Paper, Stack } from "@mui/material";
 import { PortalJobCardProps } from "@/types/Props/PortalJobCardProps";
 import { useCookies } from "react-cookie";
+import { useRouter } from "next/navigation";
+import { useEvent } from "@/providers/event-provider";
+import { useAuth } from "@/providers/auth-providers";
 
 export const JobCard: React.FC<PortalJobCardProps> = ({
   title,
@@ -24,7 +27,21 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
     "user_role"
   ]);
 
+  const { updateEvent } = useEvent();
+  const { updateUser } = useAuth();
+
+  const router = useRouter();
+
   const userRole = cookies?.user_role;
+
+  const jobCardHandler = () => {
+    if (userRole === 'client')
+    {
+      router.push(`/edit-role/{roleId}`)
+    } else {
+      
+    }
+  }
 
   return (
     <Paper
@@ -64,6 +81,7 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
               marginTop: { xs: 2, md: 0 },
               width: { xs: "100%", md: "auto" },
             }}
+            onClick={jobCardHandler}
           >
             {userRole === 'client' ? 'Edit Job' : `Apply Now`}
           </Button>

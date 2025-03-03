@@ -9,10 +9,12 @@ export const DeadlineForm: React.FC = () => {
   const { eventRole, setEventRole } = useStore(useEventStore);
 
   const [cookies] = useCookies([
-    'company_id'
+    'company_id',
+    'event_id'
   ]);
 
   const companyID = cookies['company_id'];
+  const eventID = cookies['event_id'];
 
   const [formData, setFormData] = React.useState({
     softDeadline: eventRole.softDeadline || "",
@@ -26,8 +28,9 @@ export const DeadlineForm: React.FC = () => {
 
     setEventRole({
       ...eventRole,
-      ...updatedFormData,
-      company_id: companyID
+      company_id: companyID,
+      event: eventID,
+      ...updatedFormData
     });
   };
 

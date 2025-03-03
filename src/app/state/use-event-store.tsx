@@ -38,6 +38,7 @@ export interface EventRole {
   softDeadline: string;
   notes: string;
   company_id: string | number;
+  event: string | number;
   created_at: string;
 }
 
@@ -92,7 +93,8 @@ const useEventStore = create<EventStoreState>((set) => ({
     notes: '',
     created_at: '',
     location: '',
-    company_id: ''
+    company_id: '',
+    event: ''
   },
 
   setEventDetails: (updates) =>
@@ -158,7 +160,8 @@ const useEventStore = create<EventStoreState>((set) => ({
         notes: '',
         created_at: '',
         location: '',
-        company_id: ''
+        company_id: '',
+        event: ''
       },
     }),
 }));
