@@ -8,12 +8,19 @@ import {
   CardMedia,
   Box,
 } from "@mui/material";
+import { useCookies } from "react-cookie";
 
 const EventCard = ({ event }) => {
   // Function to create a 30-character excerpt of the description
   const getExcerpt = (text, length = 300) => {
     return text.length > length ? text.substring(0, length) + "..." : text;
   };
+
+  const [cookies] = useCookies([
+    'user_role'
+  ]);
+
+  const userRole = cookies?.user_role;
 
   return (
     <Card
@@ -76,8 +83,12 @@ const EventCard = ({ event }) => {
           </Box>
 
           {/* Learn More Button */}
-          <Button size="small" color="primary" variant="contained">
-            Learn More
+          <Button size="small" color="primary" variant="contained" sx={{
+            '&:hover': {
+              color: 'white'
+            }
+          }}>
+            {userRole === 'client' ? 'Manage Event' : 'Make Enquiry'}
           </Button>
         </Box>
       </Box>
