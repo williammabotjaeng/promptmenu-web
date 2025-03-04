@@ -19,6 +19,7 @@ import Loading from "@/components/Loading";
 import GreyFooter from "@/components/GreyFooter";
 import SecondaryHeader from "@/components/SecondaryHeader";
 import Footer from "@/components/Footer";
+import { EventCard } from "@/components/dashboard/event/EventCard";
 
 const Events = () => {
 
@@ -99,15 +100,13 @@ const Events = () => {
                 <Box sx={{ marginTop: 2 }}>
                   {recentJobs.map((job, index) => (
                     <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
-                      <JobCard {...job} />
+                      <EventCard {...job} />
                     </Box>
                   ))}
                 </Box>
               </CardContent>
             </Card>
           </Grid>
-
-
         </Grid>
       </Box>
       <GreyFooter />

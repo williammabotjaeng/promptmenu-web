@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEvent } from "@/providers/event-provider";
 import { useAuth } from "@/providers/auth-providers";
 
-export const JobCard: React.FC<PortalJobCardProps> = ({
+export const EventCard: React.FC<PortalJobCardProps> = ({
   title,
   location,
   hourlyPay,

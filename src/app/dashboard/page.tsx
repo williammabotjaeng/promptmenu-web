@@ -189,25 +189,25 @@ const Dashboard = () => {
                   {roles?.map((job, index) => (
                     <JobCard
                       key={index}
-                      title={job?.role?.title}
-                      location={job?.role?.location}
-                      ethnicities={job?.role?.ethnicities}
-                      hourlyPay={job?.role?.hourlyPay}
-                      dailyPay={job?.role?.dailyPay}
-                      skill={job?.role?.skill}
+                      title={job?.title}
+                      location={job?.location}
+                      ethnicities={job?.ethnicities}
+                      hourlyPay={job?.hourly_pay}
+                      dailyPay={job?.daily_pay}
+                      skill={job?.skill}
                       hardDeadline={
-                        job.role.hardDeadline
+                        job?.application_deadline
                           ? `Closes in ${moment
                               .duration(
-                                moment(job.role.hardDeadline).diff(moment())
+                                moment(job?.application_deadline).diff(moment())
                               )
                               .humanize()}`
                           : "No Deadline"
                       }
-                      openings={job?.role?.openings}
-                      genders={job?.role?.genders}
-                      maxAge={job?.role?.maxAge}
-                      minAge={job?.role?.minAge}
+                      openings={job?.openings}
+                      genders={job?.genders}
+                      maxAge={job?.max_age}
+                      minAge={job?.min_age}
                     />
                   ))}
                 </Box>
