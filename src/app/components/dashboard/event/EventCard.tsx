@@ -1,148 +1,88 @@
-"use client";
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+  CardMedia,
+  Box,
+} from "@mui/material";
 
-import * as React from "react";
-import { Box, Button, Typography, Chip, Paper, Stack } from "@mui/material";
-import { PortalJobCardProps } from "@/types/Props/PortalJobCardProps";
-import { useCookies } from "react-cookie";
-import { useRouter } from "next/navigation";
-import { useEvent } from "@/providers/event-provider";
-import { useAuth } from "@/providers/auth-providers";
-
-export const EventCard: React.FC<PortalJobCardProps> = ({
-  title,
-  location,
-  hourlyPay,
-  dailyPay,
-  projectPay,
-  genders,
-  ethnicities,
-  skill,
-  openings,
-  hardDeadline,
-  minAge,
-  maxAge
-}) => {
-
-  const [cookies] = useCookies([
-    "user_role"
-  ]);
-
-  const { updateEvent } = useEvent();
-  const { updateUser } = useAuth();
-
-  const router = useRouter();
-
-  const userRole = cookies?.user_role;
-
-  const jobCardHandler = () => {
-    if (userRole === 'client')
-    {
-      router.push(`/edit-role/{roleId}`)
-    } else {
-      
-    }
-  }
+const EventCard = ({ event }) => {
+  // Function to create a 30-character excerpt of the description
+  const getExcerpt = (text, length = 300) => {
+    return text.length > length ? text.substring(0, length) + "..." : text;
+  };
 
   return (
-    <Paper
-      elevation={3}
+    <Card
       sx={{
-        padding: 2,
-        backgroundColor: "white",
-        borderRadius: "8px",
-        marginBottom: 2,
+        display: "flex", // Horizontal layout
+        width: "100%", // Full width
+        margin: "16px 0",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+        borderRadius: "12px",
+        overflow: "hidden", // Prevent content overflow
       }}
     >
-      <Box display="flex" flexDirection="column">
-        {/* Title and Location */}
+      {/* Event Poster */}
+      {event?.event_poster && (
+        <CardMedia
+          component="img"
+          sx={{ width: "200px", height: "auto" }} // Fixed width for the poster
+          image={event.event_poster}
+          alt={event.title}
+        />
+      )}
+
+      {/* Event Details */}
+      <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+        <CardContent>
+          <Typography
+            gutterBottom
+            variant="h5"
+            component="div"
+            sx={{ fontWeight: "bold" }}
+          >
+            {event?.title}
+          </Typography>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ marginBottom: "8px", textWrap: 'wrap' }}
+          >
+            {getExcerpt(event?.description)}
+          </Typography>
+        </CardContent>
+
+        {/* Bottom Section: Start Time, Location, and Button */}
         <Box
-          display="flex"
-          flexDirection={{ xs: "column", md: "row" }}
-          justifyContent="space-between"
-          alignItems="center"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between", // Push content to the edges
+            alignItems: "center",
+            padding: "16px",
+          }}
         >
-          <Box display="flex" flexDirection="column" flexGrow={1}>
-            <Typography
-              variant="h6"
-              sx={{
-                color: "black",
-                fontWeight: "bold",
-                fontSize: { xs: "1.2rem", md: "1.5rem" },
-              }}
-            >
-              {title} in {location}
+          {/* Start Time and Location */}
+          <Box>
+            <Typography variant="body2" color="text.secondary">
+              <strong>Location:</strong> {event.location.city || "N/A"}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              <strong>Start Time:</strong> {event.start_time}
             </Typography>
           </Box>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "black",
-              color: "white",
-              marginTop: { xs: 2, md: 0 },
-              width: { xs: "100%", md: "auto" },
-            }}
-            onClick={jobCardHandler}
-          >
-            {userRole === 'client' ? 'Edit Job' : `Apply Now`}
+
+          {/* Learn More Button */}
+          <Button size="small" color="primary" variant="contained">
+            Learn More
           </Button>
         </Box>
-
-        {/* Pay Details */}
-        <Box mt={2}>
-          <Typography variant="body2" sx={{ color: "#4B5563" }}>
-            <strong>Pay:</strong> {hourlyPay ? `$${hourlyPay}/hour` : ""}
-            {dailyPay ? ` | $${dailyPay}/day` : ""}
-            {projectPay ? ` | $${projectPay}/project` : ""}
-          </Typography>
-        </Box>
-
-        {/* Preferred Genders and Ethnicities */}
-        <Box mt={2}>
-          <Typography variant="body2" sx={{ color: "#4B5563" }}>
-            <strong>Preferred Genders:</strong> {genders?.join(", ") || "Any"}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "#4B5563", mt: 1 }}>
-            <strong>Preferred Ethnicities:</strong>{" "}
-            {ethnicities?.join(", ") || "Any"}
-          </Typography>
-        </Box>
-
-        {/* Skills and Openings */}
-        <Box mt={2}>
-          <Typography variant="body2" sx={{ color: "#4B5563" }}>
-            <strong>Skills:</strong> {skill || "Not specified"}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "#4B5563", mt: 1 }}>
-            <strong>Openings:</strong> {openings || "Not specified"}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "#4B5563", mt: 1 }}>
-            <strong>Age Range:</strong> {`${minAge} - ${maxAge}` || "Not specified"}
-          </Typography>
-        </Box>
-
-        {/* Hard Deadline */}
-        <Box mt={2}>
-          <Typography variant="body2" sx={{ color: "#4B5563" }}>
-            <strong>Application Deadline:</strong>{" "}
-            {hardDeadline || "Not specified"}
-          </Typography>
-        </Box>
-
-        {/* Ethnicities as Chips */}
-        <Box display="flex" gap={1} mt={2} flexWrap="wrap">
-          {ethnicities?.map((ethnicity, index) => (
-            <Chip
-              key={index}
-              label={ethnicity}
-              sx={{
-                backgroundColor: index === 0 ? "#CEAB76" : "#977342",
-                color: "white",
-                margin: "2px",
-              }}
-            />
-          ))}
-        </Box>
       </Box>
-    </Paper>
+    </Card>
   );
 };
+
+export default EventCard;

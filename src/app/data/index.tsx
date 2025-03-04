@@ -24,6 +24,36 @@ export const recentJobs = [
       salary: "AED 3,000"
     }
   ] as const;
+
+  export const EventsData = [
+    {
+      title: "Dubai Mall Fashion Show",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      location: { city: "Dubai", venue: "Dubai Mall" },
+      start_time: "2025-03-15T18:00:00",
+      end_time: "2025-03-15T21:00:00",
+      event_poster: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/fbf9227c806ec79d0dbbdfafe208eba075157780299caaa1a8b6d38ae92d7bb2?apiKey=7fae980a988640eea8add1e49a5d542e&", // Example image URL
+      organizer: "diva_dubai",
+    },
+    {
+      title: "Abu Dhabi Film Festival",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      location: { city: "Abu Dhabi", venue: "Emirates Palace" },
+      start_time: "2025-04-01T10:00:00",
+      end_time: "2025-04-05T22:00:00",
+      event_poster: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/6d4ea6afd27eeddebc5444567a15ad003cc941092ba50e084353ed1c4175d08b?apiKey=7fae980a988640eea8add1e49a5d542e&", 
+      organizer: "film_abu_dhabi",
+    },
+    {
+      title: "Luxury Lifestyle Photography Workshop",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      location: { city: "Dubai", venue: "Burj Khalifa" },
+      start_time: "2025-03-20T09:00:00",
+      end_time: "2025-03-20T17:00:00",
+      event_poster: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/450d75a498d37b15e4c4012bf98de3efaa1a12b96b6bbb9c6192e3a6f12b41c4?apiKey=7fae980a988640eea8add1e49a5d542e&", 
+      organizer: "lux_photography",
+    },
+  ];
   
   export const statsData = [
     {

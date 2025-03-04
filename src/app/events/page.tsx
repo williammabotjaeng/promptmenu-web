@@ -5,7 +5,7 @@ import { Box, Grid, Card, CardContent, Typography, Button, DialogTitle, Dialog, 
 import { StatCard } from "@/components/dashboard/StatCard";
 import { JobCard } from "@/components/dashboard/JobCard";
 import { ActivityItem } from "@/components/dashboard/ActivityItem";
-import { recentJobs, statsData, recentActivities } from "@/data/index";
+import { EventsData, statsData, recentActivities } from "@/data/index";
 import { useAuth } from "@/providers/auth-providers";
 import Header from "@/components/dashboard/Header"; 
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ import Loading from "@/components/Loading";
 import GreyFooter from "@/components/GreyFooter";
 import SecondaryHeader from "@/components/SecondaryHeader";
 import Footer from "@/components/Footer";
-import { EventCard } from "@/components/dashboard/event/EventCard";
+import EventCard from "@/components/dashboard/event/EventCard";
 
 const Events = () => {
 
@@ -98,9 +98,9 @@ const Events = () => {
                   <Button sx={{ color: 'gray' }}>View All</Button>
                 </Box>
                 <Box sx={{ marginTop: 2 }}>
-                  {recentJobs.map((job, index) => (
+                  {EventsData.map((event, index) => (
                     <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
-                      <EventCard {...job} />
+                      <EventCard event={event} />
                     </Box>
                   ))}
                 </Box>
