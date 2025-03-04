@@ -9,11 +9,13 @@ import { EventData } from '@/types/EventData';
 import { useStore } from 'zustand';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store';
 import useLocalRolesStore from '@/state/use-local-roles-store';
+import useUserEventStore from '@/state/use-user-events-store';
 
 interface EventContextType {
   event: EventData | null;
   fetchEvent: () => Promise<void>;
   getRoles: () => Promise<void>;
+  getUserEvents: () => Promise<void>;
   createEvent: (eventData) => Promise<void>;
   updateEvent: (eventId: string, data: any) => Promise<void>;
 }
@@ -26,6 +28,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const accessToken = cookies['access'];
   const userName = cookies['username'];
   const { setRoles } = useStore(useLocalRolesStore);
+  const { setUserEvents } = useStore(useUserEventStore);
 
   const fetchEventMutation = useQuery({
     queryKey: ['fetch_event'],
@@ -66,6 +69,23 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     },
   });
 
+  const userEventsMutation = useMutation({
+    mutationKey: ["user_events"],
+    mutationFn: async () => {
+      const response = await restCall("/dashboard/user-events/", "GET", {}, accessToken);
+      console.log("User Events:", response);
+      setUserEvents(response);
+      return response;
+    },
+    onSuccess: (data) => {
+      setRoles(data);
+      console.log("Events fetched successfully", data);
+    },
+    onError: (error) => {
+      console.error("Error fetching User Events: ", error);
+    },
+  });
+
   const getRolesMutation = useMutation({
     mutationKey: ["get_roles"],
     mutationFn: async () => {
@@ -81,6 +101,10 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       console.error("Error fetching roles: ", error);
     },
   });
+
+  const getUserEvents = async () => {
+    return await userEventsMutation.mutateAsync();
+  };
 
   const getRoles = async () => {
     return await getRolesMutation.mutateAsync();
@@ -99,7 +123,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   return (
-    <EventContext.Provider value={{ event: fetchEventMutation.data, fetchEvent, createEvent, updateEvent, getRoles }}>
+    <EventContext.Provider value={{ event: fetchEventMutation.data, fetchEvent, createEvent, updateEvent, getRoles, getUserEvents }}>
       {children}
     </EventContext.Provider>
   );

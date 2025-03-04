@@ -9,6 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import { useCookies } from "react-cookie";
+import moment from "moment";
 
 const EventCard = ({ event }) => {
   // Function to create a 30-character excerpt of the description
@@ -21,6 +22,10 @@ const EventCard = ({ event }) => {
   ]);
 
   const userRole = cookies?.user_role;
+
+  const formatDateTime = (dateTimeString) => {
+    return moment(dateTimeString).format('MMMM D, YYYY [at] h:mm A');
+  };
 
   return (
     <Card
@@ -78,7 +83,7 @@ const EventCard = ({ event }) => {
               <strong>Location:</strong> {event.location.city || "N/A"}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              <strong>Start Time:</strong> {event.start_time}
+              <strong>Start Time:</strong> {formatDateTime(event.start_time)}
             </Typography>
           </Box>
 
