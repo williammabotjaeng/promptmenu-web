@@ -27,8 +27,8 @@ const EventPage = () => {
 
   useEffect(() => {
     setLoading(false);
-    console.log("Event Object:", Array.from(cookies?.current_event));
-    setEvent(Array.from(cookies?.current_event));
+    console.log("Event Object:", cookies?.current_event);
+    setEvent(cookies?.current_event);
   }, [])
 
   if (loading) return <Loading />;

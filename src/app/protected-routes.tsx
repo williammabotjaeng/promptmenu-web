@@ -27,9 +27,21 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const user_role = cookies?.user_role;
   const accessRoute = user_role === 'client' ? '/dashboard' : '/portal';
 
+  const isDynamicRouteMatch = (pathname: string, regexPatterns: RegExp[]): boolean => {
+    return regexPatterns.some((regex) => regex.test(pathname));
+  };
+
+  const dynamicPrivateRoutes: RegExp[] = [
+    /^\/event\/\d+$/, 
+  ];
+
+  const matchRoute = (pathname: string, routes: RegExp[]): boolean => {
+    return routes.some((route) => route.test(pathname));
+  };
+
   useEffect(() => {
     setRoutesResolved(false);
-
+  
     if (sessionID && sessionID !== 'undefined') {
       if (publicRoutes.includes(pathname.toLowerCase())) {
         console.log("Redirecting from public route to dashboard");
@@ -39,7 +51,10 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
         console.log("On a hybrid route");
         setRoutesResolved(true);
         router.push(pathname);
-      } else if (privateRoutes.includes(pathname.toLowerCase())) {
+      } else if (
+        privateRoutes.includes(pathname.toLowerCase()) || // Check static private routes
+        isDynamicRouteMatch(pathname.toLowerCase(), dynamicPrivateRoutes) // Check dynamic private routes
+      ) {
         console.log("On a private route");
         setRoutesResolved(true);
         router.push(pathname);
@@ -48,20 +63,26 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
         setRoutesResolved(true);
         router.push(accessRoute);
       }
-    } else if ((!sessionID || sessionID === 'undefined') && (publicRoutes.includes(pathname.toLocaleLowerCase()) || hybridRoutes.includes(pathname.toLocaleLowerCase()))) {
+    } else if (
+      (!sessionID || sessionID === 'undefined') &&
+      (publicRoutes.includes(pathname.toLowerCase()) || hybridRoutes.includes(pathname.toLowerCase()))
+    ) {
       console.log("Redirecting to login");
       setRoutesResolved(true);
       router.push(pathname);
-    } else if ((!sessionID || sessionID === 'undefined') && privateRoutes.includes(pathname)) {
+    } else if (
+      (!sessionID || sessionID === 'undefined') &&
+      (privateRoutes.includes(pathname.toLowerCase()) || isDynamicRouteMatch(pathname.toLowerCase(), dynamicPrivateRoutes))
+    ) {
       setRoutesResolved(true);
       router.push('/login');
-    } 
-
+    }
+  
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 300); 
-
-    return () => clearTimeout(timer); 
+    }, 300);
+  
+    return () => clearTimeout(timer);
   }, [sessionID, pathname, router]);
 
   if (loading || !routesResolved || verifyOtpIsLoading) return <Loading />;

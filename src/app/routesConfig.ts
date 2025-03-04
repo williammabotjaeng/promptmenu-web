@@ -1,24 +1,28 @@
 export const privateRoutes: string[] = [
-      '/dashboard', 
-      '/portal', 
-      '/post-event', 
-      '/talent-onboarding', 
-      '/influencer-onboarding', 
-      '/company-profile',
-      '/company-success',
-      '/talent-success',
-      '/event-success',
-      '/events',
-      '/messages',
-      '/event',
-      '/event/',
-      '/event/1'
+    '/dashboard',
+    '/portal',
+    '/post-event',
+    '/talent-onboarding',
+    '/influencer-onboarding',
+    '/company-profile',
+    '/company-success',
+    '/talent-success',
+    '/event-success',
+    '/events',
+    '/messages',
+    '/event', 
   ];
-
+  
   export const publicRoutes: string[] = [
-      '/', '/login', '/register', '/otp'
+    '/',
+    '/login',
+    '/register',
+    '/otp',
   ];
-
+  
   export const hybridRoutes: string[] = [
-      '/about', '/about', '/jobs', '/talent', '/contact'
+    '/about',
+    '/jobs',
+    '/talent',
+    '/contact',
   ];
