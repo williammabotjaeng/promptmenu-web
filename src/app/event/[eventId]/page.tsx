@@ -12,6 +12,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz"; 
 import DeleteIcon from "@mui/icons-material/Delete"; 
 import { EventMedia } from "@/components/dashboard/event/page/EventMedia";
+import EventRoles from "@/components/dashboard/event/page/EventRoles";
 
 const EditEventPage = () => {
   const router = useRouter();
@@ -21,10 +22,17 @@ const EditEventPage = () => {
   const [currentPage, setCurrentPage] = useState(0); 
 
   const handleDown = () => {
+     if (currentPage >= 2)
+     {
+       setCurrentPage(0);
+     }
      setCurrentPage(currentPage + 1);
   };
 
   const handleUp = () => {
+    if (currentPage <= 0) {
+      setCurrentPage(2);
+    }
      setCurrentPage(currentPage - 1);
   };
 
@@ -163,6 +171,7 @@ const EditEventPage = () => {
       handleContinue={handleContinue}
     />}
     {currentPage === 1 && <EventMedia />}
+    {currentPage === 2 && <EventRoles />}
 
      {/* Floating Navigation Button */}
      {currentPage > 0 && <Fab
@@ -181,7 +190,7 @@ const EditEventPage = () => {
       >
         {<ArrowUpwardIcon />}
       </Fab>}
-      <Fab
+      {currentPage < 2 && <Fab
         color="primary"
         onClick={handleDown}
         sx={{
@@ -196,7 +205,7 @@ const EditEventPage = () => {
         }}
       >
         {<ArrowDownwardIcon />}
-      </Fab>
+      </Fab>}
     </>
   );
 };
