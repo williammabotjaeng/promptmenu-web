@@ -3,10 +3,22 @@ import { Box, Button, Typography } from "@mui/material";
 import { RoleCard } from "@/components/dashboard/event/RoleCard";
 import useEventStore from "@/state/use-event-store";
 import { useStore } from "zustand";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/navigation";
 import moment from "moment";
+import { useState } from "react";
 
 const RolesOverview: React.FC = () => {
   const { eventDetails } = useStore(useEventStore);
+
+  const [currentEvent, setCurrentEvent] = useState();
+
+  const [cookies] = useCookies([
+    'current_event',
+    'event_id'
+  ]);
+
+  const router = useRouter();
 
   const progressSteps = [
     { label: "Create Event", hasIcon: true },
@@ -15,8 +27,13 @@ const RolesOverview: React.FC = () => {
   ];
 
   const handleAddRole = () => {
-
+      let eventID = cookies?.event_id;
+      router.push(`/add-role/${eventID}`)
   }
+
+  React.useEffect(() => {
+    setCurrentEvent(cookies?.current_event);
+  }, [cookies]);
 
   return (
     <Box

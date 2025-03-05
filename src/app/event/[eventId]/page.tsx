@@ -171,7 +171,7 @@ const EditEventPage = () => {
       handleContinue={handleContinue}
     />}
     {currentPage === 1 && <EventMedia />}
-    {currentPage === 2 && <EventRoles />}
+    {currentPage === 2 && <EventRoles event={event} />}
 
      {/* Floating Navigation Button */}
      {currentPage > 0 && <Fab

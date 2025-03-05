@@ -11,6 +11,7 @@ export const privateRoutes: string[] = [
     '/events',
     '/messages',
     '/event', 
+    '/add-role'
   ];
   
   export const publicRoutes: string[] = [

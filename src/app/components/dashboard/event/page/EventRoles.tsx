@@ -11,7 +11,11 @@ import SaveIcon from "@mui/icons-material/Save";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import RolesOverview from "./RolesOverview";
 
-const EventRoles: React.FC = () => {
+interface EventRolesProps {
+    event: any;
+}
+
+const EventRoles: React.FC<EventRolesProps> = ({ event }) => {
 
     const { eventDetails, eventMedia } = useStore(useEventStore);
     const [cookies] = useCookies([
