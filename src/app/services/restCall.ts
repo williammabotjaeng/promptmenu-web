@@ -13,7 +13,7 @@ const axiosInstance = axios.create({
   baseURL: API_URL,
 });
 
-export const restCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH', body: any = null, accessToken: string) => {
+export const restCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', body: any = null, accessToken: string) => {
     
     const response = await axiosInstance({
     url: APP_ENV === 'local' ? `https://localhost:8000${endpoint}` : `https://api.staffingsolutionshub.com${endpoint}`,
