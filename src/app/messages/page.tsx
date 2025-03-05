@@ -14,11 +14,13 @@ import useAuthStore from "@/state/use-auth-store";
 import { useRouter, redirect } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { PersonAdd, Star } from "@mui/icons-material";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Work from "@mui/icons-material/Work";
 import Loading from "@/components/Loading";
 import GreyFooter from "@/components/GreyFooter";
 import SecondaryHeader from "@/components/SecondaryHeader";
 import Footer from "@/components/Footer";
+import { useMessage } from "@/providers/message-provider";
 
 const Messages = () => {
 
@@ -32,12 +34,18 @@ const Messages = () => {
 
   const onboardingPresented = cookies['onboarding_presented'] || false;
 
+  const { messages } = useMessage();
+
   const [openModal, setOpenModal] = useState(true); 
   const [loading, setLoading] = useState(false);
 
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  const handleCreateMessage = () => {
+    router.push(`/create-message`);
+  }
 
   const handleOptionClick = (option: 'client' | 'talent' | 'influencer') => {
     console.log("User selected:", option);
@@ -94,15 +102,33 @@ const Messages = () => {
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Your Messages</Typography>
-                  <Button sx={{ color: 'gray' }}>View All</Button>
+                  <Button onClick={handleCreateMessage} sx={{ 
+                    color: 'gray',
+                    '&:hover': {
+                      color: 'white'
+                    }
+                  }}>Create Message</Button>
                 </Box>
-                <Box sx={{ marginTop: 2 }}>
-                  {dummyMessages.map((message, index) => (
+                {messages?.length < 1 ? <Box sx={{ marginTop: 2 }}>
+                  {messages?.map((message, index) => (
                     <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
                       <MessageCard {...message} />
                     </Box>
                   ))}
-                </Box>
+                </Box> : <Box sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 5
+                }}>
+                      <Typography variant="h6">No Messages Yet</Typography><DeleteForeverIcon sx={{
+                        fontSize: '32px',
+                        color: '#982d28'
+                      }} />
+                      <br />
+
+                  </Box>}
               </CardContent>
             </Card>
           </Grid>
