@@ -5,6 +5,7 @@ import { Box, Typography, Paper, Chip, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 interface MessageCardProps {
+  id: string | number;
   sender: string;
   recipient: string;
   content: string;
@@ -13,6 +14,7 @@ interface MessageCardProps {
 }
 
 export const MessageCard: React.FC<MessageCardProps> = ({
+  id,
   sender,
   recipient,
   content,
@@ -28,6 +30,7 @@ export const MessageCard: React.FC<MessageCardProps> = ({
 
   const handleReadMessage = () => {
     console.log("Reading Content:", content);
+    router.push(`/message/${id}`)
   }
 
   return (
@@ -80,7 +83,9 @@ export const MessageCard: React.FC<MessageCardProps> = ({
         </Box>
 
         {/* Message Content */}
-        <Box onClick={handleReadMessage} mt={2}>
+        <Box onClick={handleReadMessage} sx={{
+            cursor: 'pointer'
+        }} mt={2}>
           <Typography variant="body2" sx={{ color: "#4B5563" }}>
             {content}
           </Typography>

@@ -147,6 +147,7 @@ export const recentJobs = [
 
  export const dummyMessages = [
     {
+      id: 1,
       sender: "John Doe",
       recipient: "Jane Smith",
       content: "Hey Jane, just wanted to check in about the project status. Let me know if you need anything!",
@@ -154,6 +155,7 @@ export const recentJobs = [
       isRead: false,
     },
     {
+      id: 2,
       sender: "Alice Johnson",
       recipient: "Bob Brown",
       content: "Hi Bob, the meeting has been rescheduled to tomorrow at 10 AM. Please confirm your availability.",
@@ -161,6 +163,7 @@ export const recentJobs = [
       isRead: true,
     },
     {
+      id: 3,
       sender: "Charlie Green",
       recipient: "Diana White",
       content: "Hello Diana, I’ve attached the files you requested. Let me know if you need anything else.",
@@ -168,6 +171,7 @@ export const recentJobs = [
       isRead: false,
     },
     {
+      id: 4,
       sender: "Eve Black",
       recipient: "Frank Blue",
       content: "Hi Frank, just a reminder about the deadline for the report submission. Let me know if you need an extension.",
@@ -175,6 +179,7 @@ export const recentJobs = [
       isRead: true,
     },
     {
+      id: 5,
       sender: "Grace Yellow",
       recipient: "Hank Orange",
       content: "Hey Hank, can we catch up later today to discuss the new project requirements?",

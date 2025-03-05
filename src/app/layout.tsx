@@ -11,6 +11,7 @@ import { TalentProfileProvider } from "@/providers/talent-profile-provider";
 import { EventProvider } from "@/providers/event-provider";
 import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
+import { MessageProvider } from "./providers/message-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
+            <MessageProvider>
               <CompanyProvider>
                 <EventProvider>
                   <TalentProfileProvider>
@@ -62,6 +64,7 @@ export default function RootLayout({
                   </TalentProfileProvider>
                 </EventProvider>
               </CompanyProvider>
+            </MessageProvider>
           </QueryClientProvider>
         </ThemeProvider>
       </body>
