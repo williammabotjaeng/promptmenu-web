@@ -4,6 +4,7 @@ import * as React from 'react';
 import { DateTimePicker } from '@/components/dashboard/event/DateTimePicker';
 import { CheckboxItem } from '@/components/dashboard/event/CheckBoxItem';
 import { TextField, Button, Box, Typography, Paper } from '@mui/material';
+import SaveIcon from "@mui/icons-material/Save"; 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { PostEventStepProps } from '@/types/Props/PostEventStepProps';
 import useEventStore from '@/state/use-event-store';
@@ -162,7 +163,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
             onClick={handleContinue}
           >
             Save Section
-            <ArrowForwardIcon sx={{ marginLeft: '8px' }} />
+            <SaveIcon sx={{ marginLeft: '8px' }} />
           </Button>
         </Box>
       </Paper>

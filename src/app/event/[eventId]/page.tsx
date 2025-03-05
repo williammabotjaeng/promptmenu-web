@@ -20,11 +20,11 @@ const EditEventPage = () => {
   const [currentPage, setCurrentPage] = useState(0); 
 
   const handleDown = () => {
-
+     setCurrentPage(currentPage + 1);
   };
 
   const handleUp = () => {
-
+     setCurrentPage(currentPage - 1);
   };
 
   const [eventTitle, setEventTitle] = useState("");
@@ -161,10 +161,31 @@ const EditEventPage = () => {
       error={error}
       handleContinue={handleContinue}
     />}
+    {currentPage === 1 && <EventDetails
+      eventTitle={eventTitle}
+      setEventTitle={setEventTitle}
+      description={description}
+      setDescription={setDescription}
+      location={location}
+      setLocation={setLocation}
+      startDateTime={startDateTime}
+      setStartDateTime={setStartDateTime}
+      endDateTime={endDateTime}
+      setEndDateTime={setEndDateTime}
+      mealsProvided={mealsProvided}
+      setMealsProvided={setMealsProvided}
+      transportProvided={transportProvided}
+      setTransportProvided={setTransportProvided}
+      accommodationProvided={accommodationProvided}
+      setAccommodationProvided={setAccommodationProvided}
+      error={error}
+      handleContinue={handleContinue}
+    />}
+
      {/* Floating Navigation Button */}
      {currentPage > 0 && <Fab
         color="primary"
-        onClick={handleDown}
+        onClick={handleUp}
         sx={{
           position: "fixed",
           bottom: 96,
