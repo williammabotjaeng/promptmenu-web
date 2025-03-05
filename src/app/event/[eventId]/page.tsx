@@ -1,130 +1,157 @@
 "use client";
 
-import * as React from "react";
-import {
-  Box,
-  Card,
-  CardContent,
-  Typography,
-  Button,
-  Grid,
-} from "@mui/material";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useStore } from "zustand";
+import React, { useState, useEffect } from "react";
+import { EventDetails } from "@/components/dashboard/event/page/EventDetails"; 
 import { useCookies } from "react-cookie";
-import useUserEventsStore from "@/state/use-user-events-store";
-import Loading from "@/components/Loading";
-import Header from "@/components/dashboard/Header";
-import GreyFooter from "@/components/GreyFooter";
+import { useRouter } from "next/navigation";
+import { WhiteHeader } from "@/components/WhiteHeader";
+import { Box, Button, Typography } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save"; 
+import SwapHorizIcon from "@mui/icons-material/SwapHoriz"; 
+import DeleteIcon from "@mui/icons-material/Delete"; 
 
-const EventPage = () => {
+const EditEventPage = () => {
   const router = useRouter();
-  const { userEvents } = useStore(useUserEventsStore); 
-  const [event, setEvent] = useState(null); 
-  const [loading, setLoading] = useState(true);
-  const [cookies] = useCookies(['current_event']);
+  const [cookies] = useCookies(["current_event"]);
+  const [event, setEvent] = useState(null);
+
+  // Form state
+  const [eventTitle, setEventTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [startDateTime, setStartDateTime] = useState(null);
+  const [endDateTime, setEndDateTime] = useState(null);
+  const [mealsProvided, setMealsProvided] = useState(false);
+  const [transportProvided, setTransportProvided] = useState(false);
+  const [accommodationProvided, setAccommodationProvided] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    setLoading(false);
-    console.log("Event Object:", cookies?.current_event);
-    setEvent(cookies?.current_event);
-  }, [])
+    if (cookies?.current_event) {
+      const currentEvent = cookies.current_event;
+      setEvent(currentEvent);
+      setEventTitle(currentEvent.title || "");
+      setDescription(currentEvent.description || "");
+      setLocation(currentEvent.location || "");
+      setStartDateTime(currentEvent.start_time || null);
+      setEndDateTime(currentEvent.end_time || null);
+      setMealsProvided(currentEvent.meals_provided || false);
+      setTransportProvided(currentEvent.transport_provided || false);
+      setAccommodationProvided(currentEvent.accommodation_provided || false);
+    } else {
+      router.push("/events");
+    }
+  }, [cookies, router]);
 
-  if (loading) return <Loading />;
+  const handleContinue = () => {
+    if (!eventTitle || !description || !location) {
+      setError("Please fill in all required fields.");
+      return;
+    }
+    setError("");
+    console.log("Event Details Saved:", {
+      eventTitle,
+      description,
+      location,
+      startDateTime,
+      endDateTime,
+      mealsProvided,
+      transportProvided,
+      accommodationProvided,
+    });
+    // Proceed to the next step
+  };
 
-  if (!event) {
-    return (
+  if (!event) return null;
+
+  return (
+    <>
+    <WhiteHeader />
+    <Box sx={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#fff",
+      padding: 4
+    }}>
+      <Typography variant="h5">Event Management</Typography>
+      <br />
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-          backgroundColor: "white",
+          flexDirection: "row",
+          gap: 2, 
         }}
       >
-        <Typography variant="h4" color="error">
-          Event not found
-        </Typography>
+        {/* Save Event Button */}
         <Button
           variant="contained"
-          color="primary"
-          onClick={() => router.push("/events")}
-          sx={{ marginTop: 2 }}
+          startIcon={<SaveIcon />}
+          sx={{
+            backgroundColor: "#000", // Default Material-UI blue
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#111",
+            },
+          }}
         >
-          Back to Events
+          Save Event
+        </Button>
+
+        {/* Change Status Button */}
+        <Button
+          variant="contained"
+          startIcon={<SwapHorizIcon />}
+          sx={{
+            backgroundColor: "#808000",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#909000",
+            },
+          }}
+        >
+          Change Status
+        </Button>
+
+        {/* Delete Event Button */}
+        <Button
+          variant="contained"
+          startIcon={<DeleteIcon />}
+          sx={{
+            backgroundColor: "#982d28", 
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#d44a3b",
+            },
+          }}
+        >
+          Delete Event
         </Button>
       </Box>
-    );
-  }
-
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        height: "100%",
-        overflow: "hidden",
-        backgroundColor: "white",
-      }}
-    >
-      <Header />
-
-      <Box sx={{ flexGrow: 1, padding: { xs: 2, md: 3 } }}>
-        <Card sx={{ padding: 2, borderRadius: "12px", boxShadow: 1 }}>
-          <CardContent>
-            <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-              {event.title}
-            </Typography>
-            <Typography variant="body1" sx={{ marginBottom: 2 }}>
-              {event.description}
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  Location:
-                </Typography>
-                <Typography variant="body2">{event.location}</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  Date & Time:
-                </Typography>
-                <Typography variant="body2">
-                  {/* {formatDateTime(event.start_time)} - {formatDateTime(event.end_time)} */}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  Organizer:
-                </Typography>
-                <Typography variant="body2">{event.organizer}</Typography>
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-                  Status:
-                </Typography>
-                <Typography variant="body2">{event.event_status}</Typography>
-              </Grid>
-            </Grid>
-          </CardContent>
-        </Card>
-      </Box>
-
-      <GreyFooter />
     </Box>
+    <EventDetails
+      eventTitle={eventTitle}
+      setEventTitle={setEventTitle}
+      description={description}
+      setDescription={setDescription}
+      location={location}
+      setLocation={setLocation}
+      startDateTime={startDateTime}
+      setStartDateTime={setStartDateTime}
+      endDateTime={endDateTime}
+      setEndDateTime={setEndDateTime}
+      mealsProvided={mealsProvided}
+      setMealsProvided={setMealsProvided}
+      transportProvided={transportProvided}
+      setTransportProvided={setTransportProvided}
+      accommodationProvided={accommodationProvided}
+      setAccommodationProvided={setAccommodationProvided}
+      error={error}
+      handleContinue={handleContinue}
+    />
+    </>
   );
 };
 
-// Helper function to format date and time
-const formatDateTime = (dateTimeString: string) => {
-  const date = new Date(dateTimeString);
-  return new Intl.DateTimeFormat("en-US", {
-    dateStyle: "long",
-    timeStyle: "short",
-  }).format(date);
-};
-
-export default EventPage;
+export default EditEventPage;
