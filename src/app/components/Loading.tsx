@@ -28,9 +28,10 @@ const styles = {
     animation: 'spin 1s linear infinite',
   },
   loadingText: {
-    color: '##977342',
+    color: '#977342',
     marginTop: '20px',
     fontSize: '24px',
+    fontFamily: 'Inter',
     fontWeight: 'bold',
     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',
   },

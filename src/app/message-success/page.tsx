@@ -1,0 +1,89 @@
+"use client";
+
+import { useEffect } from "react";
+import { Box, Typography, Button, useMediaQuery } from "@mui/material";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { useCookies } from "react-cookie";
+import ConstructionIcon from "@mui/icons-material/Construction";
+
+const SupportMessageSuccess: React.FC = () => {
+  const router = useRouter();
+  const [cookies] = useCookies(["user_role"]);
+
+  const userRole = cookies?.user_role;
+
+  // Use media queries to detect screen size
+  const isTabletOrMobile = useMediaQuery("(max-width: 768px)");
+
+  const handleNavigateToDashboard = () => {
+    router.push("/dashboard");
+  };
+
+  return (
+    <>
+      {/* Centered Content */}
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+        textAlign="center"
+        bgcolor="#f5f5f5"
+      >
+        {/* Animated Gears/Construction Icon */}
+        <motion.div
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          <ConstructionIcon
+            sx={{ fontSize: 100, color: "orange", marginBottom: 2 }}
+          />
+        </motion.div>
+
+        {/* Success Message */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <Typography
+            variant="h4"
+            sx={{ fontSize: isTabletOrMobile ? "22px" : null }}
+            fontWeight="bold"
+            gutterBottom
+          >
+            Your Message Has Been Sent to Support!
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{ fontSize: isTabletOrMobile ? "12px" : null }}
+            color="textSecondary"
+          >
+            Our team is working on your request. Please hold tight while we process it.
+          </Typography>
+        </motion.div>
+
+        {/* Proceed to Dashboard Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1, ease: "easeOut" }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleNavigateToDashboard}
+            sx={{ marginTop: 4 }}
+          >
+            Back to Dashboard
+          </Button>
+        </motion.div>
+      </Box>
+    </>
+  );
+};
+
+export default SupportMessageSuccess;
