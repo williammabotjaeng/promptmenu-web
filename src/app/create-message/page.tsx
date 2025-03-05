@@ -46,6 +46,7 @@ const CreateMessage = () => {
         sender: "currentUser", 
         recipient: selectedUser,
         content: messageContent,
+        sent: true
       });
       setMessageContent(""); 
       setSelectedUser(null); 

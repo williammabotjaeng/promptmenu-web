@@ -13,6 +13,7 @@ interface MessageData {
   content: string;
   timestamp: string;
   isRead: boolean;
+  sent: boolean;
 }
 
 interface MessageContextType {
@@ -37,6 +38,7 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     queryKey: ["fetch_messages"],
     queryFn: async () => {
       const response = await restCall("/accounts/messages/", "GET", {}, accessToken);
+      console.log("Messages:", response);
       return response;
     },
     enabled: false, 
@@ -44,7 +46,7 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const sendMessageMutation = useMutation({
     mutationKey: ["send_message"],
-    mutationFn: async (data: Omit<MessageData, "id" | "timestamp" | "isRead">) => {
+    mutationFn: async (data: Omit<MessageData, "id" | "timestamp" | "isRead" | "sent">) => {
       return await restCall("/accounts/messages/send/", "POST", data, accessToken);
     },
     onSuccess: () => {
@@ -76,7 +78,7 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     await fetchMessagesQuery.refetch();
   };
 
-  const sendMessage = async (data: Omit<MessageData, "id" | "timestamp" | "isRead">) => {
+  const sendMessage = async (data: Omit<MessageData, "id" | "timestamp" | "isRead" | "sent">) => {
     await sendMessageMutation.mutateAsync(data);
   };
 

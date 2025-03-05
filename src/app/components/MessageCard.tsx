@@ -3,6 +3,7 @@
 import React from "react";
 import { Box, Typography, Paper, Chip, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useCookies } from "react-cookie";
 
 interface MessageCardProps {
   id: string | number;
@@ -11,6 +12,7 @@ interface MessageCardProps {
   content: string;
   timestamp: string;
   isRead: boolean;
+  sent: boolean;
 }
 
 export const MessageCard: React.FC<MessageCardProps> = ({
@@ -20,8 +22,15 @@ export const MessageCard: React.FC<MessageCardProps> = ({
   content,
   timestamp,
   isRead,
+  sent
 }) => {
   const router = useRouter();
+
+  const [cookies] = useCookies([
+    'username'
+  ]);
+
+  const userName = cookies?.username;
 
   const handleReply = () => {
     // Navigate to a reply page or open a reply modal
@@ -60,7 +69,7 @@ export const MessageCard: React.FC<MessageCardProps> = ({
                 fontSize: { xs: "1.2rem", md: "1.5rem" },
               }}
             >
-              From: {sender}
+              From: {sent ? userName : "Admin"}
             </Typography>
             <Typography
               variant="body1"
@@ -69,7 +78,7 @@ export const MessageCard: React.FC<MessageCardProps> = ({
                 fontSize: { xs: "1rem", md: "1.2rem" },
               }}
             >
-              To: {recipient}
+              To: {sent ? "Admin" : userName}
             </Typography>
           </Box>
           <Chip

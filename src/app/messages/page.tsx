@@ -34,7 +34,7 @@ const Messages = () => {
 
   const onboardingPresented = cookies['onboarding_presented'] || false;
 
-  const { messages } = useMessage();
+  const { messages, fetchMessages } = useMessage();
 
   const [openModal, setOpenModal] = useState(true); 
   const [loading, setLoading] = useState(false);
@@ -62,6 +62,7 @@ const Messages = () => {
   useEffect(() => {
     console.log("User Role:", user_role);
     setLoading(true);
+    fetchMessages();
 
     if (user_role === "None") {
         console.log("User role:", typeof(user_role));
@@ -109,7 +110,7 @@ const Messages = () => {
                     }
                   }}>Create Message</Button>
                 </Box>
-                {messages?.length < 1 ? <Box sx={{ marginTop: 2 }}>
+                {messages?.length > 1 ? <Box sx={{ marginTop: 2 }}>
                   {messages?.map((message, index) => (
                     <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
                       <MessageCard {...message} />

@@ -32,6 +32,7 @@ const SingleMessage = ({ messageId }: { messageId: string }) => {
         sender: "currentUser", // Replace with the actual sender (e.g., from auth context)
         recipient: message.sender, // Reply to the original sender
         content: replyContent,
+        sent: true
       });
       setReplyContent(""); // Clear the reply box
       alert("Reply sent successfully!");
