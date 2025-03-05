@@ -26,6 +26,10 @@ export const MessageCard: React.FC<MessageCardProps> = ({
     router.push(`/messages/reply`);
   };
 
+  const handleReadMessage = () => {
+    console.log("Reading Content:", content);
+  }
+
   return (
     <Paper
       elevation={3}
@@ -68,7 +72,7 @@ export const MessageCard: React.FC<MessageCardProps> = ({
           <Chip
             label={isRead ? "Read" : "Unread"}
             sx={{
-              backgroundColor: isRead ? "#4CAF50" : "#F44336",
+              backgroundColor: isRead ? "#248f34" : "#c9582c",
               color: "white",
               fontWeight: "bold",
             }}
@@ -76,7 +80,7 @@ export const MessageCard: React.FC<MessageCardProps> = ({
         </Box>
 
         {/* Message Content */}
-        <Box mt={2}>
+        <Box onClick={handleReadMessage} mt={2}>
           <Typography variant="body2" sx={{ color: "#4B5563" }}>
             {content}
           </Typography>
@@ -94,10 +98,10 @@ export const MessageCard: React.FC<MessageCardProps> = ({
           <Button
             variant="contained"
             sx={{
-              backgroundColor: "#1976d2",
+              backgroundColor: "#969fed",
               color: "white",
               "&:hover": {
-                backgroundColor: "#115293",
+                backgroundColor: "#161fed",
               },
             }}
             onClick={handleReply}
