@@ -34,6 +34,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const dynamicPrivateRoutes: RegExp[] = [
     /^\/event\/\d+$/,
     /^\/add-role\/\d+$/, 
+    /^\/message\/\d+$/, 
   ];
 
   const matchRoute = (pathname: string, routes: RegExp[]): boolean => {
