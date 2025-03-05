@@ -11,6 +11,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import SaveIcon from "@mui/icons-material/Save"; 
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz"; 
 import DeleteIcon from "@mui/icons-material/Delete"; 
+import { EventMedia } from "@/components/dashboard/event/page/EventMedia";
 
 const EditEventPage = () => {
   const router = useRouter();
@@ -161,26 +162,7 @@ const EditEventPage = () => {
       error={error}
       handleContinue={handleContinue}
     />}
-    {currentPage === 1 && <EventDetails
-      eventTitle={eventTitle}
-      setEventTitle={setEventTitle}
-      description={description}
-      setDescription={setDescription}
-      location={location}
-      setLocation={setLocation}
-      startDateTime={startDateTime}
-      setStartDateTime={setStartDateTime}
-      endDateTime={endDateTime}
-      setEndDateTime={setEndDateTime}
-      mealsProvided={mealsProvided}
-      setMealsProvided={setMealsProvided}
-      transportProvided={transportProvided}
-      setTransportProvided={setTransportProvided}
-      accommodationProvided={accommodationProvided}
-      setAccommodationProvided={setAccommodationProvided}
-      error={error}
-      handleContinue={handleContinue}
-    />}
+    {currentPage === 1 && <EventMedia />}
 
      {/* Floating Navigation Button */}
      {currentPage > 0 && <Fab
