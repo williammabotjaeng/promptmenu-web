@@ -144,3 +144,41 @@ export const recentJobs = [
     { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/79b861cf8d48e76759d4dc60edd95784f65332d58455e41e197ded115b10f2cd?apiKey=7fae980a988640eea8add1e49a5d542e&", label: "Skills & Experience", completed: true },
     { icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/213094dda2ee946d84f746463516418bc58c28a705b03066612d2f12ff370928?apiKey=7fae980a988640eea8add1e49a5d542e&", label: "Video Introduction", completed: false }
   ] as const;
+
+ export const dummyMessages = [
+    {
+      sender: "John Doe",
+      recipient: "Jane Smith",
+      content: "Hey Jane, just wanted to check in about the project status. Let me know if you need anything!",
+      timestamp: "2025-03-05T14:30:00Z",
+      isRead: false,
+    },
+    {
+      sender: "Alice Johnson",
+      recipient: "Bob Brown",
+      content: "Hi Bob, the meeting has been rescheduled to tomorrow at 10 AM. Please confirm your availability.",
+      timestamp: "2025-03-04T09:15:00Z",
+      isRead: true,
+    },
+    {
+      sender: "Charlie Green",
+      recipient: "Diana White",
+      content: "Hello Diana, I’ve attached the files you requested. Let me know if you need anything else.",
+      timestamp: "2025-03-03T16:45:00Z",
+      isRead: false,
+    },
+    {
+      sender: "Eve Black",
+      recipient: "Frank Blue",
+      content: "Hi Frank, just a reminder about the deadline for the report submission. Let me know if you need an extension.",
+      timestamp: "2025-03-02T12:00:00Z",
+      isRead: true,
+    },
+    {
+      sender: "Grace Yellow",
+      recipient: "Hank Orange",
+      content: "Hey Hank, can we catch up later today to discuss the new project requirements?",
+      timestamp: "2025-03-01T18:20:00Z",
+      isRead: false,
+    },
+  ] as const;

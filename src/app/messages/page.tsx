@@ -3,9 +3,9 @@
 import * as React from "react";
 import { Box, Grid, Card, CardContent, Typography, Button, DialogTitle, Dialog, DialogContent, DialogActions } from "@mui/material";
 import { StatCard } from "@/components/dashboard/StatCard";
-import { JobCard } from "@/components/dashboard/JobCard";
+import { MessageCard } from "@/components/MessageCard";
 import { ActivityItem } from "@/components/dashboard/ActivityItem";
-import { recentJobs, statsData, recentActivities } from "@/data/index";
+import { recentJobs, dummyMessages } from "@/data/index";
 import { useAuth } from "@/providers/auth-providers";
 import Header from "@/components/dashboard/Header"; 
 import { useEffect, useState } from "react";
@@ -97,9 +97,9 @@ const Messages = () => {
                   <Button sx={{ color: 'gray' }}>View All</Button>
                 </Box>
                 <Box sx={{ marginTop: 2 }}>
-                  {recentJobs.map((job, index) => (
+                  {dummyMessages.map((message, index) => (
                     <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
-                      <JobCard {...job} />
+                      <MessageCard {...message} />
                     </Box>
                   ))}
                 </Box>
