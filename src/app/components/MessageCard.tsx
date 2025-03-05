@@ -4,6 +4,7 @@ import React from "react";
 import { Box, Typography, Paper, Chip, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
+import { setCookie } from "cookies-next";
 
 interface MessageCardProps {
   id: string | number;
@@ -27,17 +28,30 @@ export const MessageCard: React.FC<MessageCardProps> = ({
   const router = useRouter();
 
   const [cookies] = useCookies([
-    'username'
+    'username',
+    'current_message'
   ]);
 
   const userName = cookies?.username;
 
+  const message = {
+    id: id,
+    sender: sender,
+    recipient: recipient,
+    content: content,
+    timestamp: timestamp,
+    isRead: isRead,
+    sent: sent
+  };
+
   const handleReply = () => {
     // Navigate to a reply page or open a reply modal
+    setCookie('current_message', message);
     router.push(`/messages/reply`);
   };
 
   const handleReadMessage = () => {
+    setCookie('current_message', message);
     console.log("Reading Content:", content);
     router.push(`/message/${id}`)
   }

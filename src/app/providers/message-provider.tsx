@@ -22,6 +22,7 @@ interface MessageContextType {
   sendMessage: (data: Omit<MessageData, "id" | "timestamp" | "isRead">) => Promise<void>;
   deleteMessage: (messageId: string) => Promise<void>;
   markAsRead: (messageId: string) => Promise<void>;
+  extendThread: (messageId: string, content: string) => Promise<void>;
 }
 
 const MessageContext = createContext<MessageContextType | null>(null);
@@ -51,6 +52,16 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     },
     onSuccess: () => {
       fetchMessagesQuery.refetch(); 
+    },
+  });
+
+  const extendThreadMutation = useMutation({
+    mutationKey: ["extend_thread"],
+    mutationFn: async (data: { messageId: string; content: string }) => {
+      return await restCall(`/accounts/messages/extend-thread/${data.messageId}/`, "POST", { content: data.content }, accessToken);
+    },
+    onSuccess: () => {
+      fetchMessagesQuery.refetch();
     },
   });
 
@@ -90,6 +101,10 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     await markAsReadMutation.mutateAsync(messageId);
   };
 
+  const extendThread = async (messageId: string, content: string) => {
+    await extendThreadMutation.mutateAsync({ messageId, content });
+  };
+
   return (
     <MessageContext.Provider
       value={{
@@ -98,6 +113,7 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
         sendMessage,
         deleteMessage,
         markAsRead,
+        extendThread
       }}
     >
       {children}

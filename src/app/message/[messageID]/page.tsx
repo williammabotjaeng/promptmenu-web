@@ -3,23 +3,28 @@
 import * as React from "react";
 import { Box, Card, CardContent, Typography, TextField, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useCookies } from "react-cookie";
+import { useEffect, useState } from "react";
 import { useMessage } from "@/providers/message-provider"; // Assuming you have a MessageProvider
 import Header from "@/components/dashboard/Header";
 import GreyFooter from "@/components/GreyFooter";
+import FetchingMessage from "@/components/dashboard/FetchingMessage";
 
 const SingleMessage = ({ messageId }: { messageId: string }) => {
   const router = useRouter();
-  const { messages, markAsRead, sendMessage } = useMessage(); // Fetch messages and actions from the provider
+  const { messages, markAsRead, sendMessage, fetchMessages } = useMessage(); // Fetch messages and actions from the provider
   const [replyContent, setReplyContent] = useState("");
-
+  const [cookies, setCookie] = useCookies([
+    'current_message', 'username'
+  ]);
   // Find the specific message by ID
-  const message = messages?.find((msg) => msg.id === messageId);
+  const message = cookies?.current_message;
+  const userName = cookies?.username;
 
   if (!message) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-        <Typography variant="h6">Message not found</Typography>
+        <FetchingMessage />
       </Box>
     );
   }
@@ -42,6 +47,10 @@ const SingleMessage = ({ messageId }: { messageId: string }) => {
     }
   };
 
+  useEffect(() => {
+    fetchMessages();
+  }, []);
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%", overflow: "hidden", backgroundColor: "white" }}>
       <Header />
@@ -51,10 +60,10 @@ const SingleMessage = ({ messageId }: { messageId: string }) => {
           <CardContent>
             {/* Message Details */}
             <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-              Message from {message.sender}
+              Message from {message.sent ? userName : "Admin"}
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: 2 }}>
-              <strong>To:</strong> {message.recipient}
+              <strong>To:</strong> {message?.sent ? "Admin" : userName}
             </Typography>
             <Typography variant="body2" sx={{ marginBottom: 2, color: "#4B5563" }}>
               <strong>Sent:</strong> {new Date(message.timestamp).toLocaleString()}
