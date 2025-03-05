@@ -5,7 +5,9 @@ import { EventDetails } from "@/components/dashboard/event/page/EventDetails";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import { WhiteHeader } from "@/components/WhiteHeader";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, Fab } from "@mui/material";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import SaveIcon from "@mui/icons-material/Save"; 
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz"; 
 import DeleteIcon from "@mui/icons-material/Delete"; 
@@ -15,7 +17,16 @@ const EditEventPage = () => {
   const [cookies] = useCookies(["current_event"]);
   const [event, setEvent] = useState(null);
 
-  // Form state
+  const [currentPage, setCurrentPage] = useState(0); 
+
+  const handleDown = () => {
+
+  };
+
+  const handleUp = () => {
+
+  };
+
   const [eventTitle, setEventTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -130,7 +141,7 @@ const EditEventPage = () => {
         </Button>
       </Box>
     </Box>
-    <EventDetails
+    {currentPage === 0 && <EventDetails
       eventTitle={eventTitle}
       setEventTitle={setEventTitle}
       description={description}
@@ -149,7 +160,40 @@ const EditEventPage = () => {
       setAccommodationProvided={setAccommodationProvided}
       error={error}
       handleContinue={handleContinue}
-    />
+    />}
+     {/* Floating Navigation Button */}
+     {currentPage > 0 && <Fab
+        color="primary"
+        onClick={handleDown}
+        sx={{
+          position: "fixed",
+          bottom: 96,
+          right: 16,
+          backgroundColor: "#CEAB76", 
+          "&:hover": {
+            color: "#fff",
+            backgroundColor: "#977342",
+          },
+        }}
+      >
+        {<ArrowUpwardIcon />}
+      </Fab>}
+      <Fab
+        color="primary"
+        onClick={handleDown}
+        sx={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          backgroundColor: "#ceab76", 
+          "&:hover": {
+            color: "#fff",
+            backgroundColor: "#977342",
+          },
+        }}
+      >
+        {<ArrowDownwardIcon />}
+      </Fab>
     </>
   );
 };
