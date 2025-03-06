@@ -14,6 +14,8 @@ interface MessageData {
   timestamp: string;
   isRead: boolean;
   sent: boolean;
+  is_thread: boolean;
+  thread: any[];
 }
 
 interface MessageContextType {
@@ -22,7 +24,7 @@ interface MessageContextType {
   sendMessage: (data: Omit<MessageData, "id" | "timestamp" | "isRead">) => Promise<void>;
   deleteMessage: (messageId: string) => Promise<void>;
   markAsRead: (messageId: string) => Promise<void>;
-  extendThread: (messageId: string, content: string) => Promise<void>;
+  extendThread: (messageId: string, data: Omit<MessageData, "id" | "timestamp" | "isRead">) => Promise<void>;
 }
 
 const MessageContext = createContext<MessageContextType | null>(null);
@@ -30,7 +32,8 @@ const MessageContext = createContext<MessageContextType | null>(null);
 export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   
   const [cookies, setCookie] = useCookies([
-    'access'
+    'access',
+    'current_message'
   ]);
 
   const accessToken = cookies?.access;
@@ -47,7 +50,7 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const sendMessageMutation = useMutation({
     mutationKey: ["send_message"],
-    mutationFn: async (data: Omit<MessageData, "id" | "timestamp" | "isRead" | "sent">) => {
+    mutationFn: async (data: Omit<MessageData, "id" | "timestamp" | "isRead">) => {
       return await restCall("/accounts/messages/send/", "POST", data, accessToken);
     },
     onSuccess: () => {
@@ -57,8 +60,11 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const extendThreadMutation = useMutation({
     mutationKey: ["extend_thread"],
-    mutationFn: async (data: { messageId: string; content: string }) => {
-      return await restCall(`/accounts/messages/extend-thread/${data.messageId}/`, "POST", { content: data.content }, accessToken);
+    mutationFn: async (data: { messageId: string; data: Omit<MessageData, "id" | "timestamp" | "isRead"> }) => {
+      const response = await restCall(`/accounts/messages/extend-thread/${data.messageId}/`, "POST", { data }, accessToken);
+      console.log("Extend Response:", response);
+      setCookie("current_message", response);
+      return response;
     },
     onSuccess: () => {
       fetchMessagesQuery.refetch();
@@ -89,7 +95,7 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     await fetchMessagesQuery.refetch();
   };
 
-  const sendMessage = async (data: Omit<MessageData, "id" | "timestamp" | "isRead" | "sent">) => {
+  const sendMessage = async (data: Omit<MessageData, "id" | "timestamp" | "isRead">) => {
     await sendMessageMutation.mutateAsync(data);
   };
 
@@ -101,8 +107,8 @@ export const MessageProvider: React.FC<{ children: React.ReactNode }> = ({ child
     await markAsReadMutation.mutateAsync(messageId);
   };
 
-  const extendThread = async (messageId: string, content: string) => {
-    await extendThreadMutation.mutateAsync({ messageId, content });
+  const extendThread = async (messageId: string, data: Omit<MessageData, "id" | "timestamp" | "isRead">) => {
+    await extendThreadMutation.mutateAsync({messageId, data});
   };
 
   return (

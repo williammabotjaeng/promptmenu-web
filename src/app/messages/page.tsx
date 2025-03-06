@@ -113,7 +113,7 @@ const Messages = () => {
                 {messages?.length > 1 ? <Box sx={{ marginTop: 2 }}>
                   {messages?.map((message, index) => (
                     <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
-                      <MessageCard {...message} />
+                      {!message?.is_thread && <MessageCard {...message} />}
                     </Box>
                   ))}
                 </Box> : <Box sx={{

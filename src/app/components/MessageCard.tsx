@@ -14,6 +14,7 @@ interface MessageCardProps {
   timestamp: string;
   isRead: boolean;
   sent: boolean;
+  thread: any[];
 }
 
 export const MessageCard: React.FC<MessageCardProps> = ({
@@ -23,7 +24,8 @@ export const MessageCard: React.FC<MessageCardProps> = ({
   content,
   timestamp,
   isRead,
-  sent
+  sent,
+  thread
 }) => {
   const router = useRouter();
 
@@ -41,13 +43,14 @@ export const MessageCard: React.FC<MessageCardProps> = ({
     content: content,
     timestamp: timestamp,
     isRead: isRead,
-    sent: sent
+    sent: sent,
+    thread: thread
   };
 
   const handleReply = () => {
     // Navigate to a reply page or open a reply modal
     setCookie('current_message', message);
-    router.push(`/messages/reply`);
+    router.push(`/message/${id}`)
   };
 
   const handleReadMessage = () => {

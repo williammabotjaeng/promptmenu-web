@@ -43,10 +43,12 @@ const CreateMessage = () => {
 
     try {
       await sendMessage({
-        sender: "currentUser", 
+        sender: "currentUser",
         recipient: selectedUser,
         content: messageContent,
-        sent: true
+        sent: true,
+        is_thread: false,
+        thread: []
       });
       setMessageContent(""); 
       setSelectedUser(null); 

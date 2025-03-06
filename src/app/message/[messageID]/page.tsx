@@ -9,10 +9,11 @@ import { useMessage } from "@/providers/message-provider"; // Assuming you have 
 import Header from "@/components/dashboard/Header";
 import GreyFooter from "@/components/GreyFooter";
 import FetchingMessage from "@/components/dashboard/FetchingMessage";
+import { truncate } from "node:fs";
 
-const SingleMessage = ({ messageId }: { messageId: string }) => {
+const SingleMessage = () => {
   const router = useRouter();
-  const { messages, markAsRead, sendMessage, fetchMessages } = useMessage(); // Fetch messages and actions from the provider
+  const { messages, markAsRead, extendThread, fetchMessages } = useMessage(); // Fetch messages and actions from the provider
   const [replyContent, setReplyContent] = useState("");
   const [cookies, setCookie] = useCookies([
     'current_message', 'username'
@@ -33,13 +34,15 @@ const SingleMessage = ({ messageId }: { messageId: string }) => {
     if (replyContent.trim() === "") return;
 
     try {
-      await sendMessage({
-        sender: "currentUser", // Replace with the actual sender (e.g., from auth context)
-        recipient: message.sender, // Reply to the original sender
+      await extendThread( message?.id, {
+        ...message,
+        sender: "currentUser", 
+        recipient: message.sender, 
         content: replyContent,
-        sent: true
+        sent: true,
+        is_thread: true
       });
-      setReplyContent(""); // Clear the reply box
+      setReplyContent(""); 
       alert("Reply sent successfully!");
     } catch (error) {
       console.error("Error sending reply:", error);
@@ -49,6 +52,7 @@ const SingleMessage = ({ messageId }: { messageId: string }) => {
 
   useEffect(() => {
     fetchMessages();
+    console.log("Message ID:", message);
   }, []);
 
   return (
@@ -72,6 +76,27 @@ const SingleMessage = ({ messageId }: { messageId: string }) => {
               {message.content}
             </Typography>
 
+            {/* Display Thread Messages */}
+            {message?.thread && message?.thread?.length > 0 && (
+              <Box sx={{ marginBottom: 4 }}>
+                <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+                  Thread
+                </Typography>
+                {message.thread.map((threadMessage) => (
+                  <Card key={threadMessage.id} sx={{ marginBottom: 2, padding: 1, borderRadius: "8px", backgroundColor: "#f9f9f9" }}>
+                    <CardContent>
+                      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                        {threadMessage.sender === message.sender ? "You" : "Admin"} - {new Date(threadMessage.timestamp).toLocaleString()}
+                      </Typography>
+                      <Typography variant="body1">
+                        {threadMessage.content}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Box>
+            )}
+
             {/* Reply Box */}
             <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
               Reply
@@ -88,10 +113,10 @@ const SingleMessage = ({ messageId }: { messageId: string }) => {
             <Button
               variant="contained"
               sx={{
-                backgroundColor: "#1976d2",
+                backgroundColor: "#977342",
                 color: "white",
                 "&:hover": {
-                  backgroundColor: "#115293",
+                  backgroundColor: "#CEAB76",
                 },
               }}
               onClick={handleReply}
