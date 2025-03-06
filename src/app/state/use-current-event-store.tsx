@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-export interface CurrentEventState {
+export interface CurrentEvent {
     id: number;
     title: string;
     description: string;
@@ -18,49 +18,20 @@ export interface CurrentEventState {
     eventVideo: string;
     createdAt: string;
     updatedAt: string;
-    setCurrentEvent: (event: Partial<CurrentEventState>) => void;
-    clearCurrentEvent: () => void;
+}
+
+export interface CurrentEventState {
+    currentEvent: CurrentEvent | null; 
+    setCurrentEvent: (event: Partial<CurrentEvent>) => void; 
+    clearCurrentEvent: () => void; 
 }
 
 const useCurrentEventStore = create<CurrentEventState>((set) => ({
-    id: 0,
-    title: '',
-    description: '',
-    location: '',
-    startTime: '',
-    endTime: '',
-    capacity: 0,
-    acceptedLocations: [],
-    accommodationProvided: false,
-    mealsProvided: false,
-    transportProvided: false,
-    eventStatus: 'draft',
-    eventPhotos: [],
-    eventPoster: '',
-    eventVideo: '',
-    createdAt: '',
-    updatedAt: '',
-    
-    setCurrentEvent: (event: Partial<CurrentEventState>) => set((state) => ({ ...state, ...event })),
-    clearCurrentEvent: () => set({
-        id: 0,
-        title: '',
-        description: '',
-        location: '',
-        startTime: '',
-        endTime: '',
-        capacity: 0,
-        acceptedLocations: [],
-        accommodationProvided: false,
-        mealsProvided: false,
-        transportProvided: false,
-        eventStatus: 'draft',
-        eventPhotos: [],
-        eventPoster: '',
-        eventVideo: '',
-        createdAt: '',
-        updatedAt: '',
-    }),
+    currentEvent: null, 
+    setCurrentEvent: (event: Partial<CurrentEvent>) => set((state) => ({
+        currentEvent: { ...state.currentEvent, ...event }, 
+    })),
+    clearCurrentEvent: () => set({ currentEvent: null }), 
 }));
 
 export default useCurrentEventStore;

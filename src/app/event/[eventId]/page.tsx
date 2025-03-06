@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { EventDetails } from "@/components/dashboard/event/page/EventDetails"; 
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
+import { useStore } from "zustand";
 import { WhiteHeader } from "@/components/WhiteHeader";
 import { Box, Button, Typography, Fab } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -14,12 +15,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { EventMedia } from "@/components/dashboard/event/page/EventMedia";
 import EventRoles from "@/components/dashboard/event/page/EventRoles";
+import useCurrentEventStore from "@/state/use-current-event-store";
 
 const EditEventPage = () => {
   const router = useRouter();
-  const [cookies] = useCookies(["current_event"]);
 
-  const currentEvent = cookies?.current_event;
+  const { currentEvent } = useStore(useCurrentEventStore);
 
   const [event, setEvent] = useState(currentEvent || null);
 
@@ -30,6 +31,7 @@ const EditEventPage = () => {
      {
        setCurrentPage(0);
      }
+
      setCurrentPage(currentPage + 1);
   };
 
@@ -40,7 +42,7 @@ const EditEventPage = () => {
      setCurrentPage(currentPage - 1);
   };
 
-  const [eventTitle, setEventTitle] = useState(cookies?.current_event?.title || "");
+  const [eventTitle, setEventTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [startDateTime, setStartDateTime] = useState(null);
@@ -51,22 +53,21 @@ const EditEventPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (cookies?.current_event) {
-      const currentEvent = cookies.current_event;
+    if (currentEvent) {
       console.log("Current Event:", currentEvent);
       setEvent(currentEvent);
-      setEventTitle(currentEvent.title || "");
-      setDescription(currentEvent.description || "");
-      setLocation(currentEvent.location || "");
-      setStartDateTime(currentEvent.start_time || null);
-      setEndDateTime(currentEvent.end_time || null);
-      setMealsProvided(currentEvent.meals_provided || false);
-      setTransportProvided(currentEvent.transport_provided || false);
-      setAccommodationProvided(currentEvent.accommodation_provided || false);
+      setEventTitle(currentEvent?.title || "");
+      setDescription(currentEvent?.description || "");
+      setLocation(currentEvent?.location || "");
+      setStartDateTime(currentEvent?.startTime || null);
+      setEndDateTime(currentEvent?.endTime || null);
+      setMealsProvided(currentEvent?.mealsProvided || false);
+      setTransportProvided(currentEvent?.transportProvided || false);
+      setAccommodationProvided(currentEvent?.accommodationProvided || false);
     } else {
       router.push("/events");
     }
-  }, [cookies, router, currentPage]);
+  }, [currentEvent, router, currentPage]);
 
   const handleContinue = () => {
     if (!eventTitle || !description || !location) {
@@ -182,21 +183,21 @@ const EditEventPage = () => {
       </Box>
     </Box>
     {currentPage === 0 && <EventDetails
-      eventTitle={eventTitle}
+      eventTitle={eventTitle ? eventTitle : currentEvent?.title}
       setEventTitle={setEventTitle}
-      description={description}
+      description={description ? description : currentEvent?.description}
       setDescription={setDescription}
-      location={location}
+      location={location ? location : currentEvent?.location}
       setLocation={setLocation}
-      startDateTime={startDateTime}
+      startDateTime={startDateTime ? startDateTime : currentEvent?.startTime}
       setStartDateTime={setStartDateTime}
-      endDateTime={endDateTime}
+      endDateTime={endDateTime ? endDateTime : currentEvent?.endTime}
       setEndDateTime={setEndDateTime}
-      mealsProvided={mealsProvided}
+      mealsProvided={mealsProvided ? mealsProvided : currentEvent?.mealsProvided}
       setMealsProvided={setMealsProvided}
-      transportProvided={transportProvided}
+      transportProvided={transportProvided ? transportProvided : currentEvent?.transportProvided}
       setTransportProvided={setTransportProvided}
-      accommodationProvided={accommodationProvided}
+      accommodationProvided={accommodationProvided ? accommodationProvided : currentEvent?.accommodationProvided}
       setAccommodationProvided={setAccommodationProvided}
       error={error}
       handleContinue={handleContinue}

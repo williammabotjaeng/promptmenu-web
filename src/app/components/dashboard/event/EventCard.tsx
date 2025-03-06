@@ -11,7 +11,9 @@ import {
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import moment from "moment";
+import { useStore } from "zustand";
 import { ConstructionOutlined } from "@mui/icons-material";
+import useCurrentEventStore from "@/state/use-current-event-store";
 
 const EventCard = ({ event }) => {
   // Function to create a 30-character excerpt of the description
@@ -28,6 +30,8 @@ const EventCard = ({ event }) => {
 
   const router = useRouter();
 
+  const { setCurrentEvent } = useStore(useCurrentEventStore);
+
   const formatDateTime = (dateTimeString) => {
     return moment(dateTimeString).format('MMMM D, YYYY [at] h:mm A');
   };
@@ -36,6 +40,14 @@ const EventCard = ({ event }) => {
     if (userRole === 'client')
     {
       console.log("Event Id:", eventId);
+      setCurrentEvent({
+        ...event,
+        mealsProvided: event?.meals_provided,
+        accommodationProvided: event?.accomodation_provided,
+        transportProvided: event?.transport_provided,
+        startTime: event?.start_time,
+        endTime: event?.end_time
+      });
       setCookie('current_event', JSON.stringify(event));
       router.push(`/event/${eventId}`);
     } else {

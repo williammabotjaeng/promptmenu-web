@@ -60,16 +60,6 @@ const Events = () => {
     setOpenModal(false);
   };
 
-  const handleOptionClick = (option: "client" | "talent" | "influencer") => {
-    console.log("User selected:", option);
-    handleCloseModal();
-    updateUser({
-      field: "user_role",
-      value: option,
-    });
-    setCookie("user_role", option.toLowerCase());
-  };
-
   useEffect(() => {
     console.log("User Role:", user_role);
     setLoading(true);
