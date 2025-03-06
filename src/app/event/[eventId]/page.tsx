@@ -18,7 +18,10 @@ import EventRoles from "@/components/dashboard/event/page/EventRoles";
 const EditEventPage = () => {
   const router = useRouter();
   const [cookies] = useCookies(["current_event"]);
-  const [event, setEvent] = useState(null);
+
+  const currentEvent = cookies?.current_event;
+
+  const [event, setEvent] = useState(currentEvent || null);
 
   const [currentPage, setCurrentPage] = useState(0); 
 
@@ -37,7 +40,7 @@ const EditEventPage = () => {
      setCurrentPage(currentPage - 1);
   };
 
-  const [eventTitle, setEventTitle] = useState("");
+  const [eventTitle, setEventTitle] = useState(cookies?.current_event?.title || "");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [startDateTime, setStartDateTime] = useState(null);
@@ -50,6 +53,7 @@ const EditEventPage = () => {
   useEffect(() => {
     if (cookies?.current_event) {
       const currentEvent = cookies.current_event;
+      console.log("Current Event:", currentEvent);
       setEvent(currentEvent);
       setEventTitle(currentEvent.title || "");
       setDescription(currentEvent.description || "");
@@ -62,7 +66,7 @@ const EditEventPage = () => {
     } else {
       router.push("/events");
     }
-  }, [cookies, router]);
+  }, [cookies, router, currentPage]);
 
   const handleContinue = () => {
     if (!eventTitle || !description || !location) {
