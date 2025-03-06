@@ -11,6 +11,7 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import SaveIcon from "@mui/icons-material/Save"; 
 import SwapHorizIcon from "@mui/icons-material/SwapHoriz"; 
 import DeleteIcon from "@mui/icons-material/Delete"; 
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { EventMedia } from "@/components/dashboard/event/page/EventMedia";
 import EventRoles from "@/components/dashboard/event/page/EventRoles";
 
@@ -116,7 +117,10 @@ const EditEventPage = () => {
             },
           }}
         >
-          Save Event
+          <Typography sx={{
+            display: { xs: 'none', sm: 'flex', md: 'flex' },
+            fontSize: { xs: null, sm: '10px', md: '14px' }
+          }}>Save Event</Typography>
         </Button>
 
         {/* Change Status Button */}
@@ -131,7 +135,10 @@ const EditEventPage = () => {
             },
           }}
         >
-          Change Status
+          <Typography sx={{
+            display: { xs: 'none', sm: 'flex', md: 'flex' },
+            fontSize: { xs: null, sm: '10px', md: '14px' }
+          }}>Change Status</Typography>
         </Button>
 
         {/* Delete Event Button */}
@@ -146,7 +153,27 @@ const EditEventPage = () => {
             },
           }}
         >
-          Delete Event
+          <Typography sx={{
+            display: { xs: 'none', sm: 'flex', md: 'flex' },
+            fontSize: { xs: null, sm: '10px', md: '14px' }
+          }}>Delete Event</Typography>
+        </Button>
+        {/* Delete Event Button */}
+        <Button
+          variant="contained"
+          startIcon={<CheckCircleIcon />}
+          sx={{
+            backgroundColor: "#1d8037", 
+            color: "white",
+            "&:hover": {
+              backgroundColor: "#1d6037",
+            },
+          }}
+        >
+          <Typography sx={{
+            display: { xs: 'none', sm: 'flex', md: 'flex' },
+            fontSize: { xs: null, sm: '10px', md: '14px' }
+          }}>Approve Event</Typography>
         </Button>
       </Box>
     </Box>

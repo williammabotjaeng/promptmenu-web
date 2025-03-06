@@ -196,22 +196,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                     }}
                     aria-label="Go Back"
                 >
-                    Save for Later
-                </Button>
-                <Button
-                    onClick={handlePublish}
-                    variant="contained"
-                    sx={{
-                        backgroundColor: '#977342',
-                        width: { xs: '120px', md: '160px' }, 
-                        color: 'white',
-                        '&:hover': {
-                            backgroundColor: '#CEAB76'
-                        }
-                    }}
-                    aria-label="Next Step"
-                >
-                    Publish Event
+                    Submit for Review
                 </Button>
             </Box>
         </Box>

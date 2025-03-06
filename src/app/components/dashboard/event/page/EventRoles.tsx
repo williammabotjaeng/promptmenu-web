@@ -48,7 +48,7 @@ const EventRoles: React.FC<EventRolesProps> = ({ event }) => {
                 backgroundColor: 'white',
                 justifyContent: 'center',
                 padding: { xs: 2, md: 4 }, 
-                pb: { xs: 8, md: 6 },
+                pb: { xs: 12, md: 6 },
                 width: '100%',
             }}
         >

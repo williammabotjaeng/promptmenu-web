@@ -62,7 +62,7 @@ const EventSuccess: React.FC = () => {
             You have Successfully Created your Event!
           </Typography>
           <Typography variant="body1" sx={{ fontSize: isTabletOrMobile ? "12px" : null}} color="textSecondary">
-            Thank you for casting on SSH.
+            Thank you for casting on SSH. Our Team will review and Approve your Event. 
           </Typography>
         </motion.div>
 
