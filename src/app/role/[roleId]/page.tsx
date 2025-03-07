@@ -8,9 +8,12 @@ import {
   CardContent,
   TextField,
   Typography,
+  Button,
 } from "@mui/material";
 import Header from "@/components/dashboard/Header";
 import GreyFooter from "@/components/GreyFooter";
+import DemographicsForm from "@/components/dashboard/event/page/DemographicsForm";
+import SaveIcon from "@mui/icons-material/Save";
 
 const EventRoleDetail = () => {
   // Sample data based on the provided object
@@ -124,11 +127,11 @@ const EventRoleDetail = () => {
                     />
                   </Grid>
                   <Grid item xs={6}>
-                  <Typography>Soft Deadline</Typography>
+                    <Typography>Soft Deadline</Typography>
                     <TextField
                       fullWidth
                       type="datetime-local"
-                      defaultValue={roleDetail.hard_deadline.split(".")[0]} // Remove milliseconds
+                      defaultValue={roleDetail.hard_deadline.split(".")[0]}
                       variant="outlined"
                     />
                   </Grid>
@@ -154,6 +157,54 @@ const EventRoleDetail = () => {
                       variant="outlined"
                     />
                   </Grid>
+                  <DemographicsForm />
+                {/* Submit Button */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    justifyContent: "space-evenly",
+                    padding: 4,
+                    mt: 2,
+                    mr: { md: 26 },
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    sx={{
+                      px: 4,
+                      py: 2,
+                      mr: { xs: null, sm: null, md: 4 },
+                      color: "#977342",
+                      backgroundColor: "#fff",
+                      "&:hover": {
+                        backgroundColor: "#fff",
+                        color: "#CEAB76",
+                      },
+                    }}
+                    onClick={null}
+                  >
+                    Discard Changes
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#977342",
+                      color: "white",
+                      mt: { xs: 2, sm: 2, md: 0 },
+                      "&:hover": {
+                        backgroundColor: "#fff",
+                        border: "1px solid #977342",
+                        color: "#977342",
+                      },
+                    }}
+                    onClick={null}
+                  >
+                    Save Role
+                    <SaveIcon sx={{ marginLeft: "8px" }} />
+                  </Button>
+                </Box>
+            
                 </Grid>
               </CardContent>
             </Card>
