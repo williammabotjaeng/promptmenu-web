@@ -243,7 +243,8 @@ export const CompanyRegisterForm: React.FC = () => {
     try {
       const vatCertificateFileName = await uploadFileToS3(cookies['vatPdf'], "vat_certificate", userName, accessToken);
       const tradeLicenseFileName = await uploadFileToS3(cookies['tradePdf'], "trade_license", userName, accessToken);
-  
+      const companyLogoFileName = await uploadFileToS3(cookies['company_logo'], "company_logo", userName, accessToken);
+
       const companyData = {
         ...formData,
         username: userName,
@@ -257,7 +258,8 @@ export const CompanyRegisterForm: React.FC = () => {
         mobile_number: mobileNumber,
         whatsapp_number: whatsappNumber,
         accept_std_payment_terms: agreement, 
-        preferred_payment_methods: preferredPaymentMethods
+        preferred_payment_methods: preferredPaymentMethods,
+        logo: companyLogoFileName
       };
   
       createCompany(companyData);
