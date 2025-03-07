@@ -189,6 +189,7 @@ const Dashboard = () => {
                   {roles?.map((job, index) => (
                     <JobCard
                       key={index}
+                      roleId={job?.id}
                       title={job?.title}
                       location={job?.location}
                       ethnicities={job?.ethnicities}

@@ -1,4 +1,5 @@
 export interface PortalJobCardProps {
+    roleId: string | number;
     title: string; 
     location: string; 
     hourlyPay?: number; 

@@ -20,7 +20,8 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
   openings,
   hardDeadline,
   minAge,
-  maxAge
+  maxAge,
+  roleId
 }) => {
 
   const [cookies] = useCookies([
@@ -37,7 +38,7 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
   const jobCardHandler = () => {
     if (userRole === 'client')
     {
-      router.push(`/edit-role/{roleId}`)
+      router.push(`/role/${roleId}`)
     } else {
       
     }
