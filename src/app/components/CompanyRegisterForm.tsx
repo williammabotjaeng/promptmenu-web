@@ -80,6 +80,7 @@ export const CompanyRegisterForm: React.FC = () => {
   });
   const [vatPdf, setVatPdf] = useState('');
   const [tradePdf, setTradePdf] = useState('');
+  const [companyLogo, setCompanyLogo] = useState('');
   const [addressOptions, setAddressOptions] = useState([]);
   const [addressInputValue, setAddressInputValue] = useState('');
 
@@ -101,6 +102,7 @@ export const CompanyRegisterForm: React.FC = () => {
     preferred_payment_methods: '',
     vat_certificate: '',
     trade_license: '',
+    company_logo: '',
     custom_payment_terms: '',
     accept_std_payment_terms: '',
     accounts_email: '',
@@ -261,6 +263,10 @@ export const CompanyRegisterForm: React.FC = () => {
       console.error("Error during form submission:", error);
     }
   };
+
+  function handleRemoveCompanyLogo(): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <>
@@ -728,6 +734,43 @@ export const CompanyRegisterForm: React.FC = () => {
                     textAlign: 'center',
                     fontSize: '10px'
                   }}>Only Image and PDF Files allowed.</Typography>
+                </Grid>
+                <Grid container spacing={2} sx={{ mt: 2 }}>
+                  {/* Company Logo */}
+                  <Grid item xs={12}>
+                  <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
+                      border: '4px dotted black',
+                      margin: '4px',
+                      borderRadius: '12px',
+                      padding: '4px',
+                      height: '50vh'
+                    }}>
+                      <Typography variant="body1">Company Logo</Typography>
+                      {companyLogo ? (
+                        <Box display="flex" flexDirection={"column"} alignItems="center">
+                          <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                          <Typography variant="body1" sx={{ marginLeft: 1 }}>{'Logo Uploaded'}</Typography>
+                          <IconButton color="error" onClick={() => handleRemoveCompanyLogo()}>
+                            <Close />
+                          </IconButton>
+                        </Box>
+                      ) : (
+                        <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
+                          <PictureAsPdf sx={{
+                            height: '30vh',
+                            fontSize: '80px'
+                          }} />
+                          <input type="file" hidden accept="image/jpeg;image/gif;image/webp;image/png" onChange={(e) => handleVatPdfUpload(e)} />
+                        </IconButton>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Typography variant="body1" sx={{
+                    fontStyle: 'italic',
+                    width: '100%',
+                    textAlign: 'center',
+                    fontSize: '10px'
+                  }}>Only Images are allowed.</Typography>
                 </Grid>
 
                 {/* Submit Button */}
