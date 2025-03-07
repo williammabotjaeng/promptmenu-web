@@ -9,11 +9,15 @@ import {
   TextField,
   Typography,
   Button,
+  IconButton,
 } from "@mui/material";
 import Header from "@/components/dashboard/Header";
 import GreyFooter from "@/components/GreyFooter";
 import DemographicsForm from "@/components/dashboard/event/page/DemographicsForm";
 import SaveIcon from "@mui/icons-material/Save";
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { useRouter } from 'next/navigation';
+import { useCookies } from "react-cookie";
 
 const EventRoleDetail = () => {
   // Sample data based on the provided object
@@ -29,6 +33,18 @@ const EventRoleDetail = () => {
     max_age: 24,
     min_age: 20,
   };
+
+  const [cookies] = useCookies([
+    'event_id'
+  ]);
+
+  const eventID = cookies?.event_id;
+
+  const router = useRouter();
+
+  const goBack = () => {
+    router.push(`/event/${eventID}`);
+  }
 
   return (
     <Box
@@ -48,6 +64,18 @@ const EventRoleDetail = () => {
           <Grid item xs={12}>
             <Card sx={{ padding: 2, borderRadius: "12px", boxShadow: 1 }}>
               <CardContent>
+                <IconButton onClick={goBack} sx={{
+                    fontFamily: 'Inter',
+                    color: '#977342',
+                    '&:hover': {
+                        color: '#CEAB76'
+                    }
+                }}>
+                    <ArrowBackIosNewIcon /><Typography sx={{
+                        fontSize: '12px',
+                        ml: 1
+                    }}>Go Back</Typography>
+                </IconButton>
                 <Typography
                   variant="h4"
                   sx={{ fontWeight: "bold", marginBottom: 2 }}

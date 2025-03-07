@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Button, Typography } from "@mui/material";
-import { RoleCard } from "@/components/dashboard/event/RoleCard";
+import { RoleCard } from "@/components/dashboard/event/page/RoleCard";
 import useEventStore from "@/state/use-event-store";
 import { useStore } from "zustand";
 import { useCookies } from "react-cookie";

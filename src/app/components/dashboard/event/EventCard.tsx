@@ -66,16 +66,6 @@ const EventCard = ({ event }) => {
         overflow: "hidden", // Prevent content overflow
       }}
     >
-      {/* Event Poster */}
-      {event?.event_poster && (
-        <CardMedia
-          component="img"
-          sx={{ width: "200px", height: "auto" }} // Fixed width for the poster
-          image={event?.event_poster}
-          alt={event?.title}
-        />
-      )}
-
       {/* Event Details */}
       <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
         <CardContent>
