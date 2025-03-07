@@ -24,6 +24,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import CampaignIcon from '@mui/icons-material/Campaign';
 import StarsIcon from '@mui/icons-material/Stars';
 import LanguageIcon from '@mui/icons-material/Language';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import PeopleIcon from '@mui/icons-material/People';
 
@@ -67,7 +68,11 @@ export const CompanyRegisterForm: React.FC = () => {
   const [nationality, setNationality] = useState('');
   const [region, setRegion] = useState('');
   const [hasAccepted, setHasAccepted] = useState(false);
-  const [cookies, setCookie] = useCookies(['nationality', 'vatPdf', 'tradePdf', 'user_role', 'access', 'username']);
+  const [cookies, setCookie] = useCookies([
+    'nationality', 'vatPdf', 
+    'tradePdf', 'user_role', 
+    'access', 'username',
+    'company_logo']);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
   const [whatsappNumber, setWhatsappNumber] = useState('');
@@ -265,8 +270,21 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   function handleRemoveCompanyLogo(): void {
-    throw new Error("Function not implemented.");
+    setCompanyLogo(null);
+    setCookie('company_logo', null);
   }
+
+  const handleCompanyLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      const objectUrl = URL.createObjectURL(file);
+      setCompanyLogo(objectUrl);
+      setCookie('company_logo', objectUrl);
+      setSnackbarMessage('Logo Uploaded Successfully');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+    }
+  };
 
   return (
     <>
@@ -748,7 +766,10 @@ export const CompanyRegisterForm: React.FC = () => {
                       <Typography variant="body1">Company Logo</Typography>
                       {companyLogo ? (
                         <Box display="flex" flexDirection={"column"} alignItems="center">
-                          <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
+                          <Avatar
+                            src={companyLogo || ''}
+                            sx={{ width: 150, height: 150, mt: 2 }}
+                        />
                           <Typography variant="body1" sx={{ marginLeft: 1 }}>{'Logo Uploaded'}</Typography>
                           <IconButton color="error" onClick={() => handleRemoveCompanyLogo()}>
                             <Close />
@@ -756,11 +777,12 @@ export const CompanyRegisterForm: React.FC = () => {
                         </Box>
                       ) : (
                         <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                          <PictureAsPdf sx={{
+                          <AddAPhotoIcon sx={{
                             height: '30vh',
                             fontSize: '80px'
                           }} />
-                          <input type="file" hidden accept="image/jpeg;image/gif;image/webp;image/png" onChange={(e) => handleVatPdfUpload(e)} />
+                          
+                          <input type="file" hidden accept="image/jpeg;image/gif;image/webp;image/png" onChange={(e) => handleCompanyLogoUpload(e)} />
                         </IconButton>
                       )}
                     </Box>
