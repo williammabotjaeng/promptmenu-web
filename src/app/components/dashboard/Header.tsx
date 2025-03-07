@@ -9,9 +9,9 @@ import Image from 'next/image';
 import ProfileDropdown from '@/components/dashboard/ProfileDropdown';
 import NotificationDropdown from '@/components/dashboard/NotificationDropdown';
 import { useEvent } from '@/providers/event-provider';
-import { useTalentProfile } from '@/providers/talent-profile-provider';
 import { useStore } from 'zustand';
 import useLocalRolesStore from '@/state/use-local-roles-store';
+import { useCompany } from '@/providers/company-provider';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -22,7 +22,7 @@ const Header = () => {
 
   const router = useRouter();
 
-  const { signedUrls } = useTalentProfile();
+  const { company, signedUrls } = useCompany();
 
   const { getRoles } = useEvent();
 
@@ -128,7 +128,7 @@ const Header = () => {
                 justifyContent: 'flex-end'
               }}>
                 <NotificationDropdown />
-                <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstLetterUC} />
+                <ProfileDropdown profilePicture={signedUrls?.logo} placeholderLetter={firstLetterUC} />
               </Grid>
           </Box>
         </Box>

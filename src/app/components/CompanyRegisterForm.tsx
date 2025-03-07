@@ -1,13 +1,26 @@
 import * as React from "react";
-import { Box, TextField, Button, Checkbox, FormControlLabel, Avatar, Grid, FormControl, Radio, RadioGroup, IconButton, Typography } from "@mui/material";
-import Snackbar from '@mui/material/Snackbar';
-import SSHGoldLogo from '@/assets/GoldLogo.png';
-import Image from 'next/image';
+import {
+  Box,
+  TextField,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Avatar,
+  Grid,
+  FormControl,
+  Radio,
+  RadioGroup,
+  IconButton,
+  Typography,
+} from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import SSHGoldLogo from "@/assets/GoldLogo.png";
+import Image from "next/image";
 import { useState } from "react";
 
 import { useAuth } from "@/providers/auth-providers";
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
-import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
+import MuiAlert, { AlertProps } from "@mui/material/Alert";
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { useCookies } from "react-cookie";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -16,122 +29,136 @@ import Close from "@mui/icons-material/Close";
 import moment from "moment";
 import axios from "axios";
 import { useStore } from "zustand";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
-import Autocomplete from '@mui/material/Autocomplete';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import Autocomplete from "@mui/material/Autocomplete";
 
-import WorkIcon from '@mui/icons-material/Work';
-import CampaignIcon from '@mui/icons-material/Campaign';
-import StarsIcon from '@mui/icons-material/Stars';
-import LanguageIcon from '@mui/icons-material/Language';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import PostAddIcon from '@mui/icons-material/PostAdd';
-import PeopleIcon from '@mui/icons-material/People';
+import WorkIcon from "@mui/icons-material/Work";
+import CampaignIcon from "@mui/icons-material/Campaign";
+import StarsIcon from "@mui/icons-material/Stars";
+import LanguageIcon from "@mui/icons-material/Language";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import PostAddIcon from "@mui/icons-material/PostAdd";
+import PeopleIcon from "@mui/icons-material/People";
 
-import '@/styles/register-form.css';
+import "@/styles/register-form.css";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { access } from "fs";
 
-import { OnboardingProvider, useOnboarding } from "@/providers/onboarding-providers";
+import {
+  OnboardingProvider,
+  useOnboarding,
+} from "@/providers/onboarding-providers";
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref
+) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const features = [
   {
     text: "Showcase your company to top talent",
-    alt: "Showcase icon"
+    alt: "Showcase icon",
   },
   {
     text: "Post jobs and manage applications",
-    alt: "Job posting icon"
+    alt: "Job posting icon",
   },
   {
     text: "Connect with casting directors and productions",
-    alt: "Connections icon"
-  }
+    alt: "Connections icon",
+  },
 ];
 
 const inputStyles = {
   "& .MuiInputLabel-root.Mui-focused": {
-    display: 'none'
+    display: "none",
   },
   "& .MuiInputLabel-root.Mui-shrink": {
-    display: 'none',
+    display: "none",
   },
 };
 
 export const CompanyRegisterForm: React.FC = () => {
-
-  const [isInfluencer, setIsInfluencer] = useState('no');
-  const [nationality, setNationality] = useState('');
-  const [region, setRegion] = useState('');
+  const [isInfluencer, setIsInfluencer] = useState("no");
+  const [nationality, setNationality] = useState("");
+  const [region, setRegion] = useState("");
   const [hasAccepted, setHasAccepted] = useState(false);
   const [cookies, setCookie] = useCookies([
-    'nationality', 'vatPdf', 
-    'tradePdf', 'user_role', 
-    'access', 'username',
-    'company_logo']);
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [whatsappNumber, setWhatsappNumber] = useState('');
-  const [customPaymentTerms, setCustomPaymentTerms] = useState('');
-  const [agreement, setAgreement] = useState('yes');
+    "nationality",
+    "vatPdf",
+    "tradePdf",
+    "user_role",
+    "access",
+    "username",
+    "company_logo",
+  ]);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [whatsappNumber, setWhatsappNumber] = useState("");
+  const [customPaymentTerms, setCustomPaymentTerms] = useState("");
+  const [agreement, setAgreement] = useState("yes");
   const [preferredPaymentMethods, setPreferredPaymentMethods] = useState({
     directTransfer: false,
     creditCard: false,
     cash: false,
   });
-  const [vatPdf, setVatPdf] = useState('');
-  const [tradePdf, setTradePdf] = useState('');
-  const [companyLogo, setCompanyLogo] = useState('');
+  const [vatPdf, setVatPdf] = useState("");
+  const [tradePdf, setTradePdf] = useState("");
+  const [companyLogo, setCompanyLogo] = useState("");
   const [addressOptions, setAddressOptions] = useState([]);
-  const [addressInputValue, setAddressInputValue] = useState('');
+  const [addressInputValue, setAddressInputValue] = useState("");
 
   const { createCompany } = useOnboarding();
 
-  const userRole = cookies['user_role'];
-  const accessToken = cookies['access'];
-  const userName = cookies['username'];
+  const userRole = cookies["user_role"];
+  const accessToken = cookies["access"];
+  const userName = cookies["username"];
 
   const [formData, setFormData] = useState({
     username: userName,
-    email: '',
+    email: "",
     user_role: userRole,
-    phonenumber: '',
-    nationality: '',
-    has_accepted: '',
-    is_influencer: '',
-    whatsapp_number: '',
-    preferred_payment_methods: '',
-    vat_certificate: '',
-    trade_license: '',
-    company_logo: '',
-    custom_payment_terms: '',
-    accept_std_payment_terms: '',
-    accounts_email: '',
-    mobile_number: '',
-    job_title: '',
-    contact_person: '',
-    state_province_region: '',
-    name: ''
+    phonenumber: "",
+    nationality: "",
+    has_accepted: "",
+    is_influencer: "",
+    whatsapp_number: "",
+    preferred_payment_methods: "",
+    vat_certificate: "",
+    trade_license: "",
+    company_logo: "",
+    custom_payment_terms: "",
+    accept_std_payment_terms: "",
+    accounts_email: "",
+    mobile_number: "",
+    job_title: "",
+    contact_person: "",
+    state_province_region: "",
+    name: "",
   });
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
 
   const fetchAddressSuggestions = async (value) => {
     if (value.length > 2) {
-      const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-        params: {
-          q: value,
-          format: 'json',
-          addressdetails: 1,
-          limit: 5,
-        },
-      });
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/search`,
+        {
+          params: {
+            q: value,
+            format: "json",
+            addressdetails: 1,
+            limit: 5,
+          },
+        }
+      );
       setAddressOptions(response.data);
     } else {
       setAddressOptions([]);
@@ -159,7 +186,7 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   const handleMobileChange = (e) => {
-      setMobileNumber(e);
+    setMobileNumber(e);
   };
 
   const handleWhatsAppNumberChange = (e) => {
@@ -171,16 +198,16 @@ export const CompanyRegisterForm: React.FC = () => {
       const file = event.target.files[0];
       const objectUrl = URL.createObjectURL(file);
       setVatPdf(objectUrl);
-      setCookie('vatPdf', objectUrl);
-      setSnackbarMessage('PDF Uploaded Successfully');
-      setSnackbarSeverity('success');
+      setCookie("vatPdf", objectUrl);
+      setSnackbarMessage("PDF Uploaded Successfully");
+      setSnackbarSeverity("success");
       setSnackbarOpen(true);
     }
   };
 
   const handleCountryChange = (val: React.SetStateAction<string>) => {
     setNationality(val);
-    setRegion('');
+    setRegion("");
   };
 
   const handleRegionChange = (val) => {
@@ -189,11 +216,11 @@ export const CompanyRegisterForm: React.FC = () => {
 
   const handleAcceptance = () => {
     setHasAccepted(!hasAccepted);
-  }
+  };
 
   const handleRemoveVatPdf = () => {
     setVatPdf(null);
-    setCookie('vatPdf', null);
+    setCookie("vatPdf", null);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -213,7 +240,7 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   const formatDateToYYYYMMDD = (date: string) => {
-    return moment(date).format('YYYY-MM-DD');
+    return moment(date).format("YYYY-MM-DD");
   };
 
   const handleTradePdfUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -221,16 +248,16 @@ export const CompanyRegisterForm: React.FC = () => {
       const file = event.target.files[0];
       const objectUrl = URL.createObjectURL(file);
       setTradePdf(objectUrl);
-      setCookie('tradePdf', objectUrl);
-      setSnackbarMessage('PDF Uploaded Successfully');
-      setSnackbarSeverity('success');
+      setCookie("tradePdf", objectUrl);
+      setSnackbarMessage("PDF Uploaded Successfully");
+      setSnackbarSeverity("success");
       setSnackbarOpen(true);
     }
   };
 
   const handleRemoveTradePdf = () => {
     setTradePdf(null);
-    setCookie('tradePdf', null);
+    setCookie("tradePdf", null);
   };
 
   const handleSnackbarClose = () => {
@@ -238,12 +265,27 @@ export const CompanyRegisterForm: React.FC = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
-  
+    e.preventDefault();
+
     try {
-      const vatCertificateFileName = await uploadFileToS3(cookies['vatPdf'], "vat_certificate", userName, accessToken);
-      const tradeLicenseFileName = await uploadFileToS3(cookies['tradePdf'], "trade_license", userName, accessToken);
-      const companyLogoFileName = await uploadFileToS3(cookies['company_logo'], "company_logo", userName, accessToken);
+      const vatCertificateFileName = await uploadFileToS3(
+        cookies["vatPdf"],
+        "vat_certificate",
+        userName,
+        accessToken
+      );
+      const tradeLicenseFileName = await uploadFileToS3(
+        cookies["tradePdf"],
+        "trade_license",
+        userName,
+        accessToken
+      );
+      const companyLogoFileName = await uploadFileToS3(
+        cookies["company_logo"],
+        "company_logo",
+        userName,
+        accessToken
+      );
 
       const companyData = {
         ...formData,
@@ -257,15 +299,14 @@ export const CompanyRegisterForm: React.FC = () => {
         trade_license: tradeLicenseFileName,
         mobile_number: mobileNumber,
         whatsapp_number: whatsappNumber,
-        accept_std_payment_terms: agreement, 
+        accept_std_payment_terms: agreement,
         preferred_payment_methods: preferredPaymentMethods,
-        logo: companyLogoFileName
+        logo: companyLogoFileName,
       };
-  
+
       createCompany(companyData);
 
       redirect("/company-success");
-
     } catch (error) {
       console.error("Error during form submission:", error);
     }
@@ -273,313 +314,460 @@ export const CompanyRegisterForm: React.FC = () => {
 
   function handleRemoveCompanyLogo(): void {
     setCompanyLogo(null);
-    setCookie('company_logo', null);
+    setCookie("company_logo", null);
   }
 
-  const handleCompanyLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCompanyLogoUpload = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const objectUrl = URL.createObjectURL(file);
       setCompanyLogo(objectUrl);
-      setCookie('company_logo', objectUrl);
-      setSnackbarMessage('Logo Uploaded Successfully');
-      setSnackbarSeverity('success');
+      setCookie("company_logo", objectUrl);
+      setSnackbarMessage("Logo Uploaded Successfully");
+      setSnackbarSeverity("success");
       setSnackbarOpen(true);
     }
   };
 
   return (
     <>
-    <Box sx={{ padding: 4, backgroundColor: 'transparent' }}>
-      <Grid container spacing={4}>
-        {/* Left Column */}
-        <Grid item xs={12} md={4}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Box sx={{ display: { md: 'flex', xs: 'none' }, alignItems: 'flex-start', position: 'relative', mb: 2 }}>
-              <Link href="/">
-                <Image
-                  src={SSHGoldLogo.src}
-                  alt="Staffing Solutions Logo"
-                  width={200}
-                  height={204}
-                  style={{ opacity: 0.5, overflow: 'hidden' }}
-                />
-              </Link>
-              <Typography
-                variant="h4"
+      <Box sx={{ padding: 4, backgroundColor: "transparent" }}>
+        <Grid container spacing={4}>
+          {/* Left Column */}
+          <Grid item xs={12} md={4}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+              }}
+            >
+              <Box
                 sx={{
-                  fontWeight: 'bold',
-                  color: '#977342',
-                  fontSize: '20px',
-                  opacity: 0.3,
-                  position: 'absolute',
-                  left: '155%',
-                  top: '36%',
-                  transform: 'translate(-50%, -100%)',
-                  width: '150%'
+                  display: { md: "flex", xs: "none" },
+                  alignItems: "flex-start",
+                  position: "relative",
+                  mb: 2,
                 }}
               >
-                Staffing Solutions Hub
+                <Link href="/">
+                  <Image
+                    src={SSHGoldLogo.src}
+                    alt="Staffing Solutions Logo"
+                    width={200}
+                    height={204}
+                    style={{ opacity: 0.5, overflow: "hidden" }}
+                  />
+                </Link>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: "bold",
+                    color: "#977342",
+                    fontSize: "20px",
+                    opacity: 0.3,
+                    position: "absolute",
+                    left: "155%",
+                    top: "36%",
+                    transform: "translate(-50%, -100%)",
+                    width: "150%",
+                  }}
+                >
+                  Staffing Solutions Hub
+                </Typography>
+              </Box>
+              <Typography
+                variant="h1"
+                sx={{
+                  fontWeight: "bold",
+                  color: "#fff",
+                  fontSize: "48px",
+                  mb: 2,
+                }}
+              >
+                Build Your{" "}
+                <span style={{ display: "block", color: "#977342" }}>
+                  Company Profile
+                </span>
               </Typography>
+              <Typography variant="body1" sx={{ color: "white", mb: 2 }}>
+                Showcase your company to top talent and connect with casting
+                directors, agencies, and productions across the Middle East.
+              </Typography>
+              <Typography variant="body1" sx={{ color: "white", mb: 2 }}>
+                Take the next step and create your company profile to start
+                posting jobs, managing applications, and finding the perfect
+                talent for your projects.
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", mt: 2 }}>
+                {features.map((feature, index) => (
+                  <Box
+                    key={index}
+                    display="flex"
+                    alignItems="center"
+                    gap={1}
+                    sx={{ marginBottom: 2 }}
+                  >
+                    {/* Replace Avatar with an appropriate MUI icon */}
+                    {index === 0 && (
+                      <StarsIcon sx={{ color: "#CEAB76", fontSize: 24 }} />
+                    )}
+                    {index === 1 && (
+                      <CampaignIcon sx={{ color: "#CEAB76", fontSize: 24 }} />
+                    )}
+                    {index === 2 && (
+                      <LanguageIcon sx={{ color: "#CEAB76", fontSize: 24 }} />
+                    )}
+                    <Typography variant="body2" color="white">
+                      {feature.text}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
             </Box>
-            <Typography variant="h1" sx={{ fontWeight: 'bold', color: '#fff', fontSize: '48px', mb: 2 }}>
-              Build Your <span style={{ display: 'block', color: '#977342' }}>Company Profile</span>
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
-              Showcase your company to top talent and connect with casting directors, agencies, and productions across the Middle East.
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'white', mb: 2 }}>
-              Take the next step and create your company profile to start posting jobs, managing applications, and finding the perfect talent for your projects.
-            </Typography>
-            <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2 }}>
+          </Grid>
 
-              {features.map((feature, index) => (
-                <Box key={index} display="flex" alignItems="center" gap={1} sx={{ marginBottom: 2 }}>
-                  {/* Replace Avatar with an appropriate MUI icon */}
-                  {index === 0 && <StarsIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
-                  {index === 1 && <CampaignIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
-                  {index === 2 && <LanguageIcon sx={{ color: '#CEAB76', fontSize: 24 }} />}
-                  <Typography variant="body2" color="white">{feature.text}</Typography>
-                </Box>
-              ))}
-            </Box>
-          </Box>
-        </Grid>
-
-        {/* Right Column */}
-        <Grid item xs={12} md={8}>
-          <Box sx={{ backgroundColor: '#ffffff1a', padding: 4, borderRadius: 2 }}>
-            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#977342', mb: 2 }}>
-              Create Your Company Profile
-            </Typography>
-            <form onSubmit={handleSubmit} method="POST">
-              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'center', mb: 2 }}>
-                {/* Nationality Field */}
-                <Grid item xs={12} sm={12} md={6}>
-                  <FormControl required>
-                    <Box sx={{ width: { xs: '100%'} }} className="country-dropdown-container">
-                      <CountryDropdown
-                        value={nationality}
-                        onChange={handleCountryChange}
-                        className="custom-input country-dropdown"
+          {/* Right Column */}
+          <Grid item xs={12} md={8}>
+            <Box
+              sx={{ backgroundColor: "#ffffff1a", padding: 4, borderRadius: 2 }}
+            >
+              <Typography
+                variant="h5"
+                sx={{ fontWeight: "bold", color: "#977342", mb: 2 }}
+              >
+                Create Your Company Profile
+              </Typography>
+              <form onSubmit={handleSubmit} method="POST">
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    justifyContent: "center",
+                    mb: 2,
+                  }}
+                >
+                  {/* Nationality Field */}
+                  <Grid item xs={12} sm={12} md={6}>
+                    <FormControl required>
+                      <Box
+                        sx={{ width: { xs: "100%" } }}
+                        className="country-dropdown-container"
+                      >
+                        <CountryDropdown
+                          value={nationality}
+                          onChange={handleCountryChange}
+                          className="custom-input country-dropdown"
+                        />
+                      </Box>
+                    </FormControl>
+                  </Grid>
+                  {/* State/Province/Region Field */}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={6}
+                    sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}
+                  >
+                    <FormControl
+                      required
+                      sx={{
+                        height: "9.5vh",
+                      }}
+                    >
+                      <RegionDropdown
+                        country={nationality}
+                        value={region}
+                        onChange={handleRegionChange}
+                        className="region-dropdown"
                       />
-                    </Box>
-                  </FormControl>
-                </Grid>
-                {/* State/Province/Region Field */}
-                <Grid item xs={12} sm={12} md={6} sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}>
-                  <FormControl required sx={{
-                    height: '9.5vh'
-                  }}>
-                    <RegionDropdown
-                      country={nationality}
-                      value={region}
-                      onChange={handleRegionChange}
-                      className="region-dropdown"
-                    />
-                  </FormControl>
-                </Grid>
+                    </FormControl>
+                  </Grid>
                 </Box>
 
                 {/* Address Field */}
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' } }}>
-                <Grid item xs={12} sm={12}>
-                  <Autocomplete
-                    freeSolo
-                    options={addressOptions.map(option => option?.display_name)}
-                    onInputChange={(event, newInputValue) => {
-                      setAddressInputValue(newInputValue);
-                      fetchAddressSuggestions(newInputValue);
-                    }}
-                    onChange={(event, newValue) => {
-                      setAddressInputValue(newValue);
-                      handleMapChange({ target: { name: 'address', value: newValue } });
-                    }}
-                    sx={{
-                      backgroundColor: 'white',
-                      color: 'black',
-                      borderRadius: '6px'
-                    }}
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        placeholder="Enter your address"
-                        label={<Typography variant="body1">Address</Typography>}
-                        required
-                        fullWidth
-                        variant="outlined"
-                        className="custom-input"
-                        sx={[inputStyles, {
-                          borderRadius: '6px'
-                        }]}
-                      />
-                    )}
-                  />
-                </Grid>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                  }}
+                >
+                  <Grid item xs={12} sm={12}>
+                    <Autocomplete
+                      freeSolo
+                      options={addressOptions.map(
+                        (option) => option?.display_name
+                      )}
+                      onInputChange={(event, newInputValue) => {
+                        setAddressInputValue(newInputValue);
+                        fetchAddressSuggestions(newInputValue);
+                      }}
+                      onChange={(event, newValue) => {
+                        setAddressInputValue(newValue);
+                        handleMapChange({
+                          target: { name: "address", value: newValue },
+                        });
+                      }}
+                      sx={{
+                        backgroundColor: "white",
+                        color: "black",
+                        borderRadius: "6px",
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          placeholder="Enter your address"
+                          label={
+                            <Typography variant="body1">Address</Typography>
+                          }
+                          required
+                          fullWidth
+                          variant="outlined"
+                          className="custom-input"
+                          sx={[
+                            inputStyles,
+                            {
+                              borderRadius: "6px",
+                            },
+                          ]}
+                        />
+                      )}
+                    />
+                  </Grid>
 
-                {/* Company Name Field */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}>
-                  <TextField
-                    label={<Typography variant="body1">Company Name</Typography>}
-                    name="name"
-                    placeholder="Enter your company name"
-                    required
-                    fullWidth
-                    onChange={handleChange}
-                    className="custom-input"
-                    sx={[inputStyles, {
-                      backgroundColor: 'white',
-                      borderRadius: '6px'
-                    }]}
-                  />
-                </Grid>
+                  {/* Company Name Field */}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}
+                  >
+                    <TextField
+                      label={
+                        <Typography variant="body1">Company Name</Typography>
+                      }
+                      name="name"
+                      placeholder="Enter your company name"
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      className="custom-input"
+                      sx={[
+                        inputStyles,
+                        {
+                          backgroundColor: "white",
+                          borderRadius: "6px",
+                        },
+                      ]}
+                    />
+                  </Grid>
                 </Box>
 
                 {/* Telephone Number Field */}
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 1 }}>
-                <Grid item xs={12} sm={12}>
-                  <Typography variant="body1">Telephone Number</Typography>
-                  <PhoneInput
-                    country={'ae'}
-                    onChange={handlePhoneChange}
-                    value={phoneNumber}
-                    inputStyle={{
-                      width: '100%',
-                      height: '56px',
-                      borderRadius: '4px',
-                      border: '1px solid #ccc',
-                      color: 'black',
-                      padding: '10px',
-                      paddingLeft: '50px'
-                    }}
-                    buttonStyle={{
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      color: 'black'
-                    }}
-                    inputProps={{
-                      name: 'phone',
-                      required: true,
-                      autoFocus: true
-                    }}
-                    placeholder="Enter your phone number"
-                    inputClass="custom-phone-input"
-                  />
-                </Grid>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    mt: 1,
+                  }}
+                >
+                  <Grid item xs={12} sm={12}>
+                    <Typography variant="body1">Telephone Number</Typography>
+                    <PhoneInput
+                      country={"ae"}
+                      onChange={handlePhoneChange}
+                      value={phoneNumber}
+                      inputStyle={{
+                        width: "100%",
+                        height: "56px",
+                        borderRadius: "4px",
+                        border: "1px solid #ccc",
+                        color: "black",
+                        padding: "10px",
+                        paddingLeft: "50px",
+                      }}
+                      buttonStyle={{
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        color: "black",
+                      }}
+                      inputProps={{
+                        name: "phone",
+                        required: true,
+                        autoFocus: true,
+                      }}
+                      placeholder="Enter your phone number"
+                      inputClass="custom-phone-input"
+                    />
+                  </Grid>
 
-                {/* Email Field */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: 1 }}>
-                  <Typography sx={{ color: "#977342" }}>Company Email</Typography>
-                  <TextField
-                    label={<Typography variant="body1">Company Email</Typography>}
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    required
-                    fullWidth
-                    onChange={handleChange}
-                    className="custom-input"
-                    sx={[inputStyles, {
-                      backgroundColor: 'white',
-                      borderRadius: '6px'
-                    }]}
-                  />
-                </Grid>
+                  {/* Email Field */}
+                  <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: 1 }}>
+                    <Typography sx={{ color: "#977342" }}>
+                      Company Email
+                    </Typography>
+                    <TextField
+                      label={
+                        <Typography variant="body1">Company Email</Typography>
+                      }
+                      type="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      className="custom-input"
+                      sx={[
+                        inputStyles,
+                        {
+                          backgroundColor: "white",
+                          borderRadius: "6px",
+                        },
+                      ]}
+                    />
+                  </Grid>
                 </Box>
 
                 {/* Contact Person */}
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 2 }}>
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    label={<Typography variant="body1">Contact Person</Typography>}
-                    name="contact_person"
-                    placeholder="Enter the contact person's name"
-                    required
-                    fullWidth
-                    onChange={handleChange}
-                    className="custom-input"
-                    sx={[inputStyles, {
-                      backgroundColor: 'white',
-                      borderRadius: '6px'
-                    }]}
-                  />
-                </Grid>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    mt: 2,
+                  }}
+                >
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      label={
+                        <Typography variant="body1">Contact Person</Typography>
+                      }
+                      name="contact_person"
+                      placeholder="Enter the contact person's name"
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      className="custom-input"
+                      sx={[
+                        inputStyles,
+                        {
+                          backgroundColor: "white",
+                          borderRadius: "6px",
+                        },
+                      ]}
+                    />
+                  </Grid>
 
-                {/* Job Title */}
-                <Grid item xs={12} sm={12} sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}>
-                  <TextField
-                    label={<Typography variant="body1">Job Title</Typography>}
-                    name="job_title"
-                    placeholder="Enter the job title"
-                    required
-                    fullWidth
-                    onChange={handleChange}
-                    className="custom-input"
-                    sx={[inputStyles, {
-                      backgroundColor: 'white',
-                      borderRadius: '6px'
-                    }]}
-                  />
-                </Grid>
+                  {/* Job Title */}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    sx={{ ml: { md: 4 }, mt: { md: 0, xs: 2 } }}
+                  >
+                    <TextField
+                      label={<Typography variant="body1">Job Title</Typography>}
+                      name="job_title"
+                      placeholder="Enter the job title"
+                      required
+                      fullWidth
+                      onChange={handleChange}
+                      className="custom-input"
+                      sx={[
+                        inputStyles,
+                        {
+                          backgroundColor: "white",
+                          borderRadius: "6px",
+                        },
+                      ]}
+                    />
+                  </Grid>
                 </Box>
 
                 {/* Mobile Number */}
-                <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, mt: 1 }}>
-                <Grid item xs={12} sm={12}>
-                  <Typography variant="body1">Mobile Number</Typography>
-                  <PhoneInput
-                    country={'ae'}
-                    value={mobileNumber}
-                    onChange={handleMobileChange}
-                    inputStyle={{
-                      width: '100%',
-                      height: '56px',
-                      borderRadius: '4px',
-                      border: '1px solid #ccc',
-                      color: 'black',
-                      padding: '10px',
-                      paddingLeft: '50px'
-                    }}
-                    buttonStyle={{
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      color: 'black'
-                    }}
-                    placeholder="Enter a Mobile Phone No."
-                  />
-                  <FormControlLabel
-                    sx={{ mt: { xs: 2 } }}
-                    control={<Checkbox sx={{
-                      color: 'white'
-                    }} color="success" checked={useWhatsApp} onChange={handleWhatsAppChange} />}
-                    label={<Typography variant="body1">I use this number for WhatsApp?</Typography>}
-                  />
-                </Grid>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    mt: 1,
+                  }}
+                >
+                  <Grid item xs={12} sm={12}>
+                    <Typography variant="body1">Mobile Number</Typography>
+                    <PhoneInput
+                      country={"ae"}
+                      value={mobileNumber}
+                      onChange={handleMobileChange}
+                      inputStyle={{
+                        width: "100%",
+                        height: "56px",
+                        borderRadius: "4px",
+                        border: "1px solid #ccc",
+                        color: "black",
+                        padding: "10px",
+                        paddingLeft: "50px",
+                      }}
+                      buttonStyle={{
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        color: "black",
+                      }}
+                      placeholder="Enter a Mobile Phone No."
+                    />
+                    <FormControlLabel
+                      sx={{ mt: { xs: 2 } }}
+                      control={
+                        <Checkbox
+                          sx={{
+                            color: "white",
+                          }}
+                          color="success"
+                          checked={useWhatsApp}
+                          onChange={handleWhatsAppChange}
+                        />
+                      }
+                      label={
+                        <Typography variant="body1">
+                          I use this number for WhatsApp?
+                        </Typography>
+                      }
+                    />
+                  </Grid>
 
-                {/* WhatsApp Number Field (conditional) */}
-                <Grid item xs={12} sm={12} sx={{ display: !useWhatsApp ? 'block' : 'none', ml: { md: 4 } }}>
-                  <Typography variant="body1">WhatsApp Number</Typography>
-                  <PhoneInput
-                    country={'ae'}
-                    value={whatsappNumber}
-                    onChange={handleWhatsAppNumberChange}
-                    inputStyle={{
-                      width: '100%',
-                      height: '56px',
-                      borderRadius: '4px',
-                      border: '1px solid #ccc',
-                      color: 'black',
-                      padding: '10px',
-                      paddingLeft: '50px'
+                  {/* WhatsApp Number Field (conditional) */}
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    sx={{
+                      display: !useWhatsApp ? "block" : "none",
+                      ml: { md: 4 },
                     }}
-                    buttonStyle={{
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      color: 'black'
-                    }}
-                    placeholder="Enter your WhatsApp number"
-                  />
-                </Grid>
+                  >
+                    <Typography variant="body1">WhatsApp Number</Typography>
+                    <PhoneInput
+                      country={"ae"}
+                      value={whatsappNumber}
+                      onChange={handleWhatsAppNumberChange}
+                      inputStyle={{
+                        width: "100%",
+                        height: "56px",
+                        borderRadius: "4px",
+                        border: "1px solid #ccc",
+                        color: "black",
+                        padding: "10px",
+                        paddingLeft: "50px",
+                      }}
+                      buttonStyle={{
+                        border: "1px solid #ccc",
+                        borderRadius: "4px",
+                        color: "black",
+                      }}
+                      placeholder="Enter your WhatsApp number"
+                    />
+                  </Grid>
                 </Box>
 
                 {/* Terms of Payment */}
@@ -589,16 +777,35 @@ export const CompanyRegisterForm: React.FC = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={12} container alignItems="center">
-                  <RadioGroup row value={agreement} onChange={handleAgreementChange}>
-                    <FormControlLabel value="yes" control={<Radio sx={{
-                      color: '#977342'
-                    }} />} label="Agree" />
-                    <FormControlLabel value="no" control={<Radio sx={{
-                      color: '#977342'
-                    }} />} label="I do not Agree" />
+                  <RadioGroup
+                    row
+                    value={agreement}
+                    onChange={handleAgreementChange}
+                  >
+                    <FormControlLabel
+                      value="yes"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#977342",
+                          }}
+                        />
+                      }
+                      label="Agree"
+                    />
+                    <FormControlLabel
+                      value="no"
+                      control={
+                        <Radio
+                          sx={{
+                            color: "#977342",
+                          }}
+                        />
+                      }
+                      label="I do not Agree"
+                    />
                   </RadioGroup>
                 </Grid>
-
 
                 {/* Custom Payment Terms Field */}
                 <Grid item xs={12}>
@@ -606,31 +813,33 @@ export const CompanyRegisterForm: React.FC = () => {
                     label="If you have your own payment terms, please specify (subject to approval)"
                     placeholder="Enter your payment terms"
                     fullWidth
-                    disabled={agreement === 'yes' ? true : false}
+                    disabled={agreement === "yes" ? true : false}
                     name="custom_payment_terms"
                     onChange={handleChange}
                     variant="outlined"
                     multiline
                     rows={4}
                     sx={{
-                      border: '1px solid #977342',
-                      borderRadius: '12px',
-                      color: 'white'
+                      border: "1px solid #977342",
+                      borderRadius: "12px",
+                      color: "white",
                     }}
                     color="warning"
-                    className='custom-input'
+                    className="custom-input"
                   />
                 </Grid>
 
                 {/* Preferred Payment Method */}
                 <Grid item xs={12} sx={{ mt: 2 }}>
                   <FormControl component="fieldset">
-                    <Typography variant="body1">Preferred Payment Method</Typography>
+                    <Typography variant="body1">
+                      Preferred Payment Method
+                    </Typography>
                     <FormControlLabel
                       control={
                         <Checkbox
                           sx={{
-                            color: 'white'
+                            color: "white",
                           }}
                           color="success"
                           checked={preferredPaymentMethods.directTransfer}
@@ -644,7 +853,7 @@ export const CompanyRegisterForm: React.FC = () => {
                       control={
                         <Checkbox
                           sx={{
-                            color: 'white'
+                            color: "white",
                           }}
                           color="success"
                           checked={preferredPaymentMethods.creditCard}
@@ -658,7 +867,7 @@ export const CompanyRegisterForm: React.FC = () => {
                       control={
                         <Checkbox
                           sx={{
-                            color: 'white'
+                            color: "white",
                           }}
                           color="success"
                           checked={preferredPaymentMethods.cash}
@@ -671,12 +880,17 @@ export const CompanyRegisterForm: React.FC = () => {
                   </FormControl>
                 </Grid>
 
-
                 {/* Email Field */}
                 <Grid item xs={12} sm={12} sx={{ mt: 2 }}>
-                  <Typography variant='body1'>Accounts Department Email</Typography>
+                  <Typography variant="body1">
+                    Accounts Department Email
+                  </Typography>
                   <TextField
-                    label={<Typography variant="body1">Accounts Department Email</Typography>}
+                    label={
+                      <Typography variant="body1">
+                        Accounts Department Email
+                      </Typography>
+                    }
                     type="email"
                     name="accounts_email"
                     placeholder="Enter your accounts email"
@@ -691,29 +905,57 @@ export const CompanyRegisterForm: React.FC = () => {
                 <Grid container spacing={2} sx={{ mt: 2 }}>
                   {/* Trade License Column */}
                   <Grid item xs={6}>
-                    <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-                      border: '4px dotted black',
-                      margin: '4px',
-                      borderRadius: '12px',
-                      padding: '4px',
-                      height: '50vh'
-                    }}>
+                    <Box
+                      flex="1"
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      sx={{
+                        border: "4px dotted black",
+                        margin: "4px",
+                        borderRadius: "12px",
+                        padding: "4px",
+                        height: "50vh",
+                      }}
+                    >
                       <Typography variant="body1">Trade License</Typography>
                       {tradePdf ? (
-                        <Box display="flex" flexDirection={"column"} alignItems="center">
-                          <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                          <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                          <IconButton color="error" onClick={() => handleRemoveTradePdf()}>
+                        <Box
+                          display="flex"
+                          flexDirection={"column"}
+                          alignItems="center"
+                        >
+                          <PictureAsPdf
+                            sx={{ fontSize: 90, color: "red", mt: 8 }}
+                          />
+                          <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                            {"File Uploaded"}
+                          </Typography>
+                          <IconButton
+                            color="error"
+                            onClick={() => handleRemoveTradePdf()}
+                          >
                             <Close />
                           </IconButton>
                         </Box>
                       ) : (
-                        <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                          <PictureAsPdf sx={{
-                            height: '30vh',
-                            fontSize: '80px'
-                          }} />
-                          <input type="file" hidden accept="application/pdf" onChange={(e) => handleTradePdfUpload(e)} />
+                        <IconButton
+                          color="primary"
+                          component="label"
+                          sx={{ marginTop: 2 }}
+                        >
+                          <PictureAsPdf
+                            sx={{
+                              height: "30vh",
+                              fontSize: "80px",
+                            }}
+                          />
+                          <input
+                            type="file"
+                            hidden
+                            accept="application/pdf"
+                            onChange={(e) => handleTradePdfUpload(e)}
+                          />
                         </IconButton>
                       )}
                     </Box>
@@ -721,92 +963,165 @@ export const CompanyRegisterForm: React.FC = () => {
 
                   {/* VAT Certificate Column */}
                   <Grid item xs={6}>
-                  <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-                      border: '4px dotted black',
-                      margin: '4px',
-                      borderRadius: '12px',
-                      padding: '4px',
-                      height: '50vh'
-                    }}>
+                    <Box
+                      flex="1"
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      sx={{
+                        border: "4px dotted black",
+                        margin: "4px",
+                        borderRadius: "12px",
+                        padding: "4px",
+                        height: "50vh",
+                      }}
+                    >
                       <Typography variant="body1">VAT Certificate</Typography>
                       {vatPdf ? (
-                        <Box display="flex" flexDirection={"column"} alignItems="center">
-                          <PictureAsPdf sx={{ fontSize: 90, color: 'red', mt: 8 }} />
-                          <Typography variant="body1" sx={{ marginLeft: 1 }}>{'File Uploaded'}</Typography>
-                          <IconButton color="error" onClick={() => handleRemoveVatPdf()}>
+                        <Box
+                          display="flex"
+                          flexDirection={"column"}
+                          alignItems="center"
+                        >
+                          <PictureAsPdf
+                            sx={{ fontSize: 90, color: "red", mt: 8 }}
+                          />
+                          <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                            {"File Uploaded"}
+                          </Typography>
+                          <IconButton
+                            color="error"
+                            onClick={() => handleRemoveVatPdf()}
+                          >
                             <Close />
                           </IconButton>
                         </Box>
                       ) : (
-                        <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                          <PictureAsPdf sx={{
-                            height: '30vh',
-                            fontSize: '80px'
-                          }} />
-                          <input type="file" hidden accept="application/pdf" onChange={(e) => handleVatPdfUpload(e)} />
+                        <IconButton
+                          color="primary"
+                          component="label"
+                          sx={{ marginTop: 2 }}
+                        >
+                          <PictureAsPdf
+                            sx={{
+                              height: "30vh",
+                              fontSize: "80px",
+                            }}
+                          />
+                          <input
+                            type="file"
+                            hidden
+                            accept="application/pdf"
+                            onChange={(e) => handleVatPdfUpload(e)}
+                          />
                         </IconButton>
                       )}
                     </Box>
                   </Grid>
-                  <Typography variant="body1" sx={{
-                    fontStyle: 'italic',
-                    width: '100%',
-                    textAlign: 'center',
-                    fontSize: '10px'
-                  }}>Only Image and PDF Files allowed.</Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontStyle: "italic",
+                      width: "100%",
+                      textAlign: "center",
+                      fontSize: "10px",
+                    }}
+                  >
+                    Only Image and PDF Files allowed.
+                  </Typography>
                 </Grid>
                 <Grid container spacing={2} sx={{ mt: 2 }}>
                   {/* Company Logo */}
                   <Grid item xs={12}>
-                  <Box flex="1" display="flex" flexDirection="column" alignItems="center" sx={{
-                      border: '4px dotted black',
-                      margin: '4px',
-                      borderRadius: '12px',
-                      padding: '4px',
-                      height: '50vh'
-                    }}>
+                    <Box
+                      flex="1"
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      sx={{
+                        border: "4px dotted black",
+                        margin: "4px",
+                        borderRadius: "12px",
+                        padding: "4px",
+                        height: "50vh",
+                      }}
+                    >
                       <Typography variant="body1">Company Logo</Typography>
                       {companyLogo ? (
-                        <Box display="flex" flexDirection={"column"} alignItems="center">
+                        <Box
+                          display="flex"
+                          flexDirection={"column"}
+                          alignItems="center"
+                        >
                           <Avatar
-                            src={companyLogo || ''}
+                            src={companyLogo || ""}
                             sx={{ width: 150, height: 150, mt: 2 }}
-                        />
-                          <Typography variant="body1" sx={{ marginLeft: 1 }}>{'Logo Uploaded'}</Typography>
-                          <IconButton color="error" onClick={() => handleRemoveCompanyLogo()}>
+                          />
+                          <Typography variant="body1" sx={{ marginLeft: 1 }}>
+                            {"Logo Uploaded"}
+                          </Typography>
+                          <IconButton
+                            color="error"
+                            onClick={() => handleRemoveCompanyLogo()}
+                          >
                             <Close />
                           </IconButton>
                         </Box>
                       ) : (
-                        <IconButton color="primary" component="label" sx={{ marginTop: 2 }}>
-                          <AddAPhotoIcon sx={{
-                            height: '30vh',
-                            fontSize: '80px'
-                          }} />
-                          
-                          <input type="file" hidden accept="image/jpeg;image/gif;image/webp;image/png" onChange={(e) => handleCompanyLogoUpload(e)} />
+                        <IconButton
+                          color="primary"
+                          component="label"
+                          sx={{ marginTop: 2 }}
+                        >
+                          <AddAPhotoIcon
+                            sx={{
+                              height: "30vh",
+                              fontSize: "80px",
+                            }}
+                          />
+
+                          <input
+                            type="file"
+                            hidden
+                            accept="image/jpeg;image/gif;image/webp;image/png"
+                            onChange={(e) => handleCompanyLogoUpload(e)}
+                          />
                         </IconButton>
                       )}
                     </Box>
                   </Grid>
-                  <Typography variant="body1" sx={{
-                    fontStyle: 'italic',
-                    width: '100%',
-                    textAlign: 'center',
-                    fontSize: '10px'
-                  }}>Only Images are allowed.</Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontStyle: "italic",
+                      width: "100%",
+                      textAlign: "center",
+                      fontSize: "10px",
+                    }}
+                  >
+                    Only Images are allowed.
+                  </Typography>
                 </Grid>
 
                 {/* Submit Button */}
                 <Grid item xs={12}>
                   <FormControlLabel
-                    control={<Checkbox value={hasAccepted} onChange={handleAcceptance} color="success" sx={{
-                      color: 'white',
-                      mt: 2
-                    }} />}
+                    control={
+                      <Checkbox
+                        value={hasAccepted}
+                        onChange={handleAcceptance}
+                        color="success"
+                        sx={{
+                          color: "white",
+                          mt: 2,
+                        }}
+                      />
+                    }
                     label={
                       <Typography variant="body1" sx={{ mt: 2 }}>
-                        By clicking here and going to the next step I declare that I have read and accept the <Link href="/">Ts & Cs</Link> of SSH.
+                        By clicking here and going to the next step I declare
+                        that I have read and accept the{" "}
+                        <Link href="/">Ts & Cs</Link> of SSH.
                       </Typography>
                     }
                   />
@@ -814,75 +1129,46 @@ export const CompanyRegisterForm: React.FC = () => {
                     type="submit"
                     variant="contained"
                     color="success"
-                    style={{ display: 'block', marginTop: '20px', border: '1px solid #977342' }}
+                    style={{
+                      display: "block",
+                      marginTop: "20px",
+                      border: "1px solid #977342",
+                    }}
                   >
                     <Typography variant="body1">Create Company</Typography>
                   </Button>
                 </Grid>
-                </form>
-              </Box>
-        </Grid >
-      </Grid >
-      
-      <Box sx={{ textAlign: 'center', marginTop: 4, color: 'gray.400', fontSize: { xs: '12px' } }}>
-        © 2025 Staffing Solutions Hub. All rights reserved.
-      </Box>
-      {/* Snackbar for notifications */}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        sx={{
-          '& .MuiSnackbarContent-root': {
-            borderRadius: '8px',
-            padding: '16px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-            width: { xs: '90%', sm: '400px' },
-            margin: '0 auto',
-            backgroundColor: '#ffffff',
-          },
-        }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={snackbarSeverity}
+              </form>
+            </Box>
+          </Grid>
+        </Grid>
+
+        <Box
           sx={{
-            width: '100%',
-            backgroundColor: '#ffffff',
-            color: '#333',
-            borderRadius: '8px',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            padding: '16px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
+            textAlign: "center",
+            marginTop: 4,
+            color: "gray.400",
+            fontSize: { xs: "12px" },
           }}
         >
-          {/* Display the list of messages */}
-          {snackbarMessage.split('\n').map((message, index) => (
-            <div
-              key={index}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: index !== snackbarMessage.split('\n').length - 1 ? '8px' : '0',
-              }}
-            >
-              <span
-                style={{
-                  marginRight: '8px',
-                  fontSize: '18px',
-                }}
-              >
-                {message.startsWith('✅') ? '✅' : '❌'}
-              </span>
-              <span>{message.slice(2).trim()}</span>
-            </div>
-          ))}
-        </Alert>
-      </Snackbar>
-    </Box >
+          © 2025 Staffing Solutions Hub. All rights reserved.
+        </Box>
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={handleSnackbarClose}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={handleSnackbarClose}
+            severity={snackbarSeverity}
+            sx={{ width: "100%" }}
+          >
+            {snackbarMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
     </>
   );
 };

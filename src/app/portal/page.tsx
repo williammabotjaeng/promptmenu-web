@@ -180,6 +180,7 @@ const Portal: React.FC = () => {
                   {roles?.map((job, index) => (
                     <JobCard 
                         key={index} 
+                        roleId={job?.role?.id}
                         title={job?.role?.title} 
                         location={job?.role?.location} 
                         ethnicities={job?.role?.ethnicities}
