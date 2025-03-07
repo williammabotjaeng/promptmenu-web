@@ -16,12 +16,17 @@ interface EventContextType {
   event: EventData | null;
   signedUrls: Record<string, string> | null;
   fetchEvent: () => Promise<void>;
-  getRole: (roleId) => Promise<void>;
+  getRole: (roleId: string) => Promise<void>;
   getRoles: () => Promise<void>;
   getEventRoles: (eventId) => Promise<void>;
   getUserEvents: () => Promise<void>;
   createEvent: (eventData) => Promise<void>;
   updateEvent: (eventId: string, data: any) => Promise<void>;
+}
+
+interface GetRoleInput {
+  eventId: string;
+  roleId: string;
 }
 
 const EventContext = createContext<EventContextType | null>(null);
@@ -173,22 +178,25 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getRoleMutation = useMutation({
     mutationKey: ["get_role"],
-    mutationFn: async (eventId: string) => {
-      console.log("Event ID:", eventId);
-      if (!eventId) {
-        throw new Error("Event ID is required to fetch roles.");
+    mutationFn: async (roleId: string) => {
+      console.log("Role ID:", roleId);
+      
+      if (!roleId) {
+        throw new Error("Both Event ID and Role ID are required to fetch the role.");
       }
+  
       const response = await restCall(
-        `/dashboard/events/role/${eventId}/`, 
+        `/dashboard/events/roles/${roleId}/`, 
         "GET",
         {},
         accessToken
       );
+  
       console.log("Role Response", response);
       return response;
     },
     onSuccess: (data) => {
-      setRoles(data);
+      setRoles(data); 
       console.log("Role fetched successfully", data);
     },
     onError: (error) => {
@@ -200,7 +208,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     return await userEventsMutation.mutateAsync();
   };
 
-  const getRole = async (roleId: string) => {
+  const getRole = async (roleId) => {
     return await getRoleMutation.mutateAsync(roleId);
   };
 
