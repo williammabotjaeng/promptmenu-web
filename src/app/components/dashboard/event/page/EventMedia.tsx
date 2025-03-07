@@ -39,9 +39,9 @@ export const EventMedia: React.FC = () => {
     ]);
 
     const titleMapping: Record<keyof EventMediaType, string> = {
-        eventPromoVideo: 'Promo Video',
-        eventPhotos: 'Event Photos',
-        eventPoster: 'Event Poster',
+        'eventPromoVideo': 'Promo Video',
+        'eventPhotos': 'Event Photos',
+        'eventPoster': 'Event Poster',
       };
 
     const handleSave = () => {

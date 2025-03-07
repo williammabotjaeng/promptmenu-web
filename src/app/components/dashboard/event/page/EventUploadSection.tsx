@@ -31,6 +31,12 @@ export const EventUploadSection: React.FC<EventUploadSectionProps> = ({
     "event_video",
   ]);
 
+  const titleMapping: Record<keyof EventMediaType, string> = {
+          'eventPromoVideo': 'Promo Video',
+          'eventPhotos': 'Event Photos',
+          'eventPoster': 'Event Poster',
+  };
+
   // Define a mapping from EventMediaType keys to cookie names
 const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_photos' | 'event_video'> = {
   eventPoster: 'event_poster',
@@ -105,6 +111,10 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
     }
   };
 
+  function handleDeleteFile(index: number): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <Box
       sx={{
@@ -125,7 +135,7 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
           textAlign: "center",
         }}
       >
-        {title}
+        {titleMapping[title]}
       </Typography>
       <Box
         sx={{
@@ -148,7 +158,7 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
             flexDirection: "column",
             alignItems: "center",
             width: "100%",
-            maxWidth: "173px",
+            maxWidth: "300px", // Larger poster preview
           }}
         >
           <Box
@@ -156,8 +166,8 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              width: "40px",
-              minHeight: "36px",
+              width: "100px",
+              minHeight: "80px",
             }}
           >
             <img
@@ -210,21 +220,41 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
           {type === "single" && selectedFiles.length > 0 && (
             <Box sx={{ textAlign: "center" }}>
               {mediaType === "photo" ? (
-                <img
-                  src={URL.createObjectURL(selectedFiles[0])}
-                  alt="Uploaded"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "300px",
-                    borderRadius: "8px",
-                  }}
-                />
+                <Box sx={{ position: "relative", display: "inline-block" }}>
+                  <img
+                    src={URL.createObjectURL(selectedFiles[0])}
+                    alt="Uploaded"
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "500px", // Larger preview
+                      borderRadius: "8px",
+                    }}
+                  />
+                  <Button
+                    onClick={() => handleDeleteFile(0)}
+                    sx={{
+                      position: "absolute",
+                      top: 8,
+                      right: 8,
+                      backgroundColor: "rgba(255, 0, 0, 0.8)",
+                      color: "white",
+                      borderRadius: "50%",
+                      minWidth: "32px",
+                      minHeight: "32px",
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 0, 0, 1)",
+                      },
+                    }}
+                  >
+                    🗑️
+                  </Button>
+                </Box>
               ) : (
                 <video
                   controls
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "300px",
+                    width: "100%",
+                    height: "100vh", // Full height of the viewport
                     borderRadius: "8px",
                   }}
                 >
@@ -240,33 +270,53 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
           {type === "multiple" && selectedFiles.length > 0 && (
             <Grid container spacing={2}>
               {selectedFiles.map((file, index) => (
-                <Grid item xs={6} sm={4} md={3} key={index}>
-                  {mediaType === "photo" ? (
-                    <img
-                      src={URL.createObjectURL(file)}
-                      alt={`Uploaded ${index}`}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "8px",
-                      }}
-                    />
-                  ) : (
-                    <video
-                      controls
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "8px",
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Box sx={{ position: "relative" }}>
+                    {mediaType === "photo" ? (
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt={`Uploaded ${index}`}
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          borderRadius: "8px",
+                        }}
+                      />
+                    ) : (
+                      <video
+                        controls
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          borderRadius: "8px",
+                        }}
+                      >
+                        <source
+                          src={URL.createObjectURL(file)}
+                          type={file.type}
+                        />
+                        Your browser does not support the video tag.
+                      </video>
+                    )}
+                    <Button
+                      onClick={() => handleDeleteFile(index)}
+                      sx={{
+                        position: "absolute",
+                        top: 8,
+                        right: 8,
+                        backgroundColor: "rgba(255, 0, 0, 0.8)",
+                        color: "white",
+                        borderRadius: "50%",
+                        minWidth: "32px",
+                        minHeight: "32px",
+                        "&:hover": {
+                          backgroundColor: "rgba(255, 0, 0, 1)",
+                        },
                       }}
                     >
-                      <source
-                        src={URL.createObjectURL(file)}
-                        type={file.type}
-                      />
-                      Your browser does not support the video tag.
-                    </video>
-                  )}
+                      🗑️
+                    </Button>
+                  </Box>
                 </Grid>
               ))}
             </Grid>
