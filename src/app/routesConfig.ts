@@ -14,7 +14,8 @@ export const privateRoutes: string[] = [
     '/add-role',
     '/message',
     '/create-message',
-    '/message-success'
+    '/message-success',
+    '/role'
   ];
   
   export const publicRoutes: string[] = [

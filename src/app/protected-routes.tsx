@@ -35,6 +35,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     /^\/event\/\d+$/,
     /^\/add-role\/\d+$/, 
     /^\/message\/\d+$/, 
+    /^\/role\/\d+$/
   ];
 
   const matchRoute = (pathname: string, routes: RegExp[]): boolean => {
