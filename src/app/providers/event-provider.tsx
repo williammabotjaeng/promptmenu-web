@@ -17,6 +17,7 @@ interface EventContextType {
   signedUrls: Record<string, string> | null;
   fetchEvent: () => Promise<void>;
   getRoles: () => Promise<void>;
+  getEventRoles: (eventId) => Promise<void>;
   getUserEvents: () => Promise<void>;
   createEvent: (eventData) => Promise<void>;
   updateEvent: (eventId: string, data: any) => Promise<void>;
@@ -144,12 +145,41 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+  const getEventRolesMutation = useMutation({
+    mutationKey: ["get_event_roles"],
+    mutationFn: async (eventId: string) => {
+      console.log("Event ID:", eventId);
+      if (!eventId) {
+        throw new Error("Event ID is required to fetch roles.");
+      }
+      const response = await restCall(
+        `/dashboard/events/roles/${eventId}/`, 
+        "GET",
+        {},
+        accessToken
+      );
+      console.log("Event Roles Response", response);
+      return response;
+    },
+    onSuccess: (data) => {
+      setRoles(data);
+      console.log("Event roles fetched successfully", data);
+    },
+    onError: (error) => {
+      console.error("Error fetching event roles: ", error);
+    },
+  });
+
   const getUserEvents = async () => {
     return await userEventsMutation.mutateAsync();
   };
 
   const getRoles = async () => {
     return await getRolesMutation.mutateAsync();
+  };
+
+  const getEventRoles = async (eventId: string) => {
+    return await getEventRolesMutation.mutateAsync(eventId);
   };
 
   const fetchEvent = async () => {
@@ -211,6 +241,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
         createEvent,
         updateEvent,
         getRoles,
+        getEventRoles,
         getUserEvents,
       }}
     >

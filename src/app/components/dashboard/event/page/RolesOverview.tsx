@@ -7,16 +7,33 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import moment from "moment";
 import { useState } from "react";
+import useCurrentEventStore from "@/state/use-current-event-store";
+import { useEvent } from "@/providers/event-provider";
+import useLocalRolesStore from "@/state/use-local-roles-store";
 
-const RolesOverview: React.FC = () => {
+interface RolesOverviewProps {
+  event: any;
+}
+
+const RolesOverview: React.FC<RolesOverviewProps> = ({ event }) => {
+
+  const [localRoles, setLocalRoles] = useState([]);
+
   const { eventDetails } = useStore(useEventStore);
 
-  const [currentEvent, setCurrentEvent] = useState();
+
+  const { currentEvent } = useStore(useCurrentEventStore);
+
+  const { roles, setRoles } = useStore(useLocalRolesStore);
+
+  const { getEventRoles } = useEvent();
 
   const [cookies] = useCookies([
     'current_event',
     'event_id'
   ]);
+
+  const eventID = cookies?.event_id;
 
   const router = useRouter();
 
@@ -32,8 +49,14 @@ const RolesOverview: React.FC = () => {
   }
 
   React.useEffect(() => {
-    setCurrentEvent(cookies?.current_event);
-  }, [cookies]);
+    console.log("Current Event Store:", currentEvent);
+    console.log("Event Prop:", event);
+    getEventRoles(eventID).then((data: any) => {
+      console.log("Roles Data:", data);
+      setRoles(data);
+      setLocalRoles(data);
+    });
+  }, [cookies, currentEvent, event]);
 
   return (
     <Box
@@ -80,17 +103,18 @@ const RolesOverview: React.FC = () => {
             + Add Role
           </Button>
         </Box>
-        {eventDetails?.roles?.map((role, index) => (
+        {localRoles?.map((role, index) => (
           <RoleCard
             key={index} 
+            id={role?.id}
             title={role.title} 
             status="Active" 
-            requirements={`${role.genders.join(", ")}, ${role.minAge}-${
-              role.maxAge
+            requirements={`${role.genders.join(", ")}, ${role.min_age}-${
+              role.max_age
             } years`} 
-            location={eventDetails.location} 
+            location={eventDetails?.location} 
             postedTime={moment(role?.created_at).fromNow()} 
-            salary={`AED ${role.dailyPay || role.hourlyPay || role.projectPay}`} 
+            salary={`AED ${role?.daily_pay || role?.hourly_pay || role?.project_pay}`} 
           />
         ))}
       </Box>

@@ -52,7 +52,7 @@ const EventRoles: React.FC<EventRolesProps> = ({ event }) => {
                 width: '100%',
             }}
         >
-                <RolesOverview />
+                <RolesOverview event={event} />
                 <Button
                     onClick={handleSave}
                     variant="contained"

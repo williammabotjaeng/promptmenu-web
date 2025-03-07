@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Box, Typography, Chip } from "@mui/material";
 import { RoleCardProps } from "@/types/Props/RoleCardProps";
+import { useRouter } from "next/navigation";
 
 export const RoleCard: React.FC<RoleCardProps> = ({
+  id,
   title,
   status,
   requirements,
@@ -10,6 +12,13 @@ export const RoleCard: React.FC<RoleCardProps> = ({
   postedTime,
   salary
 }) => {
+
+  const router = useRouter();
+
+  const handleRoleClick = () => {
+    router?.push(`/role/${id}`);
+  };
+
   return (
     <Box
       sx={{
@@ -27,6 +36,7 @@ export const RoleCard: React.FC<RoleCardProps> = ({
           transform: 'scale(1.02)',
         },
       }}
+      onClick={handleRoleClick}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#000', fontSize: { xs: '1rem', md: '1.25rem' } }}>

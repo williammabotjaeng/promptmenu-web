@@ -1,4 +1,5 @@
 export interface RoleCardProps {
+    id: string;
     title: string;
     status: string;
     requirements: string;
