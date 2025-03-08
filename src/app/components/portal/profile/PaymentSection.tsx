@@ -212,7 +212,7 @@ export const PaymentSection: React.FC = () => {
         flexDirection: "column",
         backgroundColor: "white",
         minHeight: "100vh",
-        pb: 4,
+        pb: 1,
       }}
     >
       {/* Payment Section */}

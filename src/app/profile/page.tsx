@@ -24,6 +24,7 @@ import { useStore } from 'zustand';
 import HeadshotUpload from '@/components/portal/profile/HeadshotUploader';
 import SkillsSelection from '@/components/portal/profile/SkillsSelection';
 import { PaymentSection } from '@/components/portal/profile/PaymentSection';
+import { PhysicalAttributes } from '@/components/portal/profile/PhysicalAttributes';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -174,6 +175,7 @@ const Portal: React.FC = () => {
             <HeadshotUpload />
             <SkillsSelection />
             <PaymentSection />
+            <PhysicalAttributes />
           </Box>
         </Box>
       </Box>
