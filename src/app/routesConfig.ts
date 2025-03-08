@@ -17,9 +17,6 @@ export const privateRoutes: string[] = [
     '/message-success',
     '/role',
     '/connect-social',
-    '/terms-of-service',
-    '/privacy-policy',
-    '/terms-and-conditions'
   ];
   
   export const publicRoutes: string[] = [
@@ -34,4 +31,7 @@ export const privateRoutes: string[] = [
     '/jobs',
     '/talent',
     '/contact',
+    '/terms-of-service',
+    '/privacy-policy',
+    '/terms-and-conditions'
   ];
