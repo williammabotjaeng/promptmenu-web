@@ -23,7 +23,7 @@ import Loading from "@/components/Loading";
 import { SettingsScreen } from "../onboarding/SettingsScreen";
 
 const settingsScreenTab = [
-  { label: "Communication", value: "communication" },
+  { label: "Communication", value: "communications" },
   { label: "Account Email", value: "email" },
 ];
 
@@ -31,6 +31,9 @@ export const Settings: React.FC = () => {
   const [activeSettingsScreen, setActiveSettingsScreen] =
     useState<string>("communication");
   const [communicationSettings, setCommunicationSettings] = useState(null);
+  const [sendEmailNotifications, setSendEmailNotifications] = useState(false);
+  const [sendSSHUpdates, setSendSSHUpdates] = useState(false);
+  const [allowBrowserNotifications, setAllowBrowserNotifications] = useState(false);
 
   const { paymentMethods, setPaymentMethods, talentData } = useStore(
     useTalentOnboardingStore
@@ -99,7 +102,7 @@ export const Settings: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={communicationSettings.sendEmailNotifications}
+                  checked={sendEmailNotifications}
                   onChange={handleCheckboxChange("sendEmailNotifications")}
                 />
               }
@@ -108,7 +111,7 @@ export const Settings: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={communicationSettings.sendSSHUpdates}
+                  checked={sendSSHUpdates}
                   onChange={handleCheckboxChange("sendSSHUpdates")}
                 />
               }
@@ -117,7 +120,7 @@ export const Settings: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={communicationSettings.allowBrowserNotifications}
+                  checked={allowBrowserNotifications}
                   onChange={handleCheckboxChange("allowBrowserNotifications")}
                   onClick={handleBrowserNotificationClick}
                 />
