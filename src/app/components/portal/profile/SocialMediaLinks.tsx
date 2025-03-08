@@ -271,6 +271,9 @@ export const SocialMediaLinks: React.FC = () => {
             color: "#000",
             backgroundColor: "#CEAB76",
             width: { xs: "100%", md: "100%" },
+            "&:hover": {
+                color: "white"
+            }
           }}
           onClick={handleContinue}
         >
