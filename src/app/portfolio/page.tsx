@@ -21,12 +21,7 @@ import SSHGoldLogo from '@/assets/GoldLogo.png';
 import { useEvent } from '@/providers/event-provider';
 import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
-import HeadshotUpload from '@/components/portal/profile/HeadshotUploader';
-import SkillsSelection from '@/components/portal/profile/SkillsSelection';
-import { PaymentSection } from '@/components/portal/profile/PaymentSection';
-import { PhysicalAttributes } from '@/components/portal/profile/PhysicalAttributes';
-import { SocialMediaLinks } from '@/components/portal/profile/SocialMediaLinks';
-import { IDandCreds } from '@/components/portal/profile/IDandCreds';
+import { PortfolioBuilder } from '@/components/portal/profile/PortfolioBuilder';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -173,13 +168,9 @@ const Portal: React.FC = () => {
                 <ProfileDropdown profilePicture={signedUrls?.headshot || ""} placeholderLetter={firstName[0]?.toUpperCase() || ""} />
               </Grid>
             </Grid>
-
-            <HeadshotUpload />
-            <SkillsSelection />
-            <PaymentSection />
-            <PhysicalAttributes />
-            <SocialMediaLinks />
-            <IDandCreds />
+            <br />
+            <br />
+            <PortfolioBuilder />
           </Box>
         </Box>
       </Box>
