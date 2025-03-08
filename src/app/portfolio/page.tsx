@@ -26,13 +26,11 @@ import { PortfolioBuilder } from '@/components/portal/profile/PortfolioBuilder';
 const sidebarItems = [
   { icon: "connect", label: "Connect Social", href: '/connect-social' },
   { icon: "work", label: "Jobs", href: '/dashboard' },
-  { icon: "theaters", label: "Auditions", href: '/dashboard' },
+  { icon: "theaters", label: "Auditions", href: '/auditions' },
   { icon: "person", label: "Profile", href: '/profile' },
   { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
-  { icon: "settings", label: "Settings", href: '/dashboard' }
+  { icon: "settings", label: "Settings", href: '/settings' }
 ];
-
-
 
 const jobs = [
   {

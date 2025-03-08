@@ -166,8 +166,16 @@ const Portal: React.FC = () => {
                 <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstName[0]?.toUpperCase()} />
               </Grid>
             </Grid>
-
-            <SocialMediaIntegration />
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: 10
+            }}>
+              <Typography sx={{
+                margin: 20
+              }} variant="h5">No Auditions at the Moment.</Typography>
+            </Box>
           </Box>
         </Box>
       </Box>

@@ -39,12 +39,12 @@ import { SocialMediaLinks } from "@/components/portal/profile/SocialMediaLinks";
 import { IDandCreds } from "@/components/portal/profile/IDandCreds";
 
 const sidebarItems = [
-    { icon: "connect", label: "Connect Social", href: '/connect-social' },
-    { icon: "work", label: "Jobs", href: '/dashboard' },
-    { icon: "theaters", label: "Auditions", href: '/auditions' },
-    { icon: "person", label: "Profile", href: '/profile' },
-    { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
-    { icon: "settings", label: "Settings", href: '/settings' }
+  { icon: "connect", label: "Connect Social", href: '/connect-social' },
+  { icon: "work", label: "Jobs", href: '/dashboard' },
+  { icon: "theaters", label: "Auditions", href: '/auditions' },
+  { icon: "person", label: "Profile", href: '/profile' },
+  { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
+  { icon: "settings", label: "Settings", href: '/settings' }
 ];
 
 const jobs = [
@@ -310,39 +310,8 @@ const Portal: React.FC = () => {
               </Grid>
               <br />
               <br />
-              <Grid
-                container
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Profile Completion
-                </Typography>
-                <Typography variant="body1" sx={{ color: "#977342" }}>
-                  {Number(talentProfile?.profile_progress) * 100}%
-                </Typography>
-              </Grid>
-              <Box sx={{ marginTop: 2 }}>
-                <LinearProgress
-                  variant="determinate"
-                  value={Number(talentProfile?.profile_progress) * 100}
-                  sx={{
-                    height: "8px",
-                    borderRadius: "4px",
-                    backgroundColor: "#E5E7EB",
-                    "& .MuiLinearProgress-bar": {
-                      backgroundColor: "#CEAB76",
-                    },
-                  }}
-                />
-              </Box>
-              <br />
-              <HeadshotUpload />
-              <SkillsSelection />
+              
               <PaymentSection />
-              <PhysicalAttributes />
-              <SocialMediaLinks />
-              <IDandCreds />
             </Box>
           </Box>
         </Box>
