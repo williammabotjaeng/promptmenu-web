@@ -38,7 +38,7 @@ const Messages = () => {
   const [loading, setLoading] = useState(false);
 
   const handleCreateMessage = () => {
-    router.push(`/create-message`);
+   // router.push(`/create-message`);
   }
 
   useEffect(() => {
