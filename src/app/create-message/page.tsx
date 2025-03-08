@@ -3,35 +3,18 @@
 import * as React from "react";
 import { Box, Grid, Card, CardContent, TextField, Button, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useMessage } from "@/providers/message-provider"; // Assuming you have a MessageProvider
+import { useMessage } from "@/providers/message-provider"; 
 import Header from "@/components/dashboard/Header";
 import GreyFooter from "@/components/GreyFooter";
 import { useRouter } from "next/navigation";
 import Loading from "@/components/Loading";
 
 const CreateMessage = () => {
-  const { sendMessage } = useMessage(); 
-  const [users, setUsers] = useState([]); 
+  const { sendMessage } = useMessage();  
   const [messageContent, setMessageContent] = useState(""); 
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-
-  // Fetch users (dummy data or API call)
-  useEffect(() => {
-    
-    const fetchUsers = async () => {
-      const dummyUsers = [
-        { id: "1", name: "John Doe" },
-        { id: "2", name: "Jane Smith" },
-        { id: "3", name: "Alice Johnson" },
-        { id: "4", name: "Bob Brown" },
-      ];
-      setUsers(dummyUsers);
-    };
-
-    fetchUsers();
-  }, []);
 
   const handleSendMessage = async () => {
     if (messageContent?.trim() === "") {

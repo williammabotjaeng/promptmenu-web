@@ -28,11 +28,9 @@ const Messages = () => {
   const router = useRouter();
   const [cookies, setCookie] = useCookies(['ssh_session_id', 'user_role', 'onboarding_presented']);
 
-  let user_role = cookies['user_role'];
+  let user_role = cookies?.user_role;
 
-  const user_roles = ['client', 'talent', 'influencer'];
-
-  const onboardingPresented = cookies['onboarding_presented'] || false;
+  const onboardingPresented = cookies?.onboarding_presented || false;
 
   const { messages, fetchMessages } = useMessage();
 
@@ -110,7 +108,7 @@ const Messages = () => {
                     }
                   }}>Create Message</Button>
                 </Box>
-                {messages?.length > 1 ? <Box sx={{ marginTop: 2 }}>
+                {(messages && messages?.length > 0) ? <Box sx={{ marginTop: 2 }}>
                   {messages?.map((message, index) => (
                     <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
                       {!message?.is_thread && <MessageCard {...message} />}
