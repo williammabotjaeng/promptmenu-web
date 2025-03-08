@@ -97,7 +97,7 @@ const Portal: React.FC = () => {
       setTimeout(() => {
         setLoading(false)
       }, 500);
-  }, [cookies]);
+  }, [cookies, roles]);
 
   const stats = [
     { title: "Profile Views", value: talentProfile?.profile_views, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
@@ -178,7 +178,7 @@ const Portal: React.FC = () => {
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
                 <Box sx={{ marginTop: 2 }}>
-                  {roles?.length > 0 && roles?.map((job, index) => (
+                  {(roles && roles?.length > 0) && roles?.map((job, index) => (
                     <JobCard 
                         key={index} 
                         roleId={job?.role?.id}
@@ -189,8 +189,8 @@ const Portal: React.FC = () => {
                         dailyPay={job?.role?.daily_pay}
                         skill={job?.role?.skill}
                         hardDeadline={
-                          job.role.hard_deadline
-                            ? `Closes in ${moment.duration(moment(job.role.hard_deadline).diff(moment())).humanize()}`
+                          job?.role?.hard_deadline
+                            ? `Closes in ${moment.duration(moment(job?.role?.hard_deadline).diff(moment())).humanize()}`
                             : "No Deadline"
                         }
                         openings={job?.role?.openings}
