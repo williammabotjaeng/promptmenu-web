@@ -30,32 +30,16 @@ const Messages = () => {
 
   let user_role = cookies?.user_role;
 
-  const onboardingPresented = cookies?.onboarding_presented || false;
+  const onboardingPresented = cookies?.onboarding_presented;
 
   const { messages, fetchMessages } = useMessage();
 
   const [openModal, setOpenModal] = useState(true); 
   const [loading, setLoading] = useState(false);
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-
   const handleCreateMessage = () => {
     router.push(`/create-message`);
   }
-
-  const handleOptionClick = (option: 'client' | 'talent' | 'influencer') => {
-    console.log("User selected:", option);
-    handleCloseModal(); 
-    updateUser(
-      { 
-        field: 'user_role',
-        value: option
-      }
-    )
-    setCookie('user_role', option.toLowerCase());
-  };
 
   useEffect(() => {
     console.log("User Role:", user_role);
