@@ -10,6 +10,7 @@ import TheatersIcon from '@mui/icons-material/Theaters';
 import PersonIcon from '@mui/icons-material/Person';
 import PortfolioIcon from '@mui/icons-material/AccountBox'; 
 import SettingsIcon from '@mui/icons-material/Settings';
+import SocialDistanceIcon from '@mui/icons-material/SocialDistance';
 
 import { SidebarItemProps } from "@/types/Props/SidebarItemProps";
 
@@ -32,6 +33,8 @@ export const SidebarItem: React.FC<SidebarItemProps> = ({ icon, label, href }) =
         return <PortfolioIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       case 'settings':
         return <SettingsIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
+      case 'connect':
+        return <SocialDistanceIcon sx={{ fontSize: '16px', color: '#D1D5DB' }} />;
       default:
         return null; 
     }

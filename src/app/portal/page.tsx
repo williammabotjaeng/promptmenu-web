@@ -24,6 +24,7 @@ import { useStore } from 'zustand';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
+  { icon: "connect", label: "Connect Social", href: '/connect-social' },
   { icon: "work", label: "Jobs", href: '/dashboard' },
   { icon: "theaters", label: "Auditions", href: '/dashboard' },
   { icon: "person", label: "Profile", href: '/talent-onboarding' },
@@ -80,7 +81,7 @@ const Portal: React.FC = () => {
   useEffect(() => {
       setLoading(true);
       fetchTalentProfile();
-      getRoles();
+      // getRoles();
       if (!onboardingPresented) {
         console.log("Inside the condition, UserRole:", user_role);
         console.log("Check result:", user_role === 'talent');
