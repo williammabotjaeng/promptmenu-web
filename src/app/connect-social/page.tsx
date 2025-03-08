@@ -27,7 +27,7 @@ const sidebarItems = [
   { icon: "connect", label: "Connect Social", href: '/connect-social' },
   { icon: "work", label: "Jobs", href: '/dashboard' },
   { icon: "theaters", label: "Auditions", href: '/dashboard' },
-  { icon: "person", label: "Profile", href: '/talent-onboarding' },
+  { icon: "person", label: "Profile", href: '/profile' },
   { icon: "portfolio", label: "Portfolio", href: '/dashboard' },
   { icon: "mail", label: "Messages", href: '/dashboard' },
   { icon: "settings", label: "Settings", href: '/dashboard' }
