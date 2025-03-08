@@ -25,6 +25,7 @@ import HeadshotUpload from '@/components/portal/profile/HeadshotUploader';
 import SkillsSelection from '@/components/portal/profile/SkillsSelection';
 import { PaymentSection } from '@/components/portal/profile/PaymentSection';
 import { PhysicalAttributes } from '@/components/portal/profile/PhysicalAttributes';
+import { SocialMediaLinks } from '@/components/portal/profile/SocialMediaLinks';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -176,6 +177,7 @@ const Portal: React.FC = () => {
             <SkillsSelection />
             <PaymentSection />
             <PhysicalAttributes />
+            <SocialMediaLinks />
           </Box>
         </Box>
       </Box>
