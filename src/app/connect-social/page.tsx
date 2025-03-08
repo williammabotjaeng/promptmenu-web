@@ -24,7 +24,6 @@ import { useStore } from 'zustand';
 import SocialMediaIntegration from '@/components/portal/SocialIntegration';
 
 const sidebarItems = [
-  { icon: "dashboard", label: "Portal", href: '/portal' },
   { icon: "connect", label: "Connect Social", href: '/connect-social' },
   { icon: "work", label: "Jobs", href: '/dashboard' },
   { icon: "theaters", label: "Auditions", href: '/dashboard' },

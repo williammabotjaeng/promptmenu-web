@@ -67,7 +67,7 @@ const SocialMediaIntegration = () => {
       ) : (
         <Grid container spacing={3}>
           {/* TikTok Integration */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Card sx={{ padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>TikTok Account</Typography>
@@ -79,7 +79,7 @@ const SocialMediaIntegration = () => {
           </Grid>
 
           {/* Instagram Integration */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Card sx={{ padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Instagram Account</Typography>
@@ -91,7 +91,7 @@ const SocialMediaIntegration = () => {
           </Grid>
 
           {/* Facebook Integration */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Card sx={{ padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Facebook Account</Typography>
@@ -103,7 +103,7 @@ const SocialMediaIntegration = () => {
           </Grid>
 
           {/* Snapchat Integration */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <Card sx={{ padding: 2, borderRadius: '12px', boxShadow: 1 }}>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Snapchat Account</Typography>
