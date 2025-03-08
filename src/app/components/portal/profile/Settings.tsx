@@ -130,7 +130,7 @@ export const Settings: React.FC = () => {
         return (
           <Box sx={{ mt: 4 }}>
             <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
-              Enter your PayPal email:
+              Main Account Email:
             </Typography>
             <TextField
               fullWidth
