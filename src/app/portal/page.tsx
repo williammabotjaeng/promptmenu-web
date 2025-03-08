@@ -97,7 +97,7 @@ const Portal: React.FC = () => {
       setTimeout(() => {
         setLoading(false)
       }, 500);
-  }, [cookies, loading, fetchTalentProfile]);
+  }, [cookies]);
 
   const stats = [
     { title: "Profile Views", value: talentProfile?.profile_views, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
