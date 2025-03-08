@@ -83,19 +83,19 @@ const Footer = () => {
                   component="div"
                   sx={{ color: '#9CA3AF', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} // Responsive font size
                 >
-                  Link 1
+                  <Link href="/about">About</Link>
                 </Typography>
                 <Typography
                   component="div"
                   sx={{ color: '#9CA3AF', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} // Responsive font size
                 >
-                  Link 2
+                  <Link href="/terms-of-service">Terms of Service</Link>
                 </Typography>
                 <Typography
                   component="div"
                   sx={{ color: '#9CA3AF', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} // Responsive font size
                 >
-                  Link 3
+                  <Link href="/privacy-policy">Privacy Policy</Link>
                 </Typography>
               </Box>
             </Box>

@@ -6,8 +6,8 @@ import { useCookies } from "react-cookie";
 import { restCall } from "@/services/restCall";
 
 interface TikTokContextType {
-  login: () => void;
-  fetchUserInfo: () => Promise<void>;
+  tikTokLogin: () => void;
+  fetchTiktokUserInfo: () => Promise<void>;
   userInfo: any | null;
 }
 
@@ -41,19 +41,19 @@ export const TikTokProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     },
   });
 
-  const login = async () => {
+  const tikTokLogin = async () => {
     await loginMutation.mutateAsync();
   };
 
-  const fetchUserInfo = async () => {
+  const fetchTiktokUserInfo = async () => {
     await fetchUserInfoMutation.mutateAsync();
   };
 
   return (
     <TikTokContext.Provider
       value={{
-        login,
-        fetchUserInfo,
+        tikTokLogin,
+        fetchTiktokUserInfo,
         userInfo: fetchUserInfoMutation.data || null,
       }}
     >

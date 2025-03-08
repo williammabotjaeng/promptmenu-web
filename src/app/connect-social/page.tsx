@@ -22,6 +22,8 @@ import { useEvent } from '@/providers/event-provider';
 import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
 import SocialMediaIntegration from '@/components/portal/SocialIntegration';
+import { useTikTok } from '@/providers/tiktok-provider';
+import { useTitle } from 'react-use';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -72,6 +74,8 @@ const Portal: React.FC = () => {
 
   const { getRoles } = useEvent();
 
+  const { tikTokLogin } = useTikTok();
+
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
@@ -79,6 +83,7 @@ const Portal: React.FC = () => {
   useEffect(() => {
       setLoading(true);
       fetchTalentProfile();
+      tikTokLogin();
       // getRoles();
       if (!onboardingPresented) {
         console.log("Inside the condition, UserRole:", user_role);

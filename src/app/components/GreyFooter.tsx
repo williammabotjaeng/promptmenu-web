@@ -6,6 +6,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
+import Link from 'next/link';
 
 const GreyFooter = () => {
   return (
@@ -80,19 +81,19 @@ const GreyFooter = () => {
                   component="div" 
                   sx={{ color: '#4B5563', marginTop: 1, fontSize: '16px' }}
                 >
-                  Link 1
+                  <Link href="/about">About</Link>
                 </Typography>
                 <Typography 
                   component="div" 
                   sx={{ color: '#4B5563', marginTop: 1, fontSize: '16px' }}
                 >
-                  Link 2
+                  <Link href="/terms-of-service">Terms of Service</Link>
                 </Typography>
                 <Typography 
                   component="div" 
                   sx={{ color: '#4B5563', marginTop: 1, fontSize: '16px' }}
                 >
-                  Link 3
+                  <Link href="/privacy-policy">Privacy Policy</Link>
                 </Typography>
               </Box>
             </Box>

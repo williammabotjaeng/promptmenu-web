@@ -12,6 +12,7 @@ import { EventProvider } from "@/providers/event-provider";
 import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
 import { MessageProvider } from "./providers/message-provider";
+import { TikTokProvider } from "./providers/tiktok-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +51,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
+            <TikTokProvider>
             <MessageProvider>
               <CompanyProvider>
                 <EventProvider>
@@ -65,6 +67,7 @@ export default function RootLayout({
                 </EventProvider>
               </CompanyProvider>
             </MessageProvider>
+            </TikTokProvider>
           </QueryClientProvider>
         </ThemeProvider>
       </body>
