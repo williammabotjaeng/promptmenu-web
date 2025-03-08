@@ -12,7 +12,6 @@ import Loading from "@/components/Loading";
 const CreateMessage = () => {
   const { sendMessage } = useMessage(); 
   const [users, setUsers] = useState([]); 
-  const [selectedUser, setSelectedUser] = useState<string | null>('1'); 
   const [messageContent, setMessageContent] = useState(""); 
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +34,7 @@ const CreateMessage = () => {
   }, []);
 
   const handleSendMessage = async () => {
-    if (!selectedUser || messageContent.trim() === "") {
+    if (messageContent?.trim() === "") {
       alert("Please select a recipient and enter a message.");
       return;
     }
@@ -44,14 +43,13 @@ const CreateMessage = () => {
     try {
       await sendMessage({
         sender: "currentUser",
-        recipient: selectedUser,
+        recipient: "1",
         content: messageContent,
         sent: true,
         is_thread: false,
         thread: []
       });
       setMessageContent(""); 
-      setSelectedUser(null); 
       router.push('/message-success');
       setLoading(false);
     } catch (error) {
