@@ -103,6 +103,7 @@ const EventOverview: React.FC<EventOverviewProps> = ({
         {eventDetails?.roles?.map((role, index) => (
           <RoleCard
             key={index} 
+            id={role?.id}
             title={role.title} 
             status="Active" 
             requirements={`${role.genders.join(", ")}, ${role.minAge}-${

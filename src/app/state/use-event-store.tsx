@@ -20,6 +20,7 @@ export interface EventMediaType {
 }
 
 export interface EventRole {
+  id: string;
   skill: string;
   openings: number;
   title: string;
@@ -94,7 +95,8 @@ const useEventStore = create<EventStoreState>((set) => ({
     created_at: '',
     location: '',
     company_id: '',
-    event: ''
+    event: '',
+    id: ''
   },
 
   setEventDetails: (updates) =>
@@ -161,7 +163,8 @@ const useEventStore = create<EventStoreState>((set) => ({
         created_at: '',
         location: '',
         company_id: '',
-        event: ''
+        event: '',
+        id: ''
       },
     }),
 }));
