@@ -23,6 +23,7 @@ import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
 import HeadshotUpload from '@/components/portal/profile/HeadshotUploader';
 import SkillsSelection from '@/components/portal/profile/SkillsSelection';
+import { PaymentSection } from '@/components/portal/profile/PaymentSection';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -172,6 +173,7 @@ const Portal: React.FC = () => {
 
             <HeadshotUpload />
             <SkillsSelection />
+            <PaymentSection />
           </Box>
         </Box>
       </Box>

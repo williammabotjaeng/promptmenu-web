@@ -70,7 +70,10 @@ const HeadshotUpload: React.FC = () => {
                 sx={{
                   color: '#000',
                   backgroundColor: '#CEAB76',
-                  width: { xs: '100%', md: 'auto' } 
+                  width: { xs: '100%', md: 'auto' },
+                  "&:hover": {
+                    color: "white"
+                  }
                 }}
                 onClick={handleContinue}
               >
