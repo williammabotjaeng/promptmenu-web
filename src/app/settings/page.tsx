@@ -37,6 +37,7 @@ import { PaymentSection } from "@/components/portal/profile/PaymentSection";
 import { PhysicalAttributes } from "@/components/portal/profile/PhysicalAttributes";
 import { SocialMediaLinks } from "@/components/portal/profile/SocialMediaLinks";
 import { IDandCreds } from "@/components/portal/profile/IDandCreds";
+import { Settings } from "@/components/portal/profile/Settings";
 
 const sidebarItems = [
   { icon: "connect", label: "Connect Social", href: '/connect-social' },
@@ -311,7 +312,7 @@ const Portal: React.FC = () => {
               <br />
               <br />
               
-              <PaymentSection />
+              <Settings />
             </Box>
           </Box>
         </Box>

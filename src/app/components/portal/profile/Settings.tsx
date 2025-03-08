@@ -18,22 +18,15 @@ import { useStore } from "zustand";
 import { useCookies } from "react-cookie";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import Loading from "@/components/Loading";
+import { SettingsScreen } from "../onboarding/SettingsScreen";
 
-export const skillsRequiringPhysicalAttributes: string[] = [
-  "Modeling",
-  "Sports Modeling",
-  "Ushering",
-  "Hosting",
-  "Security Management",
-];
-
-const paymentMethodsTab = [
-  { label: "Bank Transfer", value: "bankAccount" },
-  { label: "via PayPal", value: "paypal" },
+const settingsScreenTab = [
+  { label: "Communication", value: "communication" },
+  { label: "Account Email", value: "email" },
 ];
 
 export const Settings: React.FC = () => {
-  const [activePaymentMethod, setActivePaymentMethod] =
+  const [activeSettingsScreen, setActiveSettingsScreen] =
     useState<string>("creditCard");
 
   const { paymentMethods, setPaymentMethods, talentData } = useStore(
@@ -92,8 +85,8 @@ export const Settings: React.FC = () => {
     }
   }, [paymentMethods]);
 
-  const renderPaymentForm = () => {
-    switch (activePaymentMethod) {
+  const renderSettingsForm = () => {
+    switch (activeSettingsScreen) {
       case "paypal":
         return (
           <Box sx={{ mt: 4 }}>
@@ -192,7 +185,7 @@ export const Settings: React.FC = () => {
         return (
           <Box sx={{ mt: 4 }}>
             <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
-              Please select your preferred payment method.
+              Please select your preferred settings.
             </Typography>
           </Box>
         );
@@ -234,7 +227,7 @@ export const Settings: React.FC = () => {
             textAlign: "center",
           }}
         >
-          How would you like to get Paid?
+          How would you like SSH to interact with you?
         </Typography>
 
         <Paper
@@ -259,18 +252,18 @@ export const Settings: React.FC = () => {
               color: "#4B5563",
             }}
           >
-            {paymentMethodsTab.map((method) => (
-              <PaymentMethod
+            {settingsScreenTab.map((method) => (
+              <SettingsScreen
                 key={method.value}
                 label={method.label}
-                isActive={activePaymentMethod === method.value}
-                onClick={() => setActivePaymentMethod(method.value)}
+                isActive={activeSettingsScreen === method.value}
+                onClick={() => setActiveSettingsScreen(method.value)}
               />
             ))}
           </Box>
 
           {/* Render Payment Form */}
-          {renderPaymentForm()}
+          {renderSettingsForm()}
         </Paper>
       </Box>
 
@@ -295,7 +288,7 @@ export const Settings: React.FC = () => {
           }}
           onClick={handleContinue}
         >
-          Save Payment Details
+          Save Settings
         </Button>
       </Box>
     </Box>
