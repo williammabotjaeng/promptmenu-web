@@ -8,6 +8,8 @@ import {
   TextField,
   Snackbar,
   Alert,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { PaymentMethod } from "@/components/portal/onboarding/PaymentMethod";
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
@@ -27,7 +29,8 @@ const settingsScreenTab = [
 
 export const Settings: React.FC = () => {
   const [activeSettingsScreen, setActiveSettingsScreen] =
-    useState<string>("creditCard");
+    useState<string>("communication");
+  const [communicationSettings, setCommunicationSettings] = useState(null);
 
   const { paymentMethods, setPaymentMethods, talentData } = useStore(
     useTalentOnboardingStore
@@ -87,7 +90,43 @@ export const Settings: React.FC = () => {
 
   const renderSettingsForm = () => {
     switch (activeSettingsScreen) {
-      case "paypal":
+      case "communications":
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
+              Communication Preferences:
+            </Typography>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={communicationSettings.sendEmailNotifications}
+                  onChange={handleCheckboxChange("sendEmailNotifications")}
+                />
+              }
+              label="Send Email Notifications"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={communicationSettings.sendSSHUpdates}
+                  onChange={handleCheckboxChange("sendSSHUpdates")}
+                />
+              }
+              label="Send SSH Regular Updates"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={communicationSettings.allowBrowserNotifications}
+                  onChange={handleCheckboxChange("allowBrowserNotifications")}
+                  onClick={handleBrowserNotificationClick}
+                />
+              }
+              label="Allow Browser Notifications"
+            />
+          </Box>
+        );
+      case "email":
         return (
           <Box sx={{ mt: 4 }}>
             <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
@@ -95,77 +134,10 @@ export const Settings: React.FC = () => {
             </Typography>
             <TextField
               fullWidth
-              placeholder="PayPal Email"
+              placeholder="Account Email"
               variant="outlined"
-              value={paymentDetails.paypalEmail || ""}
-              onChange={handleInputChange("paypalEmail")}
-              sx={{
-                backgroundColor: "white",
-                borderRadius: "8px",
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#977342",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#CEAB76",
-                  },
-                },
-              }}
-            />
-          </Box>
-        );
-      case "bankAccount":
-        return (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
-              Enter your banking details:
-            </Typography>
-            <TextField
-              fullWidth
-              placeholder="Account Number"
-              variant="outlined"
-              value={paymentDetails.accountNumber || ""}
-              onChange={handleInputChange("accountNumber")}
-              sx={{
-                mb: 2,
-                backgroundColor: "white",
-                borderRadius: "8px",
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#977342",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#CEAB76",
-                  },
-                },
-              }}
-            />
-            <TextField
-              fullWidth
-              placeholder="Bank Name"
-              variant="outlined"
-              value={paymentDetails.bankName || ""}
-              onChange={handleInputChange("bankName")}
-              sx={{
-                mb: 2,
-                backgroundColor: "white",
-                borderRadius: "8px",
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#977342",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#CEAB76",
-                  },
-                },
-              }}
-            />
-            <TextField
-              fullWidth
-              placeholder="IBAN"
-              variant="outlined"
-              value={paymentDetails.iBAN || ""}
-              onChange={handleInputChange("iBAN")}
+              value={""}
+              onChange={handleInputChange("email")}
               sx={{
                 backgroundColor: "white",
                 borderRadius: "8px",
@@ -191,6 +163,25 @@ export const Settings: React.FC = () => {
         );
     }
   };
+  
+  // Helper functions for handling checkbox changes and browser notification requests
+  const handleCheckboxChange = (field) => (event) => {
+    setCommunicationSettings((prev) => ({
+      ...prev,
+      [field]: event.target.checked,
+    }));
+  };
+  
+  const handleBrowserNotificationClick = async (event) => {
+    if (event.target.checked) {
+      // Request permission for browser notifications
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        // Handle the case where permission is denied
+        event.target.checked = false; // Uncheck the checkbox if permission is denied
+      }
+    }
+  };
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -208,7 +199,7 @@ export const Settings: React.FC = () => {
         pb: 1,
       }}
     >
-      {/* Payment Section */}
+      {/* Settings Section */}
       <Box
         sx={{
           display: "flex",
@@ -229,7 +220,7 @@ export const Settings: React.FC = () => {
         >
           How would you like SSH to interact with you?
         </Typography>
-
+  
         <Paper
           sx={{
             display: "flex",
@@ -241,7 +232,7 @@ export const Settings: React.FC = () => {
             maxWidth: "768px",
           }}
         >
-          {/* Payment Method Tabs */}
+          {/* Settings Method Tabs */}
           <Box
             sx={{
               display: "flex",
@@ -257,16 +248,19 @@ export const Settings: React.FC = () => {
                 key={method.value}
                 label={method.label}
                 isActive={activeSettingsScreen === method.value}
-                onClick={() => setActiveSettingsScreen(method.value)}
+                onClick={() => {
+                  console.log("Emitted method:", method?.value);
+                  setActiveSettingsScreen(method.value);
+                }}
               />
             ))}
           </Box>
-
-          {/* Render Payment Form */}
+  
+          {/* Render Settings Form */}
           {renderSettingsForm()}
         </Paper>
       </Box>
-
+  
       {/* Navigation Buttons */}
       <Box
         sx={{
