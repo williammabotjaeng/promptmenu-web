@@ -177,25 +177,25 @@ const Portal: React.FC = () => {
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
                 <Box sx={{ marginTop: 2 }}>
-                  {roles?.map((job, index) => (
+                  {roles?.length > 0 && roles?.map((job, index) => (
                     <JobCard 
                         key={index} 
                         roleId={job?.role?.id}
                         title={job?.role?.title} 
                         location={job?.role?.location} 
                         ethnicities={job?.role?.ethnicities}
-                        hourlyPay={job?.role?.hourlyPay}
-                        dailyPay={job?.role?.dailyPay}
+                        hourlyPay={job?.role?.hourly_pay}
+                        dailyPay={job?.role?.daily_pay}
                         skill={job?.role?.skill}
                         hardDeadline={
-                          job.role.hardDeadline
-                            ? `Closes in ${moment.duration(moment(job.role.hardDeadline).diff(moment())).humanize()}`
+                          job.role.hard_deadline
+                            ? `Closes in ${moment.duration(moment(job.role.hard_deadline).diff(moment())).humanize()}`
                             : "No Deadline"
                         }
                         openings={job?.role?.openings}
                         genders={job?.role?.genders}
-                        maxAge={job?.role?.maxAge}
-                        minAge={job?.role?.minAge}
+                        maxAge={job?.role?.max_age}
+                        minAge={job?.role?.min_age}
                         />
                   ))}
                 </Box>
