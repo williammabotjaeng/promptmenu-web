@@ -17,6 +17,7 @@ export const privateRoutes: string[] = [
     '/message-success',
     '/role',
     '/connect-social',
+    '/profile'
   ];
   
   export const publicRoutes: string[] = [

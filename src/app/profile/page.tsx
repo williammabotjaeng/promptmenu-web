@@ -21,6 +21,7 @@ import SSHGoldLogo from '@/assets/GoldLogo.png';
 import { useEvent } from '@/providers/event-provider';
 import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
+import HeadshotUpload from '@/components/portal/profile/HeadshotUploader';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -168,85 +169,8 @@ const Portal: React.FC = () => {
               </Grid>
             </Grid>
 
-            <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', marginTop: 2, padding: 2 }}>
-              {stats.map((stat, index) => (
-                <StatCard key={index} {...stat} />
-              ))}
-            </Box>
-
-            <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
-                <Box sx={{ marginTop: 2 }}>
-                  {(roles && roles?.length > 0) && roles?.map((job, index) => (
-                    <JobCard 
-                        key={index} 
-                        roleId={job?.role?.id}
-                        title={job?.role?.title} 
-                        location={job?.role?.location} 
-                        ethnicities={job?.role?.ethnicities}
-                        hourlyPay={job?.role?.hourly_pay}
-                        dailyPay={job?.role?.daily_pay}
-                        skill={job?.role?.skill}
-                        hardDeadline={
-                          job?.role?.hard_deadline
-                            ? `Closes in ${moment.duration(moment(job?.role?.hard_deadline).diff(moment())).humanize()}`
-                            : "No Deadline"
-                        }
-                        openings={job?.role?.openings}
-                        genders={job?.role?.genders}
-                        maxAge={job?.role?.max_age}
-                        minAge={job?.role?.min_age}
-                        />
-                  ))}
-                </Box>
-                <Button sx={{ marginTop: 2, backgroundColor: 'white', color: '#977342' }}>
-                  View all opportunities
-                </Button>
-              </CardContent>
-            </Card>
-
-            {talentProfile?.upcoming_auditions > 0 && (<Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Upcoming Auditions</Typography>
-                <br />
-                <AuditionCard
-                  month="MAR"
-                  date="18"
-                  title="Feature Film Audition"
-                  time="10:00 AM"
-                  location="Dubai Studio City"
-                />
-              </CardContent>
-            </Card>)}
-
-            <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1, backgroundColor: 'white' }}>
-              <CardContent>
-                <Grid container justifyContent="space-between" alignItems="center">
-                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Profile Completion</Typography>
-                  <Typography variant="body1" sx={{ color: '#977342' }}>{(Number(talentProfile?.profile_progress) * 100)}%</Typography>
-                </Grid>
-                <Box sx={{ marginTop: 2 }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={(Number(talentProfile?.profile_progress) * 100)}
-                    sx={{
-                      height: '8px',
-                      borderRadius: '4px',
-                      backgroundColor: '#E5E7EB',
-                      '& .MuiLinearProgress-bar': {
-                        backgroundColor: '#CEAB76',
-                      },
-                    }}
-                  />
-                </Box>
-                <Box sx={{ marginTop: 2 }}>
-                  {profileTasks.map((task, index) => (
-                    <ProfileTask key={index} {...task} />
-                  ))}
-                </Box>
-              </CardContent>
-            </Card>
+            <HeadshotUpload />
+           
           </Box>
         </Box>
       </Box>
