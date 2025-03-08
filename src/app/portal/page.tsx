@@ -60,11 +60,11 @@ const Portal: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [cookies] = useCookies(['firstname', 'onboarding_presented', 'user_role']);
 
-  const firstName = cookies['firstname'] || 'User';
+  const firstName = cookies?.firstname || 'User';
 
-  const user_role = cookies['user_role'] || '';
+  const user_role = cookies?.user_role || '';
 
-  const onboardingPresented = cookies['onboarding_presented'] || false;
+  const onboardingPresented = cookies?.onboarding_presented || false;
 
   const { roles } = useStore(useLocalRolesStore);
 
@@ -97,7 +97,7 @@ const Portal: React.FC = () => {
       setTimeout(() => {
         setLoading(false)
       }, 500);
-  }, [cookies]);
+  }, [cookies, loading, fetchTalentProfile]);
 
   const stats = [
     { title: "Profile Views", value: talentProfile?.profile_views, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
@@ -123,7 +123,7 @@ const Portal: React.FC = () => {
               />
               <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold' }}>{user_role === 'talent' ? 'Talent' : 'Influencer'} Portal</Typography>
               <Box sx={{ marginTop: 2 }}>
-                {sidebarItems.map((item, index) => (
+                {sidebarItems && sidebarItems.map((item, index) => (
                   <SidebarItem key={index} {...item} />
                 ))}
               </Box>
@@ -145,7 +145,7 @@ const Portal: React.FC = () => {
         <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
           <Box sx={{ width: 250, padding: 2, backgroundColor: '#000', height: '100%' }}>
             <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold', marginBottom: 2 }}>{user_role === 'talent' ? 'Talent' : 'Influencer'} Portal</Typography>
-            {sidebarItems.map((item, index) => (
+            {sidebarItems && sidebarItems.map((item, index) => (
               <SidebarItem key={index} {...item} />
             ))}
           </Box>
@@ -164,7 +164,7 @@ const Portal: React.FC = () => {
                 justifyContent: 'flex-end'
               }}>
                 <NotificationDropdown notifications={talentProfile?.notifications || null} />
-                <ProfileDropdown profilePicture={signedUrls?.headshot} placeholderLetter={firstName[0]?.toUpperCase()} />
+                <ProfileDropdown profilePicture={signedUrls?.headshot || ""} placeholderLetter={firstName[0]?.toUpperCase() || ""} />
               </Grid>
             </Grid>
 

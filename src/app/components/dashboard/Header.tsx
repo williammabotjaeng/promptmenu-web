@@ -26,13 +26,13 @@ const Header = () => {
 
   const { getRoles } = useEvent();
 
-  const accessToken = cookies?.access;
+  const accessToken = cookies?.access || "";
 
-  const firstName = cookies?.firstname;
+  const firstName = cookies?.firstname || "";
 
-  const sessionID = cookies?.ssh_session_id;
+  const sessionID = cookies?.ssh_session_id || "";
 
-  const firstLetterUC = firstName[0]?.toUpperCase();
+  const firstLetterUC = firstName[0]?.toUpperCase() || "";
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
