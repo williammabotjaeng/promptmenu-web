@@ -29,7 +29,6 @@ const sidebarItems = [
   { icon: "theaters", label: "Auditions", href: '/dashboard' },
   { icon: "person", label: "Profile", href: '/profile' },
   { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
-  { icon: "mail", label: "Messages", href: '/dashboard' },
   { icon: "settings", label: "Settings", href: '/dashboard' }
 ];
 
