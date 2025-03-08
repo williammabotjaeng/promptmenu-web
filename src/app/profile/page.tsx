@@ -39,7 +39,6 @@ import { SocialMediaLinks } from "@/components/portal/profile/SocialMediaLinks";
 import { IDandCreds } from "@/components/portal/profile/IDandCreds";
 
 const sidebarItems = [
-  { icon: "dashboard", label: "Portal", href: "/portal" },
   { icon: "connect", label: "Connect Social", href: "/connect-social" },
   { icon: "work", label: "Jobs", href: "/dashboard" },
   { icon: "theaters", label: "Auditions", href: "/dashboard" },

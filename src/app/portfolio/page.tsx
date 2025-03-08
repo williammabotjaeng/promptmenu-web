@@ -24,7 +24,6 @@ import { useStore } from 'zustand';
 import { PortfolioBuilder } from '@/components/portal/profile/PortfolioBuilder';
 
 const sidebarItems = [
-  { icon: "dashboard", label: "Portal", href: '/portal' },
   { icon: "connect", label: "Connect Social", href: '/connect-social' },
   { icon: "work", label: "Jobs", href: '/dashboard' },
   { icon: "theaters", label: "Auditions", href: '/dashboard' },
