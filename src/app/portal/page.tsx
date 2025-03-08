@@ -23,6 +23,7 @@ import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
 
 const sidebarItems = [
+  { icon: "dashboard", label: "Portal", href: '/portal' },
   { icon: "connect", label: "Connect Social", href: '/connect-social' },
   { icon: "work", label: "Jobs", href: '/dashboard' },
   { icon: "theaters", label: "Auditions", href: '/auditions' },
