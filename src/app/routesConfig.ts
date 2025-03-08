@@ -18,7 +18,8 @@ export const privateRoutes: string[] = [
     '/role',
     '/connect-social',
     '/terms-of-service',
-    '/privacy-policy'
+    '/privacy-policy',
+    '/terms-and-conditions'
   ];
   
   export const publicRoutes: string[] = [
