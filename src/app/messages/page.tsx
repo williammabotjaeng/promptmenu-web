@@ -69,7 +69,7 @@ const Messages = () => {
     }
 
     setLoading(false);
-}, [user_role, router, messages, fetchMessages]);
+}, [user_role, router, messages, loading, setOpenModal, openModal, fetchMessages]);
 
   if (loading) return <Loading />;
 
