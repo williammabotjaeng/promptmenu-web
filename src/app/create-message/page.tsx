@@ -41,6 +41,10 @@ const CreateMessage = () => {
     }
   };
 
+  const handleMessageContent = (e: any) => {
+    setMessageContent(e.target.value);
+  }
+
   if (loading) return <Loading />;
 
   return (
@@ -62,7 +66,7 @@ const CreateMessage = () => {
                   rows={6}
                   placeholder="Type your message here..."
                   value={messageContent}
-                  onChange={(e) => setMessageContent(e.target.value)}
+                  onChange={handleMessageContent}
                   sx={{ marginBottom: 2 }}
                 />
                 <Button
