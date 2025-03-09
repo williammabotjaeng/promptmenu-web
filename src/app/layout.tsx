@@ -13,6 +13,7 @@ import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
 import { MessageProvider } from "./providers/message-provider";
 import { TikTokProvider } from "./providers/tiktok-provider";
+import { SnapchatProvider } from "./providers/snapchat-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
+            <SnapchatProvider>
             <TikTokProvider>
             <MessageProvider>
               <CompanyProvider>
@@ -68,6 +70,7 @@ export default function RootLayout({
               </CompanyProvider>
             </MessageProvider>
             </TikTokProvider>
+            </SnapchatProvider>
           </QueryClientProvider>
         </ThemeProvider>
       </body>

@@ -23,10 +23,9 @@ export const SnapchatProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const loginMutation = useMutation({
     mutationKey: ["snapchat_login"],
     mutationFn: async () => {
-      const response = await csrfRestCall("/portal/snapchat/oath/", "GET", {}, accessToken, csrfToken);
+      const response = await csrfRestCall("/portal/snapchat/oauth/", "GET", {}, accessToken, csrfToken);
       console.log("Login Response:", response);
       redirect(response?.auth_url);
-      return response;
     },
     onSuccess: (data) => {
       console.log("User Info:", data);

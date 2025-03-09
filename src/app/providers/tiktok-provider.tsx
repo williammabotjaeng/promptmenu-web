@@ -26,7 +26,6 @@ export const TikTokProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         const response = await csrfRestCall("/portal/tiktok/login/", "GET", {}, accessToken, csrfToken);
         console.log("Login Response:", response);
         redirect(response?.auth_url);
-        return response;
       },
       onSuccess: (data) => {
         console.log("User Info:", data);

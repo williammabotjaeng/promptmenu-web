@@ -23,6 +23,7 @@ import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
 import SocialMediaIntegration from '@/components/portal/SocialIntegration';
 import { useTikTok } from '@/providers/tiktok-provider';
+import { useSnapchat } from '@/providers/snapchat-provider';
 import { useTitle } from 'react-use';
 
 const sidebarItems = [

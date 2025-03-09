@@ -4,7 +4,8 @@ import * as React from "react";
 import { Box, Card, CardContent, Typography, Button, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import { LinearProgress } from "@mui/material";
-import { TikTokProvider, useTikTok } from "@/providers/tiktok-provider";
+import { useTikTok } from "@/providers/tiktok-provider";
+import { useSnapchat } from "@/providers/snapchat-provider";
 
 const SocialMediaIntegration = () => {
   const [accounts, setAccounts] = useState({
@@ -17,6 +18,7 @@ const SocialMediaIntegration = () => {
   const [loading, setLoading] = useState(true);
 
   const { tikTokLogin } = useTikTok();
+  const { snapchatLogin } = useSnapchat();
 
   useEffect(() => {
     // Fetch account info from APIs
@@ -114,7 +116,7 @@ const SocialMediaIntegration = () => {
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Snapchat Account</Typography>
                 <Typography variant="body1">Username: {accounts.snapchat.username}</Typography>
                 <Typography variant="body1">Followers: {accounts.snapchat.followers}</Typography>
-                <Button variant="contained" sx={{ marginTop: 2 }}>Connect Snapchat</Button>
+                <Button onClick={snapchatLogin} variant="contained" sx={{ marginTop: 2 }}>Connect Snapchat</Button>
               </CardContent>
             </Card>
           </Grid>
