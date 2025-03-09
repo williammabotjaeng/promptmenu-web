@@ -83,7 +83,7 @@ const Portal: React.FC = () => {
   useEffect(() => {
       setLoading(true);
       fetchTalentProfile();
-      tikTokLogin();
+      // tikTokLogin();
       // getRoles();
       if (!onboardingPresented) {
         console.log("Inside the condition, UserRole:", user_role);

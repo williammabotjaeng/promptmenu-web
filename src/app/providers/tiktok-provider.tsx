@@ -4,6 +4,8 @@ import React, { createContext, useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
 import { restCall } from "@/services/restCall";
+import { csrfRestCall } from "@/services/csrfRestCall";
+import { redirect } from "next/navigation";
 
 interface TikTokContextType {
   tikTokLogin: () => void;
@@ -14,14 +16,16 @@ interface TikTokContextType {
 const TikTokContext = createContext<TikTokContextType | null>(null);
 
 export const TikTokProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cookies, setCookie] = useCookies(['tiktok_access_token']);
-  const accessToken = cookies.tiktok_access_token;
+  const [cookies, setCookie] = useCookies(['access', 'csrftoken']);
+  const accessToken = cookies?.access;
+  const csrfToken = cookies?.csrftoken;
 
   const loginMutation = useMutation({
     mutationKey: ["tiktok_login"],
     mutationFn: async () => {
-        const response = await restCall("portal/tiktok/login", "GET", {}, accessToken);
+        const response = await csrfRestCall("/portal/tiktok/login/", "GET", {}, accessToken, csrfToken);
         console.log("Login Response:", response);
+        redirect(response?.auth_url);
         return response;
       },
       onSuccess: (data) => {

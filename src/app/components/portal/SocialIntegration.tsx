@@ -4,6 +4,7 @@ import * as React from "react";
 import { Box, Card, CardContent, Typography, Button, Grid } from "@mui/material";
 import { useState, useEffect } from "react";
 import { LinearProgress } from "@mui/material";
+import { TikTokProvider, useTikTok } from "@/providers/tiktok-provider";
 
 const SocialMediaIntegration = () => {
   const [accounts, setAccounts] = useState({
@@ -14,6 +15,8 @@ const SocialMediaIntegration = () => {
   });
 
   const [loading, setLoading] = useState(true);
+
+  const { tikTokLogin } = useTikTok();
 
   useEffect(() => {
     // Fetch account info from APIs
@@ -69,12 +72,14 @@ const SocialMediaIntegration = () => {
           {/* TikTok Integration */}
           <Grid item xs={12} md={12}>
             <Card sx={{ padding: 2, borderRadius: '12px', boxShadow: 1 }}>
+              <form>
               <CardContent>
                 <Typography variant="h6" sx={{ fontWeight: 'bold' }}>TikTok Account</Typography>
                 <Typography variant="body1">Username: {accounts.tiktok.username}</Typography>
                 <Typography variant="body1">Followers: {accounts.tiktok.followers}</Typography>
-                <Button variant="contained" sx={{ marginTop: 2 }}>Connect TikTok</Button>
+                <Button onClick={tikTokLogin} variant="contained" sx={{ marginTop: 2 }}>Connect TikTok</Button>
               </CardContent>
+              </form>
             </Card>
           </Grid>
 
