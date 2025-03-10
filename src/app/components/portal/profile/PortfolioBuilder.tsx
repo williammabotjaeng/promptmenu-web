@@ -14,16 +14,35 @@ import { PortfolioUploadSection } from "@/components/portal/onboarding/Portfolio
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
 import { useRouter } from "next/navigation";
 import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
-import PhotoGrid from "@/components/portal/onboarding/PhotoGrid";
+import PhotoGrid from "@/components/portal/profile/PhotoGrid";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import { useStore } from "zustand";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useTalentProfile } from "@/providers/talent-profile-provider";
 
 export const PortfolioBuilder: React.FC = () => {
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [images, setImages] = useState<string[]>([]);
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
+  const imagesToBeAdded = []; 
+
+  const { fetchTalentProfile, signedUrls } = useTalentProfile();
+
+  const handleImageUpload = (newImages: string[]) => {
+    setImages(prevImages => [...prevImages, ...newImages]);
+    setTalentData({
+      ...talentData,
+      additional_images: [...imagesToBeAdded, ...newImages]
+    });
+  };
+
+  const handleDeleteImage = (image: string) => {
+    setImages(prevImages => prevImages.filter(img => img !== image));
+    setImagesToDelete(prevImagesToDelete => [...prevImagesToDelete, image]);
+  };
 
   const router = useRouter();
 
@@ -34,6 +53,17 @@ export const PortfolioBuilder: React.FC = () => {
   const handleContinue = () => {
     
   };
+
+  useEffect(() => {
+    const loadTalentProfile = async () => {
+      await fetchTalentProfile();
+      if (signedUrls?.additional_images) {
+        setImages([...signedUrls?.additional_images]);
+      }
+    };
+  
+    loadTalentProfile();
+  }, [fetchTalentProfile, signedUrls]);
 
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: "white" }}>
@@ -71,7 +101,7 @@ export const PortfolioBuilder: React.FC = () => {
               Images
             </Typography>
 
-            <PhotoGrid />
+            <PhotoGrid images={images} onImageUpload={handleImageUpload} onDeleteImage={handleDeleteImage} imagesToDelete={imagesToDelete} />
 
             <PortfolioUploadSection
               title="Videos"
