@@ -32,10 +32,15 @@ const settingsScreenTab = [
 export const Settings: React.FC = () => {
   const [activeSettingsScreen, setActiveSettingsScreen] =
     useState<string>("communication");
-  const [communicationSettings, setCommunicationSettings] = useState(null);
+  const [communicationSettings, setCommunicationSettings] = useState({
+    send_email_notifications: false,
+    send_ssh_updates: false,
+    allow_browser_notifications: false,
+  });
   const [sendEmailNotifications, setSendEmailNotifications] = useState(false);
   const [sendSSHUpdates, setSendSSHUpdates] = useState(false);
-  const [allowBrowserNotifications, setAllowBrowserNotifications] = useState(false);
+  const [allowBrowserNotifications, setAllowBrowserNotifications] =
+    useState(false);
 
   const { paymentMethods, setPaymentMethods, talentData } = useStore(
     useTalentOnboardingStore
@@ -45,7 +50,7 @@ export const Settings: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const [cookies] = useCookies(['user_role', 'username', 'has_settings']);
+  const [cookies] = useCookies(["user_role", "username", "has_settings"]);
 
   const userRole = cookies?.user_role || "";
   const userName = cookies?.username || "";
@@ -53,12 +58,8 @@ export const Settings: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const { 
-    settings, 
-    createSettings, 
-    updateSettings, 
-    fetchSettings 
-  } = useSettings();
+  const { settings, createSettings, updateSettings, fetchSettings } =
+    useSettings();
 
   const { updateUser } = useAuth();
 
@@ -68,23 +69,20 @@ export const Settings: React.FC = () => {
     router.push("/portal");
   };
 
-  const handleContinue = () => {
-   
-  };
+  const handleContinue = () => {};
 
   const handleInputChange = (field) => (event) => {
-   // setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
+    // setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   useEffect(() => {
     fetchSettings();
-    if (hasSettings) 
-    {
+    if (hasSettings) {
       createSettings({
         user: userName,
-        send_email_notifications: null,
-        send_ssh_updates: null,
-        allow_browser_notifications: null
+        send_email_notifications: false,
+        send_ssh_updates: false,
+        allow_browser_notifications: false,
       });
 
       updateUser({
@@ -106,8 +104,11 @@ export const Settings: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={sendEmailNotifications}
-                  onChange={handleCheckboxChange("sendEmailNotifications")}
+                  sx={{
+                    color: "#977342",
+                  }}
+                  checked={communicationSettings?.send_email_notifications}
+                  onChange={handleCheckboxChange("send_email_notifications")}
                 />
               }
               label="Send Email Notifications"
@@ -115,8 +116,11 @@ export const Settings: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={sendSSHUpdates}
-                  onChange={handleCheckboxChange("sendSSHUpdates")}
+                  sx={{
+                    color: "#977342",
+                  }}
+                  checked={communicationSettings?.send_ssh_updates}
+                  onChange={handleCheckboxChange("send_ssh_updates")}
                 />
               }
               label="Send SSH Regular Updates"
@@ -124,8 +128,11 @@ export const Settings: React.FC = () => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={allowBrowserNotifications}
-                  onChange={handleCheckboxChange("allowBrowserNotifications")}
+                  sx={{
+                    color: "#977342",
+                  }}
+                  checked={communicationSettings?.allow_browser_notifications}
+                  onChange={handleCheckboxChange("allow_browser_notifications")}
                   onClick={handleBrowserNotificationClick}
                 />
               }
@@ -170,15 +177,16 @@ export const Settings: React.FC = () => {
         );
     }
   };
-  
+
   // Helper functions for handling checkbox changes and browser notification requests
   const handleCheckboxChange = (field) => (event) => {
+    console.log("Field:", field, "Event:", event.target.checked);
     setCommunicationSettings((prev) => ({
       ...prev,
       [field]: event.target.checked,
     }));
   };
-  
+
   const handleBrowserNotificationClick = async (event) => {
     if (event.target.checked) {
       // Request permission for browser notifications
@@ -227,7 +235,7 @@ export const Settings: React.FC = () => {
         >
           How would you like SSH to interact with you?
         </Typography>
-  
+
         <Paper
           sx={{
             display: "flex",
@@ -262,12 +270,12 @@ export const Settings: React.FC = () => {
               />
             ))}
           </Box>
-  
+
           {/* Render Settings Form */}
           {renderSettingsForm()}
         </Paper>
       </Box>
-  
+
       {/* Navigation Buttons */}
       <Box
         sx={{
