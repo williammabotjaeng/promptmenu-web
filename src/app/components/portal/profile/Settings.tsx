@@ -19,14 +19,13 @@ import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { useCookies } from "react-cookie";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
-import Loading from "@/components/Loading";
 import { SettingsScreen } from "../onboarding/SettingsScreen";
 import { useSettings } from "@/providers/settings-provider";
 import { useAuth } from "@/providers/auth-providers";
+import WhiteLoading from "@/components/WhiteLoading";
 
 const settingsScreenTab = [
   { label: "Communication", value: "communications" },
-  { label: "Account Email", value: "email" },
 ];
 
 export const Settings: React.FC = () => {
@@ -37,6 +36,7 @@ export const Settings: React.FC = () => {
     send_ssh_updates: false,
     allow_browser_notifications: false,
   });
+  const [userEmail, setUserEmail] = useState("");
   const [sendEmailNotifications, setSendEmailNotifications] = useState(false);
   const [sendSSHUpdates, setSendSSHUpdates] = useState(false);
   const [allowBrowserNotifications, setAllowBrowserNotifications] =
@@ -69,15 +69,32 @@ export const Settings: React.FC = () => {
     router.push("/portal");
   };
 
-  const handleContinue = () => {};
+  const handleSaveSettings = () => {
+    setLoading(true);
+    updateSettings({
+      user: userName,
+      send_email_notifications: communicationSettings?.send_email_notifications,
+      send_ssh_updates: communicationSettings?.send_ssh_updates,
+      allow_browser_notifications: communicationSettings?.allow_browser_notifications
+    });
 
-  const handleInputChange = (field) => (event) => {
-    // setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
+    setTimeout(() => setLoading(false), 1000);
+  };
+
+  const handleInputChange = (event: any) => {
+    console.log("Event:", event);
+    setUserEmail(event?.target?.value);
   };
 
   useEffect(() => {
     fetchSettings();
-    if (hasSettings) {
+    console.log("Settings:", settings);
+    setCommunicationSettings({
+      send_email_notifications: settings?.send_email_notifications,
+      send_ssh_updates: settings?.send_ssh_updates,
+      allow_browser_notifications: settings?.allow_browser_notifications
+    });
+    if (!hasSettings) {
       createSettings({
         user: userName,
         send_email_notifications: false,
@@ -91,7 +108,7 @@ export const Settings: React.FC = () => {
       });
     }
     console.log("Settings:", settings);
-  }, []);
+  }, [settings]);
 
   const renderSettingsForm = () => {
     switch (activeSettingsScreen) {
@@ -140,33 +157,6 @@ export const Settings: React.FC = () => {
             />
           </Box>
         );
-      case "email":
-        return (
-          <Box sx={{ mt: 4 }}>
-            <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
-              Main Account Email:
-            </Typography>
-            <TextField
-              fullWidth
-              placeholder="Account Email"
-              variant="outlined"
-              value={""}
-              onChange={handleInputChange("email")}
-              sx={{
-                backgroundColor: "white",
-                borderRadius: "8px",
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "#977342",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#CEAB76",
-                  },
-                },
-              }}
-            />
-          </Box>
-        );
       default:
         return (
           <Box sx={{ mt: 4 }}>
@@ -202,7 +192,7 @@ export const Settings: React.FC = () => {
     setSnackbarOpen(false);
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <WhiteLoading />;
 
   return (
     <Box
@@ -295,7 +285,7 @@ export const Settings: React.FC = () => {
             backgroundColor: "#CEAB76",
             "&:hover": { backgroundColor: "#b08a5c", color: "white" },
           }}
-          onClick={handleContinue}
+          onClick={handleSaveSettings}
         >
           Save Settings
         </Button>

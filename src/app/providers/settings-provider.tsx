@@ -47,10 +47,13 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const updateSettingsMutation = useMutation({
     mutationKey: ["update_settings"],
     mutationFn: async (updatedSettings: any) => {
+      console.log("Update Settings:", updatedSettings);
       const response = await restCall("/portal/settings/update/", "PATCH", updatedSettings, accessToken);
+      console.log("Update response:", response);
       return response;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("Update Successful:", data);
       refetchSettings();
     },
   });
