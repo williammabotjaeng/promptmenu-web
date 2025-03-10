@@ -21,6 +21,8 @@ import { useCookies } from "react-cookie";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import Loading from "@/components/Loading";
 import { SettingsScreen } from "../onboarding/SettingsScreen";
+import { useSettings } from "@/providers/settings-provider";
+import { useAuth } from "@/providers/auth-providers";
 
 const settingsScreenTab = [
   { label: "Communication", value: "communications" },
@@ -43,23 +45,22 @@ export const Settings: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const [cookies] = useCookies(['user_role']);
+  const [cookies] = useCookies(['user_role', 'username', 'has_settings']);
 
-  const userRole = cookies['user_role'];
+  const userRole = cookies?.user_role || "";
+  const userName = cookies?.username || "";
+  const hasSettings = cookies?.username;
 
   const [loading, setLoading] = useState(false);
 
-  const [paymentDetails, setPaymentDetails] = useState({
-    ccNumber: paymentMethods?.ccNumber || "",
-    ccFirstName: paymentMethods?.ccFirstName || "",
-    ccLastName: paymentMethods?.ccLastName || "",
-    ccExpiry: paymentMethods?.ccExpiry || "",
-    ccCVC: paymentMethods?.ccCVC || "",
-    paypalEmail: paymentMethods?.paypalEmail || "",
-    bankName: paymentMethods?.bankName || "",
-    iBAN: paymentMethods?.iBAN || "",
-    accountNumber: paymentMethods?.accountNumber || "",
-  });
+  const { 
+    settings, 
+    createSettings, 
+    updateSettings, 
+    fetchSettings 
+  } = useSettings();
+
+  const { updateUser } = useAuth();
 
   const router = useRouter();
 
@@ -72,24 +73,27 @@ export const Settings: React.FC = () => {
   };
 
   const handleInputChange = (field) => (event) => {
-    setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
+   // setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   useEffect(() => {
-    if (paymentMethods) {
-      setPaymentDetails({
-        ccNumber: paymentMethods.ccNumber || "",
-        ccFirstName: paymentMethods.ccFirstName || "",
-        ccLastName: paymentMethods.ccLastName || "",
-        ccExpiry: paymentMethods.ccExpiry || "",
-        ccCVC: paymentMethods.ccCVC || "",
-        paypalEmail: paymentMethods.paypalEmail || "",
-        bankName: paymentMethods.bankName || "",
-        accountNumber: paymentMethods.accountNumber || "",
-        iBAN: paymentMethods.iBAN || "",
+    fetchSettings();
+    if (hasSettings) 
+    {
+      createSettings({
+        user: userName,
+        send_email_notifications: null,
+        send_ssh_updates: null,
+        allow_browser_notifications: null
+      });
+
+      updateUser({
+        field: "has_settings",
+        value: true,
       });
     }
-  }, [paymentMethods]);
+    console.log("Settings:", settings);
+  }, []);
 
   const renderSettingsForm = () => {
     switch (activeSettingsScreen) {

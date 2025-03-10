@@ -40,7 +40,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       return response;
     },
     onSuccess: () => {
-      refetchSettings(); // Refetch settings after creation
+      refetchSettings(); 
     },
   });
 

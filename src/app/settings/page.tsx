@@ -76,11 +76,14 @@ const Portal: React.FC = () => {
     "firstname",
     "onboarding_presented",
     "user_role",
+    "username"
   ]);
 
   const firstName = cookies?.firstname || "User";
 
   const user_role = cookies?.user_role || "";
+
+  const userName = cookies?.username || "";
 
   const onboardingPresented = cookies?.onboarding_presented || false;
 
@@ -100,6 +103,7 @@ const Portal: React.FC = () => {
     setLoading(true);
     fetchTalentProfile();
     // getRoles();
+    
     if (!onboardingPresented) {
       console.log("Inside the condition, UserRole:", user_role);
       console.log("Check result:", user_role === "talent");

@@ -34,7 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     'lastname', 'onboarding_presented',
     'skills', 'headshotBlobUrl', 'sshsessionid',
     'instagram', 'tiktok', 'vatPdf', 'tradePdf', 'website',
-    'ssh_access'
+    'ssh_access', 'has_settings'
   ]);
 
   const accessToken = cookies?.access;
@@ -57,6 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('lastname', data?.tokens?.lastname, { path: '/', maxAge: 604800 });
       setCookie('username', data?.username, { path: '/', maxAge: 604800 });
       setCookie('ssh_access', data?.ssh_access, { path: '/', maxAge: 604800 });
+      setCookie('has_settings', data?.has_settings, { path: '/', maxAge: 604800 });
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.ssh_session_id, { path: '/', maxAge: 604800 });
       router.push('/dashboard'); 
@@ -103,6 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCookie('onboarding_presented', data?.tokens?.onboarding_presented, { path: '/', maxAge: 604800 });
       setCookie('ssh_session_id', data?.session_id, { path: '/', maxAge: 604800 });
       setCookie('ssh_access', data?.ssh_access, { path: '/', maxAge: 604800 });
+      setCookie('has_settings', data?.has_settings, { path: '/', maxAge: 604800 });
       setCookie('username', data?.username, { path: '/', maxAge: 604800 });
     },
     onError: (error) => {
@@ -124,6 +126,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       removeCookie('onboarding_presented', { path: '/' });
       removeCookie('firstname', { path: '/' });
       removeCookie('lastname', { path: '/' });
+      removeCookie('has_settings', { path: '/' });
       removeCookie('skills', { path: '/' });
       removeCookie('headshotBlobUrl', { path: '/' });
       removeCookie('sshsessionid', { path: '/' });
