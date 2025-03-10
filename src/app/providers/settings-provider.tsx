@@ -25,7 +25,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     queryKey: ["fetch_settings"],
     queryFn: async () => {
       if (!accessToken) throw new Error("Access token is missing");
-      const response = await restCall("/settings/", "GET", {}, accessToken);
+      const response = await restCall("/portal/settings/", "GET", {}, accessToken);
       return response;
     },
     enabled: !!accessToken, // Only run the query if accessToken is available
@@ -35,8 +35,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const createSettingsMutation = useMutation({
     mutationKey: ["create_settings"],
     mutationFn: async (newSettings: any) => {
-      if (!csrfToken) throw new Error("CSRF token is missing");
-      const response = await csrfRestCall("/settings/create/", "POST", newSettings, accessToken, csrfToken);
+      const response = await restCall("/portal/settings/create/", "POST", newSettings, accessToken);
       return response;
     },
     onSuccess: () => {
@@ -48,12 +47,11 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const updateSettingsMutation = useMutation({
     mutationKey: ["update_settings"],
     mutationFn: async (updatedSettings: any) => {
-      if (!csrfToken) throw new Error("CSRF token is missing");
-      const response = await csrfRestCall("/settings/update/", "PATCH", updatedSettings, accessToken, csrfToken);
+      const response = await restCall("/portal/settings/update/", "PATCH", updatedSettings, accessToken);
       return response;
     },
     onSuccess: () => {
-      refetchSettings(); // Refetch settings after update
+      refetchSettings();
     },
   });
 
