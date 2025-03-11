@@ -30,9 +30,25 @@ export const PortfolioBuilder: React.FC = () => {
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
-  const [portfolioVideo, setPortfolioVideo] = useState<string>("");
+  const [portfolioVideo, setPortfolioVideo] = useState<{
+    type: string;
+    file: string | File | null;
+    fileName: string | null;
+  }>({
+    type: '',
+    file: null,
+    fileName: null,
+  });
 
-  const [portfolioPDF, setPortfolioPDF] = useState<string>("");
+  const [portfolioPDF, setPortfolioPDF] = useState<{
+    type: string;
+    file: string | File | null;
+    fileName: string | null;
+  }>({
+    type: '',
+    file: null,
+    fileName: null,
+  });
   const [cookies, setCookie] = useCookies(["username", "access"]);
 
   const userName = cookies?.username || "";
@@ -52,6 +68,12 @@ export const PortfolioBuilder: React.FC = () => {
       return parsedUrl.pathname.substring(1);
     });
   };
+
+  const extractFilePath = (signedUrl: string) => {
+    const parsedUrl = new URL(signedUrl);
+    return parsedUrl.pathname.substring(1);
+  };
+  
 
   const handleImageUpload = (newImages: string[]) => {
     console.log("Image upload:", newImages);
@@ -110,10 +132,10 @@ export const PortfolioBuilder: React.FC = () => {
     if (file) {
       const newFileData = {
         type: file.type,
-        file: URL.createObjectURL(file), 
+        file: file,
         fileName: file.name,
       };
-      setPortfolioVideo(newFileData?.file); 
+      setPortfolioVideo(newFileData); 
     }
   };
   
@@ -122,19 +144,19 @@ export const PortfolioBuilder: React.FC = () => {
     if (file) {
       const newFileData = {
         type: file.type,
-        file: URL.createObjectURL(file), 
+        file: file,
         fileName: file.name,
       };
-      setPortfolioPDF(newFileData?.file); 
+      setPortfolioPDF(newFileData); 
     }
   };
 
   const handleFileDeleteVideo = () => {
-      setPortfolioVideo(null);
+      setPortfolioVideo({ type: '', file: null, fileName: null });
   };
 
   const handleFileDeletePDF = () => {
-      setPortfolioPDF(null);
+      setPortfolioPDF({ type: '', file: null, fileName: null });
   };
 
   useEffect(() => {
@@ -145,11 +167,21 @@ export const PortfolioBuilder: React.FC = () => {
       }
 
       if (signedUrls?.portfolio_pdf) {
-        setPortfolioPDF(signedUrls?.portfolio_pdf);
-      }
+        let pdfFileName = extractFilePath(signedUrls?.portfolio_pdf);
+        setPortfolioPDF({
+         type: 'pdf',
+         file: signedUrls?.portfolio_pdf,
+         fileName: pdfFileName
+        });
+       }
 
       if (signedUrls?.portfolio_video) {
-        setPortfolioVideo(signedUrls?.portfolio_video);
+       let videoFileName = extractFilePath(signedUrls?.portfolio_video);
+       setPortfolioVideo({
+        type: 'video',
+        file: signedUrls?.portfolio_video,
+        fileName: videoFileName
+       });
       }
     };
 
