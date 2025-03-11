@@ -32,6 +32,7 @@ export const PortfolioBuilder: React.FC = () => {
   const { fetchTalentProfile, signedUrls } = useTalentProfile();
 
   const handleImageUpload = (newImages: string[]) => {
+    console.log("Image upload:", newImages);
     setImages(prevImages => [...prevImages, ...newImages]);
     setTalentData({
       ...talentData,
@@ -63,7 +64,7 @@ export const PortfolioBuilder: React.FC = () => {
     };
   
     loadTalentProfile();
-  }, [fetchTalentProfile, signedUrls]);
+  }, [signedUrls]);
 
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: "white" }}>

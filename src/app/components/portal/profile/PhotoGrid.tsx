@@ -12,9 +12,10 @@ interface PhotoGridProps {
   imagesToDelete: string[];
 }
 
-const PhotoGrid: React.FC<PhotoGridProps> = ({ images, onImageUpload, onDeleteImage }) => {
+const PhotoGrid: React.FC<PhotoGridProps> = ({ images, onImageUpload, onDeleteImage, imagesToDelete }) => {
   
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("Event Photo Grid:", event);
     const files = Array.from(event.target.files);
     const newImages = files.map(file => URL.createObjectURL(file));
     onImageUpload(newImages);
