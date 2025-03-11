@@ -152,10 +152,12 @@ export const PortfolioBuilder: React.FC = () => {
   };
 
   const handleFileDeleteVideo = () => {
+      setImagesToDelete((prevImagesToDelete) => [...prevImagesToDelete, String(portfolioVideo?.file)]);
       setPortfolioVideo({ type: '', file: null, fileName: null });
   };
 
   const handleFileDeletePDF = () => {
+    setImagesToDelete((prevImagesToDelete) => [...prevImagesToDelete, String(portfolioPDF?.file)]);
       setPortfolioPDF({ type: '', file: null, fileName: null });
   };
 
