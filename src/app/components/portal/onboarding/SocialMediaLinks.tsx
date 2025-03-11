@@ -115,6 +115,8 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
       (value) => value === ""
     );
 
+    console.log("Social Data:", socialData);
+
     setTalentData({
       ...talentData,
       social_media_links: socialData,

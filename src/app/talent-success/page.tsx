@@ -72,7 +72,9 @@ const TalentSuccess: React.FC = () => {
             variant="contained"
             color="primary"
             onClick={handleNavigateToDashboard}
-            sx={{ marginTop: 4 }}
+            sx={{ marginTop: 4, '&:hover': {
+              color: 'white'
+            } }}
           >
             Proceed to Talent Portal
           </Button>
