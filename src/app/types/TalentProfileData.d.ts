@@ -31,12 +31,12 @@ export interface TalentProfileData {
   government_id_front?: string | null;
   government_id_back?: string | null;
   banking_details?: string | null;
-  portfolio_pdf?: {
+  portfolio_pdf?: string | {
     type: string | null; 
     file: File | string | null;
     fileName: string | null;
   };
-  portfolio_video?: {
+  portfolio_video?: string | {
     type: string | null;
     file: File | string | null;
     fileName: string | null;

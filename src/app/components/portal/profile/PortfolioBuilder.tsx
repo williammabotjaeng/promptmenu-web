@@ -35,7 +35,7 @@ export const PortfolioBuilder: React.FC = () => {
     file: string | File | null;
     fileName: string | null;
   }>({
-    type: '',
+    type: "",
     file: null,
     fileName: null,
   });
@@ -45,7 +45,7 @@ export const PortfolioBuilder: React.FC = () => {
     file: string | File | null;
     fileName: string | null;
   }>({
-    type: '',
+    type: "",
     file: null,
     fileName: null,
   });
@@ -73,7 +73,6 @@ export const PortfolioBuilder: React.FC = () => {
     const parsedUrl = new URL(signedUrl);
     return parsedUrl.pathname.substring(1);
   };
-  
 
   const handleImageUpload = (newImages: string[]) => {
     console.log("Image upload:", newImages);
@@ -106,6 +105,26 @@ export const PortfolioBuilder: React.FC = () => {
       )
     );
 
+    if (portfolioPDF.file !== signedUrls?.portfolio_pdf) {
+      const portfolioPDFFileName = await uploadFileToS3(
+        portfolioPDF.file,
+        "portfolio_pdf",
+        userName,
+        accessToken
+      );
+      portfolioPDF.fileName = portfolioPDFFileName; 
+    }
+
+    if (portfolioVideo.file !== signedUrls?.portfolio_video) {
+      const portfolioVideoFileName = await uploadFileToS3(
+        portfolioVideo.file,
+        "portfolio_video",
+        userName,
+        accessToken
+      );
+      portfolioVideo.fileName = portfolioVideoFileName; 
+    }
+
     const updatedProfile = {
       ...talentProfile,
       username: userName,
@@ -115,14 +134,15 @@ export const PortfolioBuilder: React.FC = () => {
         ),
         ...additionalImagesNames,
       ],
+      portfolio_pdf: portfolioPDF?.fileName,
+      portfolio_video: portfolioVideo?.fileName
     };
 
     console.log("Updated Profile:", updatedProfile);
 
     await updateTalentProfile(userName, updatedProfile);
-    
-    if (filePathsToDelete?.length > 0)
-      await deleteFiles(filePathsToDelete);
+
+    if (filePathsToDelete?.length > 0) await deleteFiles(filePathsToDelete);
 
     alert("Files Deleted and Profile Updated");
   };
@@ -135,10 +155,10 @@ export const PortfolioBuilder: React.FC = () => {
         file: file,
         fileName: file.name,
       };
-      setPortfolioVideo(newFileData); 
+      setPortfolioVideo(newFileData);
     }
   };
-  
+
   const handlePDFUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -147,18 +167,24 @@ export const PortfolioBuilder: React.FC = () => {
         file: file,
         fileName: file.name,
       };
-      setPortfolioPDF(newFileData); 
+      setPortfolioPDF(newFileData);
     }
   };
 
   const handleFileDeleteVideo = () => {
-      setImagesToDelete((prevImagesToDelete) => [...prevImagesToDelete, String(portfolioVideo?.file)]);
-      setPortfolioVideo({ type: '', file: null, fileName: null });
+    setImagesToDelete((prevImagesToDelete) => [
+      ...prevImagesToDelete,
+      String(portfolioVideo?.file),
+    ]);
+    setPortfolioVideo({ type: "", file: null, fileName: null });
   };
 
   const handleFileDeletePDF = () => {
-    setImagesToDelete((prevImagesToDelete) => [...prevImagesToDelete, String(portfolioPDF?.file)]);
-      setPortfolioPDF({ type: '', file: null, fileName: null });
+    setImagesToDelete((prevImagesToDelete) => [
+      ...prevImagesToDelete,
+      String(portfolioPDF?.file),
+    ]);
+    setPortfolioPDF({ type: "", file: null, fileName: null });
   };
 
   useEffect(() => {
@@ -171,19 +197,19 @@ export const PortfolioBuilder: React.FC = () => {
       if (signedUrls?.portfolio_pdf) {
         let pdfFileName = extractFilePath(signedUrls?.portfolio_pdf);
         setPortfolioPDF({
-         type: 'pdf',
-         file: signedUrls?.portfolio_pdf,
-         fileName: pdfFileName
+          type: "pdf",
+          file: signedUrls?.portfolio_pdf,
+          fileName: pdfFileName,
         });
-       }
+      }
 
       if (signedUrls?.portfolio_video) {
-       let videoFileName = extractFilePath(signedUrls?.portfolio_video);
-       setPortfolioVideo({
-        type: 'video',
-        file: signedUrls?.portfolio_video,
-        fileName: videoFileName
-       });
+        let videoFileName = extractFilePath(signedUrls?.portfolio_video);
+        setPortfolioVideo({
+          type: "video",
+          file: signedUrls?.portfolio_video,
+          fileName: videoFileName,
+        });
       }
     };
 
