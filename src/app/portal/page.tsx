@@ -129,7 +129,7 @@ const Portal: React.FC = () => {
               <img
                 loading="lazy"
                 src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/d9eb7e6d3539dd0941272b7c000796180c3cd2e7899fc4d9240ee53189aceeef?apiKey=7fae980a988640eea8add1e49a5d542e&"
-                alt=""
+                alt="logo"
                 style={{ width: '100%', marginTop: '16px' }}
               />
             </Box>
@@ -144,7 +144,7 @@ const Portal: React.FC = () => {
         <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer}>
           <Box sx={{ width: 250, padding: 2, backgroundColor: '#000', height: '100%' }}>
             <Typography variant="h6" sx={{ color: '#977342', fontWeight: 'bold', marginBottom: 2 }}>{user_role === 'talent' ? 'Talent' : 'Influencer'} Portal</Typography>
-            {sidebarItems && sidebarItems.map((item, index) => (
+            {sidebarItems && sidebarItems?.map((item, index) => (
               <SidebarItem key={index} {...item} />
             ))}
           </Box>

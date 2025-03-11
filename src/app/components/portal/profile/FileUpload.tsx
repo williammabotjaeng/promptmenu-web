@@ -17,7 +17,7 @@ export interface FileUploadProps {
     onFileSelect: (file: File) => void;
     headshot: string;
     setHeadshot: () => void;
-    handleFileChange: () => void;
+    handleFileChange: (event: React.ChangeEvent<any>) => void;
     handleRemoveImage: () => void;
 }
 

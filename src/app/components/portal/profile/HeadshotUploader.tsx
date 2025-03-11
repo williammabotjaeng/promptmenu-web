@@ -34,7 +34,7 @@ const HeadshotUpload: React.FC = () => {
     console.log('Selected file:', file);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<any>) => {
     const file = event.target.files?.[0];
     if (file) {
         const objectUrl = URL.createObjectURL(file);
@@ -90,8 +90,8 @@ const HeadshotUpload: React.FC = () => {
               onFileSelect={handleFileSelect} 
               headshot={headshot} 
               setHeadshot={null}
-              handleFileChange={null} 
-              handleRemoveImage={null}            
+              handleFileChange={handleFileChange} 
+              handleRemoveImage={handleRemoveImage}            
             />
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: 2, width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
               

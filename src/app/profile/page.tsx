@@ -248,7 +248,7 @@ const Portal: React.FC = () => {
                 {user_role === "talent" ? "Talent" : "Influencer"} Portal
               </Typography>
               {sidebarItems &&
-                sidebarItems.map((item, index) => (
+                sidebarItems?.map((item, index) => (
                   <SidebarItem key={index} {...item} />
                 ))}
             </Box>
@@ -286,7 +286,7 @@ const Portal: React.FC = () => {
                     Profile Updated:{" "}
                     <span style={{ color: "#6B7280" }}>
                       {talentProfile?.updated_at
-                        ? moment(talentProfile.updated_at).fromNow()
+                        ? moment(talentProfile?.updated_at)?.fromNow()
                         : "N/A"}
                     </span>
                   </Typography>
