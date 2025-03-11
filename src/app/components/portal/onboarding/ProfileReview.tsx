@@ -152,6 +152,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
         additional_images: additionalImagesNames,
         portfolio_pdf: talentData?.portfolio_pdf?.fileName,
         portfolio_video: talentData?.portfolio_video?.fileName,
+        payment_methods: paymentMethods,
+        social_media_links: talentData?.social_media_links,
         eye_color: physicalAttributes?.eyeColor,
         hair_color: physicalAttributes?.hairColor,
         weight: physicalAttributes?.weight,
