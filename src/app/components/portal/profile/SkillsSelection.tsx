@@ -171,9 +171,9 @@ const SkillsSelection: React.FC = () => {
               justifyContent: "center",
             }}
           >
-            {skills.map((skill) => (
+            {skills?.map((skill) => (
               <SkillTag
-                key={skill.name}
+                key={skill?.name}
                 skill={skill}
                 selectedSkills={selectedSkills}
                 handleSkillClick={handleSkillClick}

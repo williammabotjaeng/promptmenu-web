@@ -18,13 +18,13 @@ export const SkillTag: React.FC<SkillTagProps> = ({ skill, handleSkillClick, sel
       <Chip
         label={skill?.name}
         onClick={() => handleSkillClick(skill)}
-        variant={selectedSkills.some(selectedSkill => selectedSkill?.name === skill?.name) ? 'filled' : 'outlined'}
+        variant={selectedSkills?.some(selectedSkill => selectedSkill?.name === skill?.name) ? 'filled' : 'outlined'}
         sx={{
           cursor: 'pointer',
-          backgroundColor: selectedSkills.some(selectedSkill => selectedSkill?.name === skill?.name) ? 'transparent' : '#000',
-          color: selectedSkills.some(selectedSkill => selectedSkill?.name === skill?.name) ? '#fff' : '#CEAB76',
+          backgroundColor: selectedSkills?.some(selectedSkill => selectedSkill?.name === skill?.name) ? 'transparent' : '#000',
+          color: selectedSkills?.some(selectedSkill => selectedSkill?.name === skill?.name) ? '#fff' : '#CEAB76',
           '&:hover': {
-            backgroundColor: selectedSkills.some(selectedSkill => selectedSkill?.name === skill?.name) ? '#333' : '#f0f0f0',
+            backgroundColor: selectedSkills?.some(selectedSkill => selectedSkill?.name === skill?.name) ? '#333' : '#f0f0f0',
           },
         }}
       />

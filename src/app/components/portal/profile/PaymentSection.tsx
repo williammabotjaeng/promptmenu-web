@@ -16,7 +16,7 @@ import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
 import { useCookies } from "react-cookie";
-import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
+import { useTalentProfile } from "@/providers/talent-profile-provider";
 import Loading from "@/components/Loading";
 
 export const skillsRequiringPhysicalAttributes: string[] = [
@@ -36,13 +36,16 @@ export const PaymentSection: React.FC = () => {
   const [activePaymentMethod, setActivePaymentMethod] =
     useState<string>("creditCard");
 
-  const { paymentMethods, setPaymentMethods, talentData } = useStore(
-    useTalentOnboardingStore
-  );
-
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const [paymentDetails, setPaymentDetails] = useState({
+      paypalEmail: "",
+      bankName: "",
+      iBAN: "",
+      accountNumber: "",
+    });
 
   const [cookies] = useCookies(['user_role']);
 
@@ -50,17 +53,7 @@ export const PaymentSection: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const [paymentDetails, setPaymentDetails] = useState({
-    ccNumber: paymentMethods?.ccNumber || "",
-    ccFirstName: paymentMethods?.ccFirstName || "",
-    ccLastName: paymentMethods?.ccLastName || "",
-    ccExpiry: paymentMethods?.ccExpiry || "",
-    ccCVC: paymentMethods?.ccCVC || "",
-    paypalEmail: paymentMethods?.paypalEmail || "",
-    bankName: paymentMethods?.bankName || "",
-    iBAN: paymentMethods?.iBAN || "",
-    accountNumber: paymentMethods?.accountNumber || "",
-  });
+  const { talentProfile, fetchTalentProfile } = useTalentProfile();
 
   const router = useRouter();
 
@@ -73,24 +66,24 @@ export const PaymentSection: React.FC = () => {
   };
 
   const handleInputChange = (field) => (event) => {
-    setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
+    // setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   useEffect(() => {
-    if (paymentMethods) {
+    const loadPaymentDetails = async () => {
+      
+      await fetchTalentProfile(); 
+
       setPaymentDetails({
-        ccNumber: paymentMethods.ccNumber || "",
-        ccFirstName: paymentMethods.ccFirstName || "",
-        ccLastName: paymentMethods.ccLastName || "",
-        ccExpiry: paymentMethods.ccExpiry || "",
-        ccCVC: paymentMethods.ccCVC || "",
-        paypalEmail: paymentMethods.paypalEmail || "",
-        bankName: paymentMethods.bankName || "",
-        accountNumber: paymentMethods.accountNumber || "",
-        iBAN: paymentMethods.iBAN || "",
+        paypalEmail: talentProfile?.paypalEmail || '',
+        bankName: talentProfile?.bankName || '',
+        iBAN: talentProfile?.iBAN || '',
+        accountNumber: talentProfile?.accountNumber || '',
       });
-    }
-  }, [paymentMethods]);
+    };
+
+    loadPaymentDetails(); 
+  }, [fetchTalentProfile, talentProfile]); 
 
   const renderPaymentForm = () => {
     switch (activePaymentMethod) {
@@ -104,7 +97,7 @@ export const PaymentSection: React.FC = () => {
               fullWidth
               placeholder="PayPal Email"
               variant="outlined"
-              value={paymentDetails.paypalEmail || ""}
+              value={paymentDetails?.paypalEmail || ""}
               onChange={handleInputChange("paypalEmail")}
               sx={{
                 backgroundColor: "white",
@@ -131,7 +124,7 @@ export const PaymentSection: React.FC = () => {
               fullWidth
               placeholder="Account Number"
               variant="outlined"
-              value={paymentDetails.accountNumber || ""}
+              value={paymentDetails?.accountNumber || ""}
               onChange={handleInputChange("accountNumber")}
               sx={{
                 mb: 2,
@@ -151,7 +144,7 @@ export const PaymentSection: React.FC = () => {
               fullWidth
               placeholder="Bank Name"
               variant="outlined"
-              value={paymentDetails.bankName || ""}
+              value={paymentDetails?.bankName || ""}
               onChange={handleInputChange("bankName")}
               sx={{
                 mb: 2,
@@ -171,7 +164,7 @@ export const PaymentSection: React.FC = () => {
               fullWidth
               placeholder="IBAN"
               variant="outlined"
-              value={paymentDetails.iBAN || ""}
+              value={paymentDetails?.iBAN || ""}
               onChange={handleInputChange("iBAN")}
               sx={{
                 backgroundColor: "white",
