@@ -159,6 +159,14 @@ export const PortfolioBuilder: React.FC = () => {
       if (signedUrls?.additional_images) {
         setImages([...signedUrls?.additional_images]);
       }
+
+      if (signedUrls?.portfolio_pdf) {
+        setPortfolioPDF(signedUrls?.portfolio_pdf);
+      }
+
+      if (signedUrls?.portfolio_video) {
+        setPortfolioVideo(signedUrls?.portfolio_video);
+      }
     };
 
     loadTalentProfile();
