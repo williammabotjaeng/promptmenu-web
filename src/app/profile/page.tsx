@@ -343,7 +343,7 @@ const Portal: React.FC = () => {
               <PaymentSection />
               <PhysicalAttributes />
               <SocialMediaLinks />
-              <IDandCreds />
+              {talentProfile?.docs_requested && <IDandCreds />}
             </Box>
           </Box>
         </Box>
