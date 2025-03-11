@@ -27,12 +27,13 @@ export const PortfolioBuilder: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
-  const imagesToBeAdded = []; 
+  const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
 
   const { fetchTalentProfile, signedUrls } = useTalentProfile();
 
   const handleImageUpload = (newImages: string[]) => {
     console.log("Image upload:", newImages);
+    setImagesToBeAdded(prev => [...prev, ...newImages])
     setImages(prevImages => [...prevImages, ...newImages]);
     setTalentData({
       ...talentData,
@@ -65,6 +66,14 @@ export const PortfolioBuilder: React.FC = () => {
   
     loadTalentProfile();
   }, [signedUrls]);
+
+  useEffect(() => {
+    console.log("To Delete:", imagesToDelete);
+  }, [imagesToDelete])
+
+  useEffect(() => {
+    console.log("To Add:", imagesToBeAdded);
+  }, [imagesToBeAdded]);
 
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: "white" }}>
