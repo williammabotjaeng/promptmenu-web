@@ -5,9 +5,14 @@ import { Box, Typography, Button, Paper } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import { useState } from 'react';
-import { PortfolioUploadSectionProps } from '@/types/Props/PortfolioUploadSectionProps';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+
+interface PortfolioUploadSectionProps {
+  title: string;
+  description: string;
+  buttonText: string;
+}
 
 export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
   title,

@@ -11,7 +11,7 @@ import {
   Alert,
   alertTitleClasses,
 } from "@mui/material";
-import { PortfolioUploadSection } from "@/components/portal/onboarding/PortfolioUploadSection";
+import { PortfolioUploadSection } from "@/components/portal/profile/PortfolioUploadSection";
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
 import { useRouter } from "next/navigation";
 import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
@@ -161,11 +161,11 @@ export const PortfolioBuilder: React.FC = () => {
       }
 
       if (signedUrls?.portfolio_pdf) {
-        setPortfolioPDF(signedUrls?.portfolio_pdf);
+        // setPortfolioPDF(signedUrls?.portfolio_pdf);
       }
 
       if (signedUrls?.portfolio_video) {
-        setPortfolioVideo(signedUrls?.portfolio_video);
+       // setPortfolioVideo(signedUrls?.portfolio_video);
       }
     };
 
