@@ -4,7 +4,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { AddAPhoto } from '@mui/icons-material';
 import { useStore } from 'zustand';
 import { useCookies } from 'react-cookie';
-import { useState } from 'react';
+import { Dispatch, useState } from 'react';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PhotoCameraFrontIcon from '@mui/icons-material/PhotoCameraFront';
@@ -16,7 +16,7 @@ export interface FileUploadProps {
     maxSize: string;
     onFileSelect: (file: File) => void;
     headshot: string;
-    setHeadshot: () => void;
+    setHeadshot: Dispatch<any>;
     handleFileChange: (event: React.ChangeEvent<any>) => void;
     handleRemoveImage: () => void;
 }

@@ -89,7 +89,7 @@ const HeadshotUpload: React.FC = () => {
               maxSize="5MB"
               onFileSelect={handleFileSelect} 
               headshot={headshot} 
-              setHeadshot={null}
+              setHeadshot={setHeadshot}
               handleFileChange={handleFileChange} 
               handleRemoveImage={handleRemoveImage}            
             />
