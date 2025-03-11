@@ -7,6 +7,7 @@ import { useCookies } from 'react-cookie';
 import { useState } from 'react';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PhotoCameraFrontIcon from '@mui/icons-material/PhotoCameraFront';
 import { TalentProfileData } from '@/types/TalentProfileData';
 
 export interface FileUploadProps {
@@ -65,7 +66,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                     }}
                 >
                     <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '36px', width: '45px' }}>
-                        <CloudUploadIcon
+                        {!headshot ? (<CloudUploadIcon
                             sx={{
                                 width: '45px',
                                 height: 'auto',
@@ -73,7 +74,15 @@ export const FileUpload: React.FC<FileUploadProps> = ({
                                 color: '#CEAB76'
                             }}
                             aria-label="Upload icon"
-                        />
+                        />) : (<PhotoCameraFrontIcon
+                            sx={{
+                                width: '45px',
+                                height: 'auto',
+                                objectFit: 'contain',
+                                color: '#CEAB76'
+                            }}
+                            aria-label="Headshot icon"
+                        />)}
                     </Box>
                     <Typography variant="body1" sx={{ color: 'white', textAlign: 'center' }}>
                         Drag and drop your headshot here or
