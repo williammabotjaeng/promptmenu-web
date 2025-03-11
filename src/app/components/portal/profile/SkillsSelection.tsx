@@ -108,10 +108,7 @@ const SkillsSelection: React.FC = () => {
   useEffect(() => {
     const loadSkills = async () => {
       await fetchTalentProfile();
-      if (talentProfile?.skills && typeof(talentProfile?.skills === "string")) {
-        console.log("Skills:", JSON.parse(talentProfile?.skills));
-        setSelectedSkills(JSON.parse(talentProfile?.skills)); 
-      } else {
+      if (talentProfile?.skills) {
         setSelectedSkills(talentProfile?.skills);
       }
     };
