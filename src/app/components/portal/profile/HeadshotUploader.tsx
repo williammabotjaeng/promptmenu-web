@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { Box, Typography, Paper, Button, Snackbar, Alert } from '@mui/material';
-import { FileUpload } from '@/components/portal/onboarding/FileUpload';
-import OnboardingHeader from '@/components/portal/onboarding/OnboardingHeader';
+import { FileUpload } from '@/components/portal/profile/FileUpload';
 import { useRouter } from 'next/navigation';
-import { OnboardingStepProps } from '@/types/Props/OnboardingStepProps';
-import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { useStore } from 'zustand';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useTalentProfile } from '@/providers/talent-profile-provider';
 
 const HeadshotUpload: React.FC = () => {
 
@@ -15,6 +13,8 @@ const HeadshotUpload: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [headshot, setHeadshot] = useState(null);
+
+  const { fetchTalentProfile, signedUrls } = useTalentProfile();
 
   const handleRemoveImage = () => {
   
@@ -53,9 +53,14 @@ const HeadshotUpload: React.FC = () => {
     setSnackbarOpen(false);
   }
 
-    function handleContinue(event: any): void {
+  function handleSaveHeadshot(event: any): void {
         throw new Error('Function not implemented.');
-    }
+  }
+
+  useEffect(() => {
+    fetchTalentProfile();
+    setHeadshot(signedUrls?.headshot);
+  }, [signedUrls]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', overflow: 'hidden', backgroundColor: 'white', height: '100%' }}>
@@ -82,7 +87,11 @@ const HeadshotUpload: React.FC = () => {
               title=""
               supportedFormats="JPG, PNG"
               maxSize="5MB"
-              onFileSelect={handleFileSelect}
+              onFileSelect={handleFileSelect} 
+              headshot={headshot} 
+              setHeadshot={null}
+              handleFileChange={null} 
+              handleRemoveImage={null}            
             />
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: 2, width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
               
@@ -95,7 +104,7 @@ const HeadshotUpload: React.FC = () => {
                     color: "white"
                   }
                 }}
-                onClick={handleContinue}
+                onClick={handleSaveHeadshot}
               >
                 Save Headshot
               </Button>
