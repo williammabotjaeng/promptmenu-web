@@ -21,18 +21,19 @@ import { useStore } from "zustand";
 import { useEffect, useState } from "react";
 import { useTalentProfile } from "@/providers/talent-profile-provider";
 import { useCookies } from "react-cookie";
+import { uploadFileToS3 } from "@/services/s3UploadUtils";
 
 export const PortfolioBuilder: React.FC = () => {
-  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
-  const [cookies, setCookie] = useCookies(["username"]);
+  const [cookies, setCookie] = useCookies(["username", "access"]);
 
   const userName = cookies?.username || "";
+  const accessToken = cookies?.access || "";
 
   const {
     fetchTalentProfile,
@@ -53,10 +54,6 @@ export const PortfolioBuilder: React.FC = () => {
     console.log("Image upload:", newImages);
     setImagesToBeAdded((prev) => [...prev, ...newImages]);
     setImages((prevImages) => [...prevImages, ...newImages]);
-    setTalentData({
-      ...talentData,
-      additional_images: [...imagesToBeAdded, ...newImages],
-    });
   };
 
   const handleDeleteImage = (image: string) => {
@@ -70,19 +67,37 @@ export const PortfolioBuilder: React.FC = () => {
     router.push("/portal");
   };
 
-  const handleSavePortfolio = () => {
+  const handleSavePortfolio = async () => {
     const filePathsToDelete = extractFilePaths(imagesToDelete);
+
+    const additionalImagesNames = await Promise.all(
+      (imagesToBeAdded || []).map((image, index) =>
+        uploadFileToS3(
+          image,
+          `additional_image_${index}`,
+          userName,
+          accessToken
+        )
+      )
+    );
 
     const updatedProfile = {
       ...talentProfile,
-      additional_images: talentProfile.additional_images.filter(
-        (image) => !filePathsToDelete.includes(image)
-      ),
+      username: userName,
+      additional_images: [
+        ...talentProfile.additional_images.filter(
+          (image) => !filePathsToDelete.includes(image)
+        ),
+        ...additionalImagesNames,
+      ],
     };
 
-    updateTalentProfile(userName, updatedProfile);
+    console.log("Updated Profile:", updatedProfile);
 
-    deleteFiles(filePathsToDelete);
+    await updateTalentProfile(userName, updatedProfile);
+    
+    if (filePathsToDelete?.length > 0)
+      await deleteFiles(filePathsToDelete);
 
     alert("Files Deleted and Profile Updated");
   };
