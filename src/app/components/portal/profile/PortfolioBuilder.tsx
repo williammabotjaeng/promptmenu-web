@@ -9,6 +9,7 @@ import {
   Button,
   Snackbar,
   Alert,
+  alertTitleClasses,
 } from "@mui/material";
 import { PortfolioUploadSection } from "@/components/portal/onboarding/PortfolioUploadSection";
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
@@ -19,6 +20,7 @@ import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import { useStore } from "zustand";
 import { useEffect, useState } from "react";
 import { useTalentProfile } from "@/providers/talent-profile-provider";
+import { useCookies } from "react-cookie";
 
 export const PortfolioBuilder: React.FC = () => {
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
@@ -28,29 +30,38 @@ export const PortfolioBuilder: React.FC = () => {
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
+  const [cookies, setCookie] = useCookies(["username"]);
 
-  const { fetchTalentProfile, signedUrls } = useTalentProfile();
+  const userName = cookies?.username || "";
+
+  const {
+    fetchTalentProfile,
+    signedUrls,
+    deleteFiles,
+    updateTalentProfile,
+    talentProfile,
+  } = useTalentProfile();
 
   const extractFilePaths = (signedUrls: string[]) => {
-    return signedUrls.map(url => {
-        const parsedUrl = new URL(url);
-        return parsedUrl.pathname.substring(1);
+    return signedUrls.map((url) => {
+      const parsedUrl = new URL(url);
+      return parsedUrl.pathname.substring(1);
     });
-};
+  };
 
   const handleImageUpload = (newImages: string[]) => {
     console.log("Image upload:", newImages);
-    setImagesToBeAdded(prev => [...prev, ...newImages])
-    setImages(prevImages => [...prevImages, ...newImages]);
+    setImagesToBeAdded((prev) => [...prev, ...newImages]);
+    setImages((prevImages) => [...prevImages, ...newImages]);
     setTalentData({
       ...talentData,
-      additional_images: [...imagesToBeAdded, ...newImages]
+      additional_images: [...imagesToBeAdded, ...newImages],
     });
   };
 
   const handleDeleteImage = (image: string) => {
-    setImages(prevImages => prevImages.filter(img => img !== image));
-    setImagesToDelete(prevImagesToDelete => [...prevImagesToDelete, image]);
+    setImages((prevImages) => prevImages.filter((img) => img !== image));
+    setImagesToDelete((prevImagesToDelete) => [...prevImagesToDelete, image]);
   };
 
   const router = useRouter();
@@ -60,8 +71,20 @@ export const PortfolioBuilder: React.FC = () => {
   };
 
   const handleSavePortfolio = () => {
-    const filePaths = extractFilePaths(imagesToDelete);
-    
+    const filePathsToDelete = extractFilePaths(imagesToDelete);
+
+    const updatedProfile = {
+      ...talentProfile,
+      additional_images: talentProfile.additional_images.filter(
+        (image) => !filePathsToDelete.includes(image)
+      ),
+    };
+
+    updateTalentProfile(userName, updatedProfile);
+
+    deleteFiles(filePathsToDelete);
+
+    alert("Files Deleted and Profile Updated");
   };
 
   useEffect(() => {
@@ -71,13 +94,13 @@ export const PortfolioBuilder: React.FC = () => {
         setImages([...signedUrls?.additional_images]);
       }
     };
-  
+
     loadTalentProfile();
   }, [signedUrls]);
 
   useEffect(() => {
     console.log("To Delete:", imagesToDelete);
-  }, [imagesToDelete])
+  }, [imagesToDelete]);
 
   useEffect(() => {
     console.log("To Add:", imagesToBeAdded);
@@ -119,7 +142,12 @@ export const PortfolioBuilder: React.FC = () => {
               Images
             </Typography>
 
-            <PhotoGrid images={images} onImageUpload={handleImageUpload} onDeleteImage={handleDeleteImage} imagesToDelete={imagesToDelete} />
+            <PhotoGrid
+              images={images}
+              onImageUpload={handleImageUpload}
+              onDeleteImage={handleDeleteImage}
+              imagesToDelete={imagesToDelete}
+            />
 
             <PortfolioUploadSection
               title="Videos"
@@ -148,9 +176,13 @@ export const PortfolioBuilder: React.FC = () => {
           }}
         >
           <Button
-            sx={{ color: "#000", backgroundColor: "#CEAB76", "&:hover": {
-                color: "#fff"
-            } }}
+            sx={{
+              color: "#000",
+              backgroundColor: "#CEAB76",
+              "&:hover": {
+                color: "#fff",
+              },
+            }}
             onClick={handleSavePortfolio}
           >
             Save Portfolio
