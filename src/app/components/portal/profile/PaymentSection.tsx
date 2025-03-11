@@ -75,10 +75,10 @@ export const PaymentSection: React.FC = () => {
       await fetchTalentProfile(); 
 
       setPaymentDetails({
-        paypalEmail: talentProfile?.paypalEmail || '',
-        bankName: talentProfile?.bankName || '',
-        iBAN: talentProfile?.iBAN || '',
-        accountNumber: talentProfile?.accountNumber || '',
+        paypalEmail: talentProfile?.payment_methods?.paypalEmail || '',
+        bankName: talentProfile?.payment_methods?.bankName || '',
+        iBAN: talentProfile?.payment_methods?.iBAN || '',
+        accountNumber: talentProfile?.payment_methods?.accountNumber || '',
       });
     };
 

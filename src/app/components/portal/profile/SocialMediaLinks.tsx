@@ -133,13 +133,13 @@ export const SocialMediaLinks: React.FC = () => {
       await fetchTalentProfile(); 
 
       setSocialData({
-        instagram: "",
-        tiktok: "",
-        website: "",
-        twitter: "",
-        facebook: "",
-        linkedin: "",
-        youtube: ""
+        instagram: talentProfile?.social_media_links?.instagram || "",
+        tiktok: talentProfile?.social_media_links?.tiktok || "",
+        website: talentProfile?.social_media_links?.website || "",
+        twitter: talentProfile?.social_media_links?.twitter || "",
+        facebook: talentProfile?.social_media_links?.facebook || "",
+        linkedin: talentProfile?.social_media_links?.linkedin || "",
+        youtube: talentProfile?.social_media_links?.youtube || ""
       });
     };
 
