@@ -14,6 +14,15 @@ const HeadshotUpload: React.FC = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [headshot, setHeadshot] = useState(null);
+
+  const handleRemoveImage = () => {
+  
+          setHeadshot(null);
+          setSnackbarMessage('Headshot Deleted Successfully');
+          setSnackbarSeverity('success');
+          setSnackbarOpen(true);
+      };
 
   const [cookies] = useCookies(['user_role']);
 
@@ -24,6 +33,17 @@ const HeadshotUpload: React.FC = () => {
   const handleFileSelect = (file: File) => {
     console.log('Selected file:', file);
   };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+        const objectUrl = URL.createObjectURL(file);
+        setHeadshot(objectUrl);
+        setSnackbarMessage('Headshot Uploaded Successfully');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+    }
+};
 
   const onClose = () => {
     router.push('/portal');
