@@ -30,25 +30,9 @@ export const PortfolioBuilder: React.FC = () => {
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
-  const [portfolioVideo, setPortfolioVideo] = useState<{
-    type: string;
-    file: string | File | null;
-    fileName: string | null;
-  }>({
-    type: '',
-    file: null,
-    fileName: null,
-  });
+  const [portfolioVideo, setPortfolioVideo] = useState<string>("");
 
-  const [portfolioPDF, setPortfolioPDF] = useState<{
-    type: string;
-    file: string | File | null;
-    fileName: string | null;
-  }>({
-    type: '',
-    file: null,
-    fileName: null,
-  });
+  const [portfolioPDF, setPortfolioPDF] = useState<string>("");
   const [cookies, setCookie] = useCookies(["username", "access"]);
 
   const userName = cookies?.username || "";
@@ -126,10 +110,10 @@ export const PortfolioBuilder: React.FC = () => {
     if (file) {
       const newFileData = {
         type: file.type,
-        file: file,
+        file: URL.createObjectURL(file), 
         fileName: file.name,
       };
-      setPortfolioVideo(newFileData); 
+      setPortfolioVideo(newFileData?.file); 
     }
   };
   
@@ -138,19 +122,19 @@ export const PortfolioBuilder: React.FC = () => {
     if (file) {
       const newFileData = {
         type: file.type,
-        file: file,
+        file: URL.createObjectURL(file), 
         fileName: file.name,
       };
-      setPortfolioPDF(newFileData); 
+      setPortfolioPDF(newFileData?.file); 
     }
   };
 
   const handleFileDeleteVideo = () => {
-      setPortfolioVideo({ type: '', file: null, fileName: null });
+      setPortfolioVideo(null);
   };
 
   const handleFileDeletePDF = () => {
-      setPortfolioPDF({ type: '', file: null, fileName: null });
+      setPortfolioPDF(null);
   };
 
   useEffect(() => {
@@ -161,11 +145,11 @@ export const PortfolioBuilder: React.FC = () => {
       }
 
       if (signedUrls?.portfolio_pdf) {
-        // setPortfolioPDF(signedUrls?.portfolio_pdf);
+        setPortfolioPDF(signedUrls?.portfolio_pdf);
       }
 
       if (signedUrls?.portfolio_video) {
-       // setPortfolioVideo(signedUrls?.portfolio_video);
+        setPortfolioVideo(signedUrls?.portfolio_video);
       }
     };
 

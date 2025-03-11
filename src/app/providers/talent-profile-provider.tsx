@@ -111,12 +111,13 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
       if (fetchTalentProfileQuery.data) {
         const talentProfile = fetchTalentProfileQuery.data;
 
+
         const talentAssets = {
           headshot: talentProfile.headshot,
           governmentIdFront: talentProfile.government_id_front,
           governmentIdBack: talentProfile.government_id_back,
-          portfolioPdf: talentProfile.portfolio_pdf.fileName,
-          portfolioVideo: talentProfile.portfolio_video.fileName,
+          portfolioPdf: talentProfile.portfolio_pdf,
+          portfolioVideo: talentProfile.portfolio_video,
           additionalImages: talentProfile.additional_images,
         };
 
