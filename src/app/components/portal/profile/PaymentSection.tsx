@@ -83,7 +83,7 @@ export const PaymentSection: React.FC = () => {
     };
 
     loadPaymentDetails(); 
-  }, [fetchTalentProfile, talentProfile]); 
+  }, [talentProfile]); 
 
   const renderPaymentForm = () => {
     switch (activePaymentMethod) {
