@@ -119,12 +119,10 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
               <IconButton
                 onClick={handleFileDelete}
                 sx={{
-                  position: "absolute",
-                  top: 8,
-                  right: 8,
-                  bgcolor: "white",
+                  bgcolor: "#fff",
                   borderRadius: "50%",
                   boxShadow: 2,
+                  ml: 4
                 }}
               >
                 <DeleteIcon sx={{ color: "#f00" }} />
