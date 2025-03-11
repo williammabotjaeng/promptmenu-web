@@ -6,9 +6,8 @@ import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
 import { useRouter } from "next/navigation";
 import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
 import { useEffect, useState } from "react";
-import { useStore } from "zustand";
 import { useCookies } from "react-cookie";
-import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
+import { useTalentProfile } from "@/providers/talent-profile-provider";
 import {
   hairColorItems,
   eyeColorItems,
@@ -17,9 +16,6 @@ import {
 
 export const PhysicalAttributes: React.FC = () => {
   const router = useRouter();
-  const { physicalAttributes, setPhysicalAttributes } = useStore(
-    useTalentOnboardingStore
-  );
   const [formData, setFormData] = useState({
     height: "",
     weight: "",
@@ -34,8 +30,10 @@ export const PhysicalAttributes: React.FC = () => {
     router.push("/portal");
   };
 
+  const { talentProfile, fetchTalentProfile } = useTalentProfile();
+
   const handleContinue = () => {
-    setPhysicalAttributes(formData);
+    // setPhysicalAttributes(formData);
   };
 
   const handleHeightChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -81,15 +79,20 @@ export const PhysicalAttributes: React.FC = () => {
   };
 
   useEffect(() => {
-    if (physicalAttributes) {
+    const loadPhysicalAttributes = async () => {
+
+      await fetchTalentProfile(); 
+
       setFormData({
-        height: physicalAttributes.height || "",
-        weight: physicalAttributes.weight || "",
-        eyeColor: physicalAttributes.eyeColor || "",
-        hairColor: physicalAttributes.hairColor || "",
+        height: talentProfile?.height || 0,
+        weight: talentProfile?.weight || 0,
+        eyeColor: talentProfile?.eye_color || 0,
+        hairColor: talentProfile?.hair_color || 0,
       });
-    }
-  }, [physicalAttributes]);
+    };
+
+    loadPhysicalAttributes(); 
+  }, [talentProfile]); 
 
   return (
     <Box
