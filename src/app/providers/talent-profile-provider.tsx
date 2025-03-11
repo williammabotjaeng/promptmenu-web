@@ -14,6 +14,7 @@ interface TalentProfileContextType {
   talentProfile: TalentProfileData | null;
   signedUrls: Record<string, string> | null;
   fetchTalentProfile: () => Promise<void>;
+  deleteFiles: (filePaths: string[]) => Promise<void>;
   updateTalentProfile: (profileId: string, data: TalentProfileData) => Promise<void>;
 }
 
@@ -67,6 +68,19 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     enabled: false, 
   });
 
+  const deleteFilesMutation = useMutation({
+    mutationKey: ['delete_files'],
+    mutationFn: async (filePaths: string[]) => {
+        return await csrfRestCall('/portal/delete-files/', 'POST', { file_paths: filePaths }, accessToken, csrfToken);
+    },
+    onSuccess: (data) => {
+        console.log('Files deleted successfully', data);
+    },
+    onError: (error) => {
+        console.error('Error deleting files: ', error);
+    },
+});
+
   const updateTalentProfileMutation = useMutation({
     mutationKey: ['update_talent_profile'],
     mutationFn: async ({ profileId, data }: { profileId: string; data: TalentProfileData }) => {
@@ -86,6 +100,10 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateTalentProfile = async (profileId: string, data: TalentProfileData) => {
     await updateTalentProfileMutation.mutateAsync({ profileId, data });
+  };
+
+  const deleteFiles = async (filePaths: string[]) => {
+    await deleteFilesMutation.mutateAsync(filePaths);
   };
 
   useEffect(() => {
@@ -135,7 +153,8 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
       talentProfile: fetchTalentProfileQuery.data, 
       signedUrls, 
       fetchTalentProfile, 
-      updateTalentProfile 
+      updateTalentProfile,
+      deleteFiles
     }}>
       {children}
     </TalentProfileContext.Provider>

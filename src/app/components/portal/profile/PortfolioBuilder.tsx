@@ -31,6 +31,13 @@ export const PortfolioBuilder: React.FC = () => {
 
   const { fetchTalentProfile, signedUrls } = useTalentProfile();
 
+  const extractFilePaths = (signedUrls: string[]) => {
+    return signedUrls.map(url => {
+        const parsedUrl = new URL(url);
+        return parsedUrl.pathname.substring(1);
+    });
+};
+
   const handleImageUpload = (newImages: string[]) => {
     console.log("Image upload:", newImages);
     setImagesToBeAdded(prev => [...prev, ...newImages])
@@ -52,7 +59,8 @@ export const PortfolioBuilder: React.FC = () => {
     router.push("/portal");
   };
 
-  const handleContinue = () => {
+  const handleSavePortfolio = () => {
+    const filePaths = extractFilePaths(imagesToDelete);
     
   };
 
@@ -143,7 +151,7 @@ export const PortfolioBuilder: React.FC = () => {
             sx={{ color: "#000", backgroundColor: "#CEAB76", "&:hover": {
                 color: "#fff"
             } }}
-            onClick={handleContinue}
+            onClick={handleSavePortfolio}
           >
             Save Portfolio
           </Button>
