@@ -13,11 +13,11 @@ import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
 import { useRouter } from "next/navigation";
 import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
 import { SkillType } from "@/types/Props/SkillTagProps";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import { useStore } from "zustand";
-import { truncate } from "node:fs";
+import { useTalentProfile } from "@/providers/talent-profile-provider";
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -62,13 +62,10 @@ const skills: SkillType[] = [
 ];
 
 const SkillsSelection: React.FC = () => {
-  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
   const [cookies, setCookie] = useCookies(["user_role"]);
 
-  const [selectedSkills, setSelectedSkills] = useState<SkillType[]>(
-    talentData?.skills || []
-  );
+  const [selectedSkills, setSelectedSkills] = useState<SkillType[]>([]);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -77,6 +74,8 @@ const SkillsSelection: React.FC = () => {
   const router = useRouter();
 
   const userRole = cookies["user_role"];
+
+  const { talentProfile, fetchTalentProfile } = useTalentProfile();
 
   const onClose = () => {
     router.push("/portal");
@@ -96,11 +95,6 @@ const SkillsSelection: React.FC = () => {
     } else {
       setSelectedSkills([...selectedSkills, skill]);
     }
-
-    setTalentData({
-      ...talentData,
-      skills: selectedSkills,
-    });
   };
 
   const handleSnackbarClose = () => {
@@ -110,6 +104,20 @@ const SkillsSelection: React.FC = () => {
   function handleContinue(event: any): void {
     throw new Error("Function not implemented.");
   }
+
+  useEffect(() => {
+    const loadSkills = async () => {
+      await fetchTalentProfile();
+      if (talentProfile?.skills && typeof(talentProfile?.skills === "string")) {
+        console.log("Skills:", JSON.parse(talentProfile?.skills));
+        setSelectedSkills(JSON.parse(talentProfile?.skills)); 
+      } else {
+        setSelectedSkills(talentProfile?.skills);
+      }
+    };
+
+    loadSkills(); 
+  }, [talentProfile]);
 
   return (
     <Box
