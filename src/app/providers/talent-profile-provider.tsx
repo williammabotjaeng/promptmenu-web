@@ -11,7 +11,7 @@ import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
 import { csrfRestCall } from '@/services/csrfRestCall';
 
 interface TalentProfileContextType {
-  talentProfile: TalentProfileData | null;
+  talentProfile: TalentProfileData | any | null;
   signedUrls: Record<string, string> | null;
   fetchTalentProfile: () => Promise<void>;
   deleteFiles: (filePaths: string[]) => Promise<void>;
