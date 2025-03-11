@@ -23,9 +23,7 @@ import { useRouter } from "next/navigation";
 import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
-import { skillsRequiringPhysicalAttributes } from "./PaymentSection";
-import { useStore } from "zustand";
+import { useTalentProfile } from "@/providers/talent-profile-provider";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Loading from "@/components/Loading";
 
@@ -55,12 +53,13 @@ interface SocialData {
   twitter: string;
   facebook: string;
   linkedin: string;
+  youtube: string;
   // other?: string[]; 
 }
 
 export const SocialMediaLinks: React.FC = () => {
   const router = useRouter();
-  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
+  
   const [cookies, setCookie] = useCookies(["user_role"]);
   const [socialData, setSocialData] = React.useState<SocialData>({
     instagram: "",
@@ -69,6 +68,7 @@ export const SocialMediaLinks: React.FC = () => {
     twitter: "",
     facebook: "",
     linkedin: "",
+    youtube: ""
     // other: [],
   });
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -78,6 +78,8 @@ export const SocialMediaLinks: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [additionalInputs, setAdditionalInputs] = useState([]);
 
+  const { fetchTalentProfile, talentProfile } = useTalentProfile();
+
   const userRole = cookies["user_role"];
 
   const onClose = () => {
@@ -85,10 +87,7 @@ export const SocialMediaLinks: React.FC = () => {
   };
 
   const handleContinue = () => {
-    setTalentData({
-      ...talentData,
-      social_media_links: socialData,
-    });
+   
   };
 
   // const handleOtherInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,12 +109,6 @@ export const SocialMediaLinks: React.FC = () => {
       }));
     };
 
-  useEffect(() => {
-    setSocialData({
-      ...talentData?.social_media_links,
-    });
-  }, [talentData]);
-
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -133,6 +126,25 @@ export const SocialMediaLinks: React.FC = () => {
     setAdditionalInputs((prev) => [...prev, platform]);
     setDialogOpen(false);
   };
+
+  useEffect(() => {
+    const loadSocialMediaLinks = async () => {
+      
+      await fetchTalentProfile(); 
+
+      setSocialData({
+        instagram: "",
+        tiktok: "",
+        website: "",
+        twitter: "",
+        facebook: "",
+        linkedin: "",
+        youtube: ""
+      });
+    };
+
+    loadSocialMediaLinks(); 
+  }, [talentProfile]); 
 
   if (loading) return <Loading />;
 

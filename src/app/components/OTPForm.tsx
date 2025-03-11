@@ -180,11 +180,6 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
               >
                 Verify Email
               </Button>
-              <Box sx={{ textAlign: 'center', marginTop: 2 }}>
-                <Typography variant="body2" sx={{ color: 'gray' }}>
-                  OTP expires in <span style={{ color: '#977342' }}>{'10:00'}</span>
-                </Typography>
-              </Box>
             </form>
           </Box>
         </Box>

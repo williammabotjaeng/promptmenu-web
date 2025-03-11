@@ -114,55 +114,6 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 }}
             >
                 <MenuItem
-                    onClick={() => handleMenuItemClick('/messages')}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: '#CEAB76',
-                            color: '#fff',
-                        },
-                    }}
-                >
-                    Messages
-                    <Box component={"span"} sx={{
-                        background: '#977342',
-                        borderRadius: { xs: '80%', md: '50%' },
-                        border: '1px solid #977342',
-                        color: '#fff',
-                        width: { xs: '24px', md: '24px' },
-                        height: { xs: '18px', md: '24px' },
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        marginLeft: '8px',
-                        padding: { xs: '10px' },
-                        fontSize: { xs: '16px', md: '14px' },
-                    }}>
-                        {0}
-                    </Box>
-                </MenuItem>
-                <MenuItem
-                    onClick={handleDialogOpen}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: '#CEAB76',
-                            color: '#fff',
-                        },
-                    }}
-                >
-                    Change Avatar
-                </MenuItem>
-                <MenuItem
-                    onClick={() => handleMenuItemClick('/payments')}
-                    sx={{
-                        '&:hover': {
-                            backgroundColor: '#CEAB76',
-                            color: '#fff',
-                        },
-                    }}
-                >
-                    Payments
-                </MenuItem>
-                <MenuItem
                     onClick={handleLogout}
                     sx={{
                         '&:hover': {
