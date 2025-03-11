@@ -30,6 +30,25 @@ export const PortfolioBuilder: React.FC = () => {
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
+  const [portfolioVideo, setPortfolioVideo] = useState<{
+    type: string;
+    file: string | File | null;
+    fileName: string | null;
+  }>({
+    type: '',
+    file: null,
+    fileName: null,
+  });
+
+  const [portfolioPDF, setPortfolioPDF] = useState<{
+    type: string;
+    file: string | File | null;
+    fileName: string | null;
+  }>({
+    type: '',
+    file: null,
+    fileName: null,
+  });
   const [cookies, setCookie] = useCookies(["username", "access"]);
 
   const userName = cookies?.username || "";
@@ -102,6 +121,38 @@ export const PortfolioBuilder: React.FC = () => {
     alert("Files Deleted and Profile Updated");
   };
 
+  const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const newFileData = {
+        type: file.type,
+        file: file,
+        fileName: file.name,
+      };
+      setPortfolioVideo(newFileData); 
+    }
+  };
+  
+  const handlePDFUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const newFileData = {
+        type: file.type,
+        file: file,
+        fileName: file.name,
+      };
+      setPortfolioPDF(newFileData); 
+    }
+  };
+
+  const handleFileDeleteVideo = () => {
+      setPortfolioVideo({ type: '', file: null, fileName: null });
+  };
+
+  const handleFileDeletePDF = () => {
+      setPortfolioPDF({ type: '', file: null, fileName: null });
+  };
+
   useEffect(() => {
     const loadTalentProfile = async () => {
       await fetchTalentProfile();
@@ -168,12 +219,18 @@ export const PortfolioBuilder: React.FC = () => {
               title="Videos"
               description="Upload your showreel or video portfolio"
               buttonText="Upload Video"
+              handleFileDelete={handleFileDeleteVideo}
+              handleFileUpload={handleVideoUpload}
+              portfolioFile={portfolioVideo}
             />
 
             <PortfolioUploadSection
               title="Resume/CV"
               description="Upload your CV in PDF format"
               buttonText="Upload PDF"
+              handleFileDelete={handleFileDeletePDF}
+              handleFileUpload={handlePDFUpload}
+              portfolioFile={portfolioPDF}
             />
           </Paper>
         </Box>
