@@ -47,13 +47,14 @@ export const PaymentSection: React.FC = () => {
       accountNumber: "",
     });
 
-  const [cookies] = useCookies(['user_role']);
+  const [cookies] = useCookies(['user_role', 'username']);
 
   const userRole = cookies['user_role'];
+  const userName = cookies?.username;
 
   const [loading, setLoading] = useState(false);
 
-  const { talentProfile, fetchTalentProfile } = useTalentProfile();
+  const { talentProfile, fetchTalentProfile, updateTalentProfile } = useTalentProfile();
 
   const router = useRouter();
 
@@ -61,12 +62,20 @@ export const PaymentSection: React.FC = () => {
     router.push("/portal");
   };
 
-  const handleContinue = () => {
-   
+  const handleSavePaymentDetails = () => {
+    updateTalentProfile(userName, {
+      ...talentProfile,
+      username: userName,
+      payment_methods: paymentDetails
+    });
+    fetchTalentProfile();
+    setSnackbarMessage("Payment Details Updated Successfully");
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
   };
 
   const handleInputChange = (field) => (event) => {
-    // setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
+    setPaymentDetails((prev) => ({ ...prev, [field]: event.target.value }));
   };
 
   useEffect(() => {
@@ -286,11 +295,26 @@ export const PaymentSection: React.FC = () => {
             backgroundColor: "#CEAB76",
             "&:hover": { backgroundColor: "#b08a5c", color: "white" },
           }}
-          onClick={handleContinue}
+          onClick={handleSavePaymentDetails}
         >
           Save Payment Details
         </Button>
       </Box>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

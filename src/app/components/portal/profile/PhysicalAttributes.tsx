@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Typography, Paper, Button } from "@mui/material";
+import { Box, Typography, Paper, Button, Snackbar, Alert } from "@mui/material";
 import { AttributeInput } from "@/components/portal/onboarding/AttributeInput";
 import { DropdownAttribute } from "@/components/portal/onboarding/DropdownAttribute";
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
@@ -22,18 +22,41 @@ export const PhysicalAttributes: React.FC = () => {
     hairColor: "",
     eyeColor: "",
   });
-  const [cookies] = useCookies(["user_role"]);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const [cookies] = useCookies(["user_role", "username"]);
 
   const userRole = cookies["user_role"];
+  const userName = cookies?.username;
 
   const onClose = () => {
     router.push("/portal");
   };
 
-  const { talentProfile, fetchTalentProfile } = useTalentProfile();
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
 
-  const handleContinue = () => {
-    // setPhysicalAttributes(formData);
+  const { talentProfile, fetchTalentProfile, updateTalentProfile } = useTalentProfile();
+
+  const handleSavePhysicalAttributes = async () => {
+     await updateTalentProfile(userName, {
+        ...talentProfile,
+        username: userName,
+        height: formData?.height,
+        weight: formData?.weight,
+        eye_color: formData?.eyeColor,
+        hair_color: formData?.hairColor
+     });
+
+     fetchTalentProfile();
+
+     setSnackbarMessage("Physical Attributes Updated Successfully");
+     setSnackbarSeverity("success");
+     setSnackbarOpen(true);
   };
 
   const handleHeightChange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -211,12 +234,27 @@ export const PhysicalAttributes: React.FC = () => {
             sx={{ color: "#000", backgroundColor: "#CEAB76", "&:hover": {
                 color: "#fff"
             } }}
-            onClick={handleContinue}
+            onClick={handleSavePhysicalAttributes}
           >
             Save Physical Attributes
           </Button>
         </Box>
       </Box>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
