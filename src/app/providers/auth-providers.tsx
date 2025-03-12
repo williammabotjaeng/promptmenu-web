@@ -178,7 +178,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     email: string,
     firstname: string,
     lastname: string,
-    user_role: string
+    user_role: "talent" | "client"
   ) => {
     const registrationData = {
       username,
