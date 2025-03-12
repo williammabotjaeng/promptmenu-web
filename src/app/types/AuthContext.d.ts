@@ -19,6 +19,7 @@ export interface AuthContextType {
       email: string,
       firstname: string,
       lastname: string,
+      user_role: string
     ) => Promise<void>;
     updateUser: (updateData: UserUpdateData) => Promise<void>;
     registerIsLoading: boolean;

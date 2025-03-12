@@ -76,6 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastname: userData.lastname,
         email: userData.email,
         password: userData.password,
+        user_role: userData.user_role
       });
     },
     onSuccess: (data: RegistrationSuccessData) => {
@@ -176,7 +177,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     password: string,
     email: string,
     firstname: string,
-    lastname: string
+    lastname: string,
+    user_role: string
   ) => {
     const registrationData = {
       username,
@@ -184,6 +186,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       email,
       firstname,
       lastname,
+      user_role
     };
 
     await registerMutation.mutateAsync(registrationData);

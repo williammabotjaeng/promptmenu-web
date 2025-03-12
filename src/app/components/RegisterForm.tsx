@@ -139,7 +139,8 @@ export const RegisterForm: React.FC = () => {
         formData.password,
         formData.email,
         formData.firstname,
-        formData.lastname
+        formData.lastname,
+        "talent"
       );
 
       setLoginSuccess(true);

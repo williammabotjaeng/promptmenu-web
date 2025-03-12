@@ -164,7 +164,8 @@ export const RegisterFormClient: React.FC = () => {
         formData.password,
         formData.email,
         formData.firstname,
-        formData.lastname
+        formData.lastname,
+        "client"
       );
 
       setLoginSuccess(true);

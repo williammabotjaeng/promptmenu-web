@@ -4,4 +4,5 @@ export interface RegistrationData {
   password: string;
   firstname: string;
   lastname: string;
+  user_role: "talent" | "client";
 }
