@@ -54,6 +54,7 @@ export const RegisterForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [isInfluencer, setIsInfluencer] = useState(false);
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
@@ -171,6 +172,10 @@ export const RegisterForm: React.FC = () => {
       setSnackbarOpen(true);
     }
   };
+
+  const handleInfluencerSelection = () => {
+    setIsInfluencer(!isInfluencer);
+  }
 
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
@@ -444,6 +449,17 @@ export const RegisterForm: React.FC = () => {
                       </InputAdornment>
                     ),
                   }}
+                />
+                <FormControlLabel
+                  control={<Checkbox sx={{ color: '#977342' }} id="terms" />}
+                  label={
+                    <Typography sx={{ fontSize: { xs: '16px' }, color: { md: '#fff', xs: '#ceab76' } }}>
+                      Are you a Social Media Influencer?
+                    </Typography>
+                  }
+                  value={isInfluencer}
+                  onChange={handleInfluencerSelection}
+                  sx={{ fontSize: { xs: '10px' } }}
                 />
                 <FormControlLabel
                   control={<Checkbox sx={{ color: '#977342' }} id="terms" />}
