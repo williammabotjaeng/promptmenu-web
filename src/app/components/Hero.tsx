@@ -59,7 +59,7 @@ const Hero: React.FC = () => {
         
         {/* Buttons */}
         <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: '20px' }}>
-          <Link href="/register">
+          <Link href="/register/1">
           <Button
             variant="contained"
             sx={{
@@ -78,7 +78,7 @@ const Hero: React.FC = () => {
             Join as Talent
           </Button>
           </Link>
-          <Link href="/register">
+          <Link href="/register/2">
           <Button
             variant="contained"
             sx={{
