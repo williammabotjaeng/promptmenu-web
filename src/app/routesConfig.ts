@@ -27,7 +27,8 @@ export const privateRoutes: string[] = [
   export const publicRoutes: string[] = [
     '/',
     '/login',
-    '/register',
+    '/register/1',
+    '/register/2',
     '/otp',
   ];
   
