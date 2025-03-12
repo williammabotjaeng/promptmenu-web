@@ -7,6 +7,7 @@ import { useAuth } from '@/providers/auth-providers';
 import { useTalentProfile } from '@/providers/talent-profile-provider';
 import { useCookies } from 'react-cookie';
 import { uploadFileToS3 } from '@/services/s3UploadUtils';
+import Link from 'next/link';
 
 interface ProfileDropdownProps {
     profilePicture: string;
@@ -113,6 +114,18 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                     }
                 }}
             >
+                <Link href="/admin">
+                <MenuItem
+                    sx={{
+                        '&:hover': {
+                            backgroundColor: '#CEAB76',
+                            color: '#fff',
+                        },
+                    }}
+                >
+                    Admin
+                </MenuItem>
+                </Link>
                 <MenuItem
                     onClick={handleLogout}
                     sx={{
