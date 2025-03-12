@@ -141,7 +141,7 @@ export const RegisterForm: React.FC = () => {
         formData.email,
         formData.firstname,
         formData.lastname,
-        "talent"
+        isInfluencer ? "influencer" : "talent"
       );
 
       setLoginSuccess(true);
