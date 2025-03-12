@@ -50,11 +50,11 @@ export const Settings: React.FC = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const [cookies] = useCookies(["user_role", "username", "has_settings"]);
+  const [cookies, setCookie] = useCookies(["user_role", "username", "has_settings"]);
 
   const userRole = cookies?.user_role || "";
   const userName = cookies?.username || "";
-  const hasSettings = cookies?.username;
+  const hasSettings = cookies?.has_settings;
 
   const [loading, setLoading] = useState(false);
 
@@ -70,15 +70,16 @@ export const Settings: React.FC = () => {
   };
 
   const handleSaveSettings = () => {
-    setLoading(true);
     updateSettings({
       user: userName,
       send_email_notifications: communicationSettings?.send_email_notifications,
       send_ssh_updates: communicationSettings?.send_ssh_updates,
       allow_browser_notifications: communicationSettings?.allow_browser_notifications
     });
-
-    setTimeout(() => setLoading(false), 1000);
+    fetchSettings();
+    setSnackbarMessage("Headshot Uploaded Successfully");
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
   };
 
   const handleInputChange = (event: any) => {
@@ -106,6 +107,8 @@ export const Settings: React.FC = () => {
         field: "has_settings",
         value: true,
       });
+
+      setCookie("has_settings", true);
 
       fetchSettings();
     }
@@ -292,6 +295,21 @@ export const Settings: React.FC = () => {
           Save Settings
         </Button>
       </Box>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

@@ -59,13 +59,13 @@ const profileTasks = [
 const Portal: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [cookies] = useCookies(['firstname', 'onboarding_presented', 'user_role', 'has_settings', 'username']);
+  const [cookies, setCookie] = useCookies(['firstname', 'onboarding_presented', 'user_role', 'has_settings', 'username']);
 
   const firstName = cookies?.firstname || 'User';
 
   const user_role = cookies?.user_role || '';
 
-  const has_settings = cookies?.user_role || false;
+  const has_settings = cookies?.has_settings || false;
 
   const userName = cookies?.username || '';
 
@@ -111,7 +111,9 @@ const Portal: React.FC = () => {
   useEffect(() => {
       fetchSettings();
       console.log("Settings:", settings);
+      console.log("Has Settings Value:", has_settings)
       if (!has_settings) {
+        console.log("About to Create Settings")
         createSettings({
           user: userName,
           send_email_notifications: false,
@@ -123,6 +125,8 @@ const Portal: React.FC = () => {
           field: "has_settings",
           value: true,
         });
+
+        setCookie("has_settings", true);
   
         fetchSettings();
       }
