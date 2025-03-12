@@ -52,19 +52,6 @@ const SecondaryHeader: React.FC = () => {
           Home
         </Button>
       </Link>
-      <Link href="/messages" passHref>
-        <Button
-          sx={{
-            textTransform: "none",
-            "&:hover": { color: "#fff", backgroundColor: "#CEAB76" },
-            color: "#977342",
-            fontSize: "16px",
-            width: "100%",
-          }}
-        >
-          Messages
-        </Button>
-      </Link>
       <Link href="/auditions" passHref>
         <Button
           sx={{
@@ -242,21 +229,6 @@ const SecondaryHeader: React.FC = () => {
                   }}
                 >
                   Home
-                </Button>
-              </Link>
-              <Link href="/messages" passHref>
-                <Button
-                  sx={{
-                    textTransform: "none",
-                    color: "#977342",
-                    fontSize: "16px",
-                    "&:hover": {
-                      backgroundColor: "#CEAB76",
-                      color: "#fff",
-                    },
-                  }}
-                >
-                  Messages
                 </Button>
               </Link>
               <Link href="/auditions" passHref>
