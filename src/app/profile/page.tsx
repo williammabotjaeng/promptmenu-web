@@ -39,14 +39,14 @@ import { SocialMediaLinks } from "@/components/portal/profile/SocialMediaLinks";
 import { IDandCreds } from "@/components/portal/profile/IDandCreds";
 
 const sidebarItems = [
-    { icon: "dashboard", label: "Portal", href: '/portal' },
-    { icon: "connect", label: "Connect Social", href: '/connect-social' },
-    { icon: "work", label: "Jobs", href: '/dashboard' },
-    { icon: "theaters", label: "Auditions", href: '/auditions' },
-    { icon: "person", label: "Profile", href: '/profile' },
-    { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
-    { icon: "settings", label: "Settings", href: '/settings' }
-  ];
+  { icon: "dashboard", label: "Portal", href: '/portal' },
+  { icon: "connect", label: "Connect Social", href: '/connect-social' },
+  { icon: "work", label: "Jobs", href: '/jobs' },
+  { icon: "theaters", label: "Auditions", href: '/auditions' },
+  { icon: "person", label: "Profile", href: '/profile' },
+  { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
+  { icon: "settings", label: "Settings", href: '/settings' }
+];
 
 const jobs = [
   {
