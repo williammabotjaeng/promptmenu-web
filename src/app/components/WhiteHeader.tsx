@@ -115,7 +115,7 @@ export const WhiteHeader: React.FC = () => {
                   Jobs
                 </Button>
               </Link>
-              <Link href="/dashboard" passHref>
+              {userRole === "client" ? <Link href="/dashboard" passHref>
                 <Button
                   sx={{
                     color: "#4B5563",
@@ -126,7 +126,18 @@ export const WhiteHeader: React.FC = () => {
                 >
                   Dashboard
                 </Button>
-              </Link>
+              </Link>: <Link href="/portal" passHref>
+                <Button
+                  sx={{
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
+                  }}
+                >
+                  Portal
+                </Button>
+              </Link>}
               <Link href="/services" passHref>
                 <Button
                   sx={{
@@ -265,7 +276,7 @@ export const WhiteHeader: React.FC = () => {
                 Jobs
               </Button>
             </Link>
-            <Link href="/dashboard" passHref>
+            {userRole === "client" ? <Link href="/dashboard" passHref>
               <Button
                 sx={{
                   color: "#4B5563",
@@ -280,7 +291,18 @@ export const WhiteHeader: React.FC = () => {
               >
                 Dashboard
               </Button>
-            </Link>
+            </Link> : <Link href="/portal" passHref>
+                <Button
+                  sx={{
+                    color: "#4B5563",
+                    textTransform: "none",
+                    fontSize: "16px",
+                    "&:hover": { color: "#fff" },
+                  }}
+                >
+                  Portal
+                </Button>
+              </Link>}
             <Link href="/services" passHref>
               <Button
                 sx={{
