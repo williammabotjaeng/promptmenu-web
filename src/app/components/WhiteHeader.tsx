@@ -15,6 +15,8 @@ import SSHGoldLogo from "@/assets/GoldLogo.png";
 import { useCookies } from "react-cookie";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useAuth } from "@/providers/auth-providers";
+import { useTalentProfile } from "@/providers/talent-profile-provider";
+import { useEffect } from "react";
 
 export const WhiteHeader: React.FC = () => {
   const [cookies] = useCookies(["ssh_session_id", "username", "user_role"]);
@@ -26,6 +28,7 @@ export const WhiteHeader: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const { logout } = useAuth();
+  const { fetchTalentProfile, signedUrls } = useTalentProfile();
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -34,6 +37,10 @@ export const WhiteHeader: React.FC = () => {
   const handleLogout = () => {
     logout();
   };
+
+  useEffect(() => {
+    fetchTalentProfile();
+  }, [signedUrls])
 
   return (
     <AppBar
@@ -219,9 +226,9 @@ export const WhiteHeader: React.FC = () => {
           {sessionID && (
             <img
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/b80eb30359b38c4c3f3c8f801f80278982fb5dd4cea914f8b8e7f5de660ea6d8?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt=""
-              style={{ width: "89px", marginLeft: "16px" }}
+              src={signedUrls?.headshot}
+              alt="profile-picture"
+              style={{ width: "60px", marginLeft: "16px", borderRadius: "50px" }}
             />
           )}
         </Box>
