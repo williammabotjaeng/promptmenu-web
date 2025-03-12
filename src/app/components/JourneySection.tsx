@@ -67,7 +67,7 @@ const JourneySection = () => {
               flexDirection: { xs: 'column', sm: 'row' }, 
             }}
           >
-            <Link href="/register">
+            <Link href="/register/1">
             <Button 
               variant="contained" 
               sx={{ 
