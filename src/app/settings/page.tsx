@@ -42,7 +42,7 @@ import { Settings } from "@/components/portal/profile/Settings";
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
   { icon: "connect", label: "Connect Social", href: '/connect-social' },
-  { icon: "work", label: "Jobs", href: '/dashboard' },
+  { icon: "work", label: "Jobs", href: '/jobs' },
   { icon: "theaters", label: "Auditions", href: '/auditions' },
   { icon: "person", label: "Profile", href: '/profile' },
   { icon: "portfolio", label: "Portfolio", href: '/portfolio' },

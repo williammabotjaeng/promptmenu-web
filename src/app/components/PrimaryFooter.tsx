@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Typography, Grid, Link } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -65,34 +65,34 @@ const Footer = () => {
 
           <Grid item xs={12} sm={4}>
             <Box sx={{ paddingBottom: 5 }}>
-              <Typography 
-                variant="h6" 
-                sx={{ 
-                  fontWeight: 'bold', 
-                  color: 'white', 
-                  fontSize: '16px' 
+            <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'white',
+                  fontSize: { xs: '16px', md: '16px' } 
                 }}
               >
                 Quick Links
               </Typography>
               <Box sx={{ marginTop: 2 }}>
-                <Typography 
-                  component="div" 
-                  sx={{ color: '#fff', marginTop: 1, fontSize: '16px' }}
+                <Typography
+                  component="div"
+                  sx={{ color: '#fff', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} 
                 >
-                  Link 1
+                  <Link href="/about">About</Link>
                 </Typography>
-                <Typography 
-                  component="div" 
-                  sx={{ color: '#fff', marginTop: 1, fontSize: '16px' }}
+                <Typography
+                  component="div"
+                  sx={{ color: '#fff', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} 
                 >
-                  Link 2
+                  <Link href="/terms-of-service">Terms of Service</Link>
                 </Typography>
-                <Typography 
-                  component="div" 
-                  sx={{ color: '#fff', marginTop: 1, fontSize: '16px' }}
+                <Typography
+                  component="div"
+                  sx={{ color: '#fff', marginTop: 1, fontSize: { xs: '14px', md: '16px' } }} 
                 >
-                  Link 3
+                  <Link href="/privacy-policy">Privacy Policy</Link>
                 </Typography>
               </Box>
             </Box>
