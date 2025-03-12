@@ -60,7 +60,7 @@ interface SocialData {
 export const SocialMediaLinks: React.FC = () => {
   const router = useRouter();
   
-  const [cookies, setCookie] = useCookies(["user_role"]);
+  const [cookies, setCookie] = useCookies(["user_role", "username"]);
   const [socialData, setSocialData] = React.useState<SocialData>({
     instagram: "",
     tiktok: "",
@@ -78,16 +78,27 @@ export const SocialMediaLinks: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [additionalInputs, setAdditionalInputs] = useState([]);
 
-  const { fetchTalentProfile, talentProfile } = useTalentProfile();
+  const { fetchTalentProfile, talentProfile, updateTalentProfile } = useTalentProfile();
 
   const userRole = cookies["user_role"];
+  const userName = cookies?.username;
 
   const onClose = () => {
     router.push("/portal");
   };
 
-  const handleContinue = () => {
-   
+  const handleSaveSocialMedia = async () => {
+      await updateTalentProfile(userName, {
+        ...talentProfile,
+        username: userName,
+        social_media_links: socialData
+      });
+
+      fetchTalentProfile();
+
+      setSnackbarMessage("Social Media Links Updated Successfully");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
   };
 
   // const handleOtherInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -287,11 +298,26 @@ export const SocialMediaLinks: React.FC = () => {
                 color: "white"
             }
           }}
-          onClick={handleContinue}
+          onClick={handleSaveSocialMedia}
         >
           Save Social Links
         </Button>
       </Box>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
