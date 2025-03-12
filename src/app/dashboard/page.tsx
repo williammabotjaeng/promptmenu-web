@@ -88,16 +88,6 @@ const Dashboard = () => {
     setOpenModal(false);
   };
 
-  const handleOptionClick = (option: "client" | "talent" | "influencer") => {
-    console.log("User selected:", option);
-    handleCloseModal();
-    updateUser({
-      field: "user_role",
-      value: option,
-    });
-    setCookie("user_role", option.toLowerCase());
-  };
-
   useEffect(() => {
     console.log("User Role:", user_role);
     setLoading(true);
@@ -118,13 +108,6 @@ const Dashboard = () => {
       );
     }
     
-
-    if (user_role === "None") {
-      console.log("User role:", typeof user_role);
-      console.log("Check:", !user_role);
-      setLoading(false);
-      setOpenModal(true);
-    } else {
       if (user_role === "client") {
         console.log("It's a client");
         if (!onboardingPresented) {
@@ -139,7 +122,6 @@ const Dashboard = () => {
         setLoading(false);
         redirect("/portal");
       }
-    }
 
     setLoading(false);
   }, [user_role, router, cookies, company]);
@@ -234,117 +216,6 @@ const Dashboard = () => {
           </Grid>
         </Grid>
       </Box>
-      {/* Modal for user options */}
-      {user_role ? null : (
-        <Dialog
-          open={openModal}
-          onClose={handleCloseModal}
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-            textAlign: "center",
-            padding: 2,
-            maxWidth: "90%",
-            margin: "auto",
-          }}
-        >
-          <DialogTitle sx={{ textAlign: "center", padding: 2 }}>
-            What are you looking for on SSH?
-          </DialogTitle>
-          <DialogContent>
-            <Typography
-              sx={{
-                textAlign: "center",
-              }}
-              variant="body1"
-            >
-              Please select one of the options below:
-            </Typography>
-          </DialogContent>
-          <DialogActions
-            sx={{
-              flexDirection: { xs: "column", md: "row" },
-              justifyContent: { xs: "center", md: "space-evenly" },
-              alignItems: "center",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 1,
-              }}
-            >
-              <PersonAdd
-                sx={{ fontSize: { xs: 30, md: 60 }, color: "#977342" }}
-              />
-              <Button
-                onClick={() => handleOptionClick("client")}
-                sx={{
-                  color: "#fff",
-                  backgroundColor: "#977342",
-                  "&:hover": {
-                    color: "#fff",
-                    backgroundColor: "#CEAB76",
-                    border: "1px solid #CEAB76",
-                  },
-                }}
-              >
-                Hire Talent
-              </Button>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 1,
-              }}
-            >
-              <Work sx={{ fontSize: { xs: 30, md: 60 }, color: "#977342" }} />
-              <Button
-                onClick={() => handleOptionClick("talent")}
-                sx={{
-                  color: "#fff",
-                  backgroundColor: "#977342",
-                  "&:hover": {
-                    color: "#fff",
-                    backgroundColor: "#CEAB76",
-                    border: "1px solid #CEAB76",
-                  },
-                }}
-              >
-                Find Work
-              </Button>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                margin: 1,
-              }}
-            >
-              <Star sx={{ fontSize: { xs: 30, md: 60 }, color: "#977342" }} />
-              <Button
-                onClick={() => handleOptionClick("influencer")}
-                sx={{
-                  color: "#fff",
-                  backgroundColor: "#977342",
-                  "&:hover": {
-                    color: "#fff",
-                    backgroundColor: "#CEAB76",
-                    border: "1px solid #CEAB76",
-                  },
-                }}
-              >
-                I'm an Influencer
-              </Button>
-            </Box>
-          </DialogActions>
-        </Dialog>
-      )}
     </Box>
   );
 };
