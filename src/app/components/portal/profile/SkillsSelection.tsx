@@ -31,16 +31,16 @@ const steps = [
 ];
 
 const InfluencerSteps = [
-    { number: 1, title: "Headshot", isActive: false },
-    { number: 2, title: "Personal Info", isActive: false },
-    { number: 3, title: "Skills", isActive: true },
-    { number: 4, title: "Payment", isActive: false },
-    { number: 5, title: "Attributes", isActive: false },
-    { number: 6, title: "Social", isActive: false },
-    { number: 7, title: "ID", isActive: false },
-    { number: 8, title: "Portfolio", isActive: false },
-    { number: 9, title: "Review", isActive: false },
-  ];
+  { number: 1, title: "Headshot", isActive: false },
+  { number: 2, title: "Personal Info", isActive: false },
+  { number: 3, title: "Skills", isActive: true },
+  { number: 4, title: "Payment", isActive: false },
+  { number: 5, title: "Attributes", isActive: false },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+  { number: 9, title: "Review", isActive: false },
+];
 
 const skills: SkillType[] = [
   { name: "Event Coordination" },
@@ -62,10 +62,11 @@ const skills: SkillType[] = [
 ];
 
 const SkillsSelection: React.FC = () => {
-
-  const [cookies, setCookie] = useCookies(["user_role"]);
+  const [cookies, setCookie] = useCookies(["user_role", "username"]);
 
   const [selectedSkills, setSelectedSkills] = useState<SkillType[]>([]);
+
+  const [skillsToDelete, setSkillsToDelete] = useState<SkillType[]>([]);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -75,7 +76,10 @@ const SkillsSelection: React.FC = () => {
 
   const userRole = cookies["user_role"];
 
-  const { talentProfile, fetchTalentProfile } = useTalentProfile();
+  const userName = cookies?.username;
+
+  const { talentProfile, fetchTalentProfile, updateTalentProfile } =
+    useTalentProfile();
 
   const onClose = () => {
     router.push("/portal");
@@ -101,9 +105,17 @@ const SkillsSelection: React.FC = () => {
     setSnackbarOpen(false);
   };
 
-  function handleContinue(event: any): void {
-    throw new Error("Function not implemented.");
-  }
+  const handleSaveSkills = async () => {
+    updateTalentProfile(userName, {
+      ...talentProfile,
+      username: userName,
+      skills: selectedSkills,
+    });
+    await fetchTalentProfile();
+    setSnackbarMessage("Skills Updated Successfully");
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
+  };
 
   useEffect(() => {
     const loadSkills = async () => {
@@ -113,7 +125,7 @@ const SkillsSelection: React.FC = () => {
       }
     };
 
-    loadSkills(); 
+    loadSkills();
   }, [talentProfile]);
 
   return (
@@ -134,7 +146,6 @@ const SkillsSelection: React.FC = () => {
           paddingBottom: "24px",
         }}
       >
-
         {/* Skills Section */}
         <Box
           sx={{
@@ -188,16 +199,35 @@ const SkillsSelection: React.FC = () => {
             }}
           >
             <Button
-              sx={{ color: "#000", backgroundColor: "#CEAB76", "&:hover": {
-                color: "white"
-              } }}
-              onClick={handleContinue}
+              sx={{
+                color: "#000",
+                backgroundColor: "#CEAB76",
+                "&:hover": {
+                  color: "white",
+                },
+              }}
+              onClick={handleSaveSkills}
             >
               Save Skills
             </Button>
           </Box>
         </Box>
       </Box>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

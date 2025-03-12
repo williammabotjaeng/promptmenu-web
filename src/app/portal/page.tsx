@@ -21,6 +21,8 @@ import SSHGoldLogo from '@/assets/GoldLogo.png';
 import { useEvent } from '@/providers/event-provider';
 import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
+import { useSettings } from '@/providers/settings-provider';
+import { useAuth } from '@/providers/auth-providers';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -57,11 +59,15 @@ const profileTasks = [
 const Portal: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [cookies] = useCookies(['firstname', 'onboarding_presented', 'user_role']);
+  const [cookies] = useCookies(['firstname', 'onboarding_presented', 'user_role', 'has_settings', 'username']);
 
   const firstName = cookies?.firstname || 'User';
 
   const user_role = cookies?.user_role || '';
+
+  const has_settings = cookies?.user_role || false;
+
+  const userName = cookies?.username || '';
 
   const onboardingPresented = cookies?.onboarding_presented || false;
 
@@ -70,6 +76,10 @@ const Portal: React.FC = () => {
   const router = useRouter();
 
   const { fetchTalentProfile, talentProfile, signedUrls } = useTalentProfile();
+
+  const { settings, fetchSettings, createSettings } = useSettings();
+
+  const { updateUser } = useAuth();
 
   const { getRoles } = useEvent();
 
@@ -97,6 +107,27 @@ const Portal: React.FC = () => {
         setLoading(false)
       }, 500);
   }, [cookies, roles]);
+
+  useEffect(() => {
+      fetchSettings();
+      console.log("Settings:", settings);
+      if (!has_settings) {
+        createSettings({
+          user: userName,
+          send_email_notifications: false,
+          send_ssh_updates: false,
+          allow_browser_notifications: false,
+        });
+  
+        updateUser({
+          field: "has_settings",
+          value: true,
+        });
+  
+        fetchSettings();
+      }
+      console.log("Settings:", settings);
+    }, [settings]);
 
   const stats = [
     { title: "Profile Views", value: talentProfile?.profile_views, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },

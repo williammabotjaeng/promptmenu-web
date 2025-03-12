@@ -106,6 +106,8 @@ export const Settings: React.FC = () => {
         field: "has_settings",
         value: true,
       });
+
+      fetchSettings();
     }
     console.log("Settings:", settings);
   }, [settings]);

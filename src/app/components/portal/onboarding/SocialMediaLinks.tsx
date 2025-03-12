@@ -122,6 +122,8 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
       social_media_links: socialData,
     });
 
+    console.log("Social Links:", talentData?.social_media_links);
+
     if (!areAllFieldsEmpty) {
       setActiveStep(activeStep + 1);
     } else {

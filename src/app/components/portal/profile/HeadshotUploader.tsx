@@ -25,7 +25,7 @@ const HeadshotUpload: React.FC = () => {
   const handleRemoveImage = () => {
     setHeadshot(null);
     setSnackbarMessage("Headshot Deleted Successfully");
-    setSnackbarSeverity("success");
+    setSnackbarSeverity("error");
     setSnackbarOpen(true);
   };
 
@@ -192,7 +192,7 @@ const HeadshotUpload: React.FC = () => {
       >
         <Alert
           onClose={handleSnackbarClose}
-          severity={"error"}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
           sx={{ width: "100%" }}
         >
           {snackbarMessage}

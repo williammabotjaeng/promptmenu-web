@@ -70,7 +70,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const createTalentProfileMutation = useMutation({
     mutationKey: ['create_talent_profile'],
     mutationFn: async (talentData: any) => {
-      console.log("personal info", personalInfo);
+      console.log("Talent Data:", talentData);
       return await restCall('/portal/talent-profile/create/', 'POST', talentData, accessToken);
     },
     onSuccess: (data) => {
