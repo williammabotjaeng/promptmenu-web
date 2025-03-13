@@ -215,9 +215,8 @@ export const LoginForm: React.FC = () => {
               <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                 <Typography variant="body2" sx={{ color: 'gray' }}>
                   Don't have an account?{' '}
-                  <Link href="/register">
-                    <Button
-                      variant="text"
+                    <br />
+                    <Box
                       sx={{
                         color: '#977342',
                         '&:hover': {
@@ -226,9 +225,8 @@ export const LoginForm: React.FC = () => {
                         },
                       }}
                     >
-                      Sign up
-                    </Button>
-                  </Link>
+                      Sign up as <Link style={{ color: "white" }} href="/register/2">Client</Link> or <Link style={{ color: "white" }} href="/register/1">Talent</Link>
+                    </Box>
                 </Typography>
               </Box>
             </form>
