@@ -1,12 +1,13 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Typography, Button, Paper } from '@mui/material';
+import { Box, Typography, Button, Paper, IconButton } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface PortfolioUploadSectionProps {
   title: string;
@@ -37,6 +38,38 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
         return null;
     }
   };
+
+  const handleFileDelete = () => {
+    // Clear the local state for the portfolio file
+    setPortfolioFile({
+        type: '',
+        file: '',
+        fileName: '',
+    });
+
+    // Remove the file from talentData based on the title
+    if (title.toLowerCase() === 'videos') {
+        setTalentData({
+            ...talentData,
+            portfolio_video: {
+                type: '',
+                file: '',
+                fileName: '',
+            },
+        });
+    } else {
+        setTalentData({
+            ...talentData,
+            portfolio_pdf: {
+                type: '',
+                file: '',
+                fileName: '',
+            },
+        });
+    }
+};
+
+  
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -110,17 +143,22 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
             {description}
           </Typography>
 
-          {/* If a file is uploaded, display its type, name, and a preview */}
-          {portfolioFile.file ? (
-            <Box sx={{ mt: 2, textAlign: 'center' }}>
-              <Typography variant="body2" sx={{ color: '#977342', mb: 1 }}>
-                Uploaded {portfolioFile.type === 'video' ? 'Video' : 'Resume'}: {portfolioFile.fileName}
+           {/* If a file is uploaded, display its type, name, and a preview */}
+           {portfolioFile?.file ? (
+            <Box sx={{ mt: 2, textAlign: "center" }}>
+              <Typography variant="body2" sx={{ color: "#977342", mb: 1 }}>
+                Uploaded {portfolioFile?.type === "video" ? "Video" : "Resume"}:{" "}
+                {portfolioFile?.fileName}
               </Typography>
-              {portfolioFile.type === 'video' ? (
+              {portfolioFile?.type === "video" ? (
                 <video
-                  src={String(portfolioFile.file)}
+                  src={String(portfolioFile?.file)}
                   controls
-                  style={{ width: '100%', maxWidth: '300px', borderRadius: '8px' }}
+                  style={{
+                    width: "100%",
+                    maxWidth: "300px",
+                    borderRadius: "8px",
+                  }}
                 />
               ) : (
                 <a
@@ -128,17 +166,28 @@ export const PortfolioUploadSection: React.FC<PortfolioUploadSectionProps> = ({
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    display: 'inline-block',
-                    padding: '8px 16px',
-                    backgroundColor: '#CEAB76',
-                    color: 'white',
-                    textDecoration: 'none',
-                    borderRadius: '4px',
+                    display: "inline-block",
+                    padding: "8px 16px",
+                    backgroundColor: "#CEAB76",
+                    color: "white",
+                    textDecoration: "none",
+                    borderRadius: "4px",
                   }}
                 >
                   View Resume
                 </a>
               )}
+              <IconButton
+                onClick={handleFileDelete}
+                sx={{
+                  bgcolor: "#fff",
+                  borderRadius: "50%",
+                  boxShadow: 2,
+                  ml: 4
+                }}
+              >
+                <DeleteIcon sx={{ color: "#f00" }} />
+              </IconButton>
             </Box>
           ) : (
             // If no file is uploaded, show the upload button
