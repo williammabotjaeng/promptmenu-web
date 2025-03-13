@@ -34,6 +34,7 @@ import { useCookies } from "react-cookie";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { useOnboarding } from "@/providers/onboarding-providers";
 import { redirect } from "next/navigation";
+import AudienceDemographics from "./AudienceDemographics";
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -154,6 +155,9 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
         portfolio_video: talentData?.portfolio_video?.fileName,
         payment_methods: paymentMethods,
         social_media_links: talentData?.social_media_links,
+        followerCounts: talentData?.followerCounts,
+        engagementRates: talentData?.engagementRates,
+        audienceDemographics: talentData?.audienceDemographics,
         eye_color: physicalAttributes?.eyeColor,
         hair_color: physicalAttributes?.hairColor,
         weight: physicalAttributes?.weight,
