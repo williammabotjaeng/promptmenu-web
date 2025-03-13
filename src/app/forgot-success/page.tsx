@@ -5,7 +5,7 @@ import { Box, Typography, Button, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
-import ConstructionIcon from "@mui/icons-material/Construction";
+import MailLockIcon from '@mui/icons-material/MailLock';
 
 const SupportMessageSuccess: React.FC = () => {
   const router = useRouter();
@@ -16,8 +16,8 @@ const SupportMessageSuccess: React.FC = () => {
   // Use media queries to detect screen size
   const isTabletOrMobile = useMediaQuery("(max-width: 768px)");
 
-  const handleNavigateToDashboard = () => {
-    router.push("/dashboard");
+  const handleNavigateToLogin = () => {
+    router.push("/login");
   };
 
   return (
@@ -36,10 +36,10 @@ const SupportMessageSuccess: React.FC = () => {
         <motion.div
           initial={{ rotate: 0 }}
           animate={{ rotate: 360 }}
-          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 2, repeat: 2, ease: "linear" }}
         >
-          <ConstructionIcon
-            sx={{ fontSize: 100, color: "orange", marginBottom: 2 }}
+          <MailLockIcon
+            sx={{ fontSize: 100, color: "#977342", marginBottom: 2 }}
           />
         </motion.div>
 
@@ -75,10 +75,10 @@ const SupportMessageSuccess: React.FC = () => {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleNavigateToDashboard}
+            onClick={handleNavigateToLogin}
             sx={{ marginTop: 4 }}
           >
-            Back to Dashboard
+            Back to Login
           </Button>
         </motion.div>
       </Box>
