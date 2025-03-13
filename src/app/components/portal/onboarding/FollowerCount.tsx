@@ -138,7 +138,12 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
   };
 
   const handleContinue = () => {
-    setActiveStep(activeStep + 1);
+    if (talentData?.headshot) {
+      setActiveStep(activeStep + 1);
+    } else {
+      setSnackbarMessage('Please Upload a Headshot.');
+      setSnackbarOpen(true);
+    }
   };
 
   const handleSkip = () => {

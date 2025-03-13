@@ -105,7 +105,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
         profile_views: 0,
         applied_jobs: 0,
         upcoming_auditions: 0,
-        unread_messages: 0
+        unread_messages: 0,
+        followerCounts: null
     },
     setPersonalInfo: (data) => set({ personalInfo: data }),
     setPhysicalAttributes: (data) => set({ physicalAttributes: data }),
@@ -184,7 +185,8 @@ const useTalentOnboardingStore = create<TalentOnboardingState>((set) => ({
             profile_views: 0,
             applied_jobs: 0,
             upcoming_auditions: 0,
-            unread_messages: 0
+            unread_messages: 0,
+            followerCounts: null
         },
     }),
 }));
