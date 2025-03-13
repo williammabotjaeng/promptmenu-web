@@ -106,7 +106,7 @@ const EngagementRate: React.FC<OnboardingStepProps> = ({
   const [engagementRates, setEngagementRates] = useState<{
     [key: string]: string;
   }>({});
-  const { talentData } = useStore(useTalentOnboardingStore);
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
   const [cookies] = useCookies(['user_role']);
 
@@ -139,8 +139,19 @@ const EngagementRate: React.FC<OnboardingStepProps> = ({
   };
 
   const handleContinue = () => {
-    setActiveStep(activeStep + 1);
-  };
+    setTalentData({
+        ...talentData,
+        engagementRates: engagementRates
+    });
+
+    // Check if engagementRates is empty
+    if (Object.keys(engagementRates).length > 0 && Object.values(engagementRates).length > 0) {
+        setActiveStep(activeStep + 1);
+    } else {
+        setSnackbarMessage('Please fill in an Engagement Rate.');
+        setSnackbarOpen(true);
+    }
+};
 
   const handleSkip = () => {
     setActiveStep(activeStep + 1);

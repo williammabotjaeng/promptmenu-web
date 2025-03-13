@@ -41,7 +41,8 @@ export interface TalentProfileData {
     file: File | string | null;
     fileName: string | null;
   };
-  followerCounts: object;
+  followerCounts: object | null;
+  engagementRates: object | null;
   additional_images?: string[] | null;
   is_verified?: boolean;
   verification_notification_sent?: boolean;
