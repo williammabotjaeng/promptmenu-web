@@ -31,7 +31,8 @@ export const privateRoutes: string[] = [
     '/register/2',
     '/otp',
     '/forgot',
-    '/reset'
+    '/reset',
+    '/forgot-success'
   ];
   
   export const hybridRoutes: string[] = [

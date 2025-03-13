@@ -30,9 +30,6 @@ export const ForgotForm: React.FC = () => {
     if (userEmail) {
       try {
         await forgot(userEmail);
-        setSnackbarMessage("Reset Email Reset Sent!");
-        setSnackbarSeverity("success");
-        setSnackbarOpen(true);
       } catch (e: any) {
         if (String(e).includes("404"))
         {

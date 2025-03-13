@@ -208,6 +208,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     },
     onSuccess: (data) => {
       console.log("Email Sent:", data);
+      router.push("/forgot-success");
     },
     onError: (error) => {
       console.error("Forgot Password error: ", { ...error });
