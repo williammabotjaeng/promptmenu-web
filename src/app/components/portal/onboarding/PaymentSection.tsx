@@ -404,7 +404,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
           mt: 2,
         }}
       >
-        Step {activeStep + 1} of 8 - Headshot Upload
+        Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Headshot Upload
       </Typography>
       {/* Snackbar for feedback */}
       <Snackbar

@@ -252,7 +252,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
             textAlign: "center",
           }}
         >
-          Step {activeStep + 1} of 8 - Skills
+          Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Skills
         </Typography>
       </Box>
       {/* Snackbar for feedback */}

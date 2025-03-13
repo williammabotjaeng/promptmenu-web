@@ -369,7 +369,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
         variant="caption"
         sx={{ paddingX: 2, color: "gray", textAlign: "center", marginTop: 2 }}
       >
-        Step {activeStep + 1} of 8 - Socials
+        Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Socials
       </Typography>
       {/* Snackbar for feedback */}
       <Snackbar

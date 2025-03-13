@@ -33,6 +33,7 @@ import { useStore } from "zustand";
 import { useRouter } from "next/navigation";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import OnboardingHeader from "./OnboardingHeader";
+import { useCookies } from "react-cookie";
 
 const socialData = {
   youtube: "https://youtube.com/channel/xyz",
@@ -105,6 +106,10 @@ const EngagementRate: React.FC<OnboardingStepProps> = ({
     [key: string]: string;
   }>({});
   const { talentData } = useStore(useTalentOnboardingStore);
+
+  const [cookies] = useCookies(['user_role']);
+
+  const userRole = cookies?.user_role;
 
   const router = useRouter();
 
@@ -278,7 +283,7 @@ const EngagementRate: React.FC<OnboardingStepProps> = ({
 
         {/* Step Indicator Section */}
         <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginBottom: 0, color: 'gray', textAlign: 'center' }}>
-          Step {activeStep + 1} of 8 - Headshot Upload
+          Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Headshot Upload
         </Typography>
 
         {/* Snackbar for feedback */}

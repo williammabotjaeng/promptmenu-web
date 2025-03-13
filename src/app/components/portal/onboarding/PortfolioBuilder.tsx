@@ -18,6 +18,7 @@ import PhotoGrid from "@/components/portal/onboarding/PhotoGrid";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import { useStore } from "zustand";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -30,6 +31,18 @@ const steps = [
   { number: 8, title: "Review", isActive: false },
 ];
 
+const InfluencerSteps = [
+  { number: 1, title: "Headshot", isActive: false },
+  { number: 2, title: "Personal Info", isActive: false },
+  { number: 3, title: "Skills", isActive: false },
+  { number: 4, title: "Payment", isActive: true },
+  { number: 5, title: "Attributes", isActive: false },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+  { number: 9, title: "Review", isActive: false },
+];
+
 export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({
   activeStep,
   setActiveStep,
@@ -38,6 +51,10 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
+  const [cookies] = useCookies(['user_role']);
+
+  const userRole = cookies?.user_role;
 
   const router = useRouter();
 
@@ -73,8 +90,9 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: "black" }}>
       <Box sx={{ paddingBottom: "96px", backgroundColor: "transparent" }}>
+        
         {/* Header Section */}
-        <OnboardingHeader steps={steps} onClose={onClose} />
+        <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
 
         <Box
           sx={{
@@ -172,7 +190,7 @@ export const PortfolioBuilder: React.FC<OnboardingStepProps> = ({
         {/* Step Indicator Section */}
         <Box sx={{ textAlign: "center", marginTop: "24px", color: "gray" }}>
           <Typography variant="body2">
-            Step {activeStep + 1} of 8 - Portfolio
+            Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Portfolio
           </Typography>
         </Box>
       </Box>
