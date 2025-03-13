@@ -38,6 +38,10 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     /^\/role\/\d+$/
   ];
 
+  const dynamicPublicRoutes: RegExp[] = [
+    /^\/reset\/[a-zA-Z0-9_-]+$/,
+  ];
+
   const matchRoute = (pathname: string, routes: RegExp[]): boolean => {
     return routes.some((route) => route.test(pathname));
   };
@@ -46,7 +50,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     setRoutesResolved(false);
   
     if (sessionID && sessionID !== 'undefined') {
-      if (publicRoutes.includes(pathname.toLowerCase())) {
+      if (publicRoutes.includes(pathname.toLowerCase()) || isDynamicRouteMatch(pathname.toLowerCase(), dynamicPublicRoutes)) {
         console.log("Redirecting from public route to dashboard");
         setRoutesResolved(true);
         router.push(accessRoute);
@@ -68,7 +72,7 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       }
     } else if (
       (!sessionID || sessionID === 'undefined') &&
-      (publicRoutes.includes(pathname.toLowerCase()) || hybridRoutes.includes(pathname.toLowerCase()))
+      (publicRoutes.includes(pathname.toLowerCase()) || hybridRoutes.includes(pathname.toLowerCase()) || isDynamicRouteMatch(pathname.toLowerCase(), dynamicPublicRoutes))
     ) {
       console.log("Redirecting to login");
       setRoutesResolved(true);
