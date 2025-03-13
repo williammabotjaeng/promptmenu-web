@@ -27,7 +27,7 @@ import RevImageTwo from "@/assets/review_image_two.png";
 import RevImageThree from "@/assets/review_image_three.png";
 import { useStore } from "zustand";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { skillsRequiringPhysicalAttributes } from "./PaymentSection";
 import moment from "moment";
 import { useCookies } from "react-cookie";
@@ -35,6 +35,7 @@ import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { useOnboarding } from "@/providers/onboarding-providers";
 import { redirect } from "next/navigation";
 import AudienceDemographics from "./AudienceDemographics";
+import Loading from "@/components/Loading";
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -56,6 +57,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
   );
 
   const { createTalentProfile } = useOnboarding();
+
+  const [loading, setLoading] = useState(false);
 
   const [cookies, setCookie] = useCookies(["username", "access"]);
 
@@ -82,6 +85,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
 
   const submitProfile = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
   
     try {
       // Upload headshot
@@ -175,6 +180,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
       console.error("Error during form submission:", error);
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <Box
