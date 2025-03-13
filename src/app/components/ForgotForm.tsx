@@ -1,11 +1,13 @@
 import * as React from "react";
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
   FormControlLabel,
   Grid,
   Link,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,15 +20,27 @@ import { useState } from "react";
 export const ForgotForm: React.FC = () => {
 
   const [userEmail, setUserEmail] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   const { forgot } = useAuth();
 
   const handleSendEmail = async () => {
-      if (userEmail) {
-       await forgot(userEmail);
-      } else {
+    if (userEmail) {
+      await forgot(userEmail);
+      setSnackbarMessage("Reset Email Reset Sent!");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+    } else {
+      setSnackbarMessage("Email is Rquired");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
 
-      }
+  const handleSnackbarClose = async () => {
+      await setSnackbarOpen(false);
   }
 
   return (
@@ -262,6 +276,21 @@ export const ForgotForm: React.FC = () => {
           </Box>
         </Box>
       </Grid>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };
