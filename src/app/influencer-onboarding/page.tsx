@@ -1,32 +1,20 @@
 "use client";
 
-import React, { useState, useEffect, act } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import {
   Box,
-  Typography,
-  Grid,
-  TextField,
-  Button,
-  Avatar,
-  IconButton,
 } from "@mui/material";
-import { AddAPhoto } from "@mui/icons-material";
-import { TalentProfileData } from "@/types/TalentProfileData";
-import PersonalInformation from "@/components/portal/onboarding/PersonalInfo";
 import { PhysicalAttributes } from "@/components/portal/onboarding/PhysicalAttr";
 import { IDandCreds } from "@/components/portal/onboarding/IDandCreds";
 import { ProfileReview } from "@/components/portal/onboarding/ProfileReview";
 import { SocialMediaLinks } from "@/components/portal/onboarding/SocialMediaLinks";
-import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
-import { useStore } from "zustand";
 import HeadshotUploader from "@/components/portal/onboarding/HeadshotUploader";
 import SkillsSelection from "@/components/portal/onboarding/SkillsSelection";
 import { useOnboarding } from "@/providers/onboarding-providers";
 import { restCall } from "@/services/restCall";
 import axios from "axios";
-import PortfolioMedia from "@/components/portal/onboarding/PortfolioMedia";
 import { PaymentSection } from "@/components/portal/onboarding/PaymentSection";
 import { PortfolioBuilder } from "@/components/portal/onboarding/PortfolioBuilder";
 import { useAuth } from "@/providers/auth-providers";
@@ -36,7 +24,6 @@ import EngagementRate from "@/components/portal/onboarding/EngagementRate";
 import AudienceDemographics from "@/components/portal/onboarding/AudienceDemographics";
 
 const InfluencerOnboarding: React.FC = () => {
-  const router = useRouter();
   const [activeStep, setActiveStep] = useState(0);
   const { createTalentProfile } = useOnboarding();
   const [cookies, setCookie] = useCookies([
@@ -56,53 +43,10 @@ const InfluencerOnboarding: React.FC = () => {
 
   const onboardingPresented = cookies["onboarding_presented"] || false;
 
-  const steps = [
-    { title: "Step 1: Headshot", content: "Upload a headshot photo." },
-    {
-      title: "Step 2: Skills",
-      content: "Select your skills from the list below.",
-    },
-    {
-      title: "Step 3: Physical Attributes",
-      content: "Provide your physical attributes.",
-    },
-    {
-      title: "Step 4: Identification and Credentials",
-      content: "Upload your government ID and banking details.",
-    },
-    { title: "Step 5: Social Media & Online", content: "" },
-    {
-      title: "Step 6: Portfolio & Media",
-      content: "Upload PDF Portfolio, Images and Video",
-    },
-    { title: "Step 7: Review", content: "Review your information." },
-    { title: "Step 8: Submit", content: "Submit your information." },
-  ];
 
-  const handleBack = () => {
-    if (activeStep > 0) {
-      setActiveStep(activeStep - 1);
-    }
-  };
 
-  const handleNext = () => {
-    if (activeStep < steps.length - 1) {
-      setActiveStep(activeStep + 1);
-    }
-  };
 
-  const handleSkip = () => {
-    router.push("/dashboard");
-  };
 
-  const handleSubmit = () => {
-    uploadPortfolioPDF();
-    uploadPortfolioImages();
-    uploadPortfolioVideo();
-    uploadHeadshot();
-    uploadID();
-    // createTalentProfile();
-  };
 
   const fileTypeMapping = {
     "image/png": "png",
@@ -205,15 +149,6 @@ const InfluencerOnboarding: React.FC = () => {
     }
   };
 
-  const uploadPortfolioVideo = () =>
-    uploadFiles([cookies.portfolioVideo], "portfolioVideo");
-  const uploadPortfolioImages = () =>
-    uploadFiles(Array.from(cookies.portfolioImages), "portfolioImages");
-  const uploadPortfolioPDF = () =>
-    uploadFiles([cookies.portfolioPdf], "portfolioPDF");
-  const uploadID = () => uploadFiles([cookies.governmentIDUrl], "id");
-  const uploadHeadshot = () =>
-    uploadFiles([cookies.headshotBlobUrl], "headshot");
 
   useEffect(() => {
     if (!onboardingPresented) handleOnboardingStatus();

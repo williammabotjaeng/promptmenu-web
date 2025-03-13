@@ -150,7 +150,7 @@ const HeadshotUpload: React.FC<OnboardingStepProps> = ({ activeStep, setActiveSt
 
         {/* Step Indicator Section */}
         <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginBottom: 0, color: 'gray', textAlign: 'center' }}>
-          Step {activeStep + 1} of 8 - Headshot Upload
+          Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Headshot Upload
         </Typography>
       </Box>
       {/* Snackbar for feedback */}

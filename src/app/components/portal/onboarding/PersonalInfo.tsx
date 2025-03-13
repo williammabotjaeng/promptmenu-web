@@ -12,8 +12,7 @@ import { useStore } from "zustand";
 import { OnboardingStepProps } from "@/types/Props/OnboardingStepProps";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
-import { InputAdornment } from "@mui/material";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import { useCookies } from "react-cookie";
 
 const InfluencerSteps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -39,10 +38,16 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
     date_of_birth: talentData?.date_of_birth || "",
   });
 
+  const [cookies] = useCookies([
+    'user_role'
+  ]);
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
 
   const router = useRouter();
+
+  const userRole = cookies?.user_role;
 
   const handleInputChange =
     (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -289,7 +294,7 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
           textAlign: "center",
         }}
       >
-        Step {activeStep + 1} of 8 - Headshot Upload
+        Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Headshot Upload
       </Typography>
       <br />
       {/* Snackbar for feedback */}
