@@ -7,6 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert'; 
 import useUserStore from '@/state/use-user-store';
 import '@/styles/globals.css';
+import { ResetForm } from '@/components/ResetForm';
 
 const Reset: React.FC = () => {
   
@@ -27,7 +28,7 @@ const Reset: React.FC = () => {
 
   return (
     <>
-      <ForgotForm />
+      <ResetForm />
 
       {/* Snackbar for displaying messages */}
       <Snackbar

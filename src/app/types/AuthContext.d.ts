@@ -7,6 +7,7 @@ import { UserUpdateData } from '@/types/UserUpdateData';
 export interface AuthContextType {
     user: boolean;
     login: (email: string, password: string) => Promise<void>;
+    forgot: (email: string) => Promise<void>;
     loginIsLoading: boolean; 
     loginError: boolean; 
     verifyOtp: (username: string, otp: string) => Promise<void>;

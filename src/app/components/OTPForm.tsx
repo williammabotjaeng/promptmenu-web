@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { eventNames } from 'process';
 import Link from 'next/link';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
+import LoginBG from "@/assets/login-img.png";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -189,7 +190,7 @@ export const OTPForm: React.FC<OTPFormProps> = ({ username }) => {
       <Grid item xs={12} md={6} sx={{ display: { md: 'flex', xs: 'none' }, position: 'relative' }}>
         <img
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0ca397a6303443cf9ac61c117ae8a3d543e83d9bdce376c072ed0bd5eade2785?apiKey=7fae980a988640eea8add1e49a5d542e&"
+          src={LoginBG?.src}
           alt="Background fashion event"
           style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'relative', top: 0, left: 0 }}
         />

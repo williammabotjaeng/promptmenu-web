@@ -5,14 +5,101 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
+  IconButton,
+  InputAdornment,
   Link,
   TextField,
   Typography,
 } from "@mui/material";
-import { Facebook, Google, Twitter } from "@mui/icons-material";
+import { Facebook, Google, Twitter, Visibility, VisibilityOff } from "@mui/icons-material";
 import SSHGoldLogo from "@/assets/GoldLogo.png";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
+import LoginBG from "@/assets/login-img.png";
 
 export const ResetForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [isInfluencer, setIsInfluencer] = useState(false);
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+
+  const pathname = usePathname();
+
+  const username = pathname.split('/')[2];
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    console.log("Name:", name);
+    console.log("Value:", value);
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const { password, confirmPassword } = formData;
+
+    const requirements = [
+      {
+        check: password && confirmPassword,
+        message: "All fields are required.",
+      },
+      {
+        check: password.length >= 8,
+        message: "Password must be at least 8 characters long.",
+      },
+      {
+        check: /[A-Z]/.test(password),
+        message: "Password must contain at least one uppercase letter.",
+      },
+      {
+        check: /[a-z]/.test(password),
+        message: "Password must contain at least one lowercase letter.",
+      },
+      {
+        check: /[0-9]/.test(password),
+        message: "Password must contain at least one digit.",
+      },
+      {
+        check: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        message: "Password must contain at least one special character.",
+      },
+      {
+        check: !password.includes(username),
+        message: "Password cannot contain the username.",
+      },
+      {
+        check: password === confirmPassword,
+        message: "Passwords must match.",
+      },
+    ];
+
+    const unmetRequirements = requirements.filter(
+      (requirement) => !requirement.check
+    );
+
+    if (unmetRequirements.length > 0) {
+      return unmetRequirements.map((req) => req.message);
+    }
+
+    return [];
+  };
+
+
+
   return (
     <Grid
       container
@@ -65,23 +152,26 @@ export const ResetForm: React.FC = () => {
                 textAlign: { xs: "center" },
               }}
             >
-              Forgot your Password?
+              Reset your Password
             </Typography>
             <Typography variant="body1" sx={{ color: "gray", marginBottom: 4 }}>
-              Enter your email address to reset.
+              Enter your new Password to reset.
             </Typography>
             <form>
               {/* Styled Input Fields */}
+              {/* Password Field */}
               <TextField
-                label="Email"
-                type="email"
-                placeholder="Enter your Email"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                variant="outlined"
                 fullWidth
+                onChange={handleChange}
                 margin="normal"
                 InputLabelProps={{
                   sx: {
                     color: "#977342",
-                    width: { xs: "100%" },
                     "&.Mui-focused": {
                       color: "#977342",
                     },
@@ -89,19 +179,76 @@ export const ResetForm: React.FC = () => {
                 }}
                 InputProps={{
                   sx: {
+                    color: "#977342",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#977342",
-                      color: "#977342",
                     },
                     "&:hover .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#977342",
-                      color: "#977342",
                     },
                     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                       borderColor: "#977342",
+                    },
+                  },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? (
+                          <VisibilityOff sx={{ color: "#977342" }} />
+                        ) : (
+                          <Visibility sx={{ color: "#977342" }} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              {/* Confirm Password Field */}
+              <TextField
+                label="Confirm Password"
+                type={showConfirmPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                variant="outlined"
+                fullWidth
+                onChange={handleChange}
+                margin="normal"
+                InputLabelProps={{
+                  sx: {
+                    color: "#977342",
+                    "&.Mui-focused": {
                       color: "#977342",
                     },
                   },
+                }}
+                InputProps={{
+                  sx: {
+                    color: "#977342",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#977342",
+                    },
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#977342",
+                    },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#977342",
+                    },
+                  },
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={toggleConfirmPasswordVisibility}
+                        edge="end"
+                      >
+                        {showConfirmPassword ? (
+                          <VisibilityOff sx={{ color: "#977342" }} />
+                        ) : (
+                          <Visibility sx={{ color: "#977342" }} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
               <Button
@@ -158,7 +305,7 @@ export const ResetForm: React.FC = () => {
       >
         <img
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0ca397a6303443cf9ac61c117ae8a3d543e83d9bdce376c072ed0bd5eade2785?apiKey=7fae980a988640eea8add1e49a5d542e&"
+          src={LoginBG?.src}
           alt="Background fashion event"
           style={{
             width: "100%",

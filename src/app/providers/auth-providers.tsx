@@ -198,6 +198,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+  const forgotMutation = useMutation({
+    mutationKey: ["forgot_password"],
+    mutationFn: async (userEmail: { email: string }) => {
+      return await apiCall("/accounts/forgot-password/", "POST", {
+        email: userEmail
+      });
+    },
+    onSuccess: (data) => {
+      console.log("Email Sent:", data);
+    },
+    onError: (error) => {
+      console.error("Forgot Password error: ", { ...error });
+    },
+  });
+
   const updateUserMutation = useMutation({
     mutationKey: ["update_user"],
     mutationFn: async ({ field, value }: UserUpdateData) => {
@@ -254,6 +269,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     await updateUserMutation.mutateAsync(userData);
   };
 
+  const forgot = async (email) => {
+    await forgotMutation.mutateAsync(email);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -263,6 +282,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         logout,
         register,
         updateUser,
+        forgot,
         loginIsLoading: loginMutation.isPending,
         loginError: loginMutation.isError,
         verifyOtpIsLoading: verifyOtpMutation.isPending,

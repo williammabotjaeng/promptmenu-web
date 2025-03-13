@@ -10,6 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import { Facebook, Google, Twitter } from "@mui/icons-material";
+import SSHGoldLogo from "@/assets/GoldLogo.png";
+import LoginBG from "@/assets/login-img.png";
 
 export const ForgotForm: React.FC = () => {
   return (
@@ -40,7 +42,7 @@ export const ForgotForm: React.FC = () => {
         >
           <img
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c3fc10b45272c7c3f40000cb49e896f62fd831f2d1f6075f068d38a771d3152f?apiKey=7fae980a988640eea8add1e49a5d542e&"
+            src={SSHGoldLogo?.src}
             alt="Company logo"
             style={{ maxWidth: "204px", marginBottom: "20px" }}
           />
@@ -157,7 +159,7 @@ export const ForgotForm: React.FC = () => {
       >
         <img
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/0ca397a6303443cf9ac61c117ae8a3d543e83d9bdce376c072ed0bd5eade2785?apiKey=7fae980a988640eea8add1e49a5d542e&"
+          src={LoginBG?.src}
           alt="Background fashion event"
           style={{
             width: "100%",
