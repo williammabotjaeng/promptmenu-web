@@ -244,6 +244,23 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
         </Box>
       </Box>
 
+      <Box sx={{
+            display: 'flex',
+            flexDirection: 'column'
+      }}>
+          <Typography variant="h5">
+              {`Legal Full Name: ${talentData?.legalFullName}`}
+          </Typography>
+          <br />
+          <Typography variant="h6">
+              {`Stage Name: ${talentData?.stageName}`}
+          </Typography>
+          <br />
+          <Typography variant="h6">
+              {`Date of Birth: ${talentData?.date_of_birth}`}
+          </Typography>
+      </Box>
+
       <Box sx={{ padding: 4 }}>
         <Typography
           variant="h6"
