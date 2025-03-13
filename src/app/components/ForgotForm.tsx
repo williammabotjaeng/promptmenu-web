@@ -43,6 +43,10 @@ export const ForgotForm: React.FC = () => {
       await setSnackbarOpen(false);
   }
 
+  const handleFillEmail = async (event: React.ChangeEvent<any>) => {
+      await setUserEmail(event?.target?.value);
+  }
+
   return (
     <Grid
       container
@@ -109,7 +113,7 @@ export const ForgotForm: React.FC = () => {
                 fullWidth
                 margin="normal"
                 value={userEmail}
-                onClick={handleSendEmail}
+                onChange={handleFillEmail}
                 InputLabelProps={{
                   sx: {
                     color: "#977342",
@@ -150,6 +154,7 @@ export const ForgotForm: React.FC = () => {
                     color: "white",
                   },
                 }}
+                onClick={handleSendEmail}
               >
                 Send Email
               </Button>
