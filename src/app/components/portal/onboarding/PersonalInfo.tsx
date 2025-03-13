@@ -53,23 +53,42 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
       setPersonalInfo({ ...personalInfo, [field]: event.target.value });
     };
 
-  const handleContinue = () => {
-    const { legalFullName, stageName, date_of_birth } = personalInfo;
-
-    if (!legalFullName || !stageName || !date_of_birth) {
-      setSnackbarMessage("Please fill out all fields.");
-      setSnackbarOpen(true);
-      return;
-    }
-
-    setTalentData({
-      ...talentData,
-      legalFullName,
-      stageName,
-      date_of_birth,
-    });
-
-    setActiveStep(activeStep + 1);
+    const handleContinue = () => {
+      const { legalFullName, stageName, date_of_birth } = personalInfo;
+  
+      // Check for empty fields
+      if (!legalFullName || !stageName || !date_of_birth) {
+          setSnackbarMessage("Please fill out all fields.");
+          setSnackbarOpen(true);
+          return;
+      }
+  
+      // Validate age (must be older than 18)
+      const birthDate = new Date(date_of_birth);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+  
+      // Adjust age if the birthday hasn't occurred yet this year
+      if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+          age--;
+      }
+  
+      if (age < 18) {
+          setSnackbarMessage("You must be at least 18 years old.");
+          setSnackbarOpen(true);
+          return;
+      }
+  
+      // If all validations pass, update talent data and proceed
+      setTalentData({
+          ...talentData,
+          legalFullName,
+          stageName,
+          date_of_birth,
+      });
+  
+      setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
