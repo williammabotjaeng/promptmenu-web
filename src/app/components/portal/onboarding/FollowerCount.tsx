@@ -105,7 +105,7 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
   const [followerCounts, setFollowerCounts] = useState<{
     [key: string]: string;
   }>({});
-  const { talentData } = useStore(useTalentOnboardingStore);
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
   const [cookies] = useCookies(['user_role']);
 
@@ -138,7 +138,11 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
   };
 
   const handleContinue = () => {
-    if (talentData?.headshot) {
+    setTalentData({
+      ...talentData,
+      followerCounts: followerCounts
+    });
+    if (talentData?.followerCounts) {
       setActiveStep(activeStep + 1);
     } else {
       setSnackbarMessage('Please Upload a Headshot.');
