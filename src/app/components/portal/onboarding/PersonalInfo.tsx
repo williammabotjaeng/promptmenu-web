@@ -23,7 +23,6 @@ const InfluencerSteps = [
   { number: 6, title: "Social", isActive: false },
   { number: 7, title: "ID", isActive: false },
   { number: 8, title: "Portfolio", isActive: false },
-  { number: 9, title: "Review", isActive: false },
 ];
 
 const PersonalInfo: React.FC<OnboardingStepProps> = ({

@@ -31,15 +31,18 @@ const steps = [
 ];
 
 const InfluencerSteps = [
-  { number: 1, title: "Headshot", isActive: false },
-  { number: 2, title: "Personal Info", isActive: false },
-  { number: 3, title: "Skills", isActive: false },
-  { number: 4, title: "Payment", isActive: true },
+  // { number: 1, title: "Headshot", isActive: false },
+  // { number: 2, title: "Personal Info", isActive: false },
+  // { number: 3, title: "Skills", isActive: false },
+  // { number: 4, title: "Payment", isActive: false },
   { number: 5, title: "Attributes", isActive: false },
-  { number: 6, title: "Social", isActive: false },
-  { number: 7, title: "ID", isActive: false },
-  { number: 8, title: "Portfolio", isActive: false },
-  { number: 9, title: "Review", isActive: false },
+  { number: 6, title: "Social Accounts", isActive: false },
+  { number: 7, title: "Follower Count", isActive: false},
+  { number: 8, title: "Engagement Rate", isActive: false },
+  { number: 9, title: "Audience Demographics", isActive: false },
+  { number: 10, title: "ID", isActive: true },
+  { number: 11, title: "Portfolio", isActive: false },
+  { number: 12, title: "Review", isActive: false },
 ];
 
 export const IDandCreds: React.FC<OnboardingStepProps> = ({

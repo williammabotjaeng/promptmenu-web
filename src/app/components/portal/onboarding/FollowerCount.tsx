@@ -65,9 +65,9 @@ const InfluencerSteps = [
   { number: 5, title: "Attributes", isActive: false },
   { number: 6, title: "Social Accounts", isActive: false },
   { number: 6, title: "Follower Count", isActive: true },
-  { number: 7, title: "ID", isActive: false },
-  { number: 8, title: "Portfolio", isActive: false },
-  { number: 9, title: "Review", isActive: false },
+  { number: 7, title: "Engagement Rate", isActive: false },
+  { number: 8, title: "Audience Demographics", isActive: false },
+  { number: 9, title: "ID", isActive: false },
 ];
 
 const renderIcon = (iconName: string) => {
