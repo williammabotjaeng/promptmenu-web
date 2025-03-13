@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import React from 'react';
 import { ClipLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 
 const Creating: React.FC = () => {
   return (
@@ -13,16 +14,10 @@ const Creating: React.FC = () => {
         transition={{ duration: 2, repeat: Infinity }}
       >
         {/* Hourglass SVG or CSS representation */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="50"
-          height="100"
-          viewBox="0 0 50 100"
-          style={styles.hourglassIcon}
-        >
-          <rect x="15" y="0" width="20" height="40" fill="#977342" />
-          <rect x="10" y="40" width="30" height="60" fill="#977342" />
-        </svg>
+        <HourglassBottomIcon sx={{
+          color: "#977342",
+          fontSize: "72px"
+        }} />
       </motion.div>
       <h2 style={styles.loadingText}>Creating Profile...</h2>
       <br />
