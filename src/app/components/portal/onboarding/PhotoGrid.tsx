@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
 import { useStore } from 'zustand';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const PhotoGrid: React.FC = () => {
 
@@ -23,6 +24,10 @@ const PhotoGrid: React.FC = () => {
     })
   };
 
+  const handleDeleteImage = (image: string) => {
+    setImages((prevImages) => prevImages.filter((img) => img !== image));
+  };
+
   return (
     <Box 
       sx={{ 
@@ -37,18 +42,32 @@ const PhotoGrid: React.FC = () => {
       }}
     >
       {images.map((image, index) => (
-        <Box 
-          key={index} 
-          component="img" 
-          src={image} 
-          alt={`Uploaded image ${index + 1}`} 
-          sx={{ 
-            width: '100%', 
-            height: 'auto', 
-            borderRadius: '4px',
-            objectFit: 'cover',
-          }} 
-        />
+        <Box key={index} sx={{ position: 'relative' }}>
+          <Box 
+            component="img" 
+            src={image} 
+            alt={`Uploaded image ${index + 1}`} 
+            sx={{ 
+              width: '100%', 
+              height: 'auto', 
+              borderRadius: '4px',
+              objectFit: 'cover',
+            }} 
+          />
+          <IconButton 
+            onClick={() => handleDeleteImage(image)} 
+            sx={{ 
+              position: 'absolute', 
+              top: 8, 
+              right: 8, 
+              bgcolor: 'white', 
+              borderRadius: '50%', 
+              boxShadow: 2,
+            }}
+          >
+            <DeleteIcon sx={{ color: '#f00' }} />
+          </IconButton>
+        </Box>
       ))}
       <input 
         accept="image/*" 
