@@ -43,6 +43,7 @@ export interface TalentProfileData {
   };
   followerCounts: object | null;
   engagementRates: object | null;
+  audienceDemographics: object | null;
   additional_images?: string[] | null;
   is_verified?: boolean;
   verification_notification_sent?: boolean;

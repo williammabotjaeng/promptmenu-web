@@ -78,10 +78,10 @@ const AudienceDemographics: React.FC<OnboardingStepProps> = ({
   activeStep,
   setActiveStep,
 }) => {
-  const [engagementRates, setEngagementRates] = useState<{
+  const [audienceDemographics, setAudienceDemographics] = useState<{
     [key: string]: string;
   }>({});
-  const { talentData } = useStore(useTalentOnboardingStore);
+  const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
   const [cookies] = useCookies(['user_role']);
 
@@ -95,8 +95,8 @@ const AudienceDemographics: React.FC<OnboardingStepProps> = ({
 
   const handleAudienceDemographicsChange =
     (platform: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setEngagementRates({
-        ...engagementRates,
+      setAudienceDemographics({
+        ...audienceDemographics,
         [platform]: event.target.value,
       });
     };
@@ -114,8 +114,19 @@ const AudienceDemographics: React.FC<OnboardingStepProps> = ({
   };
 
   const handleContinue = () => {
-    setActiveStep(activeStep + 1);
-  };
+    setTalentData({
+        ...talentData,
+        audienceDemographics: audienceDemographics
+    });
+
+    // Check if audienceDemographics is empty
+    if (Object.keys(audienceDemographics).length > 0) {
+        setActiveStep(activeStep + 1);
+    } else {
+        setSnackbarMessage('Please fill in Audience Demographics.');
+        setSnackbarOpen(true);
+    }
+};
 
   const handleSkip = () => {
     setActiveStep(activeStep + 1);
@@ -189,7 +200,7 @@ const AudienceDemographics: React.FC<OnboardingStepProps> = ({
                       fullWidth
                       placeholder={`Audience Demographic`}
                       variant="outlined"
-                      value={engagementRates[platform.icon] || ""}
+                      value={audienceDemographics[platform.icon] || ""}
                       onChange={handleAudienceDemographicsChange(platform.icon)}
                       InputProps={{
                         sx: {
