@@ -139,16 +139,17 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
 
   const handleContinue = () => {
     setTalentData({
-      ...talentData,
-      followerCounts: followerCounts
+        ...talentData,
+        followerCounts: followerCounts
     });
-    if (talentData?.followerCounts) {
-      setActiveStep(activeStep + 1);
+
+    if (Object.keys(followerCounts).length > 0 && Object.values(followerCounts).length > 0) {
+        setActiveStep(activeStep + 1);
     } else {
-      setSnackbarMessage('Please Upload a Headshot.');
-      setSnackbarOpen(true);
+        setSnackbarMessage('Please fill in a Follower Count.');
+        setSnackbarOpen(true);
     }
-  };
+};
 
   const handleSkip = () => {
     setActiveStep(activeStep + 1);
