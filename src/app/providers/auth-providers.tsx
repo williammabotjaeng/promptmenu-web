@@ -46,6 +46,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     "sshsessionid",
     "instagram",
     "tiktok",
+    "company_id",
     "vatPdf",
     "tradePdf",
     "website",
@@ -203,6 +204,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       removeCookie("tradePdf", { path: "/" });
       removeCookie("ssh_access", { path: "/" });
       removeCookie("has_profile", { path: "/" });
+      removeCookie("sshsessionid", { path: "/" });
+      removeCookie("company_id", { path: "/" });
       router.push("/login");
     },
     onError: (error) => {
