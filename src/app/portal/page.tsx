@@ -59,7 +59,14 @@ const profileTasks = [
 const Portal: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [cookies, setCookie] = useCookies(['firstname', 'onboarding_presented', 'user_role', 'has_settings', 'username']);
+  const [cookies, setCookie] = useCookies([
+    'firstname', 
+    'onboarding_presented', 
+    'user_role', 
+    'has_settings', 
+    'username',
+    'has_profile'
+  ]);
 
   const firstName = cookies?.firstname || 'User';
 
@@ -68,6 +75,8 @@ const Portal: React.FC = () => {
   const has_settings = cookies?.has_settings || false;
 
   const userName = cookies?.username || '';
+
+  const hasProfile = cookies?.has_profile || false;
 
   const onboardingPresented = cookies?.onboarding_presented || false;
 
@@ -91,7 +100,7 @@ const Portal: React.FC = () => {
       setLoading(true);
       fetchTalentProfile();
       // getRoles();
-      if (!onboardingPresented) {
+      if (!onboardingPresented || !hasProfile) {
         console.log("Inside the condition, UserRole:", user_role);
         console.log("Check result:", user_role === 'talent');
         if (user_role === 'talent') {
