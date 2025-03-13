@@ -12,8 +12,23 @@ import {
 import { Facebook, Google, Twitter } from "@mui/icons-material";
 import SSHGoldLogo from "@/assets/GoldLogo.png";
 import LoginBG from "@/assets/login-img.png";
+import { useAuth } from "@/providers/auth-providers";
+import { useState } from "react";
 
 export const ForgotForm: React.FC = () => {
+
+  const [userEmail, setUserEmail] = useState("");
+
+  const { forgot } = useAuth();
+
+  const handleSendEmail = async () => {
+      if (userEmail) {
+       await forgot(userEmail);
+      } else {
+
+      }
+  }
+
   return (
     <Grid
       container
@@ -79,6 +94,8 @@ export const ForgotForm: React.FC = () => {
                 placeholder="Enter your Email"
                 fullWidth
                 margin="normal"
+                value={userEmail}
+                onClick={handleSendEmail}
                 InputLabelProps={{
                   sx: {
                     color: "#977342",
