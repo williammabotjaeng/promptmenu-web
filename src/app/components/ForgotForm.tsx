@@ -28,12 +28,21 @@ export const ForgotForm: React.FC = () => {
 
   const handleSendEmail = async () => {
     if (userEmail) {
-      await forgot(userEmail);
-      setSnackbarMessage("Reset Email Reset Sent!");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
+      try {
+        await forgot(userEmail);
+        setSnackbarMessage("Reset Email Reset Sent!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+      } catch (e: any) {
+        if (String(e).includes("404"))
+        {
+          setSnackbarMessage("User was not found!");
+          setSnackbarSeverity("error");
+          setSnackbarOpen(true);
+        }
+      }
     } else {
-      setSnackbarMessage("Email is Rquired");
+      setSnackbarMessage("Email is Required");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
