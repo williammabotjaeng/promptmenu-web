@@ -27,6 +27,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies([
     'profile_progress',
+    'has_profile',
     'governmentIDUrl',
     'headshotBlobUrl',
     'website',
@@ -75,6 +76,7 @@ export const OnboardingProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     },
     onSuccess: (data) => {
       console.log('Talent profile created successfully', data);
+      setCookie("has_profile", true);
       router.push('/talent-success');
     },
     onError: (error) => {

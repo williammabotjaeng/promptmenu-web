@@ -129,13 +129,15 @@ const Portal: React.FC = () => {
           send_ssh_updates: false,
           allow_browser_notifications: false,
         });
+
+        setCookie("has_settings", true);
   
         updateUser({
           field: "has_settings",
           value: true,
         });
 
-        setCookie("has_settings", true);
+        
   
         fetchSettings();
       }
