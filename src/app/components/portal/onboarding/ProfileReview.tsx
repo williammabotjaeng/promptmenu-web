@@ -35,7 +35,7 @@ import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { useOnboarding } from "@/providers/onboarding-providers";
 import { redirect } from "next/navigation";
 import AudienceDemographics from "./AudienceDemographics";
-import Loading from "@/components/Loading";
+import Creating from "@/components/Creating";
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
@@ -60,7 +60,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
 
   const [loading, setLoading] = useState(false);
 
-  const [cookies, setCookie] = useCookies(["username", "access"]);
+  const [cookies, setCookie] = useCookies(["username", "access", "has_profile"]);
 
   const userName = cookies["username"];
   const accessToken = cookies["access"];
@@ -173,7 +173,8 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
   
       // Submit the talent profile
       await createTalentProfile(userTalentData);
-  
+      setLoading(false);
+      setCookie("has_profile", true);
       // Redirect to success page
       redirect("/talent-success");
     } catch (error) {
@@ -181,7 +182,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
     }
   };
 
-  if (loading) return <Loading />;
+  if (loading) return <Creating />;
 
   return (
     <Box
