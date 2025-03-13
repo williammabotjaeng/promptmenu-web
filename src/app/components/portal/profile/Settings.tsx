@@ -77,7 +77,7 @@ export const Settings: React.FC = () => {
       allow_browser_notifications: communicationSettings?.allow_browser_notifications
     });
     fetchSettings();
-    setSnackbarMessage("Headshot Uploaded Successfully");
+    setSnackbarMessage("Settings Updated Successfully");
     setSnackbarSeverity("success");
     setSnackbarOpen(true);
   };
