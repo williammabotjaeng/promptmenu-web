@@ -25,6 +25,11 @@ import { Alert } from "@mui/material";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+interface ResetData {
+  username: string;
+  password: string;
+}
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -215,6 +220,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+  const resetMutation = useMutation({
+    mutationKey: ["reset_password"],
+    mutationFn: async ({username, password}: ResetData) => {
+      return await apiCall("/accounts/reset-password/", "POST", {
+        email: username,
+        password: password
+      });
+    },
+    onSuccess: (data) => {
+      console.log("Password Reset:", data);
+      router.push("/login");
+    },
+    onError: (error) => {
+      console.error("Forgot Password error: ", { ...error });
+    },
+  });
+
   const updateUserMutation = useMutation({
     mutationKey: ["update_user"],
     mutationFn: async ({ field, value }: UserUpdateData) => {
@@ -275,6 +297,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     await forgotMutation.mutateAsync(email);
   };
 
+  const reset = async (username, password) => {
+    await resetMutation.mutateAsync(username, password);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -285,6 +311,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         register,
         updateUser,
         forgot,
+        reset,
         loginIsLoading: loginMutation.isPending,
         loginError: loginMutation.isError,
         verifyOtpIsLoading: verifyOtpMutation.isPending,

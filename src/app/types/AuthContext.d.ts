@@ -8,6 +8,7 @@ export interface AuthContextType {
     user: boolean;
     login: (email: string, password: string) => Promise<void>;
     forgot: (email: string) => Promise<void>;
+    reset: (email: string, password: string) => Promise<void>;
     loginIsLoading: boolean; 
     loginError: boolean; 
     verifyOtp: (username: string, otp: string) => Promise<void>;

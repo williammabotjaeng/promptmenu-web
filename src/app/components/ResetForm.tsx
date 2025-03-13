@@ -98,7 +98,13 @@ export const ResetForm: React.FC = () => {
     return [];
   };
 
+  const SubmitReset = () => {
 
+    validateForm();
+
+    
+
+  }
 
   return (
     <Grid
@@ -265,8 +271,9 @@ export const ResetForm: React.FC = () => {
                     color: "white",
                   },
                 }}
+                onClick={SubmitReset}
               >
-                Send Email
+                Reset Password
               </Button>
               <Box sx={{ textAlign: "center", marginTop: 2 }}>
                 <Typography variant="body2" sx={{ color: "gray" }}>
