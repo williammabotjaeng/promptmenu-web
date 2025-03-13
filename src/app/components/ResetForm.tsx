@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Alert,
   Box,
   Button,
   Checkbox,
@@ -8,14 +9,22 @@ import {
   IconButton,
   InputAdornment,
   Link,
+  Snackbar,
   TextField,
   Typography,
 } from "@mui/material";
-import { Facebook, Google, Twitter, Visibility, VisibilityOff } from "@mui/icons-material";
+import {
+  Facebook,
+  Google,
+  Twitter,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
 import SSHGoldLogo from "@/assets/GoldLogo.png";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import LoginBG from "@/assets/login-img.png";
+import { useAuth } from "@/providers/auth-providers";
 
 export const ResetForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -40,7 +49,9 @@ export const ResetForm: React.FC = () => {
 
   const pathname = usePathname();
 
-  const username = pathname.split('/')[2];
+  const username = pathname.split("/")[2];
+
+  const { reset } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -98,12 +109,34 @@ export const ResetForm: React.FC = () => {
     return [];
   };
 
-  const SubmitReset = () => {
+  const submitReset = async () => {
 
     validateForm();
 
-    
+    if (username && formData?.password) {
+      console.log("Username:", username);
+      console.log("Password:", formData);
+      try {
+        await reset(username, formData?.password);
+        setSnackbarMessage("Password Reset Successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+      } catch (e) {
+        if (String(e)?.includes("409")) {
+          setSnackbarMessage("User did send reset request.");
+          setSnackbarSeverity("error");
+          setSnackbarOpen(true);
+        }
+      }
+    } else {
+      setSnackbarMessage("Password is Required!");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+  };
 
+  const handleSnackbarClose = async () => {
+    await setSnackbarOpen(false);
   }
 
   return (
@@ -163,7 +196,6 @@ export const ResetForm: React.FC = () => {
             <Typography variant="body1" sx={{ color: "gray", marginBottom: 4 }}>
               Enter your new Password to reset.
             </Typography>
-            <form>
               {/* Styled Input Fields */}
               {/* Password Field */}
               <TextField
@@ -258,7 +290,7 @@ export const ResetForm: React.FC = () => {
                 }}
               />
               <Button
-                type="submit"
+                type="button"
                 variant="contained"
                 sx={{
                   marginTop: 3,
@@ -271,7 +303,7 @@ export const ResetForm: React.FC = () => {
                     color: "white",
                   },
                 }}
-                onClick={SubmitReset}
+                onClick={submitReset}
               >
                 Reset Password
               </Button>
@@ -298,7 +330,6 @@ export const ResetForm: React.FC = () => {
                   </Box>
                 </Typography>
               </Box>
-            </form>
           </Box>
         </Box>
       </Grid>
@@ -398,6 +429,21 @@ export const ResetForm: React.FC = () => {
           </Box>
         </Box>
       </Grid>
+      {/* Snackbar for feedback */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };

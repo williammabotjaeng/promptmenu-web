@@ -110,7 +110,6 @@ export const ForgotForm: React.FC = () => {
             <Typography variant="body1" sx={{ color: "gray", marginBottom: 4 }}>
               Enter your email address to reset.
             </Typography>
-            <form>
               {/* Styled Input Fields */}
               <TextField
                 label="Email"
@@ -147,7 +146,7 @@ export const ForgotForm: React.FC = () => {
                 }}
               />
               <Button
-                type="submit"
+                type="button"
                 variant="contained"
                 sx={{
                   marginTop: 3,
@@ -187,7 +186,6 @@ export const ForgotForm: React.FC = () => {
                   </Box>
                 </Typography>
               </Box>
-            </form>
           </Box>
         </Box>
       </Grid>

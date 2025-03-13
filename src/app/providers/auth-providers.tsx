@@ -1,9 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
-import { AuthenticatedUser } from "@/types/AuthenticatedUser";
 import { useMutation } from "@tanstack/react-query";
-import { LoginSuccessData } from "@/types/LoginSuccessData";
 import { LoginData } from "@/types/LoginData";
 import { RegistrationData } from "@/types/RegistrationData";
 import { RegistrationSuccessData } from "@/types/RegistrationSuccessData";
@@ -12,8 +10,6 @@ import { ErrorData } from "@/types/ErrorData";
 import { OTPData } from "@/types/OTPData";
 import { useCookies } from "react-cookie";
 import { apiCall } from "@/services/apiCall";
-import { xAPICall } from "@/services/xAPICall";
-import clearCurrentUser from "@/state/use-user-store";
 import { useStore } from "zustand";
 import useTokenStore from "@/state/use-token-store";
 import { AuthContextType } from "@/types/AuthContext";
@@ -55,6 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     "website",
     "ssh_access",
     "has_settings",
+    "has_profile"
   ]);
 
   const accessToken = cookies?.access;
@@ -90,6 +87,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setCookie("username", data?.username, { path: "/", maxAge: 604800 });
       setCookie("ssh_access", data?.ssh_access, { path: "/", maxAge: 604800 });
       setCookie("has_settings", data?.has_settings, {
+        path: "/",
+        maxAge: 604800,
+      });
+      setCookie("has_profile", data?.has_settings, {
         path: "/",
         maxAge: 604800,
       });
@@ -166,6 +167,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         path: "/",
         maxAge: 604800,
       });
+      setCookie("has_profile", data?.has_settings, {
+        path: "/",
+        maxAge: 604800,
+      });
       setCookie("username", data?.username, { path: "/", maxAge: 604800 });
     },
     onError: (error) => {
@@ -197,6 +202,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       removeCookie("vatPdf", { path: "/" });
       removeCookie("tradePdf", { path: "/" });
       removeCookie("ssh_access", { path: "/" });
+      removeCookie("has_profile", { path: "/" });
       router.push("/login");
     },
     onError: (error) => {
@@ -223,8 +229,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const resetMutation = useMutation({
     mutationKey: ["reset_password"],
     mutationFn: async ({username, password}: ResetData) => {
+      console.log("U: P:", username, password);
       return await apiCall("/accounts/reset-password/", "POST", {
-        email: username,
+        username: username,
         password: password
       });
     },
@@ -298,7 +305,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const reset = async (username, password) => {
-    await resetMutation.mutateAsync(username, password);
+    await resetMutation.mutateAsync({username, password});
   };
 
   return (
