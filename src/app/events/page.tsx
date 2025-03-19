@@ -123,7 +123,7 @@ const Events = () => {
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     Your Events
                   </Typography>
-                  <Button
+                  {userEvents?.length <= 0 ? null : <Button
                     sx={{
                       color: "gray",
                       "&:hover": {
@@ -132,7 +132,7 @@ const Events = () => {
                     }}
                   >
                     View All
-                  </Button>
+                  </Button>}
                 </Box>
                 <Box sx={{ marginTop: 2 }}>
                   {userEvents && userEvents.length > 0 ? (
