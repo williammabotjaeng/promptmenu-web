@@ -20,6 +20,7 @@ interface EventContextType {
   getRoles: () => Promise<void>;
   getEventRoles: (eventId) => Promise<void>;
   getUserEvents: () => Promise<void>;
+  getAllEvents: () => Promise<void>;
   createEvent: (eventData) => Promise<void>;
   updateEvent: (eventId: string, data: any) => Promise<void>;
 }
@@ -130,6 +131,28 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+  const allEventsMutation = useMutation({
+    mutationKey: ["all_events"],
+    mutationFn: async () => {
+      const response = await restCall(
+        "/dashboard/all-events/",
+        "GET",
+        {},
+        accessToken
+      );
+      console.log("All Events:", response);
+      setUserEvents(response);
+      return response;
+    },
+    onSuccess: (data) => {
+      setRoles(data);
+      console.log("Events fetched successfully", data);
+    },
+    onError: (error) => {
+      console.error("Error fetching All Events: ", error);
+    },
+  });
+
   const getRolesMutation = useMutation({
     mutationKey: ["get_roles"],
     mutationFn: async () => {
@@ -208,6 +231,10 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     return await userEventsMutation.mutateAsync();
   };
 
+  const getAllEvents = async () => {
+    return await allEventsMutation.mutateAsync();
+  };
+
   const getRole = async (roleId) => {
     return await getRoleMutation.mutateAsync(roleId);
   };
@@ -282,6 +309,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
         getRoles,
         getEventRoles,
         getUserEvents,
+        getAllEvents
       }}
     >
       {children}
