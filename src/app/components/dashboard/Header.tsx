@@ -44,6 +44,8 @@ const Header = () => {
     console.log("Handle Click Arg:", text);
     if (text === 'Post Event') {
       router.push('/post-event');
+    } else if (text === 'My Events') {
+      router.push('/events');
     } else {
       router.push(`/${text.toLowerCase()}`);
     }
