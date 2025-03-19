@@ -45,7 +45,7 @@ const Events = () => {
     "ssh_access"
   ]);
 
-  const { getUserEvents } = useEvent();
+  const { getUserEvents, getAllEvents } = useEvent();
 
   let user_role = cookies["user_role"];
 
@@ -71,7 +71,12 @@ const Events = () => {
   useEffect(() => {
     console.log("User Role:", user_role);
     setLoading(true);
-    getUserEvents();
+    if (sshAccess === "admin") {
+      getAllEvents();
+    } else {
+      getUserEvents();
+    }
+    
     console.log("User Events for Page:", userEvents);
     if (user_role === "None") {
       console.log("User role:", typeof user_role);
@@ -127,7 +132,7 @@ const Events = () => {
                   <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     Your Events
                   </Typography>
-                  {userEvents?.length <= 0 ? null : <Button
+                  {(userEvents?.length <= 0 || allEvents?.length <= 0) ? null : <Button
                     sx={{
                       color: "gray",
                       "&:hover": {
