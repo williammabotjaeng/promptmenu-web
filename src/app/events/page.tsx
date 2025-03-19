@@ -60,6 +60,10 @@ const Events = () => {
     setOpenModal(false);
   };
 
+  const handleCreateEvent = () => {
+    router.push('/post-event')
+  }
+
   useEffect(() => {
     console.log("User Role:", user_role);
     setLoading(true);
@@ -131,11 +135,31 @@ const Events = () => {
                   </Button>
                 </Box>
                 <Box sx={{ marginTop: 2 }}>
-                  {userEvents?.map((event, index) => (
-                    <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
-                      <EventCard event={event} />
+                  {userEvents && userEvents.length > 0 ? (
+                    userEvents.map((event, index) => (
+                      <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
+                        <EventCard event={event} />
+                      </Box>
+                    ))
+                  ) : (
+                    <Box sx={{ textAlign: "center", marginTop: 4 }}>
+                      <Typography variant="h6">You have no events.</Typography>
+                      <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                        Create your first event to get started!
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        onClick={handleCreateEvent}
+                        sx={{
+                          "&:hover": {
+                            color: 'white'
+                          }
+                        }}
+                      >
+                        Create Event
+                      </Button>
                     </Box>
-                  ))}
+                  )}
                 </Box>
               </CardContent>
             </Card>
