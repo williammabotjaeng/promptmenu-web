@@ -176,6 +176,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
       setLoading(false);
       setCookie("has_profile", true);
       // Redirect to success page
+      console.log("Has Profile", cookies?.has_profile);
       redirect("/talent-success");
     } catch (error) {
       console.error("Error during form submission:", error);
