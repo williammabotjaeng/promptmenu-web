@@ -65,6 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return await apiCall("/accounts/login/", "POST", { email, password });
     },
     onSuccess: (data) => {
+      console.log("Login Successful:", data);
       setTokens(data?.tokens?.refresh, data?.tokens?.access);
       setUser(true);
       setAuth(true);

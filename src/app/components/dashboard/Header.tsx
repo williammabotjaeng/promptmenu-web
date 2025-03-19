@@ -15,7 +15,7 @@ import { useCompany } from '@/providers/company-provider';
 
 const Header = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [cookies] = useCookies(['access', 'ssh_session_id', 'firstname']);
+  const [cookies] = useCookies(['access', 'ssh_session_id', 'firstname', 'ssh_access']);
   const { logout } = useAuth();
 
   const { roles } = useStore(useLocalRolesStore);
@@ -33,6 +33,8 @@ const Header = () => {
   const sessionID = cookies?.ssh_session_id || "";
 
   const firstLetterUC = firstName[0]?.toUpperCase() || "";
+
+  const sshAccess: string = cookies?.ssh_access || "";
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
@@ -54,7 +56,7 @@ const Header = () => {
 
   const menuItems = (
     <Box sx={{ width: 250 }} onClick={toggleDrawer(false)} onKeyDown={toggleDrawer(false)}>
-      {['Dashboard', 'Post Event', 'Events', 'Jobs', 'Talent', 'Messages'].map((text) => (
+      {['Dashboard', 'Post Event', `${sshAccess === "admin" ? "Events" : "My Events"}`, 'Jobs', 'Talent', 'Messages'].map((text) => (
         <Button
           key={text}
           sx={{
@@ -106,7 +108,7 @@ const Header = () => {
         {/* Flex container for menu items and right-side image */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'flex-end', alignItems: 'center' }}>
           <nav>
-            {['Dashboard', 'Post Event', 'Events', 'Jobs', 'Talent', 'Messages'].map((text) => (
+            {['Dashboard', 'Post Event', `${sshAccess === "admin" ? "Events" : "My Events"}`, 'Jobs', 'Talent', 'Messages'].map((text) => (
               <Button
                 key={text}
                 sx={{
