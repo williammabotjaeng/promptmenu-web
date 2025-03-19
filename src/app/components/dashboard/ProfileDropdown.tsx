@@ -22,10 +22,11 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     const [dialogOpen, setDialogOpen] = useState(false);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-    const [cookies, setCookie] = useCookies(["access", "username"]);
+    const [cookies, setCookie] = useCookies(["access", "username", "ssh_access"]);
 
     const userName = cookies?.username;
     const accessToken = cookies?.access;
+    const sshAccess = cookies?.ssh_access;
 
     const { logout } = useAuth();
     const router = useRouter();
@@ -114,7 +115,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                     }
                 }}
             >
-                <Link href="/admin">
+                {sshAccess === "admin" ? <Link href="/admin">
                 <MenuItem
                     sx={{
                         '&:hover': {
@@ -125,7 +126,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
                 >
                     Admin
                 </MenuItem>
-                </Link>
+                </Link> : null}
                 <MenuItem
                     onClick={handleLogout}
                     sx={{
