@@ -10,6 +10,7 @@ import { useStore } from "zustand";
 import useClientOnboardingStore from "@/state/use-client-onboarding-store";
 import useLocalRolesStore from "@/state/use-local-roles-store";
 import useUserEventStore from "@/state/use-user-events-store";
+import useAllEventsStore from "@/state/use-all-events-store";
 import { csrfRestCall } from "@/services/csrfRestCall";
 
 interface EventContextType {
@@ -48,6 +49,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const { setRoles } = useStore(useLocalRolesStore);
   const { setUserEvents } = useStore(useUserEventStore);
+  const { setAllEvents } = useStore(useAllEventsStore);
 
   const fetchEventMutation = useQuery({
     queryKey: ["fetch_event"],
@@ -141,7 +143,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
         accessToken
       );
       console.log("All Events:", response);
-      setUserEvents(response);
+      setAllEvents(response);
       return response;
     },
     onSuccess: (data) => {

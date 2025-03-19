@@ -33,6 +33,7 @@ import SecondaryHeader from "@/components/SecondaryHeader";
 import Footer from "@/components/Footer";
 import EventCard from "@/components/dashboard/event/EventCard";
 import useUserEventsStore from "@/state/use-user-events-store";
+import useAllEventsStore from "@/state/use-all-events-store";
 
 const Events = () => {
   const { user, updateUser } = useAuth();
@@ -41,6 +42,7 @@ const Events = () => {
     "ssh_session_id",
     "user_role",
     "onboarding_presented",
+    "ssh_access"
   ]);
 
   const { getUserEvents } = useEvent();
@@ -50,11 +52,13 @@ const Events = () => {
   const user_roles = ["client", "talent", "influencer"];
 
   const onboardingPresented = cookies["onboarding_presented"] || false;
+  const sshAccess = cookies?.ssh_access || "";
 
   const [openModal, setOpenModal] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const { userEvents } = useStore(useUserEventsStore);
+  const { allEvents } = useStore(useAllEventsStore);
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -134,7 +138,7 @@ const Events = () => {
                     View All
                   </Button>}
                 </Box>
-                <Box sx={{ marginTop: 2 }}>
+                {sshAccess === "admin" ? <Box sx={{ marginTop: 2 }}>
                   {userEvents && userEvents.length > 0 ? (
                     userEvents.map((event, index) => (
                       <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
@@ -160,7 +164,34 @@ const Events = () => {
                       </Button>
                     </Box>
                   )}
-                </Box>
+                </Box> : null}
+                {sshAccess !== "admin" ? <Box sx={{ marginTop: 2 }}>
+                  {userEvents && userEvents.length > 0 ? (
+                    userEvents.map((event, index) => (
+                      <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
+                        <EventCard event={event} />
+                      </Box>
+                    ))
+                  ) : (
+                    <Box sx={{ textAlign: "center", marginTop: 4 }}>
+                      <Typography variant="h6">You have no events.</Typography>
+                      <Typography variant="body2" sx={{ marginBottom: 2 }}>
+                        Create your first event to get started!
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        onClick={handleCreateEvent}
+                        sx={{
+                          "&:hover": {
+                            color: 'white'
+                          }
+                        }}
+                      >
+                        Create Event
+                      </Button>
+                    </Box>
+                  )}
+                </Box> : null}
               </CardContent>
             </Card>
           </Grid>
