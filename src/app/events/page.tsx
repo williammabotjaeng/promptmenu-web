@@ -139,8 +139,8 @@ const Events = () => {
                   </Button>}
                 </Box>
                 {sshAccess === "admin" ? <Box sx={{ marginTop: 2 }}>
-                  {userEvents && userEvents.length > 0 ? (
-                    userEvents.map((event, index) => (
+                  {allEvents && allEvents?.length > 0 ? (
+                    allEvents?.map((event, index) => (
                       <Box key={index} sx={{ marginTop: index > 0 ? 2 : 0 }}>
                         <EventCard event={event} />
                       </Box>
