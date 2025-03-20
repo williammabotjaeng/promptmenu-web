@@ -6,6 +6,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import DeadlineHeaderWithProgressBar from "./DeadlineHeaderWithProgressBar";
 import { useStore } from "zustand";
 import useEventStore, { EventRole } from "@/state/use-event-store";
+import { useCookies } from "react-cookie";
 
 const EventDeadline: React.FC<PostEventStepProps> = ({
   activeStep,
@@ -14,17 +15,15 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
 
   const { eventRole, eventDetails, setEventDetails, clearEventRole } = useStore(useEventStore);
 
-  const handleContinue = () => {
+  const [cookies, removeCookie] = useCookies(['questions']);
 
-    
-  
+  const handleContinue = () => {
     setEventDetails({
       ...eventDetails,
       roles: [...eventDetails.roles, eventRole], 
     });
-  
     clearEventRole();
-  
+    removeCookie("questions", { path: "/" });
     setActiveStep(activeStep + 1);
   };
 
