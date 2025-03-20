@@ -19,6 +19,10 @@ interface EventMediaProps {
     eventVideo: string
     onImageUpload: (newImages: string[]) => void;
     onImageDelete: (image: string) => void;
+    onPosterUpload: (newImage: string) => void;
+    onPosterDelete: () => void;
+    onVideoUpload: (video: string) => void;
+    onVideoDelete: () => void;
 }
 
 export const EventMedia: React.FC<EventMediaProps> = ({
@@ -26,7 +30,11 @@ export const EventMedia: React.FC<EventMediaProps> = ({
     eventPoster,
     eventVideo,
     onImageUpload,
-    onImageDelete
+    onImageDelete,
+    onPosterUpload,
+    onPosterDelete,
+    onVideoUpload,
+    onVideoDelete
 }) => {
 
     return (
@@ -59,10 +67,10 @@ export const EventMedia: React.FC<EventMediaProps> = ({
              <br />
              <PhotoGrid images={eventPhotos} onImageUpload={onImageUpload} onDeleteImage={onImageDelete} imagesToDelete={[]} />
              <Typography>Event Poster</Typography>
-             <SingleImage image={eventPoster} onImageUpload={null} onDeleteImage={null} />
+             <SingleImage image={eventPoster} onImageUpload={onPosterUpload} onDeleteImage={onPosterDelete} />
              <br />
              <Typography>Event Video</Typography>
-             <SingleVideo video={eventVideo} onVideoUpload={null} onDeleteVideo={null} />
+             <SingleVideo video={eventVideo} onVideoUpload={onVideoUpload} onDeleteVideo={onVideoDelete} />
              <br />
             </Box>
         </Box>

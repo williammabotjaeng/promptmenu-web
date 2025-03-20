@@ -75,6 +75,8 @@ const EditEventPage = () => {
   const [accommodationProvided, setAccommodationProvided] = useState(false);
   const [eventStatus, setEventStatus] = useState("draft");
   const [localEventPhotos, setLocalEventPhotos] = useState(null);
+  const [localEventPoster, setLocalEventPoster] = useState(null);
+  const [localEventVideo, setLocalEventVideo] = useState(null);
   const [error, setError] = useState("");
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
@@ -89,6 +91,22 @@ const EditEventPage = () => {
           setLocalEventPhotos([...newImages]);
         }
   };
+
+  const handlePosterUpload = (newPoster: string) => {
+      setLocalEventPoster(newPoster);
+  }
+
+  const handlePosterDelete = () => {
+    setLocalEventPoster(null);
+  }
+
+  const handleVideoUpload = (video: string) => {
+      setLocalEventVideo(video);
+  }
+
+  const handleVideoDelete = () => {
+      setLocalEventVideo(null);
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -338,6 +356,10 @@ const EditEventPage = () => {
                                 eventVideo={signedUrls?.eventVideo} 
                                 onImageDelete={null}
                                 onImageUpload={handleImageUpload}
+                                onPosterDelete={handlePosterDelete}
+                                onPosterUpload={handlePosterUpload}
+                                onVideoDelete={handleVideoDelete}
+                                onVideoUpload={handleVideoUpload}
                             />}
       {currentPage === 2 && <EventRoles event={event} />}
 
