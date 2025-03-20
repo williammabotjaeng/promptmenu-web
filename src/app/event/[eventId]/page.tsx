@@ -31,7 +31,7 @@ const EditEventPage = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { fetchEvent } = useEvent();
+  const { fetchEvent, signedUrls } = useEvent();
 
   const [cookies, setCookie] = useCookies([
     "event_photos", "event_poster", "event_video", "event_id"
@@ -78,7 +78,7 @@ const EditEventPage = () => {
     setAccommodationProvided(currentEvent?.accommodationProvided || false);
   })
   .catch((err) => console.error("Error Fetching Event:", err));
-
+  console.log("Event Signed URLS:", signedUrls);
   setTimeout(() => {
     setLoading(false);
   }, 1000);
@@ -285,7 +285,7 @@ const EditEventPage = () => {
           handleContinue={handleContinue}
         />
       )}
-      {currentPage === 1 && <EventMedia eventPhotos={null} eventPoster={null} eventVideo={null} />}
+      {currentPage === 1 && <EventMedia eventPhotos={Array.from(signedUrls?.eventPhotos)} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
       {currentPage === 2 && <EventRoles event={event} />}
 
       {/* Floating Navigation Button */}
