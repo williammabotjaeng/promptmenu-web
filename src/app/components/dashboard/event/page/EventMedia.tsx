@@ -8,6 +8,7 @@ import EventIconThree from '@/assets/event_icon_three.svg';
 import { EventMediaType } from '@/state/use-event-store';
 import { useCookies } from 'react-cookie';
 import SaveIcon from "@mui/icons-material/Save"; 
+import PhotoGrid from './PhotoGrid';
 
 const uploadSections = [
     {
@@ -71,65 +72,7 @@ export const EventMedia: React.FC = () => {
                     margin: '0 auto', // Center the box
                 }}
             >
-                <Box sx={{ padding: 3, position: 'relative' }}>
-                    <Typography
-                        variant="h4"
-                        sx={{
-                            color: '#CEAB76',
-                            marginBottom: 2,
-                            textAlign: 'center', 
-                        }}
-                    >
-                        Upload Media
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <EventUploadSection 
-                            onSave={handleSave} 
-                            type="single" 
-                            mediaType="photo" 
-                            title={"eventPoster"} 
-                            icon={uploadSections[0]?.icon} 
-                            buttonText={uploadSections[0]?.title} 
-                            description={uploadSections[0]?.description}  
-                        />
-                        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
-                            <EventUploadSection 
-                                onSave={handleSave} 
-                                type="multiple" 
-                                mediaType="photo" 
-                                title={"eventPhotos"}
-                                icon={uploadSections[1]?.icon}
-                                buttonText={uploadSections[1]?.title}
-                                description={uploadSections[1]?.description}
-                             />
-                            <EventUploadSection 
-                                onSave={handleSave} 
-                                type="single" 
-                                mediaType="video" 
-                                title={"eventPromoVideo"}
-                                buttonText={uploadSections[2]?.title}
-                                icon={uploadSections[2]?.icon}
-                                description={uploadSections[2]?.description} 
-                            />
-                        </Box>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: 2 }}>
-                        <Button
-                            onClick={handleSave}
-                            variant="contained"
-                            sx={{
-                                backgroundColor: '#977342',
-                                color: 'white',
-                                '&:hover': {
-                                    backgroundColor: '#CEAB76',
-                                }
-                            }}
-                        >
-                            Save Section
-                            <SaveIcon sx={{ marginLeft: '8px' }} />
-                        </Button>
-                    </Box>
-                </Box>
+             <PhotoGrid images={[]} onImageUpload={null} onDeleteImage={null} imagesToDelete={[]} />
             </Box>
         </Box>
     );

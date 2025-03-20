@@ -46,6 +46,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   const accessToken = cookies["access"];
   const userName = cookies["username"];
   const csrfToken = cookies["csrfToken"];
+  const eventIDGlobal = cookies["event_id"];
 
   const { setRoles } = useStore(useLocalRolesStore);
   const { setUserEvents } = useStore(useUserEventStore);
@@ -54,8 +55,9 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   const fetchEventMutation = useQuery({
     queryKey: ["fetch_event"],
     queryFn: async () => {
+      console.log("Event ID Provider:", eventIDGlobal);
       const response = await restCall(
-        `/dashboard/event/retrieve/?username=${userName}`,
+        `/dashboard/events/${eventIDGlobal}`,
         "GET",
         {},
         accessToken
@@ -230,35 +232,35 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const getUserEvents = async () => {
-    return await userEventsMutation.mutateAsync();
+    return await userEventsMutation?.mutateAsync();
   };
 
   const getAllEvents = async () => {
-    return await allEventsMutation.mutateAsync();
+    return await allEventsMutation?.mutateAsync();
   };
 
   const getRole = async (roleId) => {
-    return await getRoleMutation.mutateAsync(roleId);
+    return await getRoleMutation?.mutateAsync(roleId);
   };
 
   const getRoles = async () => {
-    return await getRolesMutation.mutateAsync();
+    return await getRolesMutation?.mutateAsync();
   };
 
   const getEventRoles = async (eventId: string) => {
-    return await getEventRolesMutation.mutateAsync(eventId);
+    return await getEventRolesMutation?.mutateAsync(eventId);
   };
 
   const fetchEvent = async () => {
-    await fetchEventMutation.refetch();
+    await fetchEventMutation?.refetch();
   };
 
   const createEvent = async (eventData) => {
-    await createEventMutation.mutateAsync(eventData);
+    await createEventMutation?.mutateAsync(eventData);
   };
 
   const updateEvent = async (eventId: string, data: EventData) => {
-    await updateEventMutation.mutateAsync({ eventId, data });
+    await updateEventMutation?.mutateAsync({ eventId, data });
   };
 
   useEffect(() => {

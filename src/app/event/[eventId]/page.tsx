@@ -2,10 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { EventDetails } from "@/components/dashboard/event/page/EventDetails";
-import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import { useStore } from "zustand";
-import { WhiteHeader } from "@/components/WhiteHeader";
+import Header from "@/components/dashboard/Header";
 import { Box, Button, Typography, Fab, IconButton } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -17,6 +16,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { EventMedia } from "@/components/dashboard/event/page/EventMedia";
 import EventRoles from "@/components/dashboard/event/page/EventRoles";
 import useCurrentEventStore from "@/state/use-current-event-store";
+import { useCookies } from 'react-cookie';
+import { useEvent } from "@/providers/event-provider";
+import FetchingEvent from "@/components/dashboard/FetchingEvent";
 
 const EditEventPage = () => {
   const router = useRouter();
@@ -24,8 +26,18 @@ const EditEventPage = () => {
   const { currentEvent } = useStore(useCurrentEventStore);
 
   const [event, setEvent] = useState(currentEvent || null);
+  
+  const [loading, setLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
+
+  const { fetchEvent } = useEvent();
+
+  const [cookies, setCookie] = useCookies([
+    "event_photos", "event_poster", "event_video", "event_id"
+  ]);
+
+  const eventID = cookies?.event_id;
 
   const handleDown = () => {
     if (currentPage >= 2) {
@@ -53,21 +65,27 @@ const EditEventPage = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (currentEvent) {
-      console.log("Current Event:", currentEvent);
-      setEvent(currentEvent);
-      setEventTitle(currentEvent?.title || "");
-      setDescription(currentEvent?.description || "");
-      setLocation(currentEvent?.location || "");
-      setStartDateTime(currentEvent?.startTime || null);
-      setEndDateTime(currentEvent?.endTime || null);
-      setMealsProvided(currentEvent?.mealsProvided || false);
-      setTransportProvided(currentEvent?.transportProvided || false);
-      setAccommodationProvided(currentEvent?.accommodationProvided || false);
-    } else {
-      router.push("/events");
-    }
-  }, [currentEvent, router, currentPage]);
+    setLoading(true);
+    fetchEvent()
+    .then((data) => {
+    console.log("Fetch Event Response:", data);
+    setEvent(currentEvent);
+    setEventTitle(currentEvent?.title || "");
+    setDescription(currentEvent?.description || "");
+    setLocation(currentEvent?.location || "");
+    setStartDateTime(currentEvent?.startTime || null);
+    setEndDateTime(currentEvent?.endTime || null);
+    setMealsProvided(currentEvent?.mealsProvided || false);
+    setTransportProvided(currentEvent?.transportProvided || false);
+    setAccommodationProvided(currentEvent?.accommodationProvided || false);
+  })
+  .catch((err) => console.error("Error Fetching Event:", err));
+
+  setTimeout(() => {
+    setLoading(false);
+  }, 1000);
+
+  }, [cookies]);
 
   const handleContinue = () => {
     if (!eventTitle || !description || !location) {
@@ -94,9 +112,17 @@ const EditEventPage = () => {
 
   if (!event) return null;
 
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", backgroundColor: "white" }}>
+        <FetchingEvent />
+      </Box>
+    );
+  }
+
   return (
     <>
-      <WhiteHeader />
+      <Header />
       <Box
         sx={{
           display: "flex",

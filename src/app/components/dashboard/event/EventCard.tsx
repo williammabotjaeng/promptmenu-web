@@ -23,7 +23,8 @@ const EventCard = ({ event }) => {
 
   const [cookies, setCookie] = useCookies([
     'user_role',
-    'current_event'
+    'current_event',
+    'event_id'
   ]);
 
   const userRole = cookies?.user_role;
@@ -40,6 +41,7 @@ const EventCard = ({ event }) => {
     if (userRole === 'client')
     {
       console.log("Event Id:", eventId);
+      setCookie("event_id", eventId);
       setCurrentEvent({
         ...event,
         mealsProvided: event?.meals_provided,
@@ -99,7 +101,7 @@ const EventCard = ({ event }) => {
           {/* Start Time and Location */}
           <Box>
             <Typography variant="body2" color="text.secondary">
-              <strong>Location:</strong> {event?.location.city || "N/A"}
+              <strong>Location:</strong> {event?.location || "N/A"}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               <strong>Start Time:</strong> {formatDateTime(event?.start_time)}

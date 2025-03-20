@@ -103,7 +103,7 @@ const RolesOverview: React.FC<RolesOverviewProps> = ({ event }) => {
             + Add Role
           </Button>
         </Box>
-        {localRoles?.map((role, index) => (
+        {localRoles?.length > 0 ? localRoles?.map((role, index) => (
           <RoleCard
             key={index} 
             id={role?.id}
@@ -116,7 +116,11 @@ const RolesOverview: React.FC<RolesOverviewProps> = ({ event }) => {
             postedTime={moment(role?.created_at).fromNow()} 
             salary={`AED ${role?.daily_pay || role?.hourly_pay || role?.project_pay}`} 
           />
-        ))}
+        )) : <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}><Typography variant="body1">No Roles for this Event, Try adding a Role.</Typography></Box>}
       </Box>
     </Box>
   );
