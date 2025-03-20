@@ -73,7 +73,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
             event_poster: eventPosterName,
             event_video: eventVideoName,
             organizer: userName,
-            status: "live",
+            status: "draft",
           };
       
           // Update the event
@@ -88,6 +88,18 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
           }
 
           await updateCompany(companyID, companyData);
+
+          removeCookie("company_id", { path: "/" });
+          removeCookie("event_poster", { path: "/" });
+          removeCookie("event_id", { path: "/" });
+          removeCookie("event_photos", { path: "/" });
+          removeCookie("event_video", { path: "/" });
+          removeCookie("questions", { path: "/" });
+          
+          clearEventDetails();
+
+          clearEventMedia();
+          setLoading(false);
       
           // Redirect to the success page
           router.push("/event-success");
@@ -196,7 +208,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
                  Go Back
                 </Button>
                 <Button
-                    onClick={handleSaveDraft}
+                    onClick={handlePublish}
                     variant="outlined" 
                     sx={{
                         mr: 2, 

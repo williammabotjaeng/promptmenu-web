@@ -48,6 +48,7 @@ const EventCard = ({ event }) => {
         startTime: event?.start_time,
         endTime: event?.end_time
       });
+      console.log("Event in Cookies:", cookies?.current_event);
       setCookie('current_event', JSON.stringify(event));
       router.push(`/event/${eventId}`);
     } else {
