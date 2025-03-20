@@ -147,6 +147,13 @@ const EditEventPage = () => {
   };
 
   const handleSaveEventMedia = async () => {
+
+    if (!localEventPhotos && !localEventPoster && !localEventVideo)
+    {
+      setSnackbarMessage("No Event Media Uploaded!");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
     // Step 1: Prepare files to delete (images, video, poster)
     const filePathsToDelete = extractFilePaths(imagesToDelete);
 
@@ -480,6 +487,7 @@ const EditEventPage = () => {
             onPosterUpload={handlePosterUpload}
             onVideoDelete={handleVideoDelete}
             onVideoUpload={handleVideoUpload}
+            onSaveEventMedia={handleSaveEventMedia}
           />
         )}
         {currentPage === 2 && <EventRoles event={event} />}
