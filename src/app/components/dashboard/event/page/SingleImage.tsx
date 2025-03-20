@@ -35,7 +35,7 @@ const SingleImage: React.FC<SingleImageProps> = ({ image, onImageUpload, onDelet
           mx: 'auto',
         }}
       >
-        {image ? (
+        {!image ? (
           <Box sx={{ position: 'relative' }}>
             <Box 
               component="img" 

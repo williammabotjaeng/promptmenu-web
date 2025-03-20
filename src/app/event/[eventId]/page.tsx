@@ -134,6 +134,9 @@ const EditEventPage = () => {
   if (signedUrls)
   {
     setLocalEventPhotos(signedUrls?.eventPhotos);
+    setLocalEventPoster(signedUrls?.eventPoster);
+    setLocalEventVideo(signedUrls?.eventVideo);
+    console.log("Signed URLs:", signedUrls);
   }
   
   setTimeout(() => {
@@ -357,8 +360,8 @@ const EditEventPage = () => {
       )}
       {currentPage === 1 && <EventMedia 
                                 eventPhotos={localEventPhotos || []} 
-                                eventPoster={signedUrls?.eventPoster} 
-                                eventVideo={signedUrls?.eventVideo} 
+                                eventPoster={localEventPoster || []} 
+                                eventVideo={localEventVideo || []} 
                                 onImageDelete={handleDeleteImage}
                                 onImageUpload={handleImageUpload}
                                 onPosterDelete={handlePosterDelete}

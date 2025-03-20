@@ -35,7 +35,7 @@ const SingleVideo: React.FC<SingleVideoProps> = ({ video, onVideoUpload, onDelet
           mx: 'auto',
         }}
       >
-        {video ? (
+        {!video ? (
           <Box sx={{ position: 'relative' }}>
             <video 
               controls 
