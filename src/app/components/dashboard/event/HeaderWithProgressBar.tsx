@@ -5,10 +5,6 @@ import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgr
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from '@mui/material';
-import { useStore } from 'zustand';
-import { useCookies } from 'react-cookie';
-import useEventStore from '@/state/use-event-store';
-import { useEvent } from 'react-use';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -21,25 +17,6 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     backgroundColor: '#977342', 
   },
 }));
-
-const { clearEventDetails, clearEventMedia, clearEventRole } = useStore(useEventStore);
-
-const [cookies, removeCookie] = useCookies([
-    "company_id", "event_poster", "event_id",
-    "event_photos", "event_video", "questions"
-]);
-
-const handleClose = () => {
-  removeCookie("company_id", { path: "/" });
-  removeCookie("event_poster", { path: "/" });
-  removeCookie("event_id", { path: "/" });
-  removeCookie("event_photos", { path: "/" });
-  removeCookie("event_video", { path: "/" });
-  removeCookie("questions", { path: "/" });
-  clearEventDetails();
-  clearEventRole();
-  clearEventMedia();
-}
 
 interface HeaderWithProgressBarProps {
   progressValue: number; 
@@ -54,9 +31,9 @@ const HeaderWithProgressBar: React.FC<HeaderWithProgressBarProps> = ({ progressV
         <Typography variant="body2" sx={{ color: '#977342', textAlign: {xs: 'center', md: 'right'} }}>Media Upload</Typography>
         <Typography variant="body2" sx={{ color: '#977342', textAlign: {xs: 'center', md: 'right'} }}>Review & Create</Typography>
       </Box>
-      <Box onClick={handleClose}>
+      <Link href="/dashboard">
         <CloseIcon sx={{ color: '#977342', position: 'absolute', top: 0, right: { xs: -50, md: -90 }, cursor: 'pointer' }} /> 
-      </Box>
+      </Link>
     </Box>
   );
 };
