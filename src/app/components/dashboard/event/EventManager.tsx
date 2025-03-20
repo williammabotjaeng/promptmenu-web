@@ -16,12 +16,12 @@ import { uploadFileToS3 } from "@/services/s3UploadUtils";
 
 const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
-    const { eventDetails, eventMedia } = useStore(useEventStore);
-    const [cookies] = useCookies([
+    const { eventDetails, clearEventDetails, clearEventMedia, eventMedia } = useStore(useEventStore);
+    const [cookies, removeCookie] = useCookies([
       'event_id', 'username', 
       'access', 'event_video',
       'event_photos','event_poster',
-      'company_id'
+      'company_id', 'questions'
     ]);
 
     const router = useRouter();
@@ -128,7 +128,18 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
           };
       
           await updateEvent(eventID, eventData);
-      
+
+          removeCookie("company_id", { path: "/" });
+          removeCookie("event_poster", { path: "/" });
+          removeCookie("event_id", { path: "/" });
+          removeCookie("event_photos", { path: "/" });
+          removeCookie("event_video", { path: "/" });
+          removeCookie("questions", { path: "/" });
+          
+          clearEventDetails();
+
+          clearEventMedia();
+
           router.push("/dashboard");
         } catch (error) {
           console.error("Error during event draft save:", error);

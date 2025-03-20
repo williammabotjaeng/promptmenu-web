@@ -47,12 +47,6 @@ export const EventMedia: React.FC<PostEventStepProps> = ({ activeStep, setActive
         setActiveStep(activeStep - 1);
     }
 
-    const titleMapping: Record<keyof EventMediaType, string> = {
-        eventPromoVideo: 'Promo Video',
-        eventPhotos: 'Event Photos',
-        eventPoster: 'Event Poster',
-      };
-
     return (
         <Box
             sx={{
