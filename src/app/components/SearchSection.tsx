@@ -28,7 +28,7 @@ export const SearchSection: React.FC<SearchBarProps> = () => {
   };
 
   return (
-    <Box sx={{ padding: 2, display: 'flex', flexDirection: 'column', mb: 2 }}>
+    <Box sx={{ padding: 2, display: 'flex', flexDirection: 'column', mb: 2, width: { xs: '100%', sm: '100%', md: '100vw' } }}>
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, padding: 3, backgroundColor: 'white', borderRadius: 2, boxShadow: 1 }}>
         <TextField
           variant="outlined"
