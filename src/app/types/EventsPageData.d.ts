@@ -16,5 +16,5 @@ export interface EventDetailsProps {
     accommodationProvided: boolean;
     setAccommodationProvided: (value: boolean) => void;
     error: string;
-    handleContinue: () => void;
+    handleSaveSection: () => void;
   }

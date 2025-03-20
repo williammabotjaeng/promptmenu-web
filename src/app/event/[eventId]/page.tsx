@@ -31,7 +31,7 @@ const EditEventPage = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { fetchEvent, signedUrls } = useEvent();
+  const { fetchEvent, updateEvent, signedUrls } = useEvent();
 
   const [cookies, setCookie] = useCookies([
     "event_photos", "event_poster", "event_video", "event_id"
@@ -85,23 +85,26 @@ const EditEventPage = () => {
 
   }, [cookies]);
 
-  const handleContinue = () => {
-    if (!eventTitle || !description || !location) {
-      setError("Please fill in all required fields.");
-      return;
-    }
-    setError("");
-    console.log("Event Details Saved:", {
-      eventTitle,
-      description,
-      location,
-      startDateTime,
-      endDateTime,
-      mealsProvided,
-      transportProvided,
-      accommodationProvided,
-    });
-    // Proceed to the next step
+  const handleSaveDetails = () => {
+    
+    const payload = {
+      accommodation_provided: accommodationProvided,
+      description: description,
+      end_time: endDateTime,
+      // event_photos: {},
+      // event_poster: "",
+      // event_status: "",
+      // event_video: "",
+      location: location,
+      meals_provided: mealsProvided,
+      // roles: {},
+      start_time: startDateTime,
+      title: eventTitle,
+      transport_provided: transportProvided,
+      updated_at: new Date().toISOString(), 
+    };
+
+    console.log("Event Payload:", payload);
   };
 
   const goBack = () => {
@@ -282,7 +285,7 @@ const EditEventPage = () => {
           }
           setAccommodationProvided={setAccommodationProvided}
           error={error}
-          handleContinue={handleContinue}
+          handleSaveSection={handleSaveDetails}
         />
       )}
       {currentPage === 1 && <EventMedia eventPhotos={Array.from(signedUrls?.eventPhotos)} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}

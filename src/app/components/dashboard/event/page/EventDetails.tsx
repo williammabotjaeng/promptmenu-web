@@ -30,7 +30,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
     accommodationProvided,
     setAccommodationProvided,
     error,
-    handleContinue,
+    handleSaveSection,
   }) => {
 
   return (
@@ -146,7 +146,7 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
                 color: '#977342',
               },
             }}
-            onClick={handleContinue}
+            onClick={handleSaveSection}
           >
             Save Section
             <SaveIcon sx={{ marginLeft: '8px' }} />
