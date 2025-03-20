@@ -11,17 +11,22 @@ import SaveIcon from "@mui/icons-material/Save";
 import PhotoGrid from './PhotoGrid';
 import SingleVideo from './SingleVideo';
 import SingleImage from './SingleImage';
+import { useState } from 'react';
 
 interface EventMediaProps {
     eventPhotos: string[],
     eventPoster: string,
     eventVideo: string
+    onImageUpload: (newImages: string[]) => void;
+    onImageDelete: (image: string) => void;
 }
 
 export const EventMedia: React.FC<EventMediaProps> = ({
     eventPhotos,
     eventPoster,
-    eventVideo
+    eventVideo,
+    onImageUpload,
+    onImageDelete
 }) => {
 
     return (
@@ -52,7 +57,7 @@ export const EventMedia: React.FC<EventMediaProps> = ({
             >
              <Typography>Event Photos</Typography>
              <br />
-             <PhotoGrid images={eventPhotos} onImageUpload={null} onDeleteImage={null} imagesToDelete={[]} />
+             <PhotoGrid images={eventPhotos} onImageUpload={onImageUpload} onDeleteImage={onImageDelete} imagesToDelete={[]} />
              <Typography>Event Poster</Typography>
              <SingleImage image={eventPoster} onImageUpload={null} onDeleteImage={null} />
              <br />

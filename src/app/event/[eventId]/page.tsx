@@ -76,6 +76,19 @@ const EditEventPage = () => {
   const [eventStatus, setEventStatus] = useState("draft");
   const [localEventPhotos, setLocalEventPhotos] = useState(null);
   const [error, setError] = useState("");
+  const [images, setImages] = useState<string[]>([]);
+  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
+  const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
+  
+  const handleImageUpload = (newImages: string[]) => {
+        console.log("Image upload:", newImages);
+        setImagesToBeAdded((prev) => [...prev, ...newImages]);
+        if (localEventPhotos?.length > 0) {
+          setLocalEventPhotos((prevImages) => [...prevImages, ...newImages]);
+        } else {
+          setLocalEventPhotos([...newImages]);
+        }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -319,7 +332,13 @@ const EditEventPage = () => {
           handleSaveSection={handleSaveDetails}
         />
       )}
-      {currentPage === 1 && <EventMedia eventPhotos={localEventPhotos || []} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
+      {currentPage === 1 && <EventMedia 
+                                eventPhotos={localEventPhotos || []} 
+                                eventPoster={signedUrls?.eventPoster} 
+                                eventVideo={signedUrls?.eventVideo} 
+                                onImageDelete={null}
+                                onImageUpload={handleImageUpload}
+                            />}
       {currentPage === 2 && <EventRoles event={event} />}
 
       {/* Floating Navigation Button */}
