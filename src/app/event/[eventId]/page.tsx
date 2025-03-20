@@ -108,6 +108,11 @@ const EditEventPage = () => {
       setLocalEventVideo(null);
   }
 
+  const handleDeleteImage = (image: string) => {
+    setLocalEventPhotos((prevImages) => prevImages.filter((img) => img !== image));
+    setImagesToDelete((prevImagesToDelete) => [...prevImagesToDelete, image]);
+  };
+
   useEffect(() => {
     setLoading(true);
     fetchEvent()
@@ -354,7 +359,7 @@ const EditEventPage = () => {
                                 eventPhotos={localEventPhotos || []} 
                                 eventPoster={signedUrls?.eventPoster} 
                                 eventVideo={signedUrls?.eventVideo} 
-                                onImageDelete={null}
+                                onImageDelete={handleDeleteImage}
                                 onImageUpload={handleImageUpload}
                                 onPosterDelete={handlePosterDelete}
                                 onPosterUpload={handlePosterUpload}
