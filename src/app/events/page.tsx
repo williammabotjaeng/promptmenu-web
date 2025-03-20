@@ -77,30 +77,9 @@ const Events = () => {
       getUserEvents();
     }
     
-    console.log("User Events for Page:", userEvents);
-    if (user_role === "None") {
-      console.log("User role:", typeof user_role);
-      console.log("Check:", !user_role);
+    setTimeout(() => {
       setLoading(false);
-      setOpenModal(true);
-    } else {
-      if (user_role === "client") {
-        console.log("It's a client");
-        if (!onboardingPresented) {
-          router.push("/company-profile");
-        }
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
-        // router.push('/dashboard');
-      } else if (user_role === "talent" || user_role === "influencer") {
-        console.log("It's talent");
-        setLoading(false);
-        redirect("/portal");
-      }
-    }
-
-    setLoading(false);
+    }, 500);
   }, [user_role, router]);
 
   if (loading) return <Loading />;

@@ -144,7 +144,7 @@ const Dashboard = () => {
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <Grid container spacing={2}>
-              {statsData.map((stat, index) => (
+              {statsData?.map((stat, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <StatCard {...stat} />
                 </Grid>
