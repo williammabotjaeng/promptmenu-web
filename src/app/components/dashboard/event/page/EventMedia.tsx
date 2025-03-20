@@ -12,28 +12,17 @@ import PhotoGrid from './PhotoGrid';
 import SingleVideo from './SingleVideo';
 import SingleImage from './SingleImage';
 
-const uploadSections = [
-    {
-        title: 'Poster Upload',
-        icon: EventIconThree?.src,
-        buttonText: 'Browse Files',
-        description: 'Drag and drop your poster here or'
-    },
-    {
-        title: 'Photos Upload',
-        icon: EventIconTwo?.src,
-        buttonText: 'Select Photos',
-        description: 'Upload multiple photos'
-    },
-    {
-        title: 'Videos Upload',
-        icon: EventIconOne?.src,
-        buttonText: 'Select Videos',
-        description: 'Upload multiple videos'
-    }
-];
+interface EventMediaProps {
+    eventPhotos: string[],
+    eventPoster: string,
+    eventVideo: string
+}
 
-export const EventMedia: React.FC = () => {
+export const EventMedia: React.FC<EventMediaProps> = ({
+    eventPhotos,
+    eventPoster,
+    eventVideo
+}) => {
 
     return (
         <Box
@@ -63,12 +52,12 @@ export const EventMedia: React.FC = () => {
             >
              <Typography>Event Photos</Typography>
              <br />
-             <PhotoGrid images={[]} onImageUpload={null} onDeleteImage={null} imagesToDelete={[]} />
+             <PhotoGrid images={eventPhotos} onImageUpload={null} onDeleteImage={null} imagesToDelete={[]} />
              <Typography>Event Poster</Typography>
-             <SingleImage image={''} onImageUpload={null} onDeleteImage={null} />
+             <SingleImage image={eventPoster} onImageUpload={null} onDeleteImage={null} />
              <br />
              <Typography>Event Video</Typography>
-             <SingleVideo video={''} onVideoUpload={null} onDeleteVideo={null} />
+             <SingleVideo video={eventVideo} onVideoUpload={null} onDeleteVideo={null} />
              <br />
             </Box>
         </Box>
