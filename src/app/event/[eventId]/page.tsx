@@ -36,7 +36,7 @@ const EditEventPage = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { fetchEvent, updateEvent, signedUrls } = useEvent();
+  const { fetchEvent, updateEvent, signedUrls, clearSignedUrls } = useEvent();
 
   const [cookies, setCookie] = useCookies([
     "event_photos", "event_poster", "event_video", "event_id", "username"
@@ -74,6 +74,7 @@ const EditEventPage = () => {
   const [transportProvided, setTransportProvided] = useState(false);
   const [accommodationProvided, setAccommodationProvided] = useState(false);
   const [eventStatus, setEventStatus] = useState("draft");
+  const [localSignedUrls, setLocalSignedUrls] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -93,12 +94,17 @@ const EditEventPage = () => {
     setAccommodationProvided(currentEvent?.accommodationProvided || false);
   })
   .catch((err) => console.error("Error Fetching Event:", err));
+
+  if (signedUrls)
+  {
+    setLocalSignedUrls(signedUrls);
+  }
   
   setTimeout(() => {
     setLoading(false);
   }, 1000);
 
-  }, [cookies]);
+  }, [cookies, signedUrls?.eventPhotos]);
 
   const handleSaveDetails = async () => {
     
@@ -132,6 +138,7 @@ const EditEventPage = () => {
   };
 
   const goBack = () => {
+    clearSignedUrls();
     router.push(`/events`);
   }
 
@@ -312,7 +319,7 @@ const EditEventPage = () => {
           handleSaveSection={handleSaveDetails}
         />
       )}
-      {currentPage === 1 && <EventMedia eventPhotos={Array.from(signedUrls?.eventPhotos) || []} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
+      {currentPage === 1 && <EventMedia eventPhotos={Array.from(localSignedUrls?.eventPhotos) || []} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
       {currentPage === 2 && <EventRoles event={event} />}
 
       {/* Floating Navigation Button */}

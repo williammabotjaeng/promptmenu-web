@@ -25,6 +25,7 @@ interface EventContextType {
   getAllEvents: () => Promise<void>;
   createEvent: (eventData) => Promise<void>;
   updateEvent: (eventId: string, data: any) => Promise<void>;
+  clearSignedUrls: () => void;
 }
 
 interface GetRoleInput {
@@ -307,6 +308,10 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchSignedUrls();
   }, [fetchEventMutation.data]);
 
+  const clearSignedUrls = () => {
+    setSignedUrls(null); 
+  };
+
   return (
     <EventContext.Provider
       value={{
@@ -319,7 +324,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
         getRoles,
         getEventRoles,
         getUserEvents,
-        getAllEvents
+        getAllEvents,
+        clearSignedUrls
       }}
     >
       {children}
