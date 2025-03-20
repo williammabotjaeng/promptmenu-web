@@ -12,6 +12,7 @@ import useLocalRolesStore from "@/state/use-local-roles-store";
 import useUserEventStore from "@/state/use-user-events-store";
 import useAllEventsStore from "@/state/use-all-events-store";
 import { csrfRestCall } from "@/services/csrfRestCall";
+import useCurrentEventStore from "@/state/use-current-event-store";
 
 interface EventContextType {
   event: EventData | null;
@@ -37,7 +38,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const router = useRouter();
-  const [cookies, setCookie] = useCookies(["access", "username", "event_id", "csrfToken"]);
+  const [cookies, setCookie] = useCookies(["access", "username", "event_id", "csrfToken", "current_event"]);
 
   const [signedUrls, setSignedUrls] = useState<Record<string, string> | null>(
       null
@@ -48,6 +49,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   const csrfToken = cookies["csrfToken"];
   const eventIDGlobal = cookies["event_id"];
 
+   const { setCurrentEvent } = useStore(useCurrentEventStore);
   const { setRoles } = useStore(useLocalRolesStore);
   const { setUserEvents } = useStore(useUserEventStore);
   const { setAllEvents } = useStore(useAllEventsStore);
@@ -106,6 +108,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       );
     },
     onSuccess: (data) => {
+      setCookie("current_event", data);
+      setCurrentEvent(data);
       console.log("Event updated successfully", data);
     },
     onError: (error) => {

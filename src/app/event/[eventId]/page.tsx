@@ -19,6 +19,7 @@ import useCurrentEventStore from "@/state/use-current-event-store";
 import { useCookies } from 'react-cookie';
 import { useEvent } from "@/providers/event-provider";
 import FetchingEvent from "@/components/dashboard/FetchingEvent";
+import { UNSTABLE_REVALIDATE_RENAME_ERROR } from "next/dist/lib/constants";
 
 const EditEventPage = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const EditEventPage = () => {
   const { fetchEvent, updateEvent, signedUrls } = useEvent();
 
   const [cookies, setCookie] = useCookies([
-    "event_photos", "event_poster", "event_video", "event_id"
+    "event_photos", "event_poster", "event_video", "event_id", "username"
   ]);
 
   const handleSnackbarClose = () => {
@@ -46,6 +47,8 @@ const EditEventPage = () => {
   };
 
   const eventID = cookies?.event_id;
+
+  const userName = cookies?.username;
 
   const handleDown = () => {
     if (currentPage >= 2) {
@@ -70,6 +73,7 @@ const EditEventPage = () => {
   const [mealsProvided, setMealsProvided] = useState(false);
   const [transportProvided, setTransportProvided] = useState(false);
   const [accommodationProvided, setAccommodationProvided] = useState(false);
+  const [eventStatus, setEventStatus] = useState("draft");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -98,15 +102,18 @@ const EditEventPage = () => {
   const handleSaveDetails = async () => {
     
     const payload = {
+      ...currentEvent,
       accommodation_provided: accommodationProvided,
       description: description,
       end_time: endDateTime,
+      organizer: userName,
       // event_photos: {},
       // event_poster: "",
       // event_status: "",
       // event_video: "",
       location: location,
       meals_provided: mealsProvided,
+      status: eventStatus,
       // roles: {},
       start_time: startDateTime,
       title: eventTitle,
@@ -117,6 +124,10 @@ const EditEventPage = () => {
     console.log("Event Payload:", payload);
 
     await updateEvent(eventID, payload);
+
+    setSnackbarMessage("Event Details Saved Successfully");
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
   };
 
   const goBack = () => {
