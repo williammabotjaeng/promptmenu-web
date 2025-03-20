@@ -81,6 +81,7 @@ const EditEventPage = () => {
     fetchEvent()
     .then((data) => {
     console.log("Fetch Event Response:", data);
+    // console.log("Event Signed URLS:", signedUrls);
     setEvent(currentEvent);
     setEventTitle(currentEvent?.title || "");
     setDescription(currentEvent?.description || "");
@@ -92,7 +93,7 @@ const EditEventPage = () => {
     setAccommodationProvided(currentEvent?.accommodationProvided || false);
   })
   .catch((err) => console.error("Error Fetching Event:", err));
-  console.log("Event Signed URLS:", signedUrls);
+  
   setTimeout(() => {
     setLoading(false);
   }, 1000);
@@ -115,8 +116,8 @@ const EditEventPage = () => {
       meals_provided: mealsProvided,
       status: eventStatus,
       // roles: {},
-      start_time: startDateTime,
-      title: eventTitle,
+      startDateTime: startDateTime,
+      eventTitle: eventTitle,
       transport_provided: transportProvided,
       updated_at: new Date().toISOString(), 
     };
@@ -311,7 +312,7 @@ const EditEventPage = () => {
           handleSaveSection={handleSaveDetails}
         />
       )}
-      {currentPage === 1 && <EventMedia eventPhotos={Array.from(signedUrls?.eventPhotos)} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
+      {currentPage === 1 && <EventMedia eventPhotos={Array.from(signedUrls?.eventPhotos) || []} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
       {currentPage === 2 && <EventRoles event={event} />}
 
       {/* Floating Navigation Button */}

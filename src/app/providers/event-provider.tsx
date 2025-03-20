@@ -270,6 +270,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const fetchSignedUrls = async () => {
       if (fetchEventMutation.data) {
+      
+        try {
         const event = fetchEventMutation.data;
 
         const eventAssets = {
@@ -280,7 +282,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
         console.log("Event Assets:", eventAssets);
 
-        try {
+       
           const response = await csrfRestCall(
             `/dashboard/event-assets/get-signed-urls/`,
             "POST",
@@ -295,7 +297,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
             csrfToken
           );
           console.log("Signed URLs:", response);
-          setSignedUrls(response.signed_urls);
+          setSignedUrls(response?.signed_urls);
         } catch (error) {
           console.error("Error fetching signed URLs:", error);
         }
