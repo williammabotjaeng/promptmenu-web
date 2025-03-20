@@ -33,22 +33,6 @@ const uploadSections = [
 
 export const EventMedia: React.FC = () => {
 
-    const [cookies] = useCookies([
-        'event_video',
-        'event_photos',
-        'event_poster'
-    ]);
-
-    const titleMapping: Record<keyof EventMediaType, string> = {
-        'eventPromoVideo': 'Promo Video',
-        'eventPhotos': 'Event Photos',
-        'eventPoster': 'Event Poster',
-      };
-
-    const handleSave = () => {
-
-    }
-
     return (
         <Box
             sx={{
@@ -67,12 +51,21 @@ export const EventMedia: React.FC = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     backgroundColor: 'white',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    alignItems: 'center',
                     borderRadius: 2,
-                    width: { xs: '100%', sm: '80%', md: '60%' }, // Responsive width
-                    margin: '0 auto', // Center the box
+                    width: { xs: '100%', sm: '80%', md: '60%' }, 
+                    margin: '0 auto', 
                 }}
             >
+             <Typography>Event Photos</Typography>
+             <br />
              <PhotoGrid images={[]} onImageUpload={null} onDeleteImage={null} imagesToDelete={[]} />
+             <Typography>Event Poster</Typography>
+             <br />
+             <Typography>Event Video</Typography>
+             <br />
             </Box>
         </Box>
     );

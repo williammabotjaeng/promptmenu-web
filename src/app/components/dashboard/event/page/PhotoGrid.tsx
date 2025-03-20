@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from 'react';
-import { Box, IconButton } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -22,6 +22,7 @@ const PhotoGrid: React.FC<PhotoGridProps> = ({ images, onImageUpload, onDeleteIm
   };
 
   return (
+    <>
     <Box 
       sx={{ 
         display: 'grid', 
@@ -86,7 +87,24 @@ const PhotoGrid: React.FC<PhotoGridProps> = ({ images, onImageUpload, onDeleteIm
           <AddIcon sx={{ color: '#977342' }} />
         </IconButton>
       </label>
+      <br />
     </Box>
+    <br />
+    {images?.length <= 0 && <Box sx={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      textAlign: "center",
+      alignItems: "center",
+      mt: 4,
+      mb: 4
+    }}>
+        <Typography variant='h5'>You have no Images</Typography>
+        <br />
+        <Typography variant="body1">Try uploading some event photos.</Typography>
+        <br />
+      </Box>}
+    </>
   );
 };
 
