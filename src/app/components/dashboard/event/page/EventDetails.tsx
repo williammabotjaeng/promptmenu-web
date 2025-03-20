@@ -32,20 +32,6 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
     error,
     handleContinue,
   }) => {
- 
-  const { eventDetails, setEventDetails } = useStore(useEventStore);
-
-
-  useEffect(() => {
-    setEventTitle(eventDetails.eventTitle);
-    setDescription(eventDetails.description);
-    setLocation(eventDetails.location);
-    setStartDateTime(eventDetails.startDateTime);
-    setEndDateTime(eventDetails.endDateTime);
-    setMealsProvided(eventDetails.mealsProvided);
-    setTransportProvided(eventDetails.transportProvided);
-    setAccommodationProvided(eventDetails.accommodationProvided);
-  }, [eventDetails]);
 
   return (
     <Box
