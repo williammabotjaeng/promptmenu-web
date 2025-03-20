@@ -38,6 +38,12 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
   eventPromoVideo: 'event_video',
 };
 
+const titleMapping: Record<keyof EventMediaType, string> = {
+        eventPromoVideo: 'Promo Video',
+        eventPhotos: 'Event Photos',
+        eventPoster: 'Event Poster',
+      };
+
   // Trigger file input click
   const handleButtonClick = () => {
     fileInputRef.current?.click(); // Use useRef to trigger the file input
@@ -125,7 +131,7 @@ const titleToCookieMap: Record<keyof EventMediaType, 'event_poster' | 'event_pho
           textAlign: "center",
         }}
       >
-        {title}
+        {titleMapping[title]}
       </Typography>
       <Box
         sx={{
