@@ -137,7 +137,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     mutationKey: ["all_events"],
     mutationFn: async () => {
       const response = await restCall(
-        "/dashboard/all-events/",
+        "/dashboard/dashboard/all-events/",
         "GET",
         {},
         accessToken
