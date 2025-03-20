@@ -14,7 +14,6 @@ import "@/styles/globals.css";
 import { MessageProvider } from "./providers/message-provider";
 import { TikTokProvider } from "./providers/tiktok-provider";
 import { SnapchatProvider } from "./providers/snapchat-provider";
-import { SettingsProvider } from "./providers/settings-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,7 +53,6 @@ export default function RootLayout({
       >
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
-            <SettingsProvider>
               <SnapchatProvider>
                 <TikTokProvider>
                   <MessageProvider>
@@ -72,7 +70,6 @@ export default function RootLayout({
                   </MessageProvider>
                 </TikTokProvider>
               </SnapchatProvider>
-            </SettingsProvider>
           </QueryClientProvider>
         </ThemeProvider>
       </body>

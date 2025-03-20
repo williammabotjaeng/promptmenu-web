@@ -37,8 +37,6 @@ const EditEventPage = () => {
     "event_photos", "event_poster", "event_video", "event_id"
   ]);
 
-  const eventID = cookies?.event_id;
-
   const handleDown = () => {
     if (currentPage >= 2) {
       setCurrentPage(0);
@@ -122,6 +120,9 @@ const EditEventPage = () => {
 
   return (
     <>
+    <Box sx={{
+      backgroundColor: 'white'
+    }}>
       <Header />
       <Box
         sx={{
@@ -324,6 +325,7 @@ const EditEventPage = () => {
           {<ArrowDownwardIcon />}
         </Fab>
       )}
+      </Box>
     </>
   );
 };
