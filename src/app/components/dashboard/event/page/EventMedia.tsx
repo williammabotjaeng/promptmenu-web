@@ -9,6 +9,8 @@ import { EventMediaType } from '@/state/use-event-store';
 import { useCookies } from 'react-cookie';
 import SaveIcon from "@mui/icons-material/Save"; 
 import PhotoGrid from './PhotoGrid';
+import SingleVideo from './SingleVideo';
+import SingleImage from './SingleImage';
 
 const uploadSections = [
     {
@@ -63,8 +65,10 @@ export const EventMedia: React.FC = () => {
              <br />
              <PhotoGrid images={[]} onImageUpload={null} onDeleteImage={null} imagesToDelete={[]} />
              <Typography>Event Poster</Typography>
+             <SingleImage image={''} onImageUpload={null} onDeleteImage={null} />
              <br />
              <Typography>Event Video</Typography>
+             <SingleVideo video={''} onVideoUpload={null} onDeleteVideo={null} />
              <br />
             </Box>
         </Box>
