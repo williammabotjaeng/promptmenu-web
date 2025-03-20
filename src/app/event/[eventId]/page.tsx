@@ -5,7 +5,7 @@ import { EventDetails } from "@/components/dashboard/event/page/EventDetails";
 import { useRouter } from "next/navigation";
 import { useStore } from "zustand";
 import Header from "@/components/dashboard/Header";
-import { Box, Button, Typography, Fab, IconButton } from "@mui/material";
+import { Box, Button, Typography, Fab, IconButton, Snackbar, Alert } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -26,6 +26,10 @@ const EditEventPage = () => {
   const { currentEvent } = useStore(useCurrentEventStore);
 
   const [event, setEvent] = useState(currentEvent || null);
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   
   const [loading, setLoading] = useState(false);
 
@@ -36,6 +40,12 @@ const EditEventPage = () => {
   const [cookies, setCookie] = useCookies([
     "event_photos", "event_poster", "event_video", "event_id"
   ]);
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  const eventID = cookies?.event_id;
 
   const handleDown = () => {
     if (currentPage >= 2) {
@@ -85,7 +95,7 @@ const EditEventPage = () => {
 
   }, [cookies]);
 
-  const handleSaveDetails = () => {
+  const handleSaveDetails = async () => {
     
     const payload = {
       accommodation_provided: accommodationProvided,
@@ -105,6 +115,8 @@ const EditEventPage = () => {
     };
 
     console.log("Event Payload:", payload);
+
+    await updateEvent(eventID, payload);
   };
 
   const goBack = () => {
@@ -328,6 +340,21 @@ const EditEventPage = () => {
           {<ArrowDownwardIcon />}
         </Fab>
       )}
+      {/* Snackbar for feedback */}
+            <Snackbar
+              open={snackbarOpen}
+              autoHideDuration={6000}
+              onClose={handleSnackbarClose}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            >
+              <Alert
+                onClose={handleSnackbarClose}
+                severity={snackbarSeverity === "success" ? "success" : "error"}
+                sx={{ width: "100%" }}
+              >
+                {snackbarMessage}
+              </Alert>
+            </Snackbar>
       </Box>
     </>
   );
