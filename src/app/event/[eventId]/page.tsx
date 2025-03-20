@@ -74,7 +74,7 @@ const EditEventPage = () => {
   const [transportProvided, setTransportProvided] = useState(false);
   const [accommodationProvided, setAccommodationProvided] = useState(false);
   const [eventStatus, setEventStatus] = useState("draft");
-  const [localSignedUrls, setLocalSignedUrls] = useState(null);
+  const [localEventPhotos, setLocalEventPhotos] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const EditEventPage = () => {
 
   if (signedUrls)
   {
-    setLocalSignedUrls(signedUrls);
+    setLocalEventPhotos(signedUrls?.eventPhotos);
   }
   
   setTimeout(() => {
@@ -319,7 +319,7 @@ const EditEventPage = () => {
           handleSaveSection={handleSaveDetails}
         />
       )}
-      {currentPage === 1 && <EventMedia eventPhotos={Array.from(localSignedUrls?.eventPhotos) || []} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
+      {currentPage === 1 && <EventMedia eventPhotos={localEventPhotos || []} eventPoster={signedUrls?.eventPoster} eventVideo={signedUrls?.eventVideo} />}
       {currentPage === 2 && <EventRoles event={event} />}
 
       {/* Floating Navigation Button */}
