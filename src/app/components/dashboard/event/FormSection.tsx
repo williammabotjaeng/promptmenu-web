@@ -26,8 +26,7 @@ export interface Question {
 const FormSection: React.FC = () => {
   const { eventRole, setEventRole } = useStore(useEventStore);
   const [cookies, setCookie] = useCookies(['questions']);
-  const [questions, setQuestions] = useState<Question[]>(cookies['questions'] || 
-    [
+  const [questions, setQuestions] = useState<Question[]>([
     { 
       id: "question1", 
       label: "Question 1", 
@@ -91,6 +90,12 @@ const FormSection: React.FC = () => {
     setCookie('questions', updatedQuestions);
   };
 
+  useEffect(() => {
+    if (cookies?.questions) {
+      setQuestions(Array.from(cookies?.questions));
+    }
+  }, [cookies])
+
   return (
     <Box
       sx={{
@@ -111,7 +116,7 @@ const FormSection: React.FC = () => {
         Application Questions
       </Typography>
       <form style={{ width: "100%" }}>
-        {questions.map((question) => (
+        {questions?.length > 0 && questions?.map((question) => (
           <Box key={question.id} sx={{ pb: 3, width: "100%" }}>
             <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold", color: "black" }}>
               {question.label}

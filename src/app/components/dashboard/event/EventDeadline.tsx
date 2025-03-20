@@ -18,12 +18,16 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
   const [cookies, removeCookie] = useCookies(['questions']);
 
   const handleContinue = () => {
+
     setEventDetails({
       ...eventDetails,
       roles: [...eventDetails.roles, eventRole], 
     });
+
     clearEventRole();
+
     removeCookie("questions", { path: "/" });
+    
     setActiveStep(activeStep + 1);
   };
 

@@ -13,10 +13,13 @@ import { useEvent } from "@/providers/event-provider";
 import { useCompany } from "@/providers/company-provider";
 import { useCookies } from "react-cookie";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
+import CreatingEvent from "@/components/CreatingEvent";
+import { useState } from "react";
 
 const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
     const { eventDetails, clearEventDetails, clearEventMedia, eventMedia } = useStore(useEventStore);
+    const [loading, setLoading] = useState(false);
     const [cookies, removeCookie] = useCookies([
       'event_id', 'username', 
       'access', 'event_video',
@@ -94,6 +97,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
       };
       
       const handleSaveDraft = async () => {
+        setLoading(true);
         try {
           // Upload event photos
           const eventPhotosNames = await Promise.all(
@@ -139,8 +143,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
           clearEventDetails();
 
           clearEventMedia();
-
-          router.push("/dashboard");
+          setLoading(false);
+          router.push("/event-success");
         } catch (error) {
           console.error("Error during event draft save:", error);
         }
@@ -149,6 +153,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     }
+
+    if (loading) return <CreatingEvent />;
 
     return (
         <Box
