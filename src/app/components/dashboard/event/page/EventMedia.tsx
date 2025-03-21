@@ -11,8 +11,9 @@ import SaveIcon from "@mui/icons-material/Save";
 import PhotoGrid from "./PhotoGrid";
 import SingleVideo from "./SingleVideo";
 import SingleImage from "./ImageUploader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageUploader from "./ImageUploader";
+import FetchingEventMedia from "../../FetchingEventMedia";
 
 interface EventMediaProps {
   eventPhotos: string[];
@@ -43,7 +44,15 @@ export const EventMedia: React.FC<EventMediaProps> = ({
   onVideoDelete,
   onSaveEventMedia,
 }) => {
-  console.log("Event Poster:", eventPoster);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => setLoading(false), 2000);
+  }, [])
+
+  if (loading) return <FetchingEventMedia />;
+
   return (
     <Box
       sx={{

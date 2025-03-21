@@ -43,6 +43,7 @@ const EditEventPage = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   const [loading, setLoading] = useState(false);
+  const [eventMediaLoading, setEventMediaLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -56,7 +57,7 @@ const EditEventPage = () => {
     "event_video",
     "event_id",
     "username",
-    "access"
+    "access",
   ]);
 
   const handleSnackbarClose = () => {
@@ -113,13 +114,13 @@ const EditEventPage = () => {
 
   const handlePosterUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target?.files?.[0];
-    
+
     if (file) {
       console.log("Poster Upload:", file);
-      
+
       // Create blob URL for preview
       const blobUrl = URL.createObjectURL(file);
-      
+
       // Save both the file and the blob URL
       setLocalEventPoster(blobUrl);
     }
@@ -157,9 +158,7 @@ const EditEventPage = () => {
   };
 
   const handleSaveEventMedia = async () => {
-
-    if (!localEventPhotos && !localEventPoster && !localEventVideo)
-    {
+    if (!localEventPhotos && !localEventPoster && !localEventVideo) {
       setSnackbarMessage("No Event Media Uploaded!");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
@@ -205,18 +204,23 @@ const EditEventPage = () => {
       );
     }
 
+    console.log("Existing Event:", event);
+
     // Step 5: Create updated event object
     const updatedEvent = {
       ...event,
       event_id: eventID,
-      event_images: [
-        ...event.eventPhotos.filter(
-          (image) => !filePathsToDelete.includes(image)
-        ),
+      event_photos: [
+        ...(event.eventPhotos
+          ? event.eventPhotos.filter(
+              (image) => !filePathsToDelete.includes(image)
+            )
+          : []),
         ...eventImagesNames,
       ],
       event_video: eventVideoFileName,
       event_poster: eventPosterFileName,
+      status: eventStatus
     };
 
     console.log("Updated Event:", updatedEvent);
@@ -227,6 +231,7 @@ const EditEventPage = () => {
     // Step 7: Delete old files from S3
     if (filePathsToDelete?.length > 0) {
       await deleteFiles(filePathsToDelete);
+      console.log("Files deleted");
     }
 
     // Step 8: Show success message
@@ -236,26 +241,45 @@ const EditEventPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    fetchEvent()
-      .then((data) => {
-        console.log("Fetch Event Response:", data);
-        // console.log("Event Signed URLS:", signedUrls);
-        setEvent(currentEvent);
-        setEventTitle(currentEvent?.title || "");
-        setDescription(currentEvent?.description || "");
-        setLocation(currentEvent?.location || "");
-        setStartDateTime(currentEvent?.startTime || null);
-        setEndDateTime(currentEvent?.endTime || null);
-        setMealsProvided(currentEvent?.mealsProvided || false);
-        setTransportProvided(currentEvent?.transportProvided || false);
-        setAccommodationProvided(currentEvent?.accommodationProvided || false);
-      })
-      .catch((err) => console.error("Error Fetching Event:", err));
+    setLoading(true);
 
-    if (signedUrls) {
-      setLocalEventPhotos(signedUrls?.eventPhotos);
-      setLocalEventPoster(signedUrls?.eventPoster);
-      setLocalEventVideo(signedUrls?.eventVideo);
+fetchEvent()
+  .then((data: any) => {
+    console.log("Fetch Event Response:", data);
+    
+    // Use the data returned from fetchEvent directly instead of relying on the store
+    if (data) {
+      setEvent(data);
+      setEventTitle(data?.title || "");
+      setDescription(data?.description || "");
+      setLocation(data?.location || "");
+      setStartDateTime(data?.startTime || null);
+      setEndDateTime(data?.endTime || null);
+      setMealsProvided(data?.mealsProvided || false);
+      setTransportProvided(data?.transportProvided || false);
+      setAccommodationProvided(data?.accommodationProvided || false);
+    } else {
+      // Fall back to the store data if needed
+      setEvent(currentEvent);
+      setEventTitle(currentEvent?.title || "");
+      setDescription(currentEvent?.description || "");
+      setLocation(currentEvent?.location || "");
+      setStartDateTime(currentEvent?.startTime || null);
+      setEndDateTime(currentEvent?.endTime || null);
+      setMealsProvided(currentEvent?.mealsProvided || false);
+      setTransportProvided(currentEvent?.transportProvided || false);
+      setAccommodationProvided(currentEvent?.accommodationProvided || false);
+    }
+  })
+  .catch((err) => {
+    console.error("Error Fetching Event:", err);
+    setError("Failed to load event data");
+  })
+
+  if (signedUrls) {
+      setLocalEventPhotos(signedUrls?.eventPhotos || []);  
+      setLocalEventPoster(signedUrls?.eventPoster || null);
+      setLocalEventVideo(signedUrls?.eventVideo || null);
       console.log("Signed URLs:", signedUrls);
     }
 
