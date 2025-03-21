@@ -21,7 +21,7 @@ export interface CurrentRole {
   skill: string | null;
   role_payment_info: string | null;
   deadline_notes: string | null;
-  application_questions: string | null;
+  application_questions: string[] | [];
   company_id: number | null;
   event: number;
   applicants: number[] | null;

@@ -6,6 +6,8 @@ import { SearchSection } from '@/components/SearchSection';
 import { JobCard } from '@/components/JobCard';
 import PrimaryFooter from '@/components/PrimaryFooter';
 import SecondaryHeader from '@/components/SecondaryHeader';
+import { useEvent } from '@/providers/event-provider';
+import { useEffect } from 'react';
 
 const Jobs = () => {
   const [jobs, setJobs] = React.useState([
@@ -36,6 +38,8 @@ const Jobs = () => {
   const [loading, setLoading] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filteredJobs, setFilteredJobs] = React.useState(jobs);
+
+  const { getRoles } = useEvent();
   
   // Mock function to simulate loading more jobs
   const loadMoreJobs = () => {
@@ -93,13 +97,21 @@ const Jobs = () => {
   };
   
   // Update filtered jobs when jobs state changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (searchQuery) {
       handleSearch(searchQuery);
     } else {
       setFilteredJobs(jobs);
     }
   }, [jobs]);
+
+  useEffect(() => {
+    getRoles()
+    .then((data: any) => {
+      console.log("Roles Data", data);
+    })
+    .catch(err => console.log("Roles Error:", err));
+  }, []);  
 
   const MainContent = () => {
     return (

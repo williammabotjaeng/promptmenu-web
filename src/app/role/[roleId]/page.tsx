@@ -25,7 +25,7 @@ import GreyFooter from "@/components/GreyFooter";
 import DemographicsForm from "@/components/dashboard/event/page/DemographicsForm";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
@@ -117,8 +117,8 @@ const EventRoleDetail = () => {
     skill: "",
     role_payment_info: "",
     deadline_notes: "",
-    application_questions: "",
     company_id: "",
+    questions: [],
   });
 
   // State for form validation
@@ -136,8 +136,34 @@ const EventRoleDetail = () => {
   };
 
   // Load role data from the store into local state
+  // Load role data from the store into local state
   useEffect(() => {
     if (currentRole) {
+      // Handle application_questions specially to ensure it's an array
+      let questions = [];
+
+      // Check if application_questions exists and handle different formats
+      if (currentRole.application_questions) {
+        // If it's already an array, use it directly
+        if (Array.isArray(currentRole.application_questions)) {
+          questions = currentRole.application_questions;
+        }
+        // If it's a string that might be JSON, try to parse it
+        else if (typeof currentRole.application_questions === "string") {
+          try {
+            const parsed = JSON.parse(currentRole.application_questions);
+            questions = Array.isArray(parsed) ? parsed : [parsed];
+          } catch (e) {
+            // If parsing fails, treat it as a single question
+            questions = [currentRole.application_questions];
+          }
+        }
+        // For any other type, convert to array
+        else {
+          questions = [currentRole.application_questions];
+        }
+      }
+
       setRole({
         title: currentRole.title || "",
         description: currentRole.description || "",
@@ -163,10 +189,10 @@ const EventRoleDetail = () => {
         skill: currentRole.skill || "",
         role_payment_info: currentRole.role_payment_info || "",
         deadline_notes: currentRole.deadline_notes || "",
-        application_questions: currentRole.application_questions || "",
         company_id: currentRole.company_id
           ? String(currentRole.company_id)
           : "",
+        questions: questions, // Use the properly processed questions array
       });
 
       // Clear validation errors if we have valid data
@@ -209,20 +235,22 @@ const EventRoleDetail = () => {
     // Reload the page or reset form to original values
     window.location.reload();
   };
-  
+
   const handleUpdateRole = async () => {
     // Validate form
     const newErrors = {
-      title: "", location: "", openings: ""
+      title: "",
+      location: "",
+      openings: "",
     };
     if (!role.title) newErrors.title = "Title is required";
     if (!role.location) newErrors.location = "Location is required";
     if (!role.openings) newErrors.openings = "Number of openings is required";
-    
+
     if (!newErrors.title && !newErrors.location && !newErrors.openings) {
       try {
         setLoading(true);
-        
+
         // Prepare the updated role object with proper type conversions
         const updatedRole = {
           id: currentRole?.id,
@@ -245,29 +273,29 @@ const EventRoleDetail = () => {
           skill: role.skill,
           role_payment_info: role.role_payment_info,
           deadline_notes: role.deadline_notes,
-          application_questions: role.application_questions,
+          application_questions: role.questions,
           company_id: role.company_id ? Number(role.company_id) : null,
           event: currentRole?.event,
         };
-        
+
         // Update the role in the store
         setCurrentRole(updatedRole);
-        
+
         // Find the role in the current event and update it
         const eventObj = {
           roles: [role],
         };
-        
+
         console.log("Updated Role:", updatedRole);
         console.log("Updated Event:", eventObj);
-        
+
         // Call the API to update the event
         await updateEvent(eventID, eventObj);
-        
+
         setSnackbarMessage("Role updated successfully!");
         setSnackbarSeverity("success");
         setSnackbarOpen(true);
-        
+
         // Wait a moment before navigating
         setTimeout(() => {
           router.push(`/event/${eventID}`);
@@ -697,7 +725,7 @@ const EventRoleDetail = () => {
                     <TextField
                       label="Application Questions"
                       name="application_questions"
-                      value={role.application_questions || ""}
+                      value={role.questions || ""}
                       onChange={handleChange}
                       multiline
                       rows={4}
