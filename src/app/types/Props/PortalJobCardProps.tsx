@@ -12,4 +12,5 @@ export interface PortalJobCardProps {
     hardDeadline?: string; 
     minAge?: number;
     maxAge?: number;
+    role?: any;
   }

@@ -256,6 +256,7 @@ const Dashboard = () => {
                             genders={job?.genders}
                             maxAge={job?.max_age}
                             minAge={job?.min_age}
+                            role={job}
                           />
                         </Box>
                       </Fade>

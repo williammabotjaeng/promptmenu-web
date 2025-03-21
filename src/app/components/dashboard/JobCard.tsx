@@ -5,8 +5,8 @@ import { Box, Button, Typography, Chip, Paper, Stack } from "@mui/material";
 import { PortalJobCardProps } from "@/types/Props/PortalJobCardProps";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
-import { useEvent } from "@/providers/event-provider";
-import { useAuth } from "@/providers/auth-providers";
+import { useStore } from "zustand";
+import useCurrentRoleStore from "@/state/use-current-role-store";
 
 export const JobCard: React.FC<PortalJobCardProps> = ({
   title,
@@ -21,23 +21,24 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
   hardDeadline,
   minAge,
   maxAge,
-  roleId
+  roleId,
+  role
 }) => {
 
   const [cookies] = useCookies([
-    "user_role"
+    "user_role",
   ]);
-
-  const { updateEvent } = useEvent();
-  const { updateUser } = useAuth();
 
   const router = useRouter();
 
   const userRole = cookies?.user_role;
 
+  const { setCurrentRole } = useStore(useCurrentRoleStore);
+
   const jobCardHandler = () => {
     if (userRole === 'client')
     {
+      setCurrentRole(role);
       router.push(`/role/${roleId}`)
     } else {
       

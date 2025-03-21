@@ -24,11 +24,13 @@ import Header from "@/components/dashboard/Header";
 import GreyFooter from "@/components/GreyFooter";
 import DemographicsForm from "@/components/dashboard/event/page/DemographicsForm";
 import SaveIcon from "@mui/icons-material/Save";
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useRouter } from 'next/navigation';
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
 import FetchingRole from "@/components/dashboard/FetchingRole";
+import useCurrentRoleStore from "@/state/use-current-role-store";
+import { useStore } from "zustand";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -45,12 +47,26 @@ const MenuProps = {
 const experienceLevels = ["Entry Level", "Intermediate", "Senior", "Expert"];
 
 // Role type options
-const roleTypes = ["Full-time", "Part-time", "Contract", "Freelance", "Temporary"];
+const roleTypes = [
+  "Full-time",
+  "Part-time",
+  "Contract",
+  "Freelance",
+  "Temporary",
+];
 
 // Ethnicities options (add more as needed)
 const ethnicitiesOptions = [
-  "Arab", "Pakistani", "Indian", "Emirati", "Egyptian", 
-  "Filipino", "European", "African", "East Asian", "Other"
+  "Arab",
+  "Pakistani",
+  "Indian",
+  "Emirati",
+  "Egyptian",
+  "Filipino",
+  "European",
+  "African",
+  "East Asian",
+  "Other",
 ];
 
 // Gender options
@@ -58,16 +74,18 @@ const genderOptions = ["male", "female", "unisex"];
 
 const EventRoleDetail = () => {
   const [cookies, setCookie] = useCookies([
-    'event_id',
-    'access_token',
-    'referrer'
+    "event_id",
+    "access_token",
+    "referrer",
   ]);
 
   const eventID = cookies?.event_id;
   const accessToken = cookies?.access_token;
-  
+
+  const { currentRole } = useStore(useCurrentRoleStore);
+
   const router = useRouter();
-  
+
   // State for role data
   const [role, setRole] = useState({
     title: "",
@@ -97,7 +115,7 @@ const EventRoleDetail = () => {
   const [errors, setErrors] = useState({
     title: "Title is required",
     location: "Location is required",
-    openings: "Number of openings is required"
+    openings: "Number of openings is required",
   });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -107,79 +125,56 @@ const EventRoleDetail = () => {
     return dateString.split("+")[0]; // Remove timezone part
   };
 
-  // Load role data
+  // Load role data from the store into local state
   useEffect(() => {
-    const fetchRoleData = async () => {
-      try {
-        // This is where you would fetch the role data from your API
-        // For now, we'll use the sample data
-        
-        // Simulating API call with the provided role object
-        const roleDetail = {
-          applicants: null,
-          application_deadline: "2025-03-10T19:05:00+04:00",
-          application_questions: null,
-          company_id: 1,
-          created_at: "2025-03-06T21:05:41.033761+04:00",
-          daily_pay: 40,
-          deadline_notes: null,
-          description: " <a href=\"{% url opts|admin_urlname :'changelist' %}\" class=\"hover:underline text-blue-600\">{{ opts.verbose_name_plural|capfirst }}</a>",
-          ethnicities: ['Other', 'Pakistani', 'Egyptian', 'Emirati'],
-          event: 1,
-          experience_level: null,
-          genders: ['female', 'male', 'unisex'],
-          hard_deadline: "2025-03-10T19:05:00+04:00",
-          hired: null,
-          hourly_pay: 20,
-          id: 1,
-          location: "Dubai",
-          max_age: 24,
-          min_age: 20,
-          openings: 2,
-          payment_terms: null,
-          project_pay: 70,
-          rejected: null,
-          role_payment_info: null,
-          role_type: null,
-          skill: "Photography",
-          soft_deadline: "2025-03-08T19:05:00+04:00",
-          title: "Photographer",
-          updated_at: "2025-03-06T21:05:41.033761+04:00"
-        };
-        
-        setRole({
-          title: roleDetail.title || "",
-          description: roleDetail.description || "",
-          location: roleDetail.location || "",
-          daily_pay: String(roleDetail.daily_pay) || "",
-          hourly_pay: String(roleDetail.hourly_pay) || "",
-          project_pay: String(roleDetail.project_pay) || "",
-          soft_deadline: formatDateForInput(roleDetail.soft_deadline) || "",
-          hard_deadline: formatDateForInput(roleDetail.hard_deadline) || "",
-          application_deadline: formatDateForInput(roleDetail.application_deadline) || "",
-          max_age: String(roleDetail.max_age) || "",
-          min_age: String(roleDetail.min_age) || "",
-          ethnicities: roleDetail.ethnicities || [],
-          genders: roleDetail.genders || [],
-          openings: String(roleDetail.openings) || "",
-          experience_level: roleDetail.experience_level || "",
-          role_type: roleDetail.role_type || "",
-          skill: roleDetail.skill || "",
-          role_payment_info: roleDetail.role_payment_info || "",
-          deadline_notes: roleDetail.deadline_notes || "",
-          application_questions: roleDetail.application_questions || "",
-          company_id: String(roleDetail.company_id) || "",
-        });
-        
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching role data:", error);
-        setIsLoading(false);
-      }
-    };
+    if (currentRole) {
+      setRole({
+        title: currentRole.title || "",
+        description: currentRole.description || "",
+        location: currentRole.location || "",
+        daily_pay: currentRole.daily_pay ? String(currentRole.daily_pay) : "",
+        hourly_pay: currentRole.hourly_pay
+          ? String(currentRole.hourly_pay)
+          : "",
+        project_pay: currentRole.project_pay
+          ? String(currentRole.project_pay)
+          : "",
+        soft_deadline: formatDateForInput(currentRole.soft_deadline) || "",
+        hard_deadline: formatDateForInput(currentRole.hard_deadline) || "",
+        application_deadline:
+          formatDateForInput(currentRole.application_deadline) || "",
+        max_age: currentRole.max_age ? String(currentRole.max_age) : "",
+        min_age: currentRole.min_age ? String(currentRole.min_age) : "",
+        ethnicities: currentRole.ethnicities || [],
+        genders: currentRole.genders || [],
+        openings: currentRole.openings ? String(currentRole.openings) : "",
+        experience_level: currentRole.experience_level || "",
+        role_type: currentRole.role_type || "",
+        skill: currentRole.skill || "",
+        role_payment_info: currentRole.role_payment_info || "",
+        deadline_notes: currentRole.deadline_notes || "",
+        application_questions: currentRole.application_questions || "",
+        company_id: currentRole.company_id
+          ? String(currentRole.company_id)
+          : "",
+      });
 
-    fetchRoleData();
-  }, []);
+      // Clear validation errors if we have valid data
+      if (currentRole.title && currentRole.location && currentRole.openings) {
+        setErrors({
+          title: "",
+          location: "",
+          openings: "",
+        });
+      }
+
+      setIsLoading(false);
+    } else {
+      // Handle the unlikely case where currentRole doesn't exist
+      console.error("No role data found in store");
+      router.back();
+    }
+  }, [currentRole, router, eventID]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -193,10 +188,10 @@ const EventRoleDetail = () => {
     const {
       target: { value },
     } = event;
-    
+
     setRole({
       ...role,
-      [fieldName]: typeof value === 'string' ? value.split(',') : value,
+      [fieldName]: typeof value === "string" ? value.split(",") : value,
     });
   };
 
@@ -208,20 +203,22 @@ const EventRoleDetail = () => {
   const handleSubmit = async () => {
     // Validate form
     const newErrors = {
-      title: "", location: "", openings: ""
+      title: "",
+      location: "",
+      openings: "",
     };
     if (!role.title) newErrors.title = "Title is required";
     if (!role.location) newErrors.location = "Location is required";
     if (!role.openings) newErrors.openings = "Number of openings is required";
-    
+
     if (Object.keys(newErrors).length === 0) {
       try {
         // Submit form data to API
         console.log("Submitting role data:", role);
-        
+
         // Add API call here
         // await updateRole(role);
-        
+
         alert("Role updated successfully!");
         router.push(`/event/${eventID}`);
       } catch (error) {
@@ -257,32 +254,37 @@ const EventRoleDetail = () => {
           <Grid item xs={12}>
             <Card sx={{ padding: 2, borderRadius: "12px", boxShadow: 1 }}>
               <CardContent>
-                <IconButton 
-                  onClick={goBack} 
+                <IconButton
+                  onClick={goBack}
                   sx={{
-                    fontFamily: 'Inter',
-                    color: '#977342',
-                    '&:hover': {
-                      color: '#CEAB76'
-                    }
+                    fontFamily: "Inter",
+                    color: "#977342",
+                    "&:hover": {
+                      color: "#CEAB76",
+                    },
                   }}
                 >
                   <ArrowBackIosNewIcon />
-                  <Typography sx={{ fontSize: '12px', ml: 1 }}>Go Back</Typography>
+                  <Typography sx={{ fontSize: "12px", ml: 1 }}>
+                    Go Back
+                  </Typography>
                 </IconButton>
-                
-                <Typography variant="h4" sx={{ fontWeight: "bold", mb: 3, mt: 2 }}>
+
+                <Typography
+                  variant="h4"
+                  sx={{ fontWeight: "bold", mb: 3, mt: 2 }}
+                >
                   Edit Role Details
                 </Typography>
 
                 <Grid container spacing={3}>
                   {/* Basic Role Information */}
                   <Grid item xs={12}>
-                    <Typography variant="h6" sx={{ mb: 2, color: '#977342' }}>
+                    <Typography variant="h6" sx={{ mb: 2, color: "#977342" }}>
                       Basic Information
                     </Typography>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <TextField
                       label="Role Title"
@@ -296,7 +298,7 @@ const EventRoleDetail = () => {
                       helperText={errors.title}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <TextField
                       label="Skill"
@@ -307,7 +309,7 @@ const EventRoleDetail = () => {
                       fullWidth
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       label="Description"
@@ -320,7 +322,7 @@ const EventRoleDetail = () => {
                       fullWidth
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <TextField
                       label="Location"
@@ -334,7 +336,7 @@ const EventRoleDetail = () => {
                       helperText={errors.location}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <TextField
                       label="Number of Openings"
@@ -350,7 +352,7 @@ const EventRoleDetail = () => {
                       InputProps={{ inputProps: { min: 1 } }}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                       <InputLabel>Experience Level</InputLabel>
@@ -371,7 +373,7 @@ const EventRoleDetail = () => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                       <InputLabel>Role Type</InputLabel>
@@ -392,14 +394,17 @@ const EventRoleDetail = () => {
                       </Select>
                     </FormControl>
                   </Grid>
-                  
+
                   {/* Payment Information */}
                   <Grid item xs={12}>
-                    <Typography variant="h6" sx={{ mb: 2, mt: 2, color: '#977342' }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ mb: 2, mt: 2, color: "#977342" }}
+                    >
                       Payment Information
                     </Typography>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={4}>
                     <TextField
                       label="Hourly Pay"
@@ -412,7 +417,7 @@ const EventRoleDetail = () => {
                       InputProps={{ inputProps: { min: 0 } }}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={4}>
                     <TextField
                       label="Daily Pay"
@@ -425,7 +430,7 @@ const EventRoleDetail = () => {
                       InputProps={{ inputProps: { min: 0 } }}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={4}>
                     <TextField
                       label="Project Pay"
@@ -438,7 +443,7 @@ const EventRoleDetail = () => {
                       InputProps={{ inputProps: { min: 0 } }}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       label="Payment Terms & Information"
@@ -451,16 +456,21 @@ const EventRoleDetail = () => {
                       fullWidth
                     />
                   </Grid>
-                  
+
                   {/* Deadline Information */}
                   <Grid item xs={12}>
-                    <Typography variant="h6" sx={{ mb: 2, mt: 2, color: '#977342' }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ mb: 2, mt: 2, color: "#977342" }}
+                    >
                       Deadline Information
                     </Typography>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={4}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>Soft Deadline</Typography>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      Soft Deadline
+                    </Typography>
                     <TextField
                       name="soft_deadline"
                       type="datetime-local"
@@ -470,9 +480,11 @@ const EventRoleDetail = () => {
                       fullWidth
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={4}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>Hard Deadline</Typography>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      Hard Deadline
+                    </Typography>
                     <TextField
                       name="hard_deadline"
                       type="datetime-local"
@@ -482,9 +494,11 @@ const EventRoleDetail = () => {
                       fullWidth
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={4}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>Application Deadline</Typography>
+                    <Typography variant="body2" sx={{ mb: 1 }}>
+                      Application Deadline
+                    </Typography>
                     <TextField
                       name="application_deadline"
                       type="datetime-local"
@@ -494,7 +508,7 @@ const EventRoleDetail = () => {
                       fullWidth
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       label="Deadline Notes"
@@ -507,14 +521,17 @@ const EventRoleDetail = () => {
                       fullWidth
                     />
                   </Grid>
-                  
+
                   {/* Demographics */}
                   <Grid item xs={12}>
-                    <Typography variant="h6" sx={{ mb: 2, mt: 2, color: '#977342' }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ mb: 2, mt: 2, color: "#977342" }}
+                    >
                       Demographics
                     </Typography>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                       <InputLabel>Ethnicities</InputLabel>
@@ -522,10 +539,14 @@ const EventRoleDetail = () => {
                         multiple
                         name="ethnicities"
                         value={role.ethnicities || []}
-                        onChange={(e) => handleMultiSelectChange(e, "ethnicities")}
+                        onChange={(e) =>
+                          handleMultiSelectChange(e, "ethnicities")
+                        }
                         input={<OutlinedInput label="Ethnicities" />}
                         renderValue={(selected) => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                          <Box
+                            sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                          >
                             {selected.map((value) => (
                               <Chip key={value} label={value} />
                             ))}
@@ -535,14 +556,18 @@ const EventRoleDetail = () => {
                       >
                         {ethnicitiesOptions.map((ethnicity) => (
                           <MenuItem key={ethnicity} value={ethnicity}>
-                            <Checkbox checked={(role.ethnicities || []).indexOf(ethnicity) > -1} />
+                            <Checkbox
+                              checked={
+                                (role.ethnicities || []).indexOf(ethnicity) > -1
+                              }
+                            />
                             <ListItemText primary={ethnicity} />
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <FormControl fullWidth>
                       <InputLabel>Genders</InputLabel>
@@ -553,7 +578,9 @@ const EventRoleDetail = () => {
                         onChange={(e) => handleMultiSelectChange(e, "genders")}
                         input={<OutlinedInput label="Genders" />}
                         renderValue={(selected) => (
-                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                          <Box
+                            sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                          >
                             {selected.map((value) => (
                               <Chip key={value} label={value} />
                             ))}
@@ -563,14 +590,18 @@ const EventRoleDetail = () => {
                       >
                         {genderOptions.map((gender) => (
                           <MenuItem key={gender} value={gender}>
-                            <Checkbox checked={(role.genders || []).indexOf(gender) > -1} />
+                            <Checkbox
+                              checked={
+                                (role.genders || []).indexOf(gender) > -1
+                              }
+                            />
                             <ListItemText primary={gender} />
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <TextField
                       label="Minimum Age"
@@ -583,7 +614,7 @@ const EventRoleDetail = () => {
                       InputProps={{ inputProps: { min: 0 } }}
                     />
                   </Grid>
-                  
+
                   <Grid item xs={12} md={6}>
                     <TextField
                       label="Maximum Age"
@@ -596,14 +627,17 @@ const EventRoleDetail = () => {
                       InputProps={{ inputProps: { min: 0 } }}
                     />
                   </Grid>
-                  
+
                   {/* Application Questions */}
                   <Grid item xs={12}>
-                    <Typography variant="h6" sx={{ mb: 2, mt: 2, color: '#977342' }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ mb: 2, mt: 2, color: "#977342" }}
+                    >
                       Application Questions
                     </Typography>
                   </Grid>
-                  
+
                   <Grid item xs={12}>
                     <TextField
                       label="Application Questions"
@@ -618,10 +652,14 @@ const EventRoleDetail = () => {
                       helperText="These questions will be asked to applicants when they apply for this role"
                     />
                   </Grid>
-                  
+
                   {/* Hidden Fields */}
-                  <input type="hidden" name="company_id" value={role.company_id} />
-                  
+                  <input
+                    type="hidden"
+                    name="company_id"
+                    value={role.company_id}
+                  />
+
                   {/* Buttons */}
                   <Grid item xs={12}>
                     <Box
@@ -630,7 +668,7 @@ const EventRoleDetail = () => {
                         flexDirection: { xs: "column", md: "row" },
                         justifyContent: "center",
                         gap: 3,
-                        mt: 3
+                        mt: 3,
                       }}
                     >
                       <Button
