@@ -111,9 +111,18 @@ const EditEventPage = () => {
     }
   };
 
-  const handlePosterUpload = (event: React.ChangeEvent<any>) => {
-    console.log("Poster Upload:", event?.target?.value);
-    setLocalEventPoster(event?.target?.value);
+  const handlePosterUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event?.target?.files?.[0];
+    
+    if (file) {
+      console.log("Poster Upload:", file);
+      
+      // Create blob URL for preview
+      const blobUrl = URL.createObjectURL(file);
+      
+      // Save both the file and the blob URL
+      setLocalEventPoster(blobUrl);
+    }
   };
 
   const handlePosterDelete = () => {
