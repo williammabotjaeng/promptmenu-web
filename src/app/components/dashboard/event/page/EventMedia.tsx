@@ -17,6 +17,8 @@ interface EventMediaProps {
   eventPhotos: string[];
   eventPoster: string;
   eventVideo: string;
+  imagesToDelete: string[];
+  imagesToBeAdded: string[];
   onImageUpload: (newImages: string[]) => void;
   onImageDelete: (image: string) => void;
   onPosterUpload: (newImage: string) => void;
@@ -30,6 +32,8 @@ export const EventMedia: React.FC<EventMediaProps> = ({
   eventPhotos,
   eventPoster,
   eventVideo,
+  imagesToDelete,
+  imagesToBeAdded,
   onImageUpload,
   onImageDelete,
   onPosterUpload,
@@ -48,7 +52,7 @@ export const EventMedia: React.FC<EventMediaProps> = ({
         height: "100%",
         backgroundColor: "#fff",
         paddingBottom: "40px",
-        paddingX: { xs: 2, sm: 4 }, // Responsive horizontal padding
+        paddingX: { xs: 2, sm: 4 },
       }}
     >
       <Box

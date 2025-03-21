@@ -112,6 +112,7 @@ const EditEventPage = () => {
   };
 
   const handlePosterUpload = (newPoster: string) => {
+    console.log("Poster Upload:", newPoster);
     setLocalEventPoster(newPoster);
   };
 
@@ -488,6 +489,8 @@ const EditEventPage = () => {
             onVideoDelete={handleVideoDelete}
             onVideoUpload={handleVideoUpload}
             onSaveEventMedia={handleSaveEventMedia}
+            imagesToBeAdded={imagesToBeAdded}
+            imagesToDelete={imagesToDelete}
           />
         )}
         {currentPage === 2 && <EventRoles event={event} />}
