@@ -1,4 +1,4 @@
-import { Box, IconButton, Button } from '@mui/material';
+import { Box, IconButton, Button, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { styled } from '@mui/material/styles';
@@ -17,6 +17,7 @@ interface SingleImageProps {
 const ImageUploader: React.FC<SingleImageProps> = ({ image, onDeleteImage, onImageUpload }) => {
   console.log("Image Value:", image);
   return (
+    <>
     <Box
       sx={{
         display: 'flex',
@@ -95,6 +96,22 @@ const ImageUploader: React.FC<SingleImageProps> = ({ image, onDeleteImage, onIma
         </label>
       )}
     </Box>
+    {!image && (
+      <Box sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        textAlign: "center",
+        alignItems: "center",
+        mt: 2,
+        mb: 2
+      }}>
+        <Typography variant="body1">
+          You have not uploaded a poster yet.
+        </Typography>
+      </Box>
+    )}
+    </>
   );
 };
 

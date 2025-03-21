@@ -115,7 +115,7 @@ const SingleVideo: React.FC<SingleVideoProps> = ({ video, onVideoUpload, onDelet
           mt: 2,
           mb: 2
         }}>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body1">
             You have not uploaded a video yet.
           </Typography>
         </Box>
