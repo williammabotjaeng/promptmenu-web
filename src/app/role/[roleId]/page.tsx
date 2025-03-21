@@ -25,6 +25,7 @@ import GreyFooter from "@/components/GreyFooter";
 import DemographicsForm from "@/components/dashboard/event/page/DemographicsForm";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
@@ -734,7 +735,7 @@ const EventRoleDetail = () => {
                           borderColor: "#977342",
                           "&:hover": {
                             borderColor: "#CEAB76",
-                            color: "#CEAB76",
+                            color: "#fff",
                           },
                         }}
                         onClick={handleDiscardChanges}
@@ -756,6 +757,23 @@ const EventRoleDetail = () => {
                       >
                         Save Role
                         <SaveIcon sx={{ marginLeft: "8px" }} />
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        sx={{
+                          px: 4,
+                          py: 1.5,
+                          color: "#fff",
+                          backgroundColor: "#982d28",
+                          "&:hover": {
+                            backgroundColor: "#fff",
+                            color: "#d44a3b",
+                          },
+                        }}
+                        onClick={handleDiscardChanges}
+                      >
+                        Delete Role
+                        <DeleteForeverIcon sx={{ marginLeft: "8px" }} />
                       </Button>
                     </Box>
                   </Grid>
