@@ -31,6 +31,7 @@ import { UNSTABLE_REVALIDATE_RENAME_ERROR } from "next/dist/lib/constants";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { useTalentProfile } from "@/providers/talent-profile-provider";
 import UpdatingEventMedia from "@/components/dashboard/UpdatingEventMedia";
+import DeleteEventDialog from "@/components/dashboard/event/page/DeleteEventDialog";
 
 const EditEventPage = () => {
   const router = useRouter();
@@ -102,6 +103,21 @@ const EditEventPage = () => {
   const [images, setImages] = useState<string[]>([]);
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const handleOpenDeleteDialog = () => {
+    setDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+  };
+
+  const handleConfirmDelete = () => {
+    // Handle deletion logic here
+    // deleteEvent(eventId);
+    setDeleteDialogOpen(false);
+  };
 
   const handleImageUpload = (newImages: string[]) => {
     console.log("Image upload:", newImages);
@@ -156,6 +172,18 @@ const EditEventPage = () => {
   const extractFilePath = (signedUrl: string) => {
     const parsedUrl = new URL(signedUrl);
     return parsedUrl.pathname.substring(1);
+  };
+
+  const handleSaveEvent = () => {
+    setSnackbarMessage("Event Saved Successfully.");
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
+  };
+
+  const DeleteEvent = () => {
+    // setSnackbarMessage("Event Deleted Successfully");
+    // setSnackbarSeverity("success");
+    // setSnackbarOpen(true);
   };
 
   const handleSaveEventMedia = async () => {
@@ -222,7 +250,7 @@ const EditEventPage = () => {
       ],
       event_video: eventVideoFileName,
       event_poster: eventPosterFileName,
-      status: eventStatus
+      status: eventStatus,
     };
 
     console.log("Updated Event:", updatedEvent);
@@ -247,41 +275,43 @@ const EditEventPage = () => {
     setLoading(true);
     setLoading(true);
 
-fetchEvent()
-  .then((data: any) => {
-    console.log("Fetch Event Response:", data);
-    
-    // Use the data returned from fetchEvent directly instead of relying on the store
-    if (data) {
-      setEvent(data);
-      setEventTitle(data?.title || "");
-      setDescription(data?.description || "");
-      setLocation(data?.location || "");
-      setStartDateTime(data?.startTime || null);
-      setEndDateTime(data?.endTime || null);
-      setMealsProvided(data?.mealsProvided || false);
-      setTransportProvided(data?.transportProvided || false);
-      setAccommodationProvided(data?.accommodationProvided || false);
-    } else {
-      // Fall back to the store data if needed
-      setEvent(currentEvent);
-      setEventTitle(currentEvent?.title || "");
-      setDescription(currentEvent?.description || "");
-      setLocation(currentEvent?.location || "");
-      setStartDateTime(currentEvent?.startTime || null);
-      setEndDateTime(currentEvent?.endTime || null);
-      setMealsProvided(currentEvent?.mealsProvided || false);
-      setTransportProvided(currentEvent?.transportProvided || false);
-      setAccommodationProvided(currentEvent?.accommodationProvided || false);
-    }
-  })
-  .catch((err) => {
-    console.error("Error Fetching Event:", err);
-    setError("Failed to load event data");
-  })
+    fetchEvent()
+      .then((data: any) => {
+        console.log("Fetch Event Response:", data);
 
-  if (signedUrls) {
-      setLocalEventPhotos(signedUrls?.eventPhotos || []);  
+        // Use the data returned from fetchEvent directly instead of relying on the store
+        if (data) {
+          setEvent(data);
+          setEventTitle(data?.title || "");
+          setDescription(data?.description || "");
+          setLocation(data?.location || "");
+          setStartDateTime(data?.startTime || null);
+          setEndDateTime(data?.endTime || null);
+          setMealsProvided(data?.mealsProvided || false);
+          setTransportProvided(data?.transportProvided || false);
+          setAccommodationProvided(data?.accommodationProvided || false);
+        } else {
+          // Fall back to the store data if needed
+          setEvent(currentEvent);
+          setEventTitle(currentEvent?.title || "");
+          setDescription(currentEvent?.description || "");
+          setLocation(currentEvent?.location || "");
+          setStartDateTime(currentEvent?.startTime || null);
+          setEndDateTime(currentEvent?.endTime || null);
+          setMealsProvided(currentEvent?.mealsProvided || false);
+          setTransportProvided(currentEvent?.transportProvided || false);
+          setAccommodationProvided(
+            currentEvent?.accommodationProvided || false
+          );
+        }
+      })
+      .catch((err) => {
+        console.error("Error Fetching Event:", err);
+        setError("Failed to load event data");
+      });
+
+    if (signedUrls) {
+      setLocalEventPhotos(signedUrls?.eventPhotos || []);
       setLocalEventPoster(signedUrls?.eventPoster || null);
       setLocalEventVideo(signedUrls?.eventVideo || null);
       console.log("Signed URLs:", signedUrls);
@@ -405,6 +435,7 @@ fetchEvent()
                   backgroundColor: "#111",
                 },
               }}
+              onClick={handleSaveEvent}
             >
               <Typography
                 sx={{
@@ -413,28 +444,6 @@ fetchEvent()
                 }}
               >
                 Save Event
-              </Typography>
-            </Button>
-
-            {/* Change Status Button */}
-            <Button
-              variant="contained"
-              startIcon={<SwapHorizIcon />}
-              sx={{
-                backgroundColor: "#808000",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#909000",
-                },
-              }}
-            >
-              <Typography
-                sx={{
-                  display: { xs: "none", sm: "flex", md: "flex" },
-                  fontSize: { xs: null, sm: "10px", md: "14px" },
-                }}
-              >
-                Change Status
               </Typography>
             </Button>
 
@@ -449,6 +458,7 @@ fetchEvent()
                   backgroundColor: "#d44a3b",
                 },
               }}
+              onClick={DeleteEvent}
             >
               <Typography
                 sx={{
@@ -586,6 +596,12 @@ fetchEvent()
             {snackbarMessage}
           </Alert>
         </Snackbar>
+        <DeleteEventDialog
+          open={deleteDialogOpen}
+          eventTitle={eventTitle}
+          onClose={handleCloseDeleteDialog}
+          onConfirm={handleConfirmDelete}
+        />
       </Box>
     </>
   );

@@ -10,6 +10,8 @@ import { useCookies } from "react-cookie";
 import { useEvent } from "@/providers/event-provider";
 import useCurrentEventStore from "@/state/use-current-event-store";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import AddingRole from "../../AddingRole";
 
 const EventDeadline: React.FC<PostEventStepProps> = ({
   activeStep,
@@ -22,22 +24,31 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
 
   const { updateEvent } = useEvent();
 
+  const router = useRouter();
+
+  const [loading, setLoading] = useState(false);
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const [cookies, removeCookie] = useCookies(['questions', 'event_id']);
+  const [cookies, removeCookie] = useCookies(['questions', 'event_id', 'current_event']);
 
   const eventID = cookies?.event_id;
 
+  const thisEvent = cookies?.current_event;
+
   const handleSaveRole = async () => {
+    
+    setLoading(true);
+
+    console.log("Current Event:", eventRole);
 
     const updatedEvent = {
       ...currentEvent,
-      roles: [...currentEvent.roles, eventRole], 
+      roles: [eventRole], 
     };
 
-    console.log("Current Event:", currentEvent);
     console.log("Updated Event:", updatedEvent);
 
     clearEventRole();
@@ -45,6 +56,13 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
     removeCookie("questions", { path: "/" });
     
     await updateEvent(eventID, updatedEvent);
+
+    setLoading(false);
+    setSnackbarMessage("Event Added Successfully!");
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
+
+    router.push(`/event/${eventID}`);
   };
 
   const handleBack = () => {
@@ -54,6 +72,8 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
+
+  if (loading) return <AddingRole />;
 
   return (
     <Box
