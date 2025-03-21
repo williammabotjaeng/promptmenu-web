@@ -201,8 +201,10 @@ const EditEventPage = () => {
     // setSnackbarOpen(true);
   };
 
-  const approveEvent = () => {
-    setPublishDialogOpen(true);
+  const approveEvent = async () => {
+    
+    await setPublishDialogOpen(true);
+    
   }
 
   const handleSaveEventMedia = async () => {
@@ -289,6 +291,17 @@ const EditEventPage = () => {
     setSnackbarMessage("Event media updated successfully");
     setSnackbarOpen(true);
   };
+
+  const handleConfirmPublishToggle = async () => {
+    const updatedEvent = {
+      status: "live"
+    }
+    await updateEvent(eventID, updatedEvent);
+
+    setSnackbarMessage("Event Published Successfully");
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -395,10 +408,6 @@ const EditEventPage = () => {
   }
 
   if (eventMediaLoading) return <UpdatingEventMedia />;
-
-  function handleConfirmPublishToggle(): void {
-    throw new Error("Function not implemented.");
-  }
 
   return (
     <>
