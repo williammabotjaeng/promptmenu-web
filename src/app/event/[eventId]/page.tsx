@@ -32,6 +32,7 @@ import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { useTalentProfile } from "@/providers/talent-profile-provider";
 import UpdatingEventMedia from "@/components/dashboard/UpdatingEventMedia";
 import DeleteEventDialog from "@/components/dashboard/event/page/DeleteEventDialog";
+import PublishEventDialog from "@/components/dashboard/event/page/PublishEventDialog";
 
 const EditEventPage = () => {
   const router = useRouter();
@@ -104,6 +105,19 @@ const EditEventPage = () => {
   const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
   const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
+  const [eventIsPublished, setEventIsPublished] = useState(
+    eventStatus === "live"
+  );
+
+  const handleOpenPublishDialog = () => {
+    setPublishDialogOpen(true);
+  };
+
+  const handleClosePublishDialog = () => {
+    setPublishDialogOpen(false);
+  };
 
   const handleOpenDeleteDialog = () => {
     setDeleteDialogOpen(true);
@@ -181,10 +195,15 @@ const EditEventPage = () => {
   };
 
   const DeleteEvent = () => {
+    setDeleteDialogOpen(true);
     // setSnackbarMessage("Event Deleted Successfully");
     // setSnackbarSeverity("success");
     // setSnackbarOpen(true);
   };
+
+  const approveEvent = () => {
+    setPublishDialogOpen(true);
+  }
 
   const handleSaveEventMedia = async () => {
     setEventMediaLoading(true);
@@ -377,6 +396,10 @@ const EditEventPage = () => {
 
   if (eventMediaLoading) return <UpdatingEventMedia />;
 
+  function handleConfirmPublishToggle(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <>
       <Box
@@ -480,6 +503,7 @@ const EditEventPage = () => {
                   backgroundColor: "#1d6037",
                 },
               }}
+              onClick={approveEvent}
             >
               <Typography
                 sx={{
@@ -601,6 +625,13 @@ const EditEventPage = () => {
           eventTitle={eventTitle}
           onClose={handleCloseDeleteDialog}
           onConfirm={handleConfirmDelete}
+        />
+        <PublishEventDialog
+          open={publishDialogOpen}
+          eventTitle={eventTitle}
+          isCurrentlyPublished={eventIsPublished}
+          onClose={handleClosePublishDialog}
+          onConfirm={handleConfirmPublishToggle}
         />
       </Box>
     </>
