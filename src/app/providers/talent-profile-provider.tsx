@@ -14,7 +14,7 @@ interface TalentProfileContextType {
   talentProfile: TalentProfileData | any | null;
   signedUrls: Record<string, string> | null;
   fetchTalentProfile: () => Promise<void>;
-  fetchTalentProfiles: ({ skill, location, experience }: { skill: any; location: any; experience: any; }) => Promise<void>;
+  fetchTalentProfiles: () => Promise<void>;
   deleteFiles: (filePaths: string[]) => Promise<void>;
   updateTalentProfile: (
     profileId: string,
@@ -104,15 +104,11 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchTalentProfilesMutation = useMutation({
     mutationKey: ["fetch_talent_profiles"],
-    mutationFn: async (params: { skill?: string; location?: string; experience?: string } = {}) => {
+    mutationFn: async () => {
       // Build query parameters
       const queryParams = new URLSearchParams();
       
-      if (params.skill) queryParams.append('skill', params.skill);
-      if (params.location) queryParams.append('location', params.location);
-      if (params.experience) queryParams.append('experience', params.experience);
-      
-      const url = `/api/talent-profiles/${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+      const url = `/portal/talent-profiles/`;
       
       const response = await csrfRestCall(
         url,
@@ -163,10 +159,8 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     await fetchTalentProfileQuery.refetch();
   };
 
-  const fetchTalentProfiles = async ({
-    skill, location, experience
-  }) => {
-    await fetchTalentProfilesMutation.mutateAsync({skill, location, experience});
+  const fetchTalentProfiles = async () => {
+    await fetchTalentProfilesMutation.mutateAsync();
   };
 
   const updateTalentProfile = async (

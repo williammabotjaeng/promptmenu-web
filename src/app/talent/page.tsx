@@ -7,6 +7,8 @@ import FilterForm from '@/components/FilterForm';
 import Pagination from '@/components/Pagination';
 import GreyFooter from '@/components/GreyFooter';
 import { Box } from '@mui/material';
+import { useTalentProfile } from '@/providers/talent-profile-provider';
+import { useEffect } from 'react';
 
 const Talent: React.FC = () => {
   const profiles = [
@@ -33,6 +35,16 @@ const Talent: React.FC = () => {
       imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/ec0426e44f2a3052c334fe65d200d6d4e116fb261bf898b202eadb67d91bdf5d?apiKey=7fae980a988640eea8add1e49a5d542e&",
     }
   ];
+
+  const { fetchTalentProfiles } = useTalentProfile();
+
+  useEffect(() => {
+    fetchTalentProfiles()
+    .then((data: any) => {
+      console.log("Talent Data:", data);
+    })
+    .catch(err => console.log("Talent Data Error:", err));
+  }, []);
 
   return (
     <Box
