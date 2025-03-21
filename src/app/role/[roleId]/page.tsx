@@ -31,6 +31,7 @@ import { useState, useEffect } from "react";
 import FetchingRole from "@/components/dashboard/FetchingRole";
 import useCurrentRoleStore from "@/state/use-current-role-store";
 import { useStore } from "zustand";
+import { useEvent } from "@/providers/event-provider";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -79,10 +80,18 @@ const EventRoleDetail = () => {
     "referrer",
   ]);
 
+  const [loading, setLoading] = useState(false);
+
   const eventID = cookies?.event_id;
   const accessToken = cookies?.access_token;
 
-  const { currentRole } = useStore(useCurrentRoleStore);
+  const { currentRole, setCurrentRole } = useStore(useCurrentRoleStore);
+
+  const { updateEvent } = useEvent();
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
   const router = useRouter();
 
@@ -199,31 +208,76 @@ const EventRoleDetail = () => {
     // Reload the page or reset form to original values
     window.location.reload();
   };
-
-  const handleSubmit = async () => {
+  
+  const handleUpdateRole = async () => {
     // Validate form
     const newErrors = {
-      title: "",
-      location: "",
-      openings: "",
+      title: "", location: "", openings: ""
     };
     if (!role.title) newErrors.title = "Title is required";
     if (!role.location) newErrors.location = "Location is required";
     if (!role.openings) newErrors.openings = "Number of openings is required";
-
-    if (Object.keys(newErrors).length === 0) {
+    
+    if (!newErrors.title && !newErrors.location && !newErrors.openings) {
       try {
-        // Submit form data to API
-        console.log("Submitting role data:", role);
-
-        // Add API call here
-        // await updateRole(role);
-
-        alert("Role updated successfully!");
-        router.push(`/event/${eventID}`);
+        setLoading(true);
+        
+        // Prepare the updated role object with proper type conversions
+        const updatedRole = {
+          id: currentRole?.id,
+          title: role.title,
+          description: role.description,
+          location: role.location,
+          daily_pay: role.daily_pay ? Number(role.daily_pay) : null,
+          hourly_pay: role.hourly_pay ? Number(role.hourly_pay) : null,
+          project_pay: role.project_pay ? Number(role.project_pay) : null,
+          soft_deadline: role.soft_deadline,
+          hard_deadline: role.hard_deadline,
+          application_deadline: role.application_deadline,
+          max_age: role.max_age ? Number(role.max_age) : null,
+          min_age: role.min_age ? Number(role.min_age) : null,
+          ethnicities: role.ethnicities,
+          genders: role.genders,
+          openings: Number(role.openings),
+          experience_level: role.experience_level,
+          role_type: role.role_type,
+          skill: role.skill,
+          role_payment_info: role.role_payment_info,
+          deadline_notes: role.deadline_notes,
+          application_questions: role.application_questions,
+          company_id: role.company_id ? Number(role.company_id) : null,
+          event: currentRole?.event,
+        };
+        
+        // Update the role in the store
+        setCurrentRole(updatedRole);
+        
+        // Find the role in the current event and update it
+        const eventObj = {
+          roles: [role],
+        };
+        
+        console.log("Updated Role:", updatedRole);
+        console.log("Updated Event:", eventObj);
+        
+        // Call the API to update the event
+        await updateEvent(eventID, eventObj);
+        
+        setSnackbarMessage("Role updated successfully!");
+        setSnackbarSeverity("success");
+        setSnackbarOpen(true);
+        
+        // Wait a moment before navigating
+        setTimeout(() => {
+          router.push(`/event/${eventID}`);
+        }, 1500);
       } catch (error) {
         console.error("Error updating role:", error);
-        alert("Failed to update role. Please try again.");
+        setSnackbarMessage("Failed to update role. Please try again.");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+      } finally {
+        setLoading(false);
       }
     } else {
       setErrors(newErrors);
@@ -698,7 +752,7 @@ const EventRoleDetail = () => {
                             backgroundColor: "#CEAB76",
                           },
                         }}
-                        onClick={handleSubmit}
+                        onClick={handleUpdateRole}
                       >
                         Save Role
                         <SaveIcon sx={{ marginLeft: "8px" }} />
