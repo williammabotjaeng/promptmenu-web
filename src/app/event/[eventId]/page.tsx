@@ -139,6 +139,8 @@ const EditEventPage = () => {
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       setDeleteDialogOpen(false);
+
+      router.push("/events");
     } catch (error) {
       // Error case
       setSnackbarMessage("Failed to delete event. Please try again.");

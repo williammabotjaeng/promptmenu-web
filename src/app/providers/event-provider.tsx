@@ -242,7 +242,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     queryFn: async () => {
       console.log("Event ID Provider:", eventIDGlobal);
       const response = await restCall(
-        `/dashboard/events/${eventIDGlobal}/delete`,
+        `/dashboard/events/${eventIDGlobal}/delete/`,
         "DELETE",
         {},
         accessToken
