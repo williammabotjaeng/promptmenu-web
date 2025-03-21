@@ -18,6 +18,7 @@ interface EventContextType {
   event: EventData | null;
   signedUrls: Record<string, string> | null;
   fetchEvent: () => Promise<void>;
+  deleteEvent: () => Promise<void>;
   getRole: (roleId: string) => Promise<void>;
   getRoles: () => Promise<void>;
   getEventRoles: (eventId) => Promise<void>;
@@ -236,6 +237,22 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+  const deleteEventMutation = useQuery({
+    queryKey: ["delete_event"],
+    queryFn: async () => {
+      console.log("Event ID Provider:", eventIDGlobal);
+      const response = await restCall(
+        `/dashboard/events/${eventIDGlobal}/delete`,
+        "DELETE",
+        {},
+        accessToken
+      );
+      console.log("Event Response", response);
+      return response;
+    },
+    enabled: false,
+  });
+
   const getUserEvents = async () => {
     return await userEventsMutation?.mutateAsync();
   };
@@ -254,6 +271,10 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getEventRoles = async (eventId: string) => {
     return await getEventRolesMutation?.mutateAsync(eventId);
+  };
+
+  const deleteEvent = async () => {
+    await deleteEventMutation?.refetch();
   };
 
   const fetchEvent = async () => {
@@ -320,6 +341,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
         fetchEvent,
         createEvent,
         updateEvent,
+        deleteEvent,
         getRole,
         getRoles,
         getEventRoles,

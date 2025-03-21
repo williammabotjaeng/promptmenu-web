@@ -50,7 +50,7 @@ const EditEventPage = () => {
 
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { fetchEvent, updateEvent, signedUrls, clearSignedUrls } = useEvent();
+  const { fetchEvent, updateEvent, signedUrls, clearSignedUrls, deleteEvent } = useEvent();
 
   const { deleteFiles } = useTalentProfile();
 
@@ -130,10 +130,23 @@ const EditEventPage = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleConfirmDelete = () => {
-    // Handle deletion logic here
-    // deleteEvent(eventId);
-    setDeleteDialogOpen(false);
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteEvent();
+      
+      // Success case
+      setSnackbarMessage("Event Deleted Successfully");
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      setDeleteDialogOpen(false);
+    } catch (error) {
+      // Error case
+      setSnackbarMessage("Failed to delete event. Please try again.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      
+      console.error("Error deleting event:", error);
+    }
   };
 
   const handleImageUpload = (newImages: string[]) => {
@@ -212,116 +225,142 @@ const EditEventPage = () => {
 
   const handleSaveEventMedia = async () => {
     setEventMediaLoading(true);
-    if (!localEventPhotos && !localEventPoster && !localEventVideo) {
-      setSnackbarMessage("No Event Media Uploaded!");
+    
+    try {
+      // Check if media exists to upload
+      if (!localEventPhotos && !localEventPoster && !localEventVideo) {
+        setSnackbarMessage("No Event Media Uploaded!");
+        setSnackbarSeverity("error");
+        setSnackbarOpen(true);
+        setEventMediaLoading(false);
+        return; // Exit early
+      }
+      
+      // Step 1: Prepare files to delete (images, video, poster)
+      const filePathsToDelete = extractFilePaths(imagesToDelete);
+      
+      // Add old video and poster to delete list if they are being replaced
+      if (localEventVideo !== signedUrls?.eventVideo && event.eventVideo) {
+        filePathsToDelete.push(event.eventVideo);
+      }
+      
+      if (localEventPoster !== signedUrls?.eventPoster && event.eventPoster) {
+        filePathsToDelete.push(event.eventPoster);
+      }
+      
+      // Step 2: Upload new event images
+      const eventImagesNames = await Promise.all(
+        (imagesToBeAdded || []).map((image, index) =>
+          uploadFileToS3(image, `event_image_${index}`, eventID, accessToken)
+        )
+      );
+      
+      // Step 3: Upload new event video if exists
+      let eventVideoFileName = event.eventVideo;
+      if (localEventVideo !== signedUrls?.eventVideo) {
+        eventVideoFileName = await uploadFileToS3(
+          localEventVideo,
+          "event_video",
+          eventID,
+          accessToken
+        );
+      }
+      
+      // Step 4: Upload new event poster if exists
+      let eventPosterFileName = event.eventPoster;
+      if (localEventPoster !== signedUrls?.event_poster) {
+        eventPosterFileName = await uploadFileToS3(
+          localEventPoster,
+          "event_poster",
+          eventID,
+          accessToken
+        );
+      }
+      
+      console.log("Existing Event:", event);
+      
+      // Step 5: Create updated event object
+      const updatedEvent = {
+        ...event,
+        event_id: eventID,
+        event_photos: [
+          ...(event.eventPhotos
+            ? event.eventPhotos.filter(
+                (image) => !filePathsToDelete.includes(image)
+              )
+            : []),
+          ...eventImagesNames,
+        ],
+        event_video: eventVideoFileName,
+        event_poster: eventPosterFileName,
+        status: eventStatus,
+      };
+      
+      console.log("Updated Event:", updatedEvent);
+      
+      // Step 6: Update event in database
+      await updateEvent(eventID, updatedEvent);
+      
+      // Step 7: Delete old files from S3
+      if (filePathsToDelete?.length > 0) {
+        await deleteFiles(filePathsToDelete);
+        console.log("Files deleted");
+      }
+      
+      // Step 8: Show success message
+      setSnackbarMessage("Event media updated successfully");
+      setSnackbarSeverity("success"); // Added missing severity
+      setSnackbarOpen(true);
+    } catch (error) {
+      // Handle errors
+      console.error("Error updating event media:", error);
+      setSnackbarMessage("Failed to update event media. Please try again.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
+    } finally {
+      // Always turn off loading state
+      setEventMediaLoading(false);
     }
-    // Step 1: Prepare files to delete (images, video, poster)
-    const filePathsToDelete = extractFilePaths(imagesToDelete);
-
-    // Add old video and poster to delete list if they are being replaced
-    if (localEventVideo !== signedUrls?.eventVideo && event.eventVideo) {
-      filePathsToDelete.push(event.eventVideo);
-    }
-
-    if (localEventPoster !== signedUrls?.eventPoster && event.eventPoster) {
-      filePathsToDelete.push(event.eventPoster);
-    }
-
-    // Step 2: Upload new event images
-    const eventImagesNames = await Promise.all(
-      (imagesToBeAdded || []).map((image, index) =>
-        uploadFileToS3(image, `event_image_${index}`, eventID, accessToken)
-      )
-    );
-
-    // Step 3: Upload new event video if exists
-    let eventVideoFileName = event.eventVideo;
-    if (localEventVideo !== signedUrls?.eventVideo) {
-      eventVideoFileName = await uploadFileToS3(
-        localEventVideo,
-        "event_video",
-        eventID,
-        accessToken
-      );
-    }
-
-    // Step 4: Upload new event poster if exists
-    let eventPosterFileName = event.eventPoster;
-    if (localEventPoster !== signedUrls?.event_poster) {
-      eventPosterFileName = await uploadFileToS3(
-        localEventPoster,
-        "event_poster",
-        eventID,
-        accessToken
-      );
-    }
-
-    console.log("Existing Event:", event);
-
-    // Step 5: Create updated event object
-    const updatedEvent = {
-      ...event,
-      event_id: eventID,
-      event_photos: [
-        ...(event.eventPhotos
-          ? event.eventPhotos.filter(
-              (image) => !filePathsToDelete.includes(image)
-            )
-          : []),
-        ...eventImagesNames,
-      ],
-      event_video: eventVideoFileName,
-      event_poster: eventPosterFileName,
-      status: eventStatus,
-    };
-
-    console.log("Updated Event:", updatedEvent);
-
-    // Step 6: Update event in database
-    await updateEvent(eventID, updatedEvent);
-
-    // Step 7: Delete old files from S3
-    if (filePathsToDelete?.length > 0) {
-      await deleteFiles(filePathsToDelete);
-      console.log("Files deleted");
-    }
-
-    setEventMediaLoading(false);
-
-    // Step 8: Show success message
-    setSnackbarMessage("Event media updated successfully");
-    setSnackbarOpen(true);
   };
   
   const handleConfirmPublishToggle = async () => {
-    // Determine the new status based on current status
-    const newStatus = currentEventStatus === 'live' ? 'draft' : 'live';
-    
-    // Update local state
-    setEventStatus(newStatus);
-    
-    // Prepare the update payload
-    const updatedEvent = {
-      status: newStatus
-    };
-    
-    // Update the event in the database
-    await updateEvent(eventID, updatedEvent);
-    
-    // Set the appropriate success message
-    const successMessage = newStatus === 'live' 
-      ? "Event Published Successfully" 
-      : "Event Unpublished Successfully";
-    
-    // Show the success notification
-    setSnackbarMessage(successMessage);
-    setSnackbarSeverity("success");
-    setSnackbarOpen(true);
-    
-    // Close the dialog
-    setPublishDialogOpen(false);
+    try {
+      const newStatus = currentEventStatus === 'live' ? 'draft' : 'live';
+      
+      setEventStatus(newStatus);
+      setCookie("event_status", newStatus);
+      
+      const updatedEvent = {
+        status: newStatus
+      };
+      
+      await updateEvent(eventID, updatedEvent);
+      
+      const successMessage = newStatus === 'live'
+        ? "Event Published Successfully"
+        : "Event Unpublished Successfully";
+      
+      setSnackbarMessage(successMessage);
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      
+      setPublishDialogOpen(false);
+    } catch (error) {
+      // Handle the error case
+      const errorMessage = currentEventStatus === 'live'
+        ? "Failed to unpublish event. Please try again."
+        : "Failed to publish event. Please try again.";
+      
+      // Revert the local state since the API call failed
+      setEventStatus(currentEventStatus);
+      setCookie("event_status", currentEventStatus);
+      
+      setSnackbarMessage(errorMessage);
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      
+      console.error("Error toggling event status:", error);
+    }
   };
 
   useEffect(() => {
@@ -659,7 +698,7 @@ const EditEventPage = () => {
         <PublishEventDialog
           open={publishDialogOpen}
           eventTitle={eventTitle}
-          isCurrentlyPublished={eventIsPublished}
+          isCurrentlyPublished={currentEventStatus === "live" ? true : false}
           onClose={handleClosePublishDialog}
           onConfirm={handleConfirmPublishToggle}
         />
