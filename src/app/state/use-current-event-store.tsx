@@ -14,6 +14,7 @@ export interface CurrentEvent {
     transportProvided: boolean;
     eventStatus: string;
     eventPhotos: string[];
+    roles: number[];
     eventPoster: string;
     eventVideo: string;
     createdAt: string;

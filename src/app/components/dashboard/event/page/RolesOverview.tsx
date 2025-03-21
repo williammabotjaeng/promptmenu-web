@@ -10,6 +10,7 @@ import { useState } from "react";
 import useCurrentEventStore from "@/state/use-current-event-store";
 import { useEvent } from "@/providers/event-provider";
 import useLocalRolesStore from "@/state/use-local-roles-store";
+import FetchingRoles from "../../FetchingRoles";
 
 interface RolesOverviewProps {
   event: any;
@@ -18,6 +19,8 @@ interface RolesOverviewProps {
 const RolesOverview: React.FC<RolesOverviewProps> = ({ event }) => {
 
   const [localRoles, setLocalRoles] = useState([]);
+
+  const [loading, setLoading] = useState(false);
 
   const { eventDetails } = useStore(useEventStore);
 
@@ -49,6 +52,7 @@ const RolesOverview: React.FC<RolesOverviewProps> = ({ event }) => {
   }
 
   React.useEffect(() => {
+    setLoading(true);
     console.log("Current Event Store:", currentEvent);
     console.log("Event Prop:", event);
     getEventRoles(eventID).then((data: any) => {
@@ -56,7 +60,10 @@ const RolesOverview: React.FC<RolesOverviewProps> = ({ event }) => {
       setRoles(data);
       setLocalRoles(data);
     });
+    setTimeout(() => setLoading(false), 1000);
   }, [cookies, currentEvent, event]);
+
+  if (loading) return <FetchingRoles />;
 
   return (
     <Box

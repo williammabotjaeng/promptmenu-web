@@ -48,7 +48,8 @@ const EventCard = ({ event }) => {
         accommodationProvided: event?.accomodation_provided,
         transportProvided: event?.transport_provided,
         startTime: event?.start_time,
-        endTime: event?.end_time
+        endTime: event?.end_time,
+        roles: event?.roles
       });
       console.log("Event in Cookies:", cookies?.current_event);
       setCookie('current_event', JSON.stringify(event));

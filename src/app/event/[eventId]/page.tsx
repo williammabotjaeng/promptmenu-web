@@ -30,6 +30,7 @@ import FetchingEvent from "@/components/dashboard/FetchingEvent";
 import { UNSTABLE_REVALIDATE_RENAME_ERROR } from "next/dist/lib/constants";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { useTalentProfile } from "@/providers/talent-profile-provider";
+import UpdatingEventMedia from "@/components/dashboard/UpdatingEventMedia";
 
 const EditEventPage = () => {
   const router = useRouter();
@@ -158,6 +159,7 @@ const EditEventPage = () => {
   };
 
   const handleSaveEventMedia = async () => {
+    setEventMediaLoading(true);
     if (!localEventPhotos && !localEventPoster && !localEventVideo) {
       setSnackbarMessage("No Event Media Uploaded!");
       setSnackbarSeverity("error");
@@ -233,6 +235,8 @@ const EditEventPage = () => {
       await deleteFiles(filePathsToDelete);
       console.log("Files deleted");
     }
+
+    setEventMediaLoading(false);
 
     // Step 8: Show success message
     setSnackbarMessage("Event media updated successfully");
@@ -340,6 +344,8 @@ fetchEvent()
       </Box>
     );
   }
+
+  if (eventMediaLoading) return <UpdatingEventMedia />;
 
   return (
     <>
