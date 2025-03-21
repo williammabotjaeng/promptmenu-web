@@ -24,7 +24,8 @@ const EventCard = ({ event }) => {
   const [cookies, setCookie] = useCookies([
     'user_role',
     'current_event',
-    'event_id'
+    'event_id',
+    'event_status'
   ]);
 
   const userRole = cookies?.user_role;
@@ -42,6 +43,7 @@ const EventCard = ({ event }) => {
     {
       console.log("Event Id:", eventId);
       setCookie("event_id", eventId);
+      
       setCurrentEvent({
         ...event,
         mealsProvided: event?.meals_provided,
@@ -53,6 +55,7 @@ const EventCard = ({ event }) => {
       });
       console.log("Event in Cookies:", cookies?.current_event);
       setCookie('current_event', JSON.stringify(event));
+      setCookie('event_status', cookies?.current_event?.event_status);
       router.push(`/event/${eventId}`);
     } else {
       // TODO: Handle enquiries

@@ -61,6 +61,7 @@ const EditEventPage = () => {
     "event_id",
     "username",
     "access",
+    "event_status"
   ]);
 
   const handleSnackbarClose = () => {
@@ -72,6 +73,8 @@ const EditEventPage = () => {
   const userName = cookies?.username;
 
   const accessToken = cookies?.access;
+
+  const currentEventStatus = cookies?.event_status;
 
   const handleDown = () => {
     if (currentPage >= 2) {
@@ -291,22 +294,35 @@ const EditEventPage = () => {
     setSnackbarMessage("Event media updated successfully");
     setSnackbarOpen(true);
   };
-
+  
   const handleConfirmPublishToggle = async () => {
-
-    setEventStatus("live");
-
+    // Determine the new status based on current status
+    const newStatus = currentEventStatus === 'live' ? 'draft' : 'live';
+    
+    // Update local state
+    setEventStatus(newStatus);
+    
+    // Prepare the update payload
     const updatedEvent = {
-      status: "live"
-    }
+      status: newStatus
+    };
+    
+    // Update the event in the database
     await updateEvent(eventID, updatedEvent);
-
-    setSnackbarMessage("Event Published Successfully");
+    
+    // Set the appropriate success message
+    const successMessage = newStatus === 'live' 
+      ? "Event Published Successfully" 
+      : "Event Unpublished Successfully";
+    
+    // Show the success notification
+    setSnackbarMessage(successMessage);
     setSnackbarSeverity("success");
     setSnackbarOpen(true);
-
+    
+    // Close the dialog
     setPublishDialogOpen(false);
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -525,7 +541,7 @@ const EditEventPage = () => {
                   fontSize: { xs: null, sm: "10px", md: "14px" },
                 }}
               >
-                Approve Event
+                {currentEventStatus === "draft" ? `Approve Event` : 'Unpublish Event'}
               </Typography>
             </Button>
           </Box>
