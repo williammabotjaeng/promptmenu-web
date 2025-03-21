@@ -293,6 +293,9 @@ const EditEventPage = () => {
   };
 
   const handleConfirmPublishToggle = async () => {
+
+    setEventStatus("live");
+
     const updatedEvent = {
       status: "live"
     }
@@ -301,6 +304,8 @@ const EditEventPage = () => {
     setSnackbarMessage("Event Published Successfully");
     setSnackbarSeverity("success");
     setSnackbarOpen(true);
+
+    setPublishDialogOpen(false);
   }
 
   useEffect(() => {
