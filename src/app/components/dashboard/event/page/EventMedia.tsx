@@ -10,8 +10,9 @@ import { useCookies } from "react-cookie";
 import SaveIcon from "@mui/icons-material/Save";
 import PhotoGrid from "./PhotoGrid";
 import SingleVideo from "./SingleVideo";
-import SingleImage from "./SingleImage";
+import SingleImage from "./ImageUploader";
 import { useState } from "react";
+import ImageUploader from "./ImageUploader";
 
 interface EventMediaProps {
   eventPhotos: string[];
@@ -21,7 +22,7 @@ interface EventMediaProps {
   imagesToBeAdded: string[];
   onImageUpload: (newImages: string[]) => void;
   onImageDelete: (image: string) => void;
-  onPosterUpload: (newImage: string) => void;
+  onPosterUpload: (event: React.ChangeEvent<any>) => void;
   onPosterDelete: () => void;
   onVideoUpload: (video: string) => void;
   onVideoDelete: () => void;
@@ -42,6 +43,7 @@ export const EventMedia: React.FC<EventMediaProps> = ({
   onVideoDelete,
   onSaveEventMedia,
 }) => {
+  console.log("Event Poster:", eventPoster);
   return (
     <Box
       sx={{
@@ -77,7 +79,7 @@ export const EventMedia: React.FC<EventMediaProps> = ({
           imagesToDelete={[]}
         />
         <Typography>Event Poster</Typography>
-        <SingleImage
+        <ImageUploader
           image={eventPoster}
           onImageUpload={onPosterUpload}
           onDeleteImage={onPosterDelete}

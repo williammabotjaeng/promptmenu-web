@@ -94,7 +94,7 @@ const EditEventPage = () => {
   const [accommodationProvided, setAccommodationProvided] = useState(false);
   const [eventStatus, setEventStatus] = useState("draft");
   const [localEventPhotos, setLocalEventPhotos] = useState(null);
-  const [localEventPoster, setLocalEventPoster] = useState(null);
+  const [localEventPoster, setLocalEventPoster] = useState<string>(null);
   const [localEventVideo, setLocalEventVideo] = useState(null);
   const [error, setError] = useState("");
   const [images, setImages] = useState<string[]>([]);
@@ -111,9 +111,9 @@ const EditEventPage = () => {
     }
   };
 
-  const handlePosterUpload = (newPoster: string) => {
-    console.log("Poster Upload:", newPoster);
-    setLocalEventPoster(newPoster);
+  const handlePosterUpload = (event: React.ChangeEvent<any>) => {
+    console.log("Poster Upload:", event?.target?.value);
+    setLocalEventPoster(event?.target?.value);
   };
 
   const handlePosterDelete = () => {
@@ -480,8 +480,8 @@ const EditEventPage = () => {
         {currentPage === 1 && (
           <EventMedia
             eventPhotos={localEventPhotos || []}
-            eventPoster={localEventPoster || []}
-            eventVideo={localEventVideo || []}
+            eventPoster={localEventPoster || ""}
+            eventVideo={localEventVideo || ""}
             onImageDelete={handleDeleteImage}
             onImageUpload={handleImageUpload}
             onPosterDelete={handlePosterDelete}

@@ -74,7 +74,7 @@ const SingleVideo: React.FC<SingleVideoProps> = ({ video, onVideoUpload, onDelet
             <input 
               accept="video/*" 
               style={{ display: 'none' }} 
-              id="upload-button" 
+              id="upload-button-video" 
               type="file" 
               onChange={handleVideoUpload} 
             />
