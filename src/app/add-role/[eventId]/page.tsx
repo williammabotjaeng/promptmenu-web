@@ -13,7 +13,7 @@ import RoleDemographics from '@/components/dashboard/event/RoleDemographics';
 import { PaymentDetails } from '@/components/dashboard/event/PaymentDetails';
 import Questions from '@/components/dashboard/event/Questions';
 import EventManager from '@/components/dashboard/event/EventManager';
-import EventDeadline from '@/components/dashboard/event/EventDeadline';
+import EventDeadline from '@/components/dashboard/event/page/EventDeadline';
 
 const AddRole: React.FC = () => {
     const router = useRouter();

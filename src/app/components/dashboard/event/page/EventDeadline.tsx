@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Alert, Box, Button, Snackbar, Typography } from "@mui/material";
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import { DeadlineForm } from "@/components/dashboard/event/DeadlineForm";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -9,6 +9,7 @@ import useEventStore, { EventRole } from "@/state/use-event-store";
 import { useCookies } from "react-cookie";
 import { useEvent } from "@/providers/event-provider";
 import useCurrentEventStore from "@/state/use-current-event-store";
+import { useState } from "react";
 
 const EventDeadline: React.FC<PostEventStepProps> = ({
   activeStep,
@@ -21,6 +22,10 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
 
   const { updateEvent } = useEvent();
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+
   const [cookies, removeCookie] = useCookies(['questions', 'event_id']);
 
   const eventID = cookies?.event_id;
@@ -32,6 +37,9 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
       roles: [...currentEvent.roles, eventRole], 
     };
 
+    console.log("Current Event:", currentEvent);
+    console.log("Updated Event:", updatedEvent);
+
     clearEventRole();
 
     removeCookie("questions", { path: "/" });
@@ -41,6 +49,10 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -116,6 +128,21 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
           <ArrowForwardIcon sx={{ marginLeft: "8px" }} />
         </Button>
       </Box>
+       {/* Snackbar for feedback */}
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              >
+                <Alert
+                  onClose={handleSnackbarClose}
+                  severity={snackbarSeverity === "success" ? "success" : "error"}
+                  sx={{ width: "100%" }}
+                >
+                  {snackbarMessage}
+                </Alert>
+              </Snackbar>
     </Box>
   );
 };
