@@ -41,6 +41,7 @@ import TotalJobsIcon from "@/assets/total-jobs-icon.svg";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import GreyFooter from "@/components/GreyFooter";
 
 const Dashboard = () => {
   const { user, updateUser } = useAuth();
@@ -137,6 +138,7 @@ const Dashboard = () => {
   if (loading) return <Loading />;
 
   return (
+    <>
     <Box
       sx={{
         display: "flex",
@@ -299,6 +301,8 @@ const Dashboard = () => {
         </Grid>
       </Box>
     </Box>
+    <GreyFooter />
+    </>
   );
 };
 

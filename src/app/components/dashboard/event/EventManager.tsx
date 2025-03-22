@@ -18,7 +18,14 @@ import { useState } from "react";
 
 const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
 
-    const { eventDetails, clearEventDetails, clearEventMedia, eventMedia } = useStore(useEventStore);
+    const { 
+      eventDetails, 
+      clearEventDetails, 
+      clearEventMedia, 
+      eventMedia,
+      setEventDetails
+    } = useStore(useEventStore);
+    
     const [loading, setLoading] = useState(false);
     const [cookies, removeCookie] = useCookies([
       'event_id', 'username', 
@@ -40,6 +47,22 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     const { updateEvent } = useEvent();
 
     const { updateCompany, company, fetchCompany } = useCompany();
+
+    const updateAllRolesWithPoster = (eventPosterName) => {
+      if (!eventDetails.roles || eventDetails.roles.length === 0) return;
+      
+      // Map over existing roles and update each one with the eventPoster
+      const updatedRoles = eventDetails.roles.map(role => ({
+        ...role,
+        eventPoster: eventPosterName // or event_poster if that's the field name
+      }));
+      
+      // Update the store with the modified roles array
+      setEventDetails({
+        ...eventDetails,
+        roles: updatedRoles
+      });
+    };
 
     const handlePublish = async () => {
         try {
@@ -65,6 +88,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
             userName,
             accessToken
           );
+
+          await updateAllRolesWithPoster(eventPosterName);
       
           // Create the updated event data object
           const eventData = {
@@ -75,6 +100,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
             organizer: userName,
             status: "draft",
           };
+
+
       
           // Update the event
           await updateEvent(eventID, eventData);
