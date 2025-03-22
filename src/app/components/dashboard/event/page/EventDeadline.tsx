@@ -18,7 +18,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
   setActiveStep,
 }) => {
 
-  const { eventRole, eventDetails, setEventDetails, clearEventRole } = useStore(useEventStore);
+  const { eventRole, eventDetails, setEventDetails, clearEventRole, setEventRole } = useStore(useEventStore);
 
   const { currentEvent } = useStore(useCurrentEventStore);
 
@@ -43,6 +43,11 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
     setLoading(true);
 
     console.log("Current Event:", eventRole);
+
+    setEventRole({
+      ...eventRole,
+      eventPoster: currentEvent?.eventPoster
+    });
 
     const updatedEvent = {
       ...currentEvent,
