@@ -40,6 +40,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { eventDetails, eventRole, clearEventRole, setEventRole } = useStore(useEventStore);
+ // const { setCurrentEvent, currentEvent } = useStore(useCurrentEventStore);
   const { updateEvent } = useEvent();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -55,8 +56,8 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
   const [isDeadlinesValid, setIsDeadlinesValid] = useState(true);
 
   // Get the event's start and end dates from the store
-  const eventStartDateTime = currentEvent?.startTime || eventDetails?.startDateTime;
-  const eventEndDateTime = currentEvent?.endDateTime || eventDetails?.endDateTime;
+  const eventStartDateTime = currentEvent?.start_time || eventDetails?.startDateTime;
+  const eventEndDateTime = currentEvent?.end_time || eventDetails?.endDateTime;
 
   // Validate deadlines whenever the role or event details change
   useEffect(() => {
@@ -142,7 +143,7 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
 
       setEventRole({
         ...eventRole,
-        eventPoster: currentEvent?.eventPoster
+        eventPoster: currentEvent?.event_poster
       });
 
       const updatedEvent = {
@@ -182,6 +183,12 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
+
+  useEffect(() => {
+      console.log("Current Event:", currentEvent);
+
+     // setCurrentEvent(cookies?.current_event);
+  }, [cookies])
 
   if (loading) return <AddingRole />;
 
