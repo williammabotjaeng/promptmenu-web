@@ -1,5 +1,5 @@
-import { Question } from '@/components/dashboard/event/FormSection';
-import { create } from 'zustand';
+import { Question } from "@/components/dashboard/event/FormSection";
+import { create } from "zustand";
 
 interface EventDetails {
   eventTitle: string;
@@ -20,6 +20,7 @@ export interface EventMediaType {
 }
 
 export interface EventRole {
+  application_deadline: any;
   id: string;
   skill: string;
   openings: number;
@@ -57,17 +58,16 @@ interface EventStoreState {
 }
 
 const useEventStore = create<EventStoreState>((set) => ({
- 
   eventDetails: {
-    eventTitle: '',
-    description: '',
-    location: '',
-    startDateTime: '',
-    endDateTime: '',
+    eventTitle: "",
+    description: "",
+    location: "",
+    startDateTime: "",
+    endDateTime: "",
     mealsProvided: false,
     transportProvided: false,
     accommodationProvided: false,
-    roles: []
+    roles: [],
   },
 
   eventMedia: {
@@ -77,10 +77,10 @@ const useEventStore = create<EventStoreState>((set) => ({
   },
 
   eventRole: {
-    skill: '',
+    skill: "",
     openings: 0,
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     genders: [],
     minAge: 0,
     maxAge: 0,
@@ -88,17 +88,17 @@ const useEventStore = create<EventStoreState>((set) => ({
     hourlyPay: 0,
     dailyPay: 0,
     projectPay: 0,
-    paymentTerms: '',
+    paymentTerms: "",
     questions: [],
-    hardDeadline: '',
-    softDeadline: '',
-    notes: '',
-    created_at: '',
-    location: '',
-    company_id: '',
-    event: '',
-    id: '',
-    eventPoster: ''
+    hardDeadline: "",
+    softDeadline: "",
+    notes: "",
+    created_at: "",
+    location: "",
+    company_id: "",
+    event: "",
+    id: "",
+    eventPoster: "",
   },
 
   setEventDetails: (updates) =>
@@ -122,15 +122,15 @@ const useEventStore = create<EventStoreState>((set) => ({
   clearEventDetails: () =>
     set({
       eventDetails: {
-        eventTitle: '',
-        description: '',
-        location: '',
-        startDateTime: '',
-        endDateTime: '',
+        eventTitle: "",
+        description: "",
+        location: "",
+        startDateTime: "",
+        endDateTime: "",
         mealsProvided: false,
         transportProvided: false,
         accommodationProvided: false,
-        roles: []
+        roles: [],
       },
     }),
 
@@ -146,10 +146,10 @@ const useEventStore = create<EventStoreState>((set) => ({
   clearEventRole: () =>
     set({
       eventRole: {
-        skill: '',
+        skill: "",
         openings: 0,
-        title: '',
-        description: '',
+        title: "",
+        description: "",
         genders: [],
         minAge: 0,
         maxAge: 0,
@@ -157,17 +157,17 @@ const useEventStore = create<EventStoreState>((set) => ({
         hourlyPay: 0,
         dailyPay: 0,
         projectPay: 0,
-        paymentTerms: '',
+        paymentTerms: "",
         questions: [],
-        hardDeadline: '',
-        softDeadline: '',
-        notes: '',
-        created_at: '',
-        location: '',
-        company_id: '',
-        event: '',
-        id: '',
-        eventPoster: ''
+        hardDeadline: "",
+        softDeadline: "",
+        notes: "",
+        created_at: "",
+        location: "",
+        company_id: "",
+        event: "",
+        id: "",
+        eventPoster: "",
       },
     }),
 }));

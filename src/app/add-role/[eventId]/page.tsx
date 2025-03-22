@@ -206,7 +206,7 @@ const AddRole: React.FC = () => {
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Our team is here to assist you with creating your role posting.
-              If you have any questions, please contact support at support@mixfame.com or call +971 4 123 4567.
+              If you have any questions, please contact support at support@staffingsolutionshub.com or call +971 56 759 8878.
             </Typography>
           </CardContent>
         </Card>
