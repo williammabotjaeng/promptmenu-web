@@ -18,14 +18,19 @@ import {
   OutlinedInput,
   Checkbox,
   ListItemText,
-  FormHelperText,
+  Divider,
+  Paper,
+  Tooltip,
+  Alert,
+  Snackbar,
 } from "@mui/material";
 import Header from "@/components/dashboard/Header";
 import GreyFooter from "@/components/GreyFooter";
-import DemographicsForm from "@/components/dashboard/event/page/DemographicsForm";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { useState, useEffect } from "react";
@@ -57,7 +62,7 @@ const roleTypes = [
   "Temporary",
 ];
 
-// Ethnicities options (add more as needed)
+// Ethnicities options
 const ethnicitiesOptions = [
   "Arab",
   "Pakistani",
@@ -73,6 +78,27 @@ const ethnicitiesOptions = [
 
 // Gender options
 const genderOptions = ["male", "female", "unisex"];
+
+const SectionTitle = ({ title, icon }) => (
+  <Box sx={{ display: "flex", alignItems: "center", mb: 3, mt: 3 }}>
+    <Divider sx={{ flexGrow: 1, mr: 2 }} />
+    <Typography variant="h6" 
+      sx={{ 
+        color: "#977342", 
+        fontWeight: 600,
+        display: "flex",
+        alignItems: "center",
+        px: 2,
+        py: 1,
+        borderRadius: 1,
+        bgcolor: "#977342" + "10",
+      }}>
+      {icon}
+      {title}
+    </Typography>
+    <Divider sx={{ flexGrow: 1, ml: 2 }} />
+  </Box>
+);
 
 const EventRoleDetail = () => {
   const [cookies, setCookie] = useCookies([
@@ -135,7 +161,6 @@ const EventRoleDetail = () => {
     return dateString.split("+")[0]; // Remove timezone part
   };
 
-  // Load role data from the store into local state
   // Load role data from the store into local state
   useEffect(() => {
     if (currentRole) {
@@ -317,6 +342,11 @@ const EventRoleDetail = () => {
     router.back();
   };
 
+  const handleDeleteRole = () => {
+    // Here you would add a confirmation dialog before actually deleting
+    alert("Delete functionality would be implemented here");
+  };
+
   if (isLoading) {
     return <FetchingRole />;
   }
@@ -327,490 +357,606 @@ const EventRoleDetail = () => {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        backgroundColor: "white",
+        backgroundColor: "#f5f5f5",
       }}
     >
       <Header />
 
-      <Box sx={{ flexGrow: 1, padding: { xs: 2, md: 3 } }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Card sx={{ padding: 2, borderRadius: "12px", boxShadow: 1 }}>
-              <CardContent>
-                <IconButton
-                  onClick={goBack}
+      <Box sx={{ flexGrow: 1, padding: { xs: 2, md: 4 } }}>
+        <Paper
+          elevation={0}
+          sx={{
+            p: 2,
+            mb: 3,
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "white",
+          }}
+        >
+          <IconButton
+            onClick={goBack}
+            sx={{
+              color: "#977342",
+              "&:hover": {
+                color: "#CEAB76",
+                backgroundColor: "rgba(206, 171, 118, 0.1)",
+              },
+              mr: 2,
+            }}
+          >
+            <ArrowBackIosNewIcon fontSize="small" />
+          </IconButton>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: "600",
+              color: "#333",
+              flexGrow: 1,
+            }}
+          >
+            Edit Role: {role.title}
+          </Typography>
+        </Paper>
+
+        <Card sx={{ borderRadius: "12px", boxShadow: "0 4px 20px rgba(0,0,0,0.05)" }}>
+          <CardContent sx={{ p: 4 }}>
+            {/* Basic Role Information */}
+            <SectionTitle 
+              title="Basic Information" 
+              icon={<InfoOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#977342" }} />} 
+            />
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Role Title"
+                  name="title"
+                  value={role.title}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  required
+                  error={!!errors.title}
+                  helperText={errors.title}
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Skill"
+                  name="skill"
+                  value={role.skill}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  label="Description"
+                  name="description"
+                  value={role.description}
+                  onChange={handleChange}
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Location"
+                  name="location"
+                  value={role.location}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  required
+                  error={!!errors.location}
+                  helperText={errors.location}
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Number of Openings"
+                  name="openings"
+                  type="number"
+                  value={role.openings}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  required
+                  error={!!errors.openings}
+                  helperText={errors.openings}
+                  InputProps={{ 
+                    inputProps: { min: 1 },
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Experience Level</InputLabel>
+                  <Select
+                    name="experience_level"
+                    value={role.experience_level || ""}
+                    onChange={handleChange}
+                    label="Experience Level"
+                    sx={{ borderRadius: 1 }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {experienceLevels.map((level) => (
+                      <MenuItem key={level} value={level}>
+                        {level}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Role Type</InputLabel>
+                  <Select
+                    name="role_type"
+                    value={role.role_type || ""}
+                    onChange={handleChange}
+                    label="Role Type"
+                    sx={{ borderRadius: 1 }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {roleTypes.map((type) => (
+                      <MenuItem key={type} value={type}>
+                        {type}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+
+            {/* Payment Information */}
+            <SectionTitle 
+              title="Payment Information" 
+              icon={<InfoOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#977342" }} />} 
+            />
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  label="Hourly Pay"
+                  name="hourly_pay"
+                  type="number"
+                  value={role.hourly_pay}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{ 
+                    inputProps: { min: 0 },
+                    sx: { borderRadius: 1 }
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <TextField
+                  label="Daily Pay"
+                  name="daily_pay"
+                  type="number"
+                  value={role.daily_pay}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{ 
+                    inputProps: { min: 0 },
+                    sx: { borderRadius: 1 }
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <TextField
+                  label="Project Pay"
+                  name="project_pay"
+                  type="number"
+                  value={role.project_pay}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{ 
+                    inputProps: { min: 0 },
+                    sx: { borderRadius: 1 }
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  label="Payment Terms & Information"
+                  name="role_payment_info"
+                  value={role.role_payment_info || ""}
+                  onChange={handleChange}
+                  multiline
+                  rows={3}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+            </Grid>
+
+            {/* Deadline Information */}
+            <SectionTitle 
+              title="Deadline Information" 
+              icon={<InfoOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#977342" }} />} 
+            />
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4}>
+                <Typography variant="body2" sx={{ mb: 1, color: "#666" }}>
+                  Soft Deadline
+                  <Tooltip title="The target completion date that would be ideal but can be flexible">
+                    <HelpOutlineIcon fontSize="small" sx={{ ml: 1, color: "#977342", fontSize: 16, verticalAlign: "text-bottom" }} />
+                  </Tooltip>
+                </Typography>
+                <TextField
+                  name="soft_deadline"
+                  type="datetime-local"
+                  value={role.soft_deadline}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Typography variant="body2" sx={{ mb: 1, color: "#666" }}>
+                  Hard Deadline
+                  <Tooltip title="The final date by which the work must be completed without exceptions">
+                    <HelpOutlineIcon fontSize="small" sx={{ ml: 1, color: "#977342", fontSize: 16, verticalAlign: "text-bottom" }} />
+                  </Tooltip>
+                </Typography>
+                <TextField
+                  name="hard_deadline"
+                  type="datetime-local"
+                  value={role.hard_deadline}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Typography variant="body2" sx={{ mb: 1, color: "#666" }}>
+                  Application Deadline
+                  <Tooltip title="The last date when applicants can apply for this role">
+                    <HelpOutlineIcon fontSize="small" sx={{ ml: 1, color: "#977342", fontSize: 16, verticalAlign: "text-bottom" }} />
+                  </Tooltip>
+                </Typography>
+                <TextField
+                  name="application_deadline"
+                  type="datetime-local"
+                  value={role.application_deadline}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  label="Deadline Notes"
+                  name="deadline_notes"
+                  value={role.deadline_notes || ""}
+                  onChange={handleChange}
+                  multiline
+                  rows={2}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+            </Grid>
+
+            {/* Demographics */}
+            <SectionTitle 
+              title="Demographics" 
+              icon={<InfoOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#977342" }} />} 
+            />
+
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Ethnicities</InputLabel>
+                  <Select
+                    multiple
+                    name="ethnicities"
+                    value={role.ethnicities || []}
+                    onChange={(e) =>
+                      handleMultiSelectChange(e, "ethnicities")
+                    }
+                    input={<OutlinedInput label="Ethnicities" sx={{ borderRadius: 1 }} />}
+                    renderValue={(selected) => (
+                      <Box
+                        sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                      >
+                        {selected.map((value) => (
+                          <Chip 
+                            key={value} 
+                            label={value} 
+                            sx={{ 
+                              backgroundColor: "#977342" + "20", 
+                              color: "#977342",
+                              borderRadius: "4px",
+                            }} 
+                          />
+                        ))}
+                      </Box>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+                    {ethnicitiesOptions.map((ethnicity) => (
+                      <MenuItem key={ethnicity} value={ethnicity}>
+                        <Checkbox
+                          checked={
+                            (role.ethnicities || []).indexOf(ethnicity) > -1
+                          }
+                        />
+                        <ListItemText primary={ethnicity} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Genders</InputLabel>
+                  <Select
+                    multiple
+                    name="genders"
+                    value={role.genders || []}
+                    onChange={(e) => handleMultiSelectChange(e, "genders")}
+                    input={<OutlinedInput label="Genders" sx={{ borderRadius: 1 }} />}
+                    renderValue={(selected) => (
+                      <Box
+                        sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                      >
+                        {selected.map((value) => (
+                          <Chip 
+                            key={value} 
+                            label={value} 
+                            sx={{ 
+                              backgroundColor: "#977342" + "20", 
+                              color: "#977342",
+                              borderRadius: "4px",
+                            }} 
+                          />
+                        ))}
+                      </Box>
+                    )}
+                    MenuProps={MenuProps}
+                  >
+                    {genderOptions.map((gender) => (
+                      <MenuItem key={gender} value={gender}>
+                        <Checkbox
+                          checked={
+                            (role.genders || []).indexOf(gender) > -1
+                          }
+                        />
+                        <ListItemText primary={gender} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Minimum Age"
+                  name="min_age"
+                  type="number"
+                  value={role.min_age}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{ 
+                    inputProps: { min: 0 },
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <TextField
+                  label="Maximum Age"
+                  name="max_age"
+                  type="number"
+                  value={role.max_age}
+                  onChange={handleChange}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{ 
+                    inputProps: { min: 0 },
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+            </Grid>
+
+            {/* Application Questions */}
+            <SectionTitle 
+              title="Application Questions" 
+              icon={<InfoOutlinedIcon fontSize="small" sx={{ mr: 1, color: "#977342" }} />} 
+            />
+
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Application Questions"
+                  name="application_questions"
+                  value={role.questions || ""}
+                  onChange={handleChange}
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                  fullWidth
+                  placeholder="Add questions for applicants, separated by new lines or in JSON format"
+                  helperText="These questions will be asked to applicants when they apply for this role"
+                  InputProps={{
+                    sx: { borderRadius: 1 }
+                  }}
+                />
+              </Grid>
+            </Grid>
+
+            {/* Hidden Fields */}
+            <input
+              type="hidden"
+              name="company_id"
+              value={role.company_id}
+            />
+
+            {/* Action Buttons */}
+            <Box sx={{ 
+              mt: 6, 
+              pt: 3, 
+              borderTop: 1, 
+              borderColor: "divider",
+              display: "flex", 
+              justifyContent: "space-between",
+              flexWrap: "wrap", 
+              gap: 2 
+            }}>
+              <Button
+                variant="contained"
+                color="error"
+                startIcon={<DeleteForeverIcon />}
+                onClick={handleDeleteRole}
+                sx={{
+                  bgcolor: "#d32f2f",
+                  color: "white",
+                  order: { xs: 3, sm: 1 },
+                  minWidth: "180px",
+                  py: 1.5,
+                  borderRadius: "8px",
+                  boxShadow: "0 2px 8px rgba(211, 47, 47, 0.2)",
+                  "&:hover": {
+                    bgcolor: "#b71c1c",
+                    boxShadow: "0 4px 12px rgba(211, 47, 47, 0.3)",
+                  }
+                }}
+              >
+                Delete Role
+              </Button>
+              
+              <Box sx={{ 
+                display: "flex", 
+                gap: 2,
+                order: { xs: 1, sm: 2 },
+                flexGrow: { xs: 1, sm: 0 }
+              }}>
+                <Button
+                  variant="outlined"
+                  onClick={handleDiscardChanges}
                   sx={{
-                    fontFamily: "Inter",
-                    color: "#977342",
+                    color: "#666",
+                    borderColor: "#ccc",
+                    py: 1.5,
+                    px: 3,
+                    borderRadius: "8px",
                     "&:hover": {
-                      color: "#CEAB76",
-                    },
+                      bgcolor: "#f5f5f5",
+                      borderColor: "#999"
+                    }
                   }}
                 >
-                  <ArrowBackIosNewIcon />
-                  <Typography sx={{ fontSize: "12px", ml: 1 }}>
-                    Go Back
-                  </Typography>
-                </IconButton>
-
-                <Typography
-                  variant="h4"
-                  sx={{ fontWeight: "bold", mb: 3, mt: 2 }}
+                  Discard Changes
+                </Button>
+                
+                <Button
+                  variant="contained"
+                  startIcon={<SaveIcon />}
+                  onClick={handleUpdateRole}
+                  disabled={loading}
+                  sx={{
+                    bgcolor: "#977342",
+                    color: "white",
+                    py: 1.5,
+                    px: 4,
+                    borderRadius: "8px",
+                    boxShadow: "0 2px 8px rgba(151, 115, 66, 0.2)",
+                    "&:hover": {
+                      bgcolor: "#CEAB76",
+                      boxShadow: "0 4px 12px rgba(151, 115, 66, 0.3)",
+                    }
+                  }}
                 >
-                  Edit Role Details
-                </Typography>
-
-                <Grid container spacing={3}>
-                  {/* Basic Role Information */}
-                  <Grid item xs={12}>
-                    <Typography variant="h6" sx={{ mb: 2, color: "#977342" }}>
-                      Basic Information
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      label="Role Title"
-                      name="title"
-                      value={role.title}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      required
-                      error={!!errors.title}
-                      helperText={errors.title}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      label="Skill"
-                      name="skill"
-                      value={role.skill}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      label="Description"
-                      name="description"
-                      value={role.description}
-                      onChange={handleChange}
-                      multiline
-                      rows={6}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      label="Location"
-                      name="location"
-                      value={role.location}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      required
-                      error={!!errors.location}
-                      helperText={errors.location}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      label="Number of Openings"
-                      name="openings"
-                      type="number"
-                      value={role.openings}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      required
-                      error={!!errors.openings}
-                      helperText={errors.openings}
-                      InputProps={{ inputProps: { min: 1 } }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>Experience Level</InputLabel>
-                      <Select
-                        name="experience_level"
-                        value={role.experience_level || ""}
-                        onChange={handleChange}
-                        label="Experience Level"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {experienceLevels.map((level) => (
-                          <MenuItem key={level} value={level}>
-                            {level}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>Role Type</InputLabel>
-                      <Select
-                        name="role_type"
-                        value={role.role_type || ""}
-                        onChange={handleChange}
-                        label="Role Type"
-                      >
-                        <MenuItem value="">
-                          <em>None</em>
-                        </MenuItem>
-                        {roleTypes.map((type) => (
-                          <MenuItem key={type} value={type}>
-                            {type}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  {/* Payment Information */}
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="h6"
-                      sx={{ mb: 2, mt: 2, color: "#977342" }}
-                    >
-                      Payment Information
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      label="Hourly Pay"
-                      name="hourly_pay"
-                      type="number"
-                      value={role.hourly_pay}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{ inputProps: { min: 0 } }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      label="Daily Pay"
-                      name="daily_pay"
-                      type="number"
-                      value={role.daily_pay}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{ inputProps: { min: 0 } }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={4}>
-                    <TextField
-                      label="Project Pay"
-                      name="project_pay"
-                      type="number"
-                      value={role.project_pay}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{ inputProps: { min: 0 } }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      label="Payment Terms & Information"
-                      name="role_payment_info"
-                      value={role.role_payment_info || ""}
-                      onChange={handleChange}
-                      multiline
-                      rows={3}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  {/* Deadline Information */}
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="h6"
-                      sx={{ mb: 2, mt: 2, color: "#977342" }}
-                    >
-                      Deadline Information
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={12} md={4}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>
-                      Soft Deadline
-                    </Typography>
-                    <TextField
-                      name="soft_deadline"
-                      type="datetime-local"
-                      value={role.soft_deadline}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={4}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>
-                      Hard Deadline
-                    </Typography>
-                    <TextField
-                      name="hard_deadline"
-                      type="datetime-local"
-                      value={role.hard_deadline}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={4}>
-                    <Typography variant="body2" sx={{ mb: 1 }}>
-                      Application Deadline
-                    </Typography>
-                    <TextField
-                      name="application_deadline"
-                      type="datetime-local"
-                      value={role.application_deadline}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      label="Deadline Notes"
-                      name="deadline_notes"
-                      value={role.deadline_notes || ""}
-                      onChange={handleChange}
-                      multiline
-                      rows={2}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-
-                  {/* Demographics */}
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="h6"
-                      sx={{ mb: 2, mt: 2, color: "#977342" }}
-                    >
-                      Demographics
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>Ethnicities</InputLabel>
-                      <Select
-                        multiple
-                        name="ethnicities"
-                        value={role.ethnicities || []}
-                        onChange={(e) =>
-                          handleMultiSelectChange(e, "ethnicities")
-                        }
-                        input={<OutlinedInput label="Ethnicities" />}
-                        renderValue={(selected) => (
-                          <Box
-                            sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
-                          >
-                            {selected.map((value) => (
-                              <Chip key={value} label={value} />
-                            ))}
-                          </Box>
-                        )}
-                        MenuProps={MenuProps}
-                      >
-                        {ethnicitiesOptions.map((ethnicity) => (
-                          <MenuItem key={ethnicity} value={ethnicity}>
-                            <Checkbox
-                              checked={
-                                (role.ethnicities || []).indexOf(ethnicity) > -1
-                              }
-                            />
-                            <ListItemText primary={ethnicity} />
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel>Genders</InputLabel>
-                      <Select
-                        multiple
-                        name="genders"
-                        value={role.genders || []}
-                        onChange={(e) => handleMultiSelectChange(e, "genders")}
-                        input={<OutlinedInput label="Genders" />}
-                        renderValue={(selected) => (
-                          <Box
-                            sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
-                          >
-                            {selected.map((value) => (
-                              <Chip key={value} label={value} />
-                            ))}
-                          </Box>
-                        )}
-                        MenuProps={MenuProps}
-                      >
-                        {genderOptions.map((gender) => (
-                          <MenuItem key={gender} value={gender}>
-                            <Checkbox
-                              checked={
-                                (role.genders || []).indexOf(gender) > -1
-                              }
-                            />
-                            <ListItemText primary={gender} />
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      label="Minimum Age"
-                      name="min_age"
-                      type="number"
-                      value={role.min_age}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{ inputProps: { min: 0 } }}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12} md={6}>
-                    <TextField
-                      label="Maximum Age"
-                      name="max_age"
-                      type="number"
-                      value={role.max_age}
-                      onChange={handleChange}
-                      variant="outlined"
-                      fullWidth
-                      InputProps={{ inputProps: { min: 0 } }}
-                    />
-                  </Grid>
-
-                  {/* Application Questions */}
-                  <Grid item xs={12}>
-                    <Typography
-                      variant="h6"
-                      sx={{ mb: 2, mt: 2, color: "#977342" }}
-                    >
-                      Application Questions
-                    </Typography>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      label="Application Questions"
-                      name="application_questions"
-                      value={role.questions || ""}
-                      onChange={handleChange}
-                      multiline
-                      rows={4}
-                      variant="outlined"
-                      fullWidth
-                      placeholder="Add questions for applicants, separated by new lines or in JSON format"
-                      helperText="These questions will be asked to applicants when they apply for this role"
-                    />
-                  </Grid>
-
-                  {/* Hidden Fields */}
-                  <input
-                    type="hidden"
-                    name="company_id"
-                    value={role.company_id}
-                  />
-
-                  {/* Buttons */}
-                  <Grid item xs={12}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexDirection: { xs: "column", md: "row" },
-                        justifyContent: "center",
-                        gap: 3,
-                        mt: 3,
-                      }}
-                    >
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          px: 4,
-                          py: 1.5,
-                          color: "#977342",
-                          borderColor: "#977342",
-                          "&:hover": {
-                            borderColor: "#CEAB76",
-                            color: "#fff",
-                          },
-                        }}
-                        onClick={handleDiscardChanges}
-                      >
-                        Discard Changes
-                      </Button>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          px: 4,
-                          py: 1.5,
-                          backgroundColor: "#977342",
-                          color: "white",
-                          "&:hover": {
-                            backgroundColor: "#CEAB76",
-                          },
-                        }}
-                        onClick={handleUpdateRole}
-                      >
-                        Save Role
-                        <SaveIcon sx={{ marginLeft: "8px" }} />
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        sx={{
-                          px: 4,
-                          py: 1.5,
-                          color: "#fff",
-                          backgroundColor: "#982d28",
-                          "&:hover": {
-                            backgroundColor: "#fff",
-                            color: "#d44a3b",
-                          },
-                        }}
-                        onClick={handleDiscardChanges}
-                      >
-                        Delete Role
-                        <DeleteForeverIcon sx={{ marginLeft: "8px" }} />
-                      </Button>
-                    </Box>
-                  </Grid>
-                </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
+                  {loading ? "Saving..." : "Save Role"}
+                </Button>
+              </Box>
+            </Box>
+          </CardContent>
+        </Card>
       </Box>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
 
       <GreyFooter />
     </Box>
