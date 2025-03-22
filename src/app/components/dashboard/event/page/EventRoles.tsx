@@ -148,48 +148,6 @@ const EventRoles: React.FC<EventRolesProps> = ({ event }) => {
           </CardContent>
         </Card>
         
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}
-        >
-          <Box>
-            {saved && (
-              <Fade in={saved}>
-                <Chip
-                  icon={<CheckCircleIcon />}
-                  label="Changes saved successfully"
-                  color="success"
-                  variant="outlined"
-                  sx={{ mr: 2 }}
-                />
-              </Fade>
-            )}
-          </Box>
-          
-          <Button
-            onClick={handleSave}
-            variant="contained"
-            startIcon={<SaveIcon />}
-            sx={{
-              backgroundColor: '#977342',
-              color: 'white',
-              py: 1.5,
-              px: 3,
-              borderRadius: '8px',
-              boxShadow: '0 4px 12px rgba(151, 115, 66, 0.2)',
-              '&:hover': {
-                backgroundColor: '#CEAB76',
-                boxShadow: '0 6px 16px rgba(151, 115, 66, 0.3)',
-              },
-              transition: 'all 0.2s ease'
-            }}
-          >
-            Save Changes
-          </Button>
-        </Box>
       </Container>
     </Fade>
   );
