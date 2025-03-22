@@ -13,21 +13,34 @@ import {
   IconButton,
   Snackbar,
   Alert,
+  Container,
+  Paper,
+  Stepper,
+  Step,
+  StepLabel,
+  StepButton,
+  Divider,
+  Chip,
+  Card,
+  CardContent,
+  Tooltip,
+  Fade,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import SaveIcon from "@mui/icons-material/Save";
-import SwapHorizIcon from "@mui/icons-material/SwapHoriz";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { EventMedia } from "@/components/dashboard/event/page/EventMedia";
 import EventRoles from "@/components/dashboard/event/page/EventRoles";
 import useCurrentEventStore from "@/state/use-current-event-store";
 import { useCookies } from "react-cookie";
 import { useEvent } from "@/providers/event-provider";
 import FetchingEvent from "@/components/dashboard/FetchingEvent";
-import { UNSTABLE_REVALIDATE_RENAME_ERROR } from "next/dist/lib/constants";
 import { uploadFileToS3 } from "@/services/s3UploadUtils";
 import { useTalentProfile } from "@/providers/talent-profile-provider";
 import UpdatingEventMedia from "@/components/dashboard/UpdatingEventMedia";
@@ -36,22 +49,33 @@ import PublishEventDialog from "@/components/dashboard/event/page/PublishEventDi
 
 const EditEventPage = () => {
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { currentEvent } = useStore(useCurrentEventStore);
-
   const [event, setEvent] = useState(currentEvent || null);
 
+  // Notification system
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
+  // Loading states
   const [loading, setLoading] = useState(false);
   const [eventMediaLoading, setEventMediaLoading] = useState(false);
+  const [fadeIn, setFadeIn] = useState(false);
 
+  // Navigation state
   const [currentPage, setCurrentPage] = useState(0);
 
-  const { fetchEvent, updateEvent, signedUrls, clearSignedUrls, deleteEvent } = useEvent();
+  // Page steps
+  const steps = [
+    { label: 'Event Details' },
+    { label: 'Event Media' },
+    { label: 'Event Roles' }
+  ];
 
+  const { fetchEvent, updateEvent, signedUrls, clearSignedUrls, deleteEvent } = useEvent();
   const { deleteFiles } = useTalentProfile();
 
   const [cookies, setCookie] = useCookies([
@@ -64,33 +88,16 @@ const EditEventPage = () => {
     "event_status"
   ]);
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
   const eventID = cookies?.event_id;
-
   const userName = cookies?.username;
-
   const accessToken = cookies?.access;
-
   const currentEventStatus = cookies?.event_status;
 
-  const handleDown = () => {
-    if (currentPage >= 2) {
-      setCurrentPage(0);
-    }
+  // Dialog states
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
 
-    setCurrentPage(currentPage + 1);
-  };
-
-  const handleUp = () => {
-    if (currentPage <= 0) {
-      setCurrentPage(2);
-    }
-    setCurrentPage(currentPage - 1);
-  };
-
+  // Event form state
   const [eventTitle, setEventTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -100,20 +107,45 @@ const EditEventPage = () => {
   const [transportProvided, setTransportProvided] = useState(false);
   const [accommodationProvided, setAccommodationProvided] = useState(false);
   const [eventStatus, setEventStatus] = useState("draft");
-  const [localEventPhotos, setLocalEventPhotos] = useState(null);
-  const [localEventPoster, setLocalEventPoster] = useState<string>(null);
-  const [localEventVideo, setLocalEventVideo] = useState(null);
   const [error, setError] = useState("");
-  const [images, setImages] = useState<string[]>([]);
-  const [imagesToDelete, setImagesToDelete] = useState<string[]>([]);
-  const [imagesToBeAdded, setImagesToBeAdded] = useState<string[]>([]);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
-  const [publishDialogOpen, setPublishDialogOpen] = useState(false);
-  const [eventIsPublished, setEventIsPublished] = useState(
-    eventStatus === "live"
-  );
+  // Media state
+  const [localEventPhotos, setLocalEventPhotos] = useState(null);
+  const [localEventPoster, setLocalEventPoster] = useState(null);
+  const [localEventVideo, setLocalEventVideo] = useState(null);
+  const [images, setImages] = useState([]);
+  const [imagesToDelete, setImagesToDelete] = useState([]);
+  const [imagesToBeAdded, setImagesToBeAdded] = useState([]);
 
+  // Handle up/down navigation
+  const handleDown = () => {
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, 2));
+  };
+
+  const handleUp = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 0));
+  };
+
+  // Handle snackbar
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
+  // Show success notification
+  const showSuccess = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity("success");
+    setSnackbarOpen(true);
+  };
+
+  // Show error notification
+  const showError = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarSeverity("error");
+    setSnackbarOpen(true);
+  };
+
+  // Dialog handlers
   const handleOpenPublishDialog = () => {
     setPublishDialogOpen(true);
   };
@@ -130,28 +162,21 @@ const EditEventPage = () => {
     setDeleteDialogOpen(false);
   };
 
+  // Confirm deletion
   const handleConfirmDelete = async () => {
     try {
       await deleteEvent();
-      
-      // Success case
-      setSnackbarMessage("Event Deleted Successfully");
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
+      showSuccess("Event Deleted Successfully");
       setDeleteDialogOpen(false);
-
       router.push("/events");
     } catch (error) {
-      // Error case
-      setSnackbarMessage("Failed to delete event. Please try again.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      
+      showError("Failed to delete event. Please try again.");
       console.error("Error deleting event:", error);
     }
   };
 
-  const handleImageUpload = (newImages: string[]) => {
+  // Image handlers
+  const handleImageUpload = (newImages) => {
     console.log("Image upload:", newImages);
     setImagesToBeAdded((prev) => [...prev, ...newImages]);
     if (localEventPhotos?.length > 0) {
@@ -161,16 +186,11 @@ const EditEventPage = () => {
     }
   };
 
-  const handlePosterUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePosterUpload = (event) => {
     const file = event?.target?.files?.[0];
-
     if (file) {
       console.log("Poster Upload:", file);
-
-      // Create blob URL for preview
       const blobUrl = URL.createObjectURL(file);
-
-      // Save both the file and the blob URL
       setLocalEventPoster(blobUrl);
     }
   };
@@ -179,7 +199,7 @@ const EditEventPage = () => {
     setLocalEventPoster(null);
   };
 
-  const handleVideoUpload = (video: string) => {
+  const handleVideoUpload = (video) => {
     setLocalEventVideo(video);
   };
 
@@ -187,61 +207,78 @@ const EditEventPage = () => {
     setLocalEventVideo(null);
   };
 
-  const handleDeleteImage = (image: string) => {
+  const handleDeleteImage = (image) => {
     setLocalEventPhotos((prevImages) =>
       prevImages.filter((img) => img !== image)
     );
     setImagesToDelete((prevImagesToDelete) => [...prevImagesToDelete, image]);
   };
 
-  const extractFilePaths = (signedUrls: string[]) => {
+  // File path extraction
+  const extractFilePaths = (signedUrls) => {
     return signedUrls.map((url) => {
       const parsedUrl = new URL(url);
       return parsedUrl.pathname.substring(1);
     });
   };
 
-  const extractFilePath = (signedUrl: string) => {
+  const extractFilePath = (signedUrl) => {
     const parsedUrl = new URL(signedUrl);
     return parsedUrl.pathname.substring(1);
   };
 
+  // Save handlers
   const handleSaveEvent = () => {
-    setSnackbarMessage("Event Saved Successfully.");
-    setSnackbarSeverity("success");
-    setSnackbarOpen(true);
+    showSuccess("Event Saved Successfully.");
   };
 
-  const DeleteEvent = () => {
-    setDeleteDialogOpen(true);
-    // setSnackbarMessage("Event Deleted Successfully");
-    // setSnackbarSeverity("success");
-    // setSnackbarOpen(true);
+  // Publish/unpublish event
+  const handleConfirmPublishToggle = async () => {
+    try {
+      const newStatus = currentEventStatus === 'live' ? 'draft' : 'live';
+      
+      setEventStatus(newStatus);
+      setCookie("event_status", newStatus);
+      
+      const updatedEvent = {
+        status: newStatus
+      };
+      
+      await updateEvent(eventID, updatedEvent);
+      
+      const successMessage = newStatus === 'live'
+        ? "Event Published Successfully"
+        : "Event Unpublished Successfully";
+      
+      showSuccess(successMessage);
+      setPublishDialogOpen(false);
+    } catch (error) {
+      const errorMessage = currentEventStatus === 'live'
+        ? "Failed to unpublish event. Please try again."
+        : "Failed to publish event. Please try again.";
+      
+      setEventStatus(currentEventStatus);
+      setCookie("event_status", currentEventStatus);
+      
+      showError(errorMessage);
+      console.error("Error toggling event status:", error);
+    }
   };
 
-  const approveEvent = async () => {
-    
-    await setPublishDialogOpen(true);
-    
-  }
-
+  // Save event media
   const handleSaveEventMedia = async () => {
     setEventMediaLoading(true);
     
     try {
-      // Check if media exists to upload
       if (!localEventPhotos && !localEventPoster && !localEventVideo) {
-        setSnackbarMessage("No Event Media Uploaded!");
-        setSnackbarSeverity("error");
-        setSnackbarOpen(true);
+        showError("No Event Media Uploaded!");
         setEventMediaLoading(false);
-        return; // Exit early
+        return;
       }
       
-      // Step 1: Prepare files to delete (images, video, poster)
+      // Step 1: Prepare files to delete
       const filePathsToDelete = extractFilePaths(imagesToDelete);
       
-      // Add old video and poster to delete list if they are being replaced
       if (localEventVideo !== signedUrls?.eventVideo && event.eventVideo) {
         filePathsToDelete.push(event.eventVideo);
       }
@@ -279,8 +316,6 @@ const EditEventPage = () => {
         );
       }
       
-      console.log("Existing Event:", event);
-      
       // Step 5: Create updated event object
       const updatedEvent = {
         ...event,
@@ -298,82 +333,64 @@ const EditEventPage = () => {
         status: eventStatus,
       };
       
-      console.log("Updated Event:", updatedEvent);
-      
       // Step 6: Update event in database
       await updateEvent(eventID, updatedEvent);
       
       // Step 7: Delete old files from S3
       if (filePathsToDelete?.length > 0) {
         await deleteFiles(filePathsToDelete);
-        console.log("Files deleted");
       }
       
-      // Step 8: Show success message
-      setSnackbarMessage("Event media updated successfully");
-      setSnackbarSeverity("success"); // Added missing severity
-      setSnackbarOpen(true);
+      showSuccess("Event media updated successfully");
     } catch (error) {
-      // Handle errors
+      showError("Failed to update event media. Please try again.");
       console.error("Error updating event media:", error);
-      setSnackbarMessage("Failed to update event media. Please try again.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
     } finally {
-      // Always turn off loading state
       setEventMediaLoading(false);
     }
   };
   
-  const handleConfirmPublishToggle = async () => {
+  // Save event details
+  const handleSaveDetails = async () => {
     try {
-      const newStatus = currentEventStatus === 'live' ? 'draft' : 'live';
-      
-      setEventStatus(newStatus);
-      setCookie("event_status", newStatus);
-      
-      const updatedEvent = {
-        status: newStatus
+      const payload = {
+        ...currentEvent,
+        accommodation_provided: accommodationProvided,
+        description: description,
+        end_time: endDateTime,
+        organizer: userName,
+        location: location,
+        meals_provided: mealsProvided,
+        status: eventStatus,
+        startDateTime: startDateTime,
+        eventTitle: eventTitle,
+        transport_provided: transportProvided,
+        updated_at: new Date().toISOString(),
       };
-      
-      await updateEvent(eventID, updatedEvent);
-      
-      const successMessage = newStatus === 'live'
-        ? "Event Published Successfully"
-        : "Event Unpublished Successfully";
-      
-      setSnackbarMessage(successMessage);
-      setSnackbarSeverity("success");
-      setSnackbarOpen(true);
-      
-      setPublishDialogOpen(false);
+  
+      await updateEvent(eventID, payload);
+      showSuccess("Event Details Saved Successfully");
     } catch (error) {
-      // Handle the error case
-      const errorMessage = currentEventStatus === 'live'
-        ? "Failed to unpublish event. Please try again."
-        : "Failed to publish event. Please try again.";
-      
-      // Revert the local state since the API call failed
-      setEventStatus(currentEventStatus);
-      setCookie("event_status", currentEventStatus);
-      
-      setSnackbarMessage(errorMessage);
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
-      
-      console.error("Error toggling event status:", error);
+      showError("Failed to save event details. Please try again.");
+      console.error("Error saving event details:", error);
     }
   };
 
+  // Navigate back to events page
+  const goBack = () => {
+    clearSignedUrls();
+    router.push(`/events`);
+  };
+
+  // Load event data
   useEffect(() => {
-    setLoading(true);
     setLoading(true);
 
     fetchEvent()
       .then((data: any) => {
         console.log("Fetch Event Response:", data);
 
-        // Use the data returned from fetchEvent directly instead of relying on the store
+        // Use the data returned from fetchEvent directly
         if (data) {
           setEvent(data);
           setEventTitle(data?.title || "");
@@ -394,9 +411,7 @@ const EditEventPage = () => {
           setEndDateTime(currentEvent?.endTime || null);
           setMealsProvided(currentEvent?.mealsProvided || false);
           setTransportProvided(currentEvent?.transportProvided || false);
-          setAccommodationProvided(
-            currentEvent?.accommodationProvided || false
-          );
+          setAccommodationProvided(currentEvent?.accommodationProvided || false);
         }
       })
       .catch((err) => {
@@ -408,51 +423,15 @@ const EditEventPage = () => {
       setLocalEventPhotos(signedUrls?.eventPhotos || []);
       setLocalEventPoster(signedUrls?.eventPoster || null);
       setLocalEventVideo(signedUrls?.eventVideo || null);
-      console.log("Signed URLs:", signedUrls);
     }
 
     setTimeout(() => {
       setLoading(false);
+      setFadeIn(true);
     }, 1000);
   }, [cookies, signedUrls?.eventPhotos]);
 
-  const handleSaveDetails = async () => {
-    const payload = {
-      ...currentEvent,
-      accommodation_provided: accommodationProvided,
-      description: description,
-      end_time: endDateTime,
-      organizer: userName,
-      // event_photos: {},
-      // event_poster: "",
-      // event_status: "",
-      // event_video: "",
-      location: location,
-      meals_provided: mealsProvided,
-      status: eventStatus,
-      // roles: {},
-      startDateTime: startDateTime,
-      eventTitle: eventTitle,
-      transport_provided: transportProvided,
-      updated_at: new Date().toISOString(),
-    };
-
-    console.log("Event Payload:", payload);
-
-    await updateEvent(eventID, payload);
-
-    setSnackbarMessage("Event Details Saved Successfully");
-    setSnackbarSeverity("success");
-    setSnackbarOpen(true);
-  };
-
-  const goBack = () => {
-    clearSignedUrls();
-    router.push(`/events`);
-  };
-
-  if (!event) return null;
-
+  // Loading state
   if (loading) {
     return (
       <Box
@@ -469,243 +448,321 @@ const EditEventPage = () => {
     );
   }
 
+  // Media loading state
   if (eventMediaLoading) return <UpdatingEventMedia />;
 
+  // No event data
+  if (!event) return null;
+
   return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: "white",
-        }}
-      >
-        <Header />
-        <Box
+    <Box sx={{ backgroundColor: "#f8f9fa", minHeight: "100vh", pb: 10 }}>
+      <Header />
+
+      {/* Event Header */}
+      <Box sx={{ backgroundColor: "#977342", py: 3, mb: 4 }}>
+        <Container maxWidth="lg">
+          <Fade in={fadeIn} timeout={800}>
+            <Box>
+              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                <IconButton
+                  onClick={goBack}
+                  sx={{
+                    color: "white",
+                    mr: 1,
+                    "&:hover": {
+                      backgroundColor: "rgba(255,255,255,0.1)",
+                    },
+                  }}
+                >
+                  <ArrowBackIosNewIcon fontSize="small" />
+                </IconButton>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "rgba(255,255,255,0.8)",
+                    cursor: "pointer",
+                    "&:hover": { color: "white" },
+                  }}
+                  onClick={goBack}
+                >
+                  Back to Events
+                </Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <Box>
+                  <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+                    <CalendarTodayIcon sx={{ color: "white", mr: 1.5, fontSize: "1.2rem" }} />
+                    <Typography variant="h5" sx={{ color: "white", fontWeight: 600 }}>
+                      {eventTitle || "Untitled Event"}
+                    </Typography>
+                  </Box>
+                  <Chip
+                    label={currentEventStatus === "live" ? "Published" : "Draft"}
+                    size="small"
+                    sx={{
+                      backgroundColor: currentEventStatus === "live" ? "#4caf5033" : "#ff980033",
+                      color: currentEventStatus === "live" ? "#4CAF50" : "#FF9800",
+                      fontWeight: 600,
+                      "& .MuiChip-label": { px: 1 },
+                    }}
+                  />
+                </Box>
+
+                {/* Action Buttons */}
+                <Box sx={{ display: "flex", gap: 2 }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<SaveIcon />}
+                    onClick={handleSaveEvent}
+                    sx={{
+                      backgroundColor: "rgba(255,255,255,0.9)",
+                      color: "#977342",
+                      borderColor: "transparent",
+                      display: { xs: "none", sm: "flex" },
+                      "&:hover": {
+                        backgroundColor: "white",
+                        borderColor: "transparent",
+                      },
+                    }}
+                  >
+                    Save Event
+                  </Button>
+
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={handleOpenDeleteDialog}
+                    sx={{
+                      backgroundColor: "rgba(255,255,255,0.1)",
+                      color: "white",
+                      borderColor: "rgba(255,255,255,0.3)",
+                      display: { xs: "none", sm: "flex" },
+                      "&:hover": {
+                        backgroundColor: "rgba(255,255,255,0.2)",
+                        borderColor: "rgba(255,255,255,0.5)",
+                      },
+                    }}
+                  >
+                    Delete
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    startIcon={<CheckCircleIcon />}
+                    onClick={handleOpenPublishDialog}
+                    sx={{
+                      backgroundColor: currentEventStatus === "draft" ? "#4CAF50" : "#FF9800",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: currentEventStatus === "draft" ? "#3b9c45" : "#e88c00",
+                      },
+                    }}
+                  >
+                    {currentEventStatus === "draft" ? "Publish" : "Unpublish"}
+                  </Button>
+                </Box>
+              </Box>
+            </Box>
+          </Fade>
+        </Container>
+      </Box>
+
+      <Container maxWidth="lg">
+        <Fade in={fadeIn} timeout={1000}>
+          <Paper
+            elevation={0}
+            sx={{
+              borderRadius: "16px",
+              mb: 4,
+              boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+              overflow: "visible",
+              position: "relative",
+            }}
+          >
+            {/* Section Navigation Indicator */}
+            <Box
+              sx={{
+                p: 3,
+                backgroundColor: "#f5f5f5",
+                borderBottom: "1px solid rgba(0,0,0,0.08)",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 4,
+                  justifyContent: "center",
+                }}
+              >
+                {steps.map((step, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      opacity: currentPage === index ? 1 : 0.5,
+                      transition: "opacity 0.3s",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: currentPage === index ? "#977342" : "rgba(0,0,0,0.1)",
+                        color: currentPage === index ? "white" : "text.secondary",
+                        mb: 1,
+                      }}
+                    >
+                      {index + 1}
+                    </Box>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: currentPage === index ? 600 : 400,
+                        color: currentPage === index ? "#977342" : "text.secondary",
+                      }}
+                    >
+                      {step.label}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+
+            {/* Content Area */}
+            <Box sx={{ p: { xs: 0, sm: 2 } }}>
+              {currentPage === 0 && (
+                <EventDetails
+                  eventTitle={eventTitle || currentEvent?.title}
+                  setEventTitle={setEventTitle}
+                  description={description || currentEvent?.description}
+                  setDescription={setDescription}
+                  location={location || currentEvent?.location}
+                  setLocation={setLocation}
+                  startDateTime={startDateTime || currentEvent?.startTime}
+                  setStartDateTime={setStartDateTime}
+                  endDateTime={endDateTime || currentEvent?.endTime}
+                  setEndDateTime={setEndDateTime}
+                  mealsProvided={mealsProvided || currentEvent?.mealsProvided}
+                  setMealsProvided={setMealsProvided}
+                  transportProvided={transportProvided || currentEvent?.transportProvided}
+                  setTransportProvided={setTransportProvided}
+                  accommodationProvided={accommodationProvided || currentEvent?.accommodationProvided}
+                  setAccommodationProvided={setAccommodationProvided}
+                  error={error}
+                  handleSaveSection={handleSaveDetails}
+                />
+              )}
+
+              {currentPage === 1 && (
+                <EventMedia
+                  eventPhotos={localEventPhotos || []}
+                  eventPoster={localEventPoster || ""}
+                  eventVideo={localEventVideo || ""}
+                  onImageDelete={handleDeleteImage}
+                  onImageUpload={handleImageUpload}
+                  onPosterDelete={handlePosterDelete}
+                  onPosterUpload={handlePosterUpload}
+                  onVideoDelete={handleVideoDelete}
+                  onVideoUpload={handleVideoUpload}
+                  onSaveEventMedia={handleSaveEventMedia}
+                  imagesToBeAdded={imagesToBeAdded}
+                  imagesToDelete={imagesToDelete}
+                />
+              )}
+
+              {currentPage === 2 && (
+                <EventRoles event={event} />
+              )}
+            </Box>
+          </Paper>
+        </Fade>
+      </Container>
+
+      {/* Keep original vertical navigation buttons */}
+      {currentPage > 0 && (
+        <Fab
+          color="primary"
+          onClick={handleUp}
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#fff",
-            padding: 4,
+            position: "fixed",
+            bottom: 96,
+            right: 16,
+            backgroundColor: "white",
+            color: "#977342",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+            "&:hover": {
+              backgroundColor: "#f5f5f5",
+            },
           }}
         >
-          <IconButton
-            onClick={goBack}
-            sx={{
-              fontFamily: "Inter",
-              color: "#977342",
-              "&:hover": {
-                color: "#CEAB76",
-              },
-            }}
-          >
-            <ArrowBackIosNewIcon />
-            <Typography
-              sx={{
-                fontSize: "12px",
-                ml: 1,
-              }}
-            >
-              Go Back
-            </Typography>
-          </IconButton>
-          <Typography variant="h5">Event Management</Typography>
-          <br />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              gap: 2,
-            }}
-          >
-            {/* Save Event Button */}
-            <Button
-              variant="contained"
-              startIcon={<SaveIcon />}
-              sx={{
-                backgroundColor: "#000", // Default Material-UI blue
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#111",
-                },
-              }}
-              onClick={handleSaveEvent}
-            >
-              <Typography
-                sx={{
-                  display: { xs: "none", sm: "flex", md: "flex" },
-                  fontSize: { xs: null, sm: "10px", md: "14px" },
-                }}
-              >
-                Save Event
-              </Typography>
-            </Button>
-
-            {/* Delete Event Button */}
-            <Button
-              variant="contained"
-              startIcon={<DeleteIcon />}
-              sx={{
-                backgroundColor: "#982d28",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#d44a3b",
-                },
-              }}
-              onClick={DeleteEvent}
-            >
-              <Typography
-                sx={{
-                  display: { xs: "none", sm: "flex", md: "flex" },
-                  fontSize: { xs: null, sm: "10px", md: "14px" },
-                }}
-              >
-                Delete Event
-              </Typography>
-            </Button>
-            {/* Delete Event Button */}
-            <Button
-              variant="contained"
-              startIcon={<CheckCircleIcon />}
-              sx={{
-                backgroundColor: "#1d8037",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#1d6037",
-                },
-              }}
-              onClick={approveEvent}
-            >
-              <Typography
-                sx={{
-                  display: { xs: "none", sm: "flex", md: "flex" },
-                  fontSize: { xs: null, sm: "10px", md: "14px" },
-                }}
-              >
-                {currentEventStatus === "draft" ? `Approve Event` : 'Unpublish Event'}
-              </Typography>
-            </Button>
-          </Box>
-        </Box>
-        {currentPage === 0 && (
-          <EventDetails
-            eventTitle={eventTitle ? eventTitle : currentEvent?.title}
-            setEventTitle={setEventTitle}
-            description={description ? description : currentEvent?.description}
-            setDescription={setDescription}
-            location={location ? location : currentEvent?.location}
-            setLocation={setLocation}
-            startDateTime={
-              startDateTime ? startDateTime : currentEvent?.startTime
-            }
-            setStartDateTime={setStartDateTime}
-            endDateTime={endDateTime ? endDateTime : currentEvent?.endTime}
-            setEndDateTime={setEndDateTime}
-            mealsProvided={
-              mealsProvided ? mealsProvided : currentEvent?.mealsProvided
-            }
-            setMealsProvided={setMealsProvided}
-            transportProvided={
-              transportProvided
-                ? transportProvided
-                : currentEvent?.transportProvided
-            }
-            setTransportProvided={setTransportProvided}
-            accommodationProvided={
-              accommodationProvided
-                ? accommodationProvided
-                : currentEvent?.accommodationProvided
-            }
-            setAccommodationProvided={setAccommodationProvided}
-            error={error}
-            handleSaveSection={handleSaveDetails}
-          />
-        )}
-        {currentPage === 1 && (
-          <EventMedia
-            eventPhotos={localEventPhotos || []}
-            eventPoster={localEventPoster || ""}
-            eventVideo={localEventVideo || ""}
-            onImageDelete={handleDeleteImage}
-            onImageUpload={handleImageUpload}
-            onPosterDelete={handlePosterDelete}
-            onPosterUpload={handlePosterUpload}
-            onVideoDelete={handleVideoDelete}
-            onVideoUpload={handleVideoUpload}
-            onSaveEventMedia={handleSaveEventMedia}
-            imagesToBeAdded={imagesToBeAdded}
-            imagesToDelete={imagesToDelete}
-          />
-        )}
-        {currentPage === 2 && <EventRoles event={event} />}
-
-        {/* Floating Navigation Button */}
-        {currentPage > 0 && (
-          <Fab
-            color="primary"
-            onClick={handleUp}
-            sx={{
-              position: "fixed",
-              bottom: 96,
-              right: 16,
+          <ArrowUpwardIcon />
+        </Fab>
+      )}
+      
+      {currentPage < 2 && (
+        <Fab
+          color="primary"
+          onClick={handleDown}
+          sx={{
+            position: "fixed",
+            bottom: 16,
+            right: 16,
+            backgroundColor: "#977342",
+            color: "white",
+            boxShadow: "0 4px 12px rgba(151, 115, 66, 0.3)",
+            "&:hover": {
               backgroundColor: "#CEAB76",
-              "&:hover": {
-                color: "#fff",
-                backgroundColor: "#977342",
-              },
-            }}
-          >
-            {<ArrowUpwardIcon />}
-          </Fab>
-        )}
-        {currentPage < 2 && (
-          <Fab
-            color="primary"
-            onClick={handleDown}
-            sx={{
-              position: "fixed",
-              bottom: 16,
-              right: 16,
-              backgroundColor: "#ceab76",
-              "&:hover": {
-                color: "#fff",
-                backgroundColor: "#977342",
-              },
-            }}
-          >
-            {<ArrowDownwardIcon />}
-          </Fab>
-        )}
-        {/* Snackbar for feedback */}
-        <Snackbar
-          open={snackbarOpen}
-          autoHideDuration={6000}
-          onClose={handleSnackbarClose}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            },
+          }}
         >
-          <Alert
-            onClose={handleSnackbarClose}
-            severity={snackbarSeverity === "success" ? "success" : "error"}
-            sx={{ width: "100%" }}
-          >
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
-        <DeleteEventDialog
-          open={deleteDialogOpen}
-          eventTitle={eventTitle}
-          onClose={handleCloseDeleteDialog}
-          onConfirm={handleConfirmDelete}
-        />
-        <PublishEventDialog
-          open={publishDialogOpen}
-          eventTitle={eventTitle}
-          isCurrentlyPublished={currentEventStatus === "live" ? true : false}
-          onClose={handleClosePublishDialog}
-          onConfirm={handleConfirmPublishToggle}
-        />
-      </Box>
-    </>
+          <ArrowDownwardIcon />
+        </Fab>
+      )}
+
+      {/* Notifications */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity={snackbarSeverity === "success" ? "success" : "error"}
+          sx={{ 
+            width: "100%",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+          }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
+      {/* Dialogs */}
+      <DeleteEventDialog
+        open={deleteDialogOpen}
+        eventTitle={eventTitle}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={handleConfirmDelete}
+      />
+      
+      <PublishEventDialog
+        open={publishDialogOpen}
+        eventTitle={eventTitle}
+        isCurrentlyPublished={currentEventStatus === "live"}
+        onClose={handleClosePublishDialog}
+        onConfirm={handleConfirmPublishToggle}
+      />
+    </Box>
   );
 };
 
