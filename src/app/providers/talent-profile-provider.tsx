@@ -12,14 +12,17 @@ import { csrfRestCall } from "@/services/csrfRestCall";
 
 interface TalentProfileContextType {
   talentProfile: TalentProfileData | any | null;
+  talentProfiles: any[] | null;
   signedUrls: Record<string, string> | null;
+  profileSignedUrls: Record<string, string> | null;
   fetchTalentProfile: () => Promise<void>;
-  fetchTalentProfiles: () => Promise<void>;
+  fetchTalentProfiles: () => Promise<any>;
   deleteFiles: (filePaths: string[]) => Promise<void>;
   updateTalentProfile: (
     profileId: string,
     data: TalentProfileData
   ) => Promise<void>;
+  fetchProfileSignedUrls: (profiles: any[]) => Promise<Record<string, string>>;
 }
 
 const TalentProfileContext = createContext<TalentProfileContextType | null>(
@@ -35,9 +38,9 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
   const userName = cookies["username"];
   const csrfToken = cookies["csrftoken"];
 
-  const [signedUrls, setSignedUrls] = useState<Record<string, string> | null>(
-    null
-  );
+  const [signedUrls, setSignedUrls] = useState<Record<string, string> | null>(null);
+  const [profileSignedUrls, setProfileSignedUrls] = useState<Record<string, string> | null>(null);
+  const [talentProfiles, setTalentProfiles] = useState<any[] | null>(null);
 
   const {
     setPersonalInfo,
@@ -121,10 +124,19 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Talent Profiles Response", response);
       return response;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       console.log('Talent profiles fetched successfully', data);
-      // You can add additional state updates here if needed
-      // For example: setTalentProfiles(data);
+      setTalentProfiles(data);
+      
+      // Fetch signed URLs for talent profiles' headshots
+      if (Array.isArray(data) && data.length > 0) {
+        try {
+          const urls = await fetchProfileSignedUrls(data);
+          setProfileSignedUrls(urls);
+        } catch (error) {
+          console.error("Error fetching profile signed URLs:", error);
+        }
+      }
     },
     onError: (error) => {
       console.error('Error fetching talent profiles: ', error);
@@ -160,7 +172,7 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const fetchTalentProfiles = async () => {
-    await fetchTalentProfilesMutation.mutateAsync();
+    return await fetchTalentProfilesMutation.mutateAsync();
   };
 
   const updateTalentProfile = async (
@@ -174,6 +186,80 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     await deleteFilesMutation.mutateAsync(filePaths);
   };
 
+  // New function to fetch signed URLs for talent profile headshots
+  const fetchProfileSignedUrls = async (profiles: any[]): Promise<Record<string, string>> => {
+    if (!profiles || profiles.length === 0) {
+      return {};
+    }
+    
+    console.log("Fetching signed URLs for talent profiles:", profiles);
+    
+    // Extract headshot paths from profiles with proper typing
+    const headshotPaths: Record<string, string> = profiles.reduce((acc: Record<string, string>, profile) => {
+      if (profile && profile.id && profile.headshot && typeof profile.headshot === 'string') {
+        acc[profile.id] = profile.headshot;
+      }
+      return acc;
+    }, {});
+
+    // Skip if no headshots to fetch
+    if (Object.keys(headshotPaths).length === 0) {
+      console.log("No profile headshots to fetch");
+      return {};
+    }
+
+    try {
+      // Prepare the payload for the API
+      const filenames = Object.values(headshotPaths).filter((path): path is string => Boolean(path));
+      
+      console.log("Requesting signed URLs for headshot paths:", filenames);
+      
+      const response = await csrfRestCall(
+        `/portal/talent-assets/get-signed-urls/`,
+        "POST",
+        {
+          filenames: {
+            profileHeadshots: filenames,
+          },
+        },
+        accessToken,
+        csrfToken
+      );
+      
+      console.log("Profile Headshot Signed URLs response:", response);
+      
+      // Get the signed URLs from the response
+      const signedUrlsResponse = response?.signed_urls || {};
+      console.log("Signed URLs Response:", signedUrlsResponse);
+      
+      // Check if we have the expected array structure
+      if (!signedUrlsResponse.profileHeadshots || !Array.isArray(signedUrlsResponse.profileHeadshots)) {
+        console.error("Unexpected signed URLs response format", signedUrlsResponse);
+        return {};
+      }
+      
+      // Map the profile IDs to their respective signed URLs using array index
+      const profileUrlMap: Record<string, string> = {};
+      console.log("Profile URL Map initialized:", profileUrlMap);
+      
+      // Convert headshotPaths to array for indexing
+      const profileIds = Object.keys(headshotPaths);
+      
+      // Map each profile ID to the corresponding URL by index
+      profileIds.forEach((profileId, index) => {
+        if (index < signedUrlsResponse.profileHeadshots.length) {
+          profileUrlMap[profileId] = signedUrlsResponse.profileHeadshots[index];
+        }
+      });
+      
+      console.log("Mapped profile IDs to signed URLs:", profileUrlMap);
+      return profileUrlMap;
+    } catch (error) {
+      console.error("Error fetching profile signed URLs:", error);
+      return {};
+    }
+  };
+
   useEffect(() => {
     const fetchSignedUrls = async () => {
       if (fetchTalentProfileQuery.data) {
@@ -185,7 +271,7 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
           governmentIdBack: talentProfile.government_id_back,
           portfolioPdf: talentProfile.portfolio_pdf,
           portfolioVideo: talentProfile.portfolio_video,
-          additionalImages: talentProfile.additional_images,
+          additionalImages: talentProfile.additional_images || [],
         };
 
         console.log("Talent Assets:", talentAssets);
@@ -222,11 +308,14 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     <TalentProfileContext.Provider
       value={{
         talentProfile: fetchTalentProfileQuery.data,
+        talentProfiles,
         signedUrls,
+        profileSignedUrls,
         fetchTalentProfile,
         fetchTalentProfiles,
         updateTalentProfile,
         deleteFiles,
+        fetchProfileSignedUrls
       }}
     >
       {children}

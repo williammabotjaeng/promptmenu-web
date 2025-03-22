@@ -1,93 +1,208 @@
-import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import * as React from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Button,
+  Chip,
+  Skeleton,
+} from '@mui/material';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import { useRouter } from 'next/navigation';
 
-type Profile = {
+interface ProfileProps {
+  id: string | number;
   name: string;
   location: string;
   age: number;
   skills: string[];
   imageUrl: string;
   isFeatured?: boolean;
-};
+  gender?: string;
+  ethnicity?: string;
+  height?: number;
+  weight?: number;
+}
 
-type SidebarProfileCardProps = {
-  profile: Profile;
-};
+interface SidebarProfileCardProps {
+  profile: ProfileProps;
+}
 
-function SidebarProfileCard({ profile }: SidebarProfileCardProps) {
+const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
+  const router = useRouter();
+  const [imageLoaded, setImageLoaded] = React.useState(false);
+  const [imageError, setImageError] = React.useState(false);
+  
+  const handleViewProfile = () => {
+    router.push(`/talent/${profile.id}`);
+  };
+
   return (
-    <Box sx={{ width: { xs: '100%', md: '25%' }, margin: '0 auto' }}>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          backgroundColor: 'white',
-          borderRadius: 2,
-          boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-          overflow: 'hidden',
-        }}
-      >
-        <Box sx={{ position: 'relative', textAlign: 'center' }}>
-          <img
-            loading="lazy"
-            src={profile.imageUrl}
-            alt={`${profile.name}'s profile`}
-            style={{
-              width: '100%',
-              height: 'auto',
-              objectFit: 'cover',
-             //  paddingBottom: profile.isFeatured ? '60%' : '0', // Adjust padding for featured
+    <Card 
+      sx={{ 
+        width: { xs: '100%', sm: '48%', md: '31%', lg: '23%' },
+        borderRadius: '12px',
+        overflow: 'hidden',
+        transition: 'transform 0.3s, box-shadow 0.3s',
+        '&:hover': {
+          transform: 'translateY(-5px)',
+          boxShadow: '0 10px 20px rgba(0,0,0,0.1)'
+        }
+      }}
+      elevation={2}
+    >
+      <Box sx={{ position: 'relative' }}>
+        {!imageLoaded && !imageError && (
+          <Skeleton 
+            variant="rectangular" 
+            height={200} 
+            animation="wave" 
+            sx={{ backgroundColor: 'rgba(151, 115, 66, 0.1)' }} 
+          />
+        )}
+        
+        <CardMedia
+          component="img"
+          image={imageError ? '/fallback-profile-image.jpg' : profile.imageUrl}
+          alt={`${profile.name}'s profile photo`}
+          sx={{ 
+            height: 200, 
+            objectFit: 'cover',
+            display: imageLoaded || imageError ? 'block' : 'none'
+          }}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => {
+            setImageError(true);
+            setImageLoaded(true);
+          }}
+        />
+        
+        {profile.isFeatured && (
+          <Chip
+            label="FEATURED"
+            color="primary"
+            size="small"
+            sx={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              fontWeight: '600',
+              letterSpacing: '0.5px',
+              fontSize: '11px',
+              backgroundColor: '#977342',
+              zIndex: 1
             }}
           />
-          {profile.isFeatured && (
-            <Box sx={{ position: 'absolute', top: 10, right: 10, backgroundColor: '#977342', borderRadius: 1, padding: '4px 8px' }}>
-              <Typography variant="body2" color="white">Featured</Typography>
-            </Box>
-          )}
-        </Box>
-        <Box sx={{ padding: 2 }}>
-          <Typography variant="h6" color="black">{profile.name}</Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/00d8c0366647edaf309fbc6974b0415521723df62b004f5d787448d6853367f2?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt=""
-              style={{ width: '16px', height: '16px', marginRight: 1 }}
-            />
-            <Typography variant="body2" color="gray">{profile.location}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/35205be8a661dbef8a095fbb155b2227a0c74a1ebee5b9540a40b165942278c1?apiKey=7fae980a988640eea8add1e49a5d542e&"
-              alt=""
-              style={{ width: '16px', height: '16px', marginRight: 1 }}
-            />
-            <Typography variant="body2" color="gray">Age: {profile.age}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, marginTop: 2 }}>
-            {profile.skills.map((skill, index) => (
-              <Box key={index} sx={{ padding: '4px 8px', backgroundColor: '#f0f0f0', borderRadius: 1 }}>
-                {skill}
-              </Box>
-            ))}
-          </Box>
-          <Button
-            variant="contained"
-            sx={{
-              marginTop: 2,
-              backgroundColor: '#977342',
-              color: 'white',
-              width: '100%',
-              borderRadius: 1,
+        )}
+      </Box>
+      
+      <CardContent sx={{ padding: 2 }}>
+        <Typography 
+          variant="h6" 
+          component="h2" 
+          sx={{ 
+            fontWeight: 600, 
+            fontSize: '1.1rem',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          {profile.name}
+        </Typography>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.5, mb: 1.5 }}>
+          <LocationOnOutlinedIcon sx={{ color: '#777', fontSize: 16, mr: 0.5 }} />
+          <Typography 
+            variant="body2" 
+            color="text.secondary"
+            sx={{ 
+              fontSize: '0.85rem',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap'
             }}
           >
-            View Profile
-          </Button>
+            {profile.location}
+          </Typography>
         </Box>
-      </Box>
-    </Box>
+        
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1.5 }}>
+          <Typography 
+            variant="body2" 
+            color="text.secondary" 
+            sx={{ fontSize: '0.85rem' }}
+          >
+            {profile.age} years
+          </Typography>
+          
+          {profile.gender && (
+            <Typography 
+              variant="body2" 
+              color="text.secondary" 
+              sx={{ fontSize: '0.85rem' }}
+            >
+              {profile.gender}
+            </Typography>
+          )}
+        </Box>
+        
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75, mb: 2, minHeight: '28px' }}>
+          {profile.skills && Array.isArray(profile.skills) && profile.skills.slice(0, 3).map((skill, index) => (
+            <Chip
+              key={index}
+              label={String(skill)} // Ensure the label is always a string
+              size="small"
+              sx={{
+                fontSize: '0.7rem',
+                height: '22px',
+                backgroundColor: 'rgba(151, 115, 66, 0.1)',
+                color: '#977342',
+                '& .MuiChip-label': {
+                  px: 1
+                }
+              }}
+            />
+          ))}
+          
+          {profile.skills && Array.isArray(profile.skills) && profile.skills.length > 3 && (
+            <Chip
+              label={`+${profile.skills.length - 3}`}
+              size="small"
+              sx={{
+                fontSize: '0.7rem',
+                height: '22px',
+                backgroundColor: 'rgba(151, 115, 66, 0.05)',
+                color: '#977342',
+                '& .MuiChip-label': {
+                  px: 1
+                }
+              }}
+            />
+          )}
+        </Box>
+        
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={handleViewProfile}
+          sx={{
+            textTransform: 'none',
+            backgroundColor: '#977342',
+            '&:hover': {
+              backgroundColor: '#7D5F35',
+            },
+            fontSize: '0.85rem',
+            borderRadius: '8px',
+          }}
+        >
+          View Profile
+        </Button>
+      </CardContent>
+    </Card>
   );
-}
+};
 
 export default SidebarProfileCard;
