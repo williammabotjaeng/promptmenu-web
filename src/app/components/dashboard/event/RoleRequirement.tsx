@@ -133,7 +133,7 @@ const RoleRequirement: React.FC = () => {
                   width: "24px",
                   height: "24px",
                   marginRight: "8px",
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23977342'%3E%3Cpath d='M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm1 14h-2v-2h2v2zm0-3h-2V8h2v6z'/%3E%3C/svg%3E")`
+                  // backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23977342'%3E%3Cpath d='M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm1 14h-2v-2h2v2zm0-3h-2V8h2v6z'/%3E%3C/svg%3E")`
                 }
               },
               "& .MuiOutlinedInput-notchedOutline": {

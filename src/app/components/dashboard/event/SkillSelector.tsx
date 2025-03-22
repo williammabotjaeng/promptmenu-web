@@ -21,6 +21,7 @@ const skills = [
   { name: "Event Organization" },
   { name: "Site Management" },
   { name: "Journalism" },
+  { name: "Dancer" }
 ];
 
 const SkillSelector = () => {

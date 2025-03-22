@@ -58,6 +58,7 @@ const skills: SkillType[] = [
   { name: "Event Organization" },
   { name: "Site Management" },
   { name: "Journalism" },
+  { name: "Dancer" }
 ];
 
 const SkillsSelection: React.FC<OnboardingStepProps> = ({
