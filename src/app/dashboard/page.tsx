@@ -490,7 +490,9 @@ const Dashboard = () => {
                     <Grid container spacing={2}>
                       {[
                         { icon: <AddIcon />, label: "New Event", action: handleCreateNewJob, color: "#4CAF50" },
-                        { icon: <VisibilityIcon />, label: "View Talents", action: () => {}, color: "#2196F3" },
+                        { icon: <VisibilityIcon />, label: "View Talents", action: () => {
+                          router.push('/talent')
+                        }, color: "#2196F3" },
                       ].map((action, index) => (
                         <Grid item xs={6} key={index}>
                           <Button
