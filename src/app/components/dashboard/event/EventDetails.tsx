@@ -1,57 +1,143 @@
 import * as React from 'react';
 import { DateTimePicker } from '@/components/dashboard/event/DateTimePicker';
 import { CheckboxItem } from '@/components/dashboard/event/CheckBoxItem';
-import { TextField, Button, Box, Typography, Paper } from '@mui/material';
+import { TextField, Button, Box, Typography, Paper, Alert } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HeaderWithProgressBar from './HeaderWithProgressBar';
 import { PostEventStepProps } from '@/types/Props/PostEventStepProps';
 import useEventStore from '@/state/use-event-store';
 import { useStore } from 'zustand';
 import { useEffect, useState } from 'react';
+import { Filter } from 'bad-words';
 
 export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
- 
   const { eventDetails, setEventDetails } = useStore(useEventStore);
+  const profanityFilter = new Filter();
 
-  const [eventTitle, setEventTitle] = React.useState<string>(eventDetails?.eventTitle || '');
-  const [description, setDescription] = React.useState<string>(eventDetails?.description || '');
-  const [location, setLocation] = React.useState<string>(eventDetails?.eventTitle || '');
-  const [startDateTime, setStartDateTime] = React.useState<string>(eventDetails?.startDateTime || '');
-  const [endDateTime, setEndDateTime] = React.useState<string>(eventDetails?.endDateTime || '');
-  const [error, setError] = React.useState<string | null>(null);
-  const [mealsProvided, setMealsProvided] = useState<boolean | null>(eventDetails?.mealsProvided || false);
-  const [transportProvided, setTransportProvided] = useState<boolean | null>(eventDetails?.transportProvided || false);
-  const [accommodationProvided, setAccommodationProvided] = useState<boolean | null>(eventDetails?.accommodationProvided || false);
+  // Form state
+  const [eventTitle, setEventTitle] = useState(eventDetails?.eventTitle || '');
+  const [description, setDescription] = useState(eventDetails?.description || '');
+  const [location, setLocation] = useState(eventDetails?.location || '');
+  const [startDateTime, setStartDateTime] = useState(eventDetails?.startDateTime || '');
+  const [endDateTime, setEndDateTime] = useState(eventDetails?.endDateTime || '');
+  const [mealsProvided, setMealsProvided] = useState(eventDetails?.mealsProvided || false);
+  const [transportProvided, setTransportProvided] = useState(eventDetails?.transportProvided || false);
+  const [accommodationProvided, setAccommodationProvided] = useState(eventDetails?.accommodationProvided || false);
 
-  const handleContinue = () => {
-    if (!eventTitle || !description || !location || !startDateTime || !endDateTime) {
-      setError('Please fill out all fields before proceeding.');
-      return;
-    }
-    setError(null); 
-    setEventDetails({
-      eventTitle,
-      description,
-      location,
-      startDateTime,
-      endDateTime,
-      mealsProvided,
-      transportProvided,
-      accommodationProvided,
-    });
-    
-    setActiveStep(activeStep + 1);
+  // Validation state
+  const [errors, setErrors] = useState({
+    title: '',
+    description: '',
+    location: '',
+    dateTime: '',
+    general: '',
+  });
+
+  // Check for profanity in text
+  const hasProfanity = (text) => {
+    if (!text) return false;
+    return profanityFilter.isProfane(text);
   };
 
+  // Validate time difference is at least one hour
+  const validateTimeGap = (start, end) => {
+    if (!start || !end) return true; // Skip validation if fields are empty
+    
+    try {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      
+      // Check for valid dates
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        return false;
+      }
+      
+      // Calculate difference in milliseconds and check if >= 1 hour
+      return (endDate.getTime() - startDate.getTime()) >= 3600000; // 3600000ms = 1 hour
+    } catch (error) {
+      console.error("Date validation error:", error);
+      return false;
+    }
+  };
+
+  // Validate all form fields
+  const validateForm = () => {
+    const newErrors = {
+      title: '',
+      description: '',
+      location: '',
+      dateTime: '',
+      general: '',
+    };
+    
+    let isValid = true;
+
+    // Required fields check
+    if (!eventTitle.trim()) {
+      newErrors.title = 'Event title is required';
+      isValid = false;
+    } else if (hasProfanity(eventTitle)) {
+      newErrors.title = 'Please use appropriate language in the title';
+      isValid = false;
+    }
+
+    if (!description.trim()) {
+      newErrors.description = 'Event description is required';
+      isValid = false;
+    } else if (hasProfanity(description)) {
+      newErrors.description = 'Please use appropriate language in the description';
+      isValid = false;
+    }
+
+    if (!location.trim()) {
+      newErrors.location = 'Location is required';
+      isValid = false;
+    }
+
+    if (!startDateTime || !endDateTime) {
+      newErrors.dateTime = 'Both start and end date/time are required';
+      isValid = false;
+    } else if (!validateTimeGap(startDateTime, endDateTime)) {
+      newErrors.dateTime = 'Event must be at least one hour long';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  // Handle form submission
+  const handleContinue = () => {
+    if (validateForm()) {
+      // Update store with validated data
+      setEventDetails({
+        eventTitle,
+        description,
+        location,
+        startDateTime,
+        endDateTime,
+        mealsProvided,
+        transportProvided,
+        accommodationProvided,
+      });
+      
+      // Proceed to next step
+      setActiveStep(activeStep + 1);
+    }
+  };
+
+  // Load existing data when component mounts or eventDetails changes
   useEffect(() => {
-    setEventTitle(eventDetails.eventTitle);
-    setDescription(eventDetails.description);
-    setLocation(eventDetails.location);
-    setStartDateTime(eventDetails.startDateTime);
-    setEndDateTime(eventDetails.endDateTime);
-    setMealsProvided(eventDetails.mealsProvided);
-    setTransportProvided(eventDetails.transportProvided);
-    setAccommodationProvided(eventDetails.accommodationProvided);
+    if (eventDetails) {
+      setEventTitle(eventDetails.eventTitle || '');
+      setDescription(eventDetails.description || '');
+      setLocation(eventDetails.location || '');
+      setStartDateTime(eventDetails.startDateTime || '');
+      setEndDateTime(eventDetails.endDateTime || '');
+      setMealsProvided(eventDetails.mealsProvided || false);
+      setTransportProvided(eventDetails.transportProvided || false);
+      setAccommodationProvided(eventDetails.accommodationProvided || false);
+    }
   }, [eventDetails]);
 
   return (
@@ -70,6 +156,7 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
     >
       {/* Header with Step Navigation */}
       <HeaderWithProgressBar progressValue={33} />
+      
       <Paper
         elevation={2}
         sx={{
@@ -94,17 +181,37 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
           >
             Create New Event
           </Typography>
+
+          {errors.general && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {errors.general}
+            </Alert>
+          )}
+
           <TextField
             label="Event Title"
             variant="outlined"
             fullWidth
             value={eventTitle}
             onChange={(e) => setEventTitle(e.target.value)}
+            onBlur={() => {
+              if (hasProfanity(eventTitle)) {
+                setErrors({...errors, title: 'Please use appropriate language in the title'});
+              } else if (!eventTitle.trim()) {
+                setErrors({...errors, title: 'Event title is required'});
+              } else {
+                setErrors({...errors, title: ''});
+              }
+            }}
+            error={!!errors.title}
+            helperText={errors.title}
             sx={{ marginBottom: 2 }}
           />
+          
           <Typography variant="body1" sx={{ marginBottom: 1, color: '#374151' }}>
             Description
           </Typography>
+          
           <TextField
             multiline
             rows={4}
@@ -112,16 +219,38 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
             fullWidth
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            onBlur={() => {
+              if (hasProfanity(description)) {
+                setErrors({...errors, description: 'Please use appropriate language in the description'});
+              } else if (!description.trim()) {
+                setErrors({...errors, description: 'Event description is required'});
+              } else {
+                setErrors({...errors, description: ''});
+              }
+            }}
+            error={!!errors.description}
+            helperText={errors.description}
             sx={{ marginBottom: 2 }}
           />
+          
           <TextField
             label="Location"
             variant="outlined"
             fullWidth
             value={location}
             onChange={(e) => setLocation(e.target.value)}
+            onBlur={() => {
+              if (!location.trim()) {
+                setErrors({...errors, location: 'Location is required'});
+              } else {
+                setErrors({...errors, location: ''});
+              }
+            }}
+            error={!!errors.location}
+            helperText={errors.location}
             sx={{ marginBottom: 2 }}
           />
+          
           <Box
             sx={{
               display: 'flex',
@@ -133,27 +262,59 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
             <DateTimePicker
               label="Start Date & Time"
               value={startDateTime}
-              onChange={(e) => setStartDateTime(e.target.value)}
+              onChange={(e) => {
+                setStartDateTime(e.target.value);
+                // Check time gap whenever either date changes
+                if (endDateTime) {
+                  if (!validateTimeGap(e.target.value, endDateTime)) {
+                    setErrors({...errors, dateTime: 'Event must be at least one hour long'});
+                  } else {
+                    setErrors({...errors, dateTime: ''});
+                  }
+                }
+              }}
             />
+            
             <DateTimePicker
               label="End Date & Time"
               value={endDateTime}
-              onChange={(e) => setEndDateTime(e.target.value)}
+              onChange={(e) => {
+                setEndDateTime(e.target.value);
+                // Check time gap whenever either date changes
+                if (startDateTime) {
+                  if (!validateTimeGap(startDateTime, e.target.value)) {
+                    setErrors({...errors, dateTime: 'Event must be at least one hour long'});
+                  } else {
+                    setErrors({...errors, dateTime: ''});
+                  }
+                }
+              }}
             />
           </Box>
-          <Box sx={{ marginBottom: 2 }}>
-            <CheckboxItem onChange={(e) => setMealsProvided(e.target.checked)} value={mealsProvided} label="Meals Provided" />
-            <CheckboxItem onChange={(e) => setTransportProvided(e.target.checked)} value={transportProvided} label="Transport Provided" />
-            <CheckboxItem onChange={(e) => setAccommodationProvided(e.target.checked)} value={accommodationProvided} label="Accommodation Provided" />
-          </Box>
-          {error && (
-            <Typography
-              variant="body2"
-              sx={{ color: 'red', marginBottom: 2, fontWeight: 'bold' }}
-            >
-              {error}
+          
+          {errors.dateTime && (
+            <Typography color="error" variant="caption" sx={{ mt: -1, mb: 2, display: 'block' }}>
+              {errors.dateTime}
             </Typography>
           )}
+          
+          <Box sx={{ marginBottom: 2 }}>
+            <CheckboxItem 
+              onChange={(e) => setMealsProvided(e.target.checked)} 
+              value={mealsProvided} 
+              label="Meals Provided" 
+            />
+            <CheckboxItem 
+              onChange={(e) => setTransportProvided(e.target.checked)} 
+              value={transportProvided} 
+              label="Transport Provided" 
+            />
+            <CheckboxItem 
+              onChange={(e) => setAccommodationProvided(e.target.checked)} 
+              value={accommodationProvided} 
+              label="Accommodation Provided" 
+            />
+          </Box>
         </Box>
 
         {/* Submit Button */}
@@ -179,3 +340,5 @@ export const EventDetails: React.FC<PostEventStepProps> = ({ activeStep, setActi
     </Box>
   );
 };
+
+export default EventDetails;
