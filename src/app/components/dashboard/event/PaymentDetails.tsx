@@ -244,7 +244,11 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
           textAlign: "center",
         }}
       >
-        <Button onClick={handleBack} sx={{ color: "#977342", border: "2px solid #977342" }}>
+        <Button onClick={handleBack} sx={{ color: "#977342", border: "2px solid #977342", 
+          "&hover": {
+            color: "white"
+          }
+         }}>
           Go Back
         </Button>
         <Button onClick={handleContinue} sx={{ color: "white", backgroundColor: "#977342" }}>
