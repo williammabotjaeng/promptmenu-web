@@ -22,17 +22,25 @@ const RoleRequirement: React.FC = () => {
   const [openings, setOpenings] = useState(eventRole?.openings || 0);
   const [location, setLocation] = useState(eventRole?.location || "");
   const [animate, setAnimate] = useState(false);
+  const [error, setError] = useState(false);
   
   useEffect(() => {
     setAnimate(true);
   }, []);
 
   const handleOpeningsChange = (event: any) => {
-    setOpenings(event?.target?.value);
-    setEventRole({
-      ...eventRole,
-      openings: event?.target?.value
-    });
+
+    if (event?.target?.value > 0) {
+        setError(false);
+        setOpenings(event?.target?.value);
+
+        setEventRole({
+          ...eventRole,
+          openings: event?.target?.value
+        });
+    } else {
+      setError(true);
+    }
   }
 
   const handleLocation = (event: any) => {
@@ -179,6 +187,7 @@ const RoleRequirement: React.FC = () => {
               variant="outlined"
               value={openings}
               onChange={handleOpeningsChange}
+              error={error}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

@@ -125,6 +125,17 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
     setIsDeadlinesValid(!error);
   };
 
+  useEffect(() => {
+    if (currentEvent && currentEvent.event_poster) {
+      // Update the event role with the poster from current event
+      setEventRole({
+        ...eventRole,
+        eventPoster: currentEvent.event_poster
+      });
+      console.log("Set event poster from currentEvent:", currentEvent.event_poster);
+    }
+  }, [currentEvent]);
+
   const handleSaveRole = async () => {
     // Validate deadlines before saving
     validateDeadlines();
@@ -140,11 +151,6 @@ const EventDeadline: React.FC<PostEventStepProps> = ({
 
     try {
       console.log("Current Event:", eventRole);
-
-      setEventRole({
-        ...eventRole,
-        eventPoster: currentEvent?.event_poster
-      });
 
       const updatedEvent = {
         ...currentEvent,
