@@ -2,21 +2,76 @@
 
 import * as React from "react";
 import { PaymentInput } from "./PaymentInput";
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, FormControlLabel, Switch } from "@mui/material";
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import RoleHeaderWithProgressBar from "./RoleHeaderWithProgressBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useStore } from "zustand";
 import useEventStore from "@/state/use-event-store";
 
 export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
-  const { eventRole, setEventRole } = useStore(useEventStore);
+  const { eventDetails, eventRole, setEventRole } = useStore(useEventStore);
 
   const [hourlyPay, setHourlyPay] = useState<number | string>(eventRole?.hourlyPay || "");
   const [dailyPay, setDailyPay] = useState<number | string>(eventRole?.dailyPay || "");
   const [projectPay, setProjectPay] = useState<number | string>(eventRole?.projectPay || "");
   const [paymentTerms, setPaymentTerms] = useState<string>(eventRole?.paymentTerms || "");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [autoCalculate, setAutoCalculate] = useState<boolean>(true);
+  const [lastChangedField, setLastChangedField] = useState<string | null>(null);
+
+  // Calculate event duration in hours and days
+  const calculateEventDuration = () => {
+    if (!eventDetails.startDateTime || !eventDetails.endDateTime) {
+      return { hours: 8, days: 1 }; // Default values if dates not available
+    }
+
+    const startDate = new Date(eventDetails.startDateTime);
+    const endDate = new Date(eventDetails.endDateTime);
+
+    // Calculate duration in milliseconds
+    const durationMs = endDate.getTime() - startDate.getTime();
+    
+    // Convert to hours (rounded up)
+    const hours = Math.ceil(durationMs / (1000 * 60 * 60));
+    
+    // Convert to days (rounded up to nearest 0.5)
+    const rawDays = durationMs / (1000 * 60 * 60 * 24);
+    const days = Math.ceil(rawDays * 2) / 2; // Round to nearest 0.5
+    
+    return { hours, days };
+  };
+
+  // Get duration when component mounts
+  const { hours: eventHours, days: eventDays } = calculateEventDuration();
+
+  // Calculate rates based on the field that was changed
+  useEffect(() => {
+    if (!autoCalculate || !lastChangedField) return;
+
+    const calculateRates = () => {
+      // Handle each possible input field as the source of truth
+      if (lastChangedField === 'hourlyPay' && hourlyPay !== "") {
+        const hourlyValue = Number(hourlyPay);
+        setDailyPay(Math.round(hourlyValue * 8)); // Assume 8-hour workday
+        setProjectPay(Math.round(hourlyValue * eventHours)); // Total project based on event hours
+      } 
+      else if (lastChangedField === 'dailyPay' && dailyPay !== "") {
+        const dailyValue = Number(dailyPay);
+        setHourlyPay(Math.round(dailyValue / 8)); // Derive hourly from daily
+        setProjectPay(Math.round(dailyValue * eventDays)); // Total project based on event days
+      } 
+      else if (lastChangedField === 'projectPay' && projectPay !== "") {
+        const projectValue = Number(projectPay);
+        setDailyPay(Math.round(projectValue / eventDays)); // Daily rate based on project total
+        setHourlyPay(Math.round(projectValue / eventHours)); // Hourly rate based on project total
+      }
+    };
+
+    calculateRates();
+    // Reset last changed field after calculations
+    setLastChangedField(null);
+  }, [lastChangedField, hourlyPay, dailyPay, projectPay, autoCalculate, eventHours, eventDays]);
 
   const validateRates = () => {
     const newErrors: { [key: string]: string } = {};
@@ -33,12 +88,15 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
       newErrors.projectPay = "Project rate cannot be negative.";
     }
 
-    if (dailyPay !== "" && projectPay !== "" && Number(projectPay) < Number(dailyPay)) {
-      newErrors.projectPay = "Project rate cannot be less than daily rate.";
-    }
+    // Only check relationships if not auto-calculating (otherwise they're always in proper relation)
+    if (!autoCalculate) {
+      if (dailyPay !== "" && projectPay !== "" && Number(projectPay) < Number(dailyPay)) {
+        newErrors.projectPay = "Project rate cannot be less than daily rate.";
+      }
 
-    if (dailyPay !== "" && hourlyPay !== "" && Number(dailyPay) < Number(hourlyPay)) {
-      newErrors.dailyPay = "Daily rate cannot be less than hourly rate.";
+      if (dailyPay !== "" && hourlyPay !== "" && Number(dailyPay) < Number(hourlyPay)) {
+        newErrors.dailyPay = "Daily rate cannot be less than hourly rate.";
+      }
     }
 
     setErrors(newErrors);
@@ -49,9 +107,9 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
     if (validateRates()) {
       setEventRole({
         ...eventRole,
-        hourlyPay: Number(hourlyPay),
-        dailyPay: Number(dailyPay),
-        projectPay: Number(projectPay),
+        hourlyPay: Number(hourlyPay) || 0,
+        dailyPay: Number(dailyPay) || 0,
+        projectPay: Number(projectPay) || 0,
         paymentTerms: paymentTerms
       });
       setActiveStep(activeStep + 1);
@@ -67,10 +125,13 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
 
     if (id === "hourlyPay") {
       setHourlyPay(numericValue);
+      setLastChangedField("hourlyPay");
     } else if (id === "dailyPay") {
       setDailyPay(numericValue);
+      setLastChangedField("dailyPay");
     } else if (id === "projectPay") {
       setProjectPay(numericValue);
+      setLastChangedField("projectPay");
     }
   };
 
@@ -105,6 +166,24 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
         <Typography variant="h4" sx={{ pb: 2, color: "#977342" }}>
           Payment Details
         </Typography>
+        
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
+            Event Duration: ~{eventHours} hours ({eventDays} days)
+          </Typography>
+          
+          <FormControlLabel
+            control={
+              <Switch 
+                checked={autoCalculate}
+                onChange={(e) => setAutoCalculate(e.target.checked)}
+                color="primary"
+              />
+            }
+            label="Auto-calculate rates"
+          />
+        </Box>
+        
         <Box sx={{ display: "flex", flexDirection: "column", mt: 2, width: "100%", color: "black" }}>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
             <PaymentInput
@@ -148,6 +227,7 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
               }}
               onChange={(e) => setPaymentTerms(e.target.value)}
               value={paymentTerms}
+              placeholder="Specify payment schedule, methods accepted, etc."
               aria-label="Enter payment terms"
             />
           </Box>
