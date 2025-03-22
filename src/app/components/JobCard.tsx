@@ -1,75 +1,274 @@
 import * as React from 'react';
-import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
-import { JobCardProps } from '@/types/Props/pages/JobCardProps';
+import { 
+  Box, 
+  Button, 
+  Card, 
+  CardContent, 
+  CardMedia, 
+  Typography, 
+  Chip,
+  Divider,
+  Avatar,
+  Tooltip,
+  Skeleton
+} from '@mui/material';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
+import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
+import { useRouter } from 'next/navigation';
+
+interface JobCardProps {
+  imageUrl: string;
+  isUrgent?: boolean;
+  title: string;
+  description: string;
+  location: string;
+  deadline: string;
+  roleId: number | string;
+  hourlyPay?: number;
+  dailyPay?: number;
+  projectPay?: number;
+  openings?: number;
+  skill?: string;
+}
 
 export const JobCard: React.FC<JobCardProps> = ({
   imageUrl,
-  isUrgent,
+  isUrgent = false,
   title,
   description,
   location,
-  deadline
+  deadline,
+  roleId,
+  hourlyPay,
+  dailyPay,
+  projectPay,
+  openings,
+  skill
 }) => {
+  const router = useRouter();
+  const [imageLoaded, setImageLoaded] = React.useState(false);
+  const [imageError, setImageError] = React.useState(false);
+
+  // Truncate description to a reasonable length
+  const truncateDescription = (text: string, maxLength: number = 100) => {
+    if (!text) return "No description available";
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + '...';
+  };
+
+  // Handle apply button click
+  const handleApply = () => {
+    // Navigate to role application page
+    router.push(`/apply/${roleId}`);
+  };
+
+  // Calculate highest pay rate to display
+  const getPayDisplay = () => {
+    if (projectPay) return `${projectPay} AED (Project)`;
+    if (dailyPay) return `${dailyPay} AED/day`;
+    if (hourlyPay) return `${hourlyPay} AED/hr`;
+    return "Contact for rates";
+  };
+
   return (
-    <Card sx={{ display: 'flex', flexDirection: 'column', width: '100%', boxShadow: 1, height: '100%' }}>
+    <Card 
+      sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        width: '100%', 
+        height: '100%',
+        borderRadius: '12px',
+        overflow: 'hidden',
+        transition: 'transform 0.3s, box-shadow 0.3s',
+        '&:hover': {
+          transform: 'translateY(-5px)',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.12)'
+        }
+      }}
+      elevation={2}
+    >
       <Box sx={{ position: 'relative' }}>
+        {!imageLoaded && !imageError && (
+          <Skeleton 
+            variant="rectangular" 
+            height={180} 
+            animation="wave" 
+            sx={{ backgroundColor: 'rgba(151, 115, 66, 0.1)' }} 
+          />
+        )}
+        
         <CardMedia
           component="img"
-          image={imageUrl}
+          image={imageError ? '/fallback-job-image.jpg' : imageUrl}
           alt={`${title} job opportunity`}
-          sx={{ height: 140, objectFit: 'cover' }}
+          sx={{ 
+            height: 180, 
+            objectFit: 'cover',
+            display: imageLoaded || imageError ? 'block' : 'none'
+          }}
+          onLoad={() => setImageLoaded(true)}
+          onError={() => {
+            setImageError(true);
+            setImageLoaded(true);
+          }}
         />
+        
         {isUrgent && (
-          <Box sx={{
-            position: 'absolute',
-            top: 8,
-            right: 8,
-            backgroundColor: '#977342',
-            borderRadius: '16px',
-            padding: '4px 12px',
-            zIndex: 1
-          }}>
-            <Typography variant="body2" color="white">Urgent</Typography>
-          </Box>
+          <Chip
+            label="URGENT"
+            color="error"
+            size="small"
+            sx={{
+              position: 'absolute',
+              top: 12,
+              right: 12,
+              fontWeight: '600',
+              letterSpacing: '0.5px',
+              fontSize: '11px',
+              zIndex: 1
+            }}
+          />
+        )}
+        
+        {skill && (
+          <Chip
+            label={skill}
+            size="small"
+            sx={{
+              position: 'absolute',
+              top: 12,
+              left: 12,
+              backgroundColor: 'rgba(255,255,255,0.85)',
+              color: '#977342',
+              fontWeight: '500',
+              fontSize: '11px',
+              zIndex: 1
+            }}
+          />
         )}
       </Box>
-      <CardContent sx={{ display: 'flex', flexDirection: 'column', padding: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', flexGrow: 1 }}>
-          {title}
-        </Typography>
-        <Typography variant="body2" sx={{ marginTop: 1, color: '#666', flexGrow: 1 }}>
-          {description}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/10fe390d6517996c7791f7101a599145780bc043f11c60517128dbf2dddf78b6?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt="Location Icon"
-            style={{ width: '20px', marginRight: '8px' }}
-          />
-          <Typography variant="body2" sx={{ color: '#999' }}>
-            {location}
+      
+      <CardContent sx={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        padding: 2.5,
+        flexGrow: 1,
+        justifyContent: 'space-between'
+      }}>
+        <Box>
+          <Typography 
+            variant="h6" 
+            component="h2"
+            sx={{ 
+              fontWeight: '600', 
+              color: '#333',
+              mb: 1,
+              fontSize: '1.1rem',
+              lineHeight: 1.3
+            }}
+          >
+            {title}
+          </Typography>
+          
+          <Typography 
+            variant="body2" 
+            color="text.secondary"
+            sx={{ 
+              mb: 2,
+              lineHeight: 1.5
+            }}
+          >
+            {truncateDescription(description)}
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 1 }}>
-          <img
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/810adb15bd3bbb2901cecd5a6aa224514fd809f4bf1994200a7d6fd26e1bddc4?apiKey=7fae980a988640eea8add1e49a5d542e&"
-            alt="Deadline Icon"
-            style={{ width: '20px', marginRight: '8px' }}
-          />
-          <Typography variant="body2" sx={{ color: '#999' }}>
-            Deadline: {deadline}
-          </Typography>
+        
+        <Box>
+          <Divider sx={{ my: 1.5 }} />
+          
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mt: 2 }}>
+            <Tooltip title="Location" arrow>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <LocationOnOutlinedIcon sx={{ color: '#977342', fontSize: '1.1rem', mr: 0.5 }} />
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.85rem' }}>
+                  {location || 'Remote'}
+                </Typography>
+              </Box>
+            </Tooltip>
+            
+            <Tooltip title="Application Deadline" arrow>
+              <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto' }}>
+                <AccessTimeOutlinedIcon sx={{ color: '#977342', fontSize: '1.1rem', mr: 0.5 }} />
+                <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.85rem' }}>
+                  {deadline}
+                </Typography>
+              </Box>
+            </Tooltip>
+          </Box>
+          
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', mt: 1.5 }}>
+            <Tooltip title="Payment" arrow>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <MonetizationOnOutlinedIcon sx={{ color: '#977342', fontSize: '1.1rem', mr: 0.5 }} />
+                <Typography 
+                  variant="body2" 
+                  sx={{ 
+                    fontWeight: '500', 
+                    color: '#555',
+                    fontSize: '0.85rem'
+                  }}
+                >
+                  {getPayDisplay()}
+                </Typography>
+              </Box>
+            </Tooltip>
+            
+            {openings && (
+              <Tooltip title="Number of Openings" arrow>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <WorkOutlineOutlinedIcon sx={{ color: '#977342', fontSize: '1.1rem', mr: 0.5 }} />
+                  <Typography 
+                    variant="body2" 
+                    sx={{ 
+                      fontWeight: '500', 
+                      color: '#555',
+                      fontSize: '0.85rem'
+                    }}
+                  >
+                    {openings} {openings === 1 ? 'Position' : 'Positions'}
+                  </Typography>
+                </Box>
+              </Tooltip>
+            )}
+          </Box>
+          
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleApply}
+            sx={{
+              mt: 2.5,
+              py: 1,
+              backgroundColor: '#977342',
+              color: 'white',
+              fontWeight: '500',
+              textTransform: 'none',
+              borderRadius: '8px',
+              '&:hover': {
+                backgroundColor: '#7D5F35',
+              },
+              '&:focus': {
+                boxShadow: '0 0 0 2px rgba(151, 115, 66, 0.3)',
+              }
+            }}
+          >
+            Apply Now
+          </Button>
         </Box>
-        <Button 
-          variant="contained" 
-          sx={{ marginTop: 2, backgroundColor: '#977342', color: 'white' }} 
-          aria-label={`Apply for ${title} position`}
-        >
-          Apply Now
-        </Button>
       </CardContent>
     </Card>
   );
 };
+
+export default JobCard;

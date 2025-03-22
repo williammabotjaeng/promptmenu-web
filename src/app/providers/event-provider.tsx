@@ -17,16 +17,18 @@ import useCurrentEventStore from "@/state/use-current-event-store";
 interface EventContextType {
   event: EventData | null;
   signedUrls: Record<string, string> | null;
+  roleSignedUrls: Record<string, string> | null;
   fetchEvent: () => Promise<void>;
   deleteEvent: () => Promise<void>;
   getRole: (roleId: string) => Promise<void>;
   getRoles: () => Promise<void>;
-  getEventRoles: (eventId) => Promise<void>;
+  getEventRoles: (eventId: string) => Promise<void>;
   getUserEvents: () => Promise<void>;
   getAllEvents: () => Promise<void>;
-  createEvent: (eventData) => Promise<void>;
+  createEvent: (eventData: any) => Promise<void>;
   updateEvent: (eventId: string, data: any) => Promise<void>;
   clearSignedUrls: () => void;
+  fetchRoleSignedUrls: (roles: any[]) => Promise<Record<string, string>>;
 }
 
 interface GetRoleInput {
@@ -42,16 +44,15 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   const router = useRouter();
   const [cookies, setCookie] = useCookies(["access", "username", "event_id", "csrfToken", "current_event"]);
 
-  const [signedUrls, setSignedUrls] = useState<Record<string, string> | null>(
-      null
-  );
+  const [signedUrls, setSignedUrls] = useState<Record<string, string> | null>(null);
+  const [roleSignedUrls, setRoleSignedUrls] = useState<Record<string, string> | null>(null);
   
   const accessToken = cookies["access"];
   const userName = cookies["username"];
   const csrfToken = cookies["csrfToken"];
   const eventIDGlobal = cookies["event_id"];
 
-   const { setCurrentEvent } = useStore(useCurrentEventStore);
+  const { setCurrentEvent } = useStore(useCurrentEventStore);
   const { setRoles } = useStore(useLocalRolesStore);
   const { setUserEvents } = useStore(useUserEventStore);
   const { setAllEvents } = useStore(useAllEventsStore);
@@ -175,9 +176,19 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Roles Response", response);
       return response;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setRoles(data);
       console.log("Roles fetched successfully", data);
+      
+      // Fetch signed URLs for role posters
+      if (Array.isArray(data) && data.length > 0) {
+        try {
+          const urls = await fetchRoleSignedUrls(data);
+          setRoleSignedUrls(urls);
+        } catch (error) {
+          console.error("Error fetching role signed URLs:", error);
+        }
+      }
     },
     onError: (error) => {
       console.error("Error fetching roles: ", error);
@@ -200,9 +211,19 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Event Roles Response", response);
       return response;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setRoles(data);
       console.log("Event roles fetched successfully", data);
+      
+      // Fetch signed URLs for event role posters
+      if (Array.isArray(data) && data.length > 0) {
+        try {
+          const urls = await fetchRoleSignedUrls(data);
+          setRoleSignedUrls(urls);
+        } catch (error) {
+          console.error("Error fetching event role signed URLs:", error);
+        }
+      }
     },
     onError: (error) => {
       console.error("Error fetching event roles: ", error);
@@ -215,7 +236,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Role ID:", roleId);
       
       if (!roleId) {
-        throw new Error("Both Event ID and Role ID are required to fetch the role.");
+        throw new Error("Role ID is required to fetch the role.");
       }
   
       const response = await restCall(
@@ -228,9 +249,19 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Role Response", response);
       return response;
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       setRoles(data); 
       console.log("Role fetched successfully", data);
+      
+      // If we receive a single role object
+      if (data && data.id && data.eventPoster) {
+        try {
+          const urls = await fetchRoleSignedUrls([data]);
+          setRoleSignedUrls(urls);
+        } catch (error) {
+          console.error("Error fetching role signed URL:", error);
+        }
+      }
     },
     onError: (error) => {
       console.error("Error fetching role: ", error);
@@ -253,6 +284,80 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     enabled: false,
   });
 
+  // New function to fetch signed URLs for role posters
+const fetchRoleSignedUrls = async (roles: any[]): Promise<Record<string, string>> => {
+  if (!roles || roles.length === 0) {
+    return {};
+  }
+  
+  console.log("Fetching signed URLs for roles:", roles);
+  
+  // Extract eventPoster paths from roles with proper typing
+  const posterPaths: Record<string, string> = roles.reduce((acc: Record<string, string>, role) => {
+    if (role && role.id && role.event_poster && typeof role.event_poster === 'string') {
+      acc[role.id] = role.event_poster;
+    }
+    return acc;
+  }, {});
+
+  // Skip if no posters to fetch
+  if (Object.keys(posterPaths).length === 0) {
+    console.log("No role posters to fetch");
+    return {};
+  }
+
+  try {
+    // Prepare the payload for the API
+    const filenames = Object.values(posterPaths).filter((path): path is string => Boolean(path));
+    
+    console.log("Requesting signed URLs for file paths:", filenames);
+    
+    const response = await csrfRestCall(
+      `/dashboard/event-assets/get-signed-urls/`,
+      "POST",
+      {
+        filenames: {
+          rolePosterPaths: filenames,
+        },
+      },
+      accessToken,
+      csrfToken
+    );
+    
+    console.log("Role Poster Signed URLs response:", response);
+    
+    // Get the signed URLs - they come as an array in rolePosterPaths, not as individual properties
+    const signedUrlsResponse = response?.signed_urls || {};
+    console.log("Signed URLs Response:", signedUrlsResponse);
+    
+    // Check if we have the expected array structure
+    if (!signedUrlsResponse.rolePosterPaths || !Array.isArray(signedUrlsResponse.rolePosterPaths)) {
+      console.error("Unexpected signed URLs response format", signedUrlsResponse);
+      return {};
+    }
+    
+    // Map the role IDs to their respective signed URLs using array index
+    const roleUrlMap: Record<string, string> = {};
+    console.log("Role URL Map initialized:", roleUrlMap);
+    
+    // Convert posterPaths to array for indexing
+    const roleIds = Object.keys(posterPaths);
+    
+    // Map each role ID to the corresponding URL by index
+    roleIds.forEach((roleId, index) => {
+      if (index < signedUrlsResponse.rolePosterPaths.length) {
+        roleUrlMap[roleId] = signedUrlsResponse.rolePosterPaths[index];
+      }
+    });
+    
+    console.log("Mapped role IDs to signed URLs:", roleUrlMap);
+    return roleUrlMap;
+  } catch (error) {
+    console.error("Error fetching role signed URLs:", error);
+    return {};
+  }
+};
+
   const getUserEvents = async () => {
     return await userEventsMutation?.mutateAsync();
   };
@@ -261,7 +366,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     return await allEventsMutation?.mutateAsync();
   };
 
-  const getRole = async (roleId) => {
+  const getRole = async (roleId: string) => {
     return await getRoleMutation?.mutateAsync(roleId);
   };
 
@@ -281,7 +386,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     await fetchEventMutation?.refetch();
   };
 
-  const createEvent = async (eventData) => {
+  const createEvent = async (eventData: any) => {
     await createEventMutation?.mutateAsync(eventData);
   };
 
@@ -292,19 +397,17 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const fetchSignedUrls = async () => {
       if (fetchEventMutation.data) {
-      
         try {
-        const event = fetchEventMutation.data;
+          const event = fetchEventMutation.data;
 
-        const eventAssets = {
-          eventPoster: event?.event_poster,
-          eventVideo: event?.event_video,
-          eventPhotos: [...event?.event_photos],
-        };
+          const eventAssets = {
+            eventPoster: event?.event_poster,
+            eventVideo: event?.event_video,
+            eventPhotos: [...(event?.event_photos || [])],
+          };
 
-        console.log("Event Assets:", eventAssets);
+          console.log("Event Assets:", eventAssets);
 
-       
           const response = await csrfRestCall(
             `/dashboard/event-assets/get-signed-urls/`,
             "POST",
@@ -330,7 +433,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [fetchEventMutation.data]);
 
   const clearSignedUrls = () => {
-    setSignedUrls(null); 
+    setSignedUrls(null);
+    setRoleSignedUrls(null);
   };
 
   return (
@@ -338,6 +442,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         event: fetchEventMutation.data,
         signedUrls,
+        roleSignedUrls,
         fetchEvent,
         createEvent,
         updateEvent,
@@ -347,7 +452,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
         getEventRoles,
         getUserEvents,
         getAllEvents,
-        clearSignedUrls
+        clearSignedUrls,
+        fetchRoleSignedUrls
       }}
     >
       {children}

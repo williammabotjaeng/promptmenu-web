@@ -1,119 +1,179 @@
 "use client";
 
 import * as React from 'react';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography, CircularProgress } from '@mui/material';
 import { SearchSection } from '@/components/SearchSection';
 import { JobCard } from '@/components/JobCard';
 import PrimaryFooter from '@/components/PrimaryFooter';
 import SecondaryHeader from '@/components/SecondaryHeader';
 import { useEvent } from '@/providers/event-provider';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+// Helper function to format date for display
+const formatDeadline = (dateString) => {
+  if (!dateString) return "No deadline";
+  
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  } catch (error) {
+    console.error("Date formatting error:", error);
+    return dateString;
+  }
+};
+
+// Default placeholder image to use when no poster is available
+const DEFAULT_JOB_IMAGE = "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/fbf9227c806ec79d0dbbdfafe208eba075157780299caaa1a8b6d38ae92d7bb2?apiKey=7fae980a988640eea8add1e49a5d542e&";
 
 const Jobs = () => {
-  const [jobs, setJobs] = React.useState([
-    {
-      imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/fbf9227c806ec79d0dbbdfafe208eba075157780299caaa1a8b6d38ae92d7bb2?apiKey=7fae980a988640eea8add1e49a5d542e&",
-      isUrgent: true,
-      title: "Fashion Show Model",
-      description: "Looking for male and female models for upcoming luxury brand fashion show",
-      location: "Dubai Mall",
-      deadline: "March 15, 2025"
-    },
-    {
-      imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/6d4ea6afd27eeddebc5444567a15ad003cc941092ba50e084353ed1c4175d08b?apiKey=7fae980a988640eea8add1e49a5d542e&",
-      title: "TV Commercial Actor",
-      description: "Seeking actors aged 25-35 for a national bank commercial",
-      location: "Business Bay",
-      deadline: "March 20, 2025"
-    },
-    {
-      imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/450d75a498d37b15e4c4012bf98de3efaa1a12b96b6bbb9c6192e3a6f12b41c4?apiKey=7fae980a988640eea8add1e49a5d542e&",
-      title: "Professional Dancers",
-      description: "Required dancers for upcoming music video shoot",
-      location: "Dubai Media City",
-      deadline: "March 25, 2025"
-    }
-  ]);
+  // State for jobs data
+  const [roles, setRoles] = useState([]);
+  const [filteredRoles, setFilteredRoles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   
-  const [loading, setLoading] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [filteredJobs, setFilteredJobs] = React.useState(jobs);
-
-  const { getRoles } = useEvent();
+  // Get roles and roleSignedUrls from the event provider
+  const { getRoles, roleSignedUrls } = useEvent();
   
-  // Mock function to simulate loading more jobs
-  const loadMoreJobs = () => {
+  // Initial data load
+  useEffect(() => {
     setLoading(true);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-      const newJobs = [
-        {
-          imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/fbf9227c806ec79d0dbbdfafe208eba075157780299caaa1a8b6d38ae92d7bb2?apiKey=7fae980a988640eea8add1e49a5d542e&",
-          title: "Photoshoot Model",
-          description: "Models needed for jewelry brand photoshoot",
-          location: "Jumeirah Beach",
-          deadline: "April 2, 2025"
-        },
-        {
-          imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/6d4ea6afd27eeddebc5444567a15ad003cc941092ba50e084353ed1c4175d08b?apiKey=7fae980a988640eea8add1e49a5d542e&",
-          isUrgent: true,
-          title: "Voice Actor",
-          description: "Voice actors needed for animated commercial",
-          location: "Dubai Studio City",
-          deadline: "March 30, 2025"
-        },
-        {
-          imageUrl: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/450d75a498d37b15e4c4012bf98de3efaa1a12b96b6bbb9c6192e3a6f12b41c4?apiKey=7fae980a988640eea8add1e49a5d542e&",
-          title: "Child Actor",
-          description: "Looking for children aged 7-10 for family TV show",
-          location: "Al Quoz",
-          deadline: "April 5, 2025"
+    getRoles()
+      .then((data) => {
+        if (Array.isArray(data)) {
+          // Format the roles data for display
+          const formattedRoles = data.map(role => ({
+            id: role.id,
+            title: role.title || "Untitled Role",
+            description: role.description || "No description available",
+            location: role.location || "Remote",
+            deadline: role.application_deadline || role.hard_deadline || role.soft_deadline,
+            eventPoster: role.event_poster || "",
+            isUrgent: isDeadlineUrgent(role.application_deadline || role.hard_deadline),
+            imageUrl: "", // Will be populated with signed URL
+            // Additional data that might be useful
+            hourlyPay: role.hourly_pay,
+            dailyPay: role.daily_pay,
+            projectPay: role.project_pay,
+            openings: role.openings,
+            genders: role.genders,
+            ethnicities: role.ethnicities,
+            minAge: role.min_age,
+            maxAge: role.max_age,
+            skill: role.skill
+          }));
+          
+          setRoles(formattedRoles);
+          setFilteredRoles(formattedRoles);
+        } else {
+          console.error("Unexpected data format:", data);
         }
-      ];
+      })
+      .catch(err => {
+        console.error("Error fetching roles:", err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+  
+  // Update image URLs when roleSignedUrls changes
+  useEffect(() => {
+    if (roleSignedUrls && roles.length > 0) {
+      // Add signed URLs to role objects
+      console.log("Roles URLs:", roleSignedUrls);
+      const updatedRoles = roles.map(role => {
+        // If there's a signed URL for this role, use it; otherwise keep existing or use default
+        const imageUrl = 
+          (roleSignedUrls[role.id] && roleSignedUrls[role.id] !== "") 
+            ? roleSignedUrls[role.id] 
+            : (role.imageUrl && role.imageUrl !== "") 
+              ? role.imageUrl 
+              : DEFAULT_JOB_IMAGE;
+        
+        return {
+          ...role,
+          imageUrl
+        };
+      });
       
-      setJobs([...jobs, ...newJobs]);
-      setFilteredJobs([...filteredJobs, ...newJobs]);
-      setLoading(false);
+      setRoles(updatedRoles);
+      // Apply search filtering if needed
+      if (searchQuery) {
+        handleSearch(searchQuery, updatedRoles);
+      } else {
+        setFilteredRoles(updatedRoles);
+      }
+    }
+  }, [roleSignedUrls]);
+  
+  // Check if a deadline is urgent (within 5 days)
+  const isDeadlineUrgent = (deadlineStr) => {
+    if (!deadlineStr) return false;
+    
+    try {
+      const deadline = new Date(deadlineStr);
+      const now = new Date();
+      const diffTime = deadline.getTime() - now.getTime();
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      
+      return diffDays > 0 && diffDays <= 5;
+    } catch (error) {
+      return false;
+    }
+  };
+  
+  // Load more jobs
+  const loadMoreJobs = () => {
+    setLoadingMore(true);
+    
+    // This is a placeholder for pagination
+    // In a real implementation, you would call your API with the next page number
+    // For now, we'll just simulate that we've reached the end of the data
+    
+    setTimeout(() => {
+      setLoadingMore(false);
+      
+      // Mock: No more roles to load
+      setHasMore(false);
     }, 1000);
   };
   
   // Handle search functionality
-  const handleSearch = (query) => {
+  const handleSearch = (query, rolesList = roles) => {
     setSearchQuery(query);
     
     if (!query) {
-      setFilteredJobs(jobs);
+      setFilteredRoles(rolesList);
       return;
     }
     
-    const filtered = jobs.filter(job => 
-      job.title.toLowerCase().includes(query.toLowerCase()) ||
-      job.description.toLowerCase().includes(query.toLowerCase()) ||
-      job.location.toLowerCase().includes(query.toLowerCase())
+    const filtered = rolesList.filter(role => 
+      (role.title && role.title.toLowerCase().includes(query.toLowerCase())) ||
+      (role.description && role.description.toLowerCase().includes(query.toLowerCase())) ||
+      (role.location && role.location.toLowerCase().includes(query.toLowerCase())) ||
+      (role.skill && role.skill.toLowerCase().includes(query.toLowerCase()))
     );
     
-    setFilteredJobs(filtered);
+    setFilteredRoles(filtered);
   };
-  
-  // Update filtered jobs when jobs state changes
-  useEffect(() => {
-    if (searchQuery) {
-      handleSearch(searchQuery);
-    } else {
-      setFilteredJobs(jobs);
-    }
-  }, [jobs]);
-
-  useEffect(() => {
-    getRoles()
-    .then((data: any) => {
-      console.log("Roles Data", data);
-    })
-    .catch(err => console.log("Roles Error:", err));
-  }, []);  
 
   const MainContent = () => {
+    if (loading) {
+      return (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+          <CircularProgress sx={{ color: '#977342' }} />
+        </Box>
+      );
+    }
+    
     return (
       <Box 
         sx={{ 
@@ -129,49 +189,66 @@ const Jobs = () => {
       >
         <SearchSection onSearch={handleSearch} />
         
-        {filteredJobs.length === 0 ? (
+        {filteredRoles.length === 0 ? (
           <Box sx={{ my: 5, textAlign: 'center' }}>
             <Typography variant="h6">No jobs found matching your search criteria</Typography>
           </Box>
         ) : (
           <Grid container spacing={5}>
-            {filteredJobs.map((job, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <JobCard {...job} />
+            {filteredRoles.map((role) => (
+              <Grid item xs={12} sm={6} md={4} key={role.id}>
+                <JobCard 
+                  imageUrl={role.imageUrl}
+                  isUrgent={role.isUrgent}
+                  title={role.title}
+                  description={role.description}
+                  location={role.location}
+                  deadline={formatDeadline(role.deadline)}
+                  // You can add more props as needed for JobCard component
+                  hourlyPay={role.hourlyPay}
+                  dailyPay={role.dailyPay}
+                  projectPay={role.projectPay}
+                  roleId={role.id}
+                />
               </Grid>
             ))}
           </Grid>
         )}
         
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            alignItems: 'center', 
-            marginY: 2 
-          }}
-        >
-          <Button
-            variant="contained"
-            onClick={loadMoreJobs}
-            disabled={loading}
-            sx={{
-              padding: '12px 32px',
-              marginTop: '8px',
-              fontSize: { xs: '14px', md: '16px' },
-              color: 'white',
-              backgroundColor: '#977342',
-              '&:hover': {
-                backgroundColor: '#7D5F35',
-              },
-              borderRadius: '24px',
-              textTransform: 'none',
-              width: { xs: '100%', sm: '240px' } 
+        {filteredRoles.length > 0 && hasMore && (
+          <Box 
+            sx={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              marginY: 4 
             }}
           >
-            {loading ? 'Loading...' : 'Load More Jobs'}
-          </Button>
-        </Box>
+            <Button
+              variant="contained"
+              onClick={loadMoreJobs}
+              disabled={loadingMore}
+              sx={{
+                padding: '12px 32px',
+                fontSize: { xs: '14px', md: '16px' },
+                color: 'white',
+                backgroundColor: '#977342',
+                '&:hover': {
+                  backgroundColor: '#7D5F35',
+                },
+                '&.Mui-disabled': {
+                  backgroundColor: '#ccc',
+                  color: '#666',
+                },
+                borderRadius: '24px',
+                textTransform: 'none',
+                width: { xs: '100%', sm: '240px' } 
+              }}
+            >
+              {loadingMore ? 'Loading...' : 'Load More Jobs'}
+            </Button>
+          </Box>
+        )}
       </Box>
     );
   };
