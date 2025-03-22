@@ -85,13 +85,14 @@ const EditEventPage = () => {
     "event_id",
     "username",
     "access",
-    "event_status"
+    "event_status",
+    "current_event"
   ]);
 
   const eventID = cookies?.event_id;
   const userName = cookies?.username;
   const accessToken = cookies?.access;
-  const currentEventStatus = cookies?.event_status;
+  const currentEventStatus = cookies?.current_event?.event_status;
 
   // Dialog states
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -106,7 +107,7 @@ const EditEventPage = () => {
   const [mealsProvided, setMealsProvided] = useState(false);
   const [transportProvided, setTransportProvided] = useState(false);
   const [accommodationProvided, setAccommodationProvided] = useState(false);
-  const [eventStatus, setEventStatus] = useState("draft");
+  const [eventStatus, setEventStatus] = useState(cookies?.current_event?.event_status || "draft");
   const [error, setError] = useState("");
 
   // Media state
@@ -401,6 +402,8 @@ const EditEventPage = () => {
           setMealsProvided(data?.mealsProvided || false);
           setTransportProvided(data?.transportProvided || false);
           setAccommodationProvided(data?.accommodationProvided || false);
+          setEventStatus(data?.event_status);
+          setCookie("event_status", cookies?.current_event?.event_status);
         } else {
           // Fall back to the store data if needed
           setEvent(currentEvent);
