@@ -86,8 +86,6 @@ const Portal: React.FC = () => {
 
   const { fetchTalentProfile, talentProfile, signedUrls } = useTalentProfile();
 
-  const { settings, fetchSettings, createSettings } = useSettings();
-
   const { updateUser } = useAuth();
 
   const { getRoles } = useEvent();
@@ -116,33 +114,6 @@ const Portal: React.FC = () => {
         setLoading(false)
       }, 500);
   }, [cookies, roles]);
-
-  useEffect(() => {
-      fetchSettings();
-      console.log("Settings:", settings);
-      console.log("Has Settings Value:", has_settings)
-      if (!has_settings) {
-        console.log("About to Create Settings")
-        createSettings({
-          user: userName,
-          send_email_notifications: false,
-          send_ssh_updates: false,
-          allow_browser_notifications: false,
-        });
-
-        setCookie("has_settings", true);
-  
-        updateUser({
-          field: "has_settings",
-          value: true,
-        });
-
-        
-  
-        fetchSettings();
-      }
-      console.log("Settings:", settings);
-    }, [settings]);
 
   const stats = [
     { title: "Profile Views", value: talentProfile?.profile_views, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
