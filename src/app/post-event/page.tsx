@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 import EventInfo from '@/components/dashboard/event/EventInfo';
 import { EventMedia } from '@/components/dashboard/event/EventMedia';
 import { EventReview } from '@/components/dashboard/event/EventReview';
-import { EventDetails } from '@/components/dashboard/event/EventDetails';
+import EventDetails from '@/components/dashboard/event/EventDetails';
 import AddRoleForm from '@/components/dashboard/event/AddRoleForm';
 import RoleDetails from '@/components/dashboard/event/RoleDetails';
 import RoleDemographics from '@/components/dashboard/event/RoleDemographics';

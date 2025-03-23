@@ -10,6 +10,7 @@ interface EventDetails {
   mealsProvided: boolean;
   transportProvided: boolean;
   accommodationProvided: boolean;
+  timeSlotsConfig: object | any;
   roles: EventRole[];
 }
 
@@ -69,6 +70,7 @@ const useEventStore = create<EventStoreState>((set) => ({
     transportProvided: false,
     accommodationProvided: false,
     roles: [],
+    timeSlotsConfig: undefined
   },
 
   eventMedia: {
@@ -134,6 +136,7 @@ const useEventStore = create<EventStoreState>((set) => ({
         transportProvided: false,
         accommodationProvided: false,
         roles: [],
+        timeSlotsConfig: undefined
       },
     }),
 

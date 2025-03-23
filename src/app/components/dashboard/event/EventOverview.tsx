@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Button, Typography } from "@mui/material";
-import { EventDetails } from "./EventDetails";
+import EventDetails from "./EventDetails";
 import { RoleCard } from "./RoleCard";
 import EventDetailsSection from "./EventDetailsSection";
 import useEventStore from "@/state/use-event-store";
