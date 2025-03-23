@@ -37,7 +37,7 @@ const InfluencerSteps = [
   // { number: 4, title: "Payment", isActive: false },
   { number: 5, title: "Attributes", isActive: false },
   { number: 6, title: "Social Accounts", isActive: false },
-  { number: 7, title: "Follower Count", isActive: false},
+  { number: 7, title: "Follower Count", isActive: false },
   { number: 8, title: "Engagement Rate", isActive: false },
   { number: 9, title: "Audience Demographics", isActive: false },
   { number: 10, title: "ID", isActive: true },
@@ -51,7 +51,7 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({
 }) => {
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
-  const [cookies] = useCookies(['user_role']);
+  const [cookies] = useCookies(["user_role"]);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -92,7 +92,10 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({
       sx={{ backgroundColor: "black", opacity: 0.9, paddingBottom: "24px" }}
     >
       {/* Header Section */}
-      <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
+      <OnboardingHeader
+        steps={userRole === "influencer" ? InfluencerSteps : steps}
+        onClose={onClose}
+      />
 
       <Paper
         elevation={3}
@@ -167,7 +170,8 @@ export const IDandCreds: React.FC<OnboardingStepProps> = ({
       {/* Step Indicator Section */}
       <footer style={{ textAlign: "center", marginTop: "28px", color: "gray" }}>
         <Typography variant="body2">
-          Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - ID Document
+          Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - ID
+          Document
         </Typography>
       </footer>
       {/* Snackbar for feedback */}

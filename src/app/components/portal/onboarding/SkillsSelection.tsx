@@ -31,15 +31,15 @@ const steps = [
 ];
 
 const InfluencerSteps = [
-    { number: 1, title: "Headshot", isActive: false },
-    { number: 2, title: "Personal Info", isActive: false },
-    { number: 3, title: "Skills", isActive: true },
-    { number: 4, title: "Payment", isActive: false },
-    { number: 5, title: "Attributes", isActive: false },
-    { number: 6, title: "Social", isActive: false },
-    { number: 7, title: "ID", isActive: false },
-    { number: 8, title: "Portfolio", isActive: false }
-  ];
+  { number: 1, title: "Headshot", isActive: false },
+  { number: 2, title: "Personal Info", isActive: false },
+  { number: 3, title: "Skills", isActive: true },
+  { number: 4, title: "Payment", isActive: false },
+  { number: 5, title: "Attributes", isActive: false },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+];
 
 const skills: SkillType[] = [
   { name: "Event Coordination" },
@@ -58,7 +58,7 @@ const skills: SkillType[] = [
   { name: "Event Organization" },
   { name: "Site Management" },
   { name: "Journalism" },
-  { name: "Dancer" }
+  { name: "Dancer" },
 ];
 
 const SkillsSelection: React.FC<OnboardingStepProps> = ({
@@ -154,7 +154,10 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
         }}
       >
         {/* Header Section */}
-        <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
+        <OnboardingHeader
+          steps={userRole === "influencer" ? InfluencerSteps : steps}
+          onClose={onClose}
+        />
 
         {/* Skills Section */}
         <Box
@@ -213,7 +216,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
                 color: "#977342",
                 border: "2px solid #977342",
                 "&:hover": { color: "#fff" },
-                marginBottom: { xs: 1, md: 0 }, 
+                marginBottom: { xs: 1, md: 0 },
               }}
               onClick={handleBack}
             >
@@ -252,7 +255,7 @@ const SkillsSelection: React.FC<OnboardingStepProps> = ({
             textAlign: "center",
           }}
         >
-          Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Skills
+          Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - Skills
         </Typography>
       </Box>
       {/* Snackbar for feedback */}

@@ -287,7 +287,8 @@ export const PhysicalAttributes: React.FC<OnboardingStepProps> = ({
             textAlign: "center",
           }}
         >
-          Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Physical Attributes
+          Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - Physical
+          Attributes
         </Typography>
       </Box>
     </Box>

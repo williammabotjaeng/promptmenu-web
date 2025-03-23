@@ -37,9 +37,7 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
     date_of_birth: talentData?.date_of_birth || "",
   });
 
-  const [cookies] = useCookies([
-    'user_role'
-  ]);
+  const [cookies] = useCookies(["user_role"]);
 
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -53,42 +51,45 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
       setPersonalInfo({ ...personalInfo, [field]: event.target.value });
     };
 
-    const handleContinue = () => {
-      const { legalFullName, stageName, date_of_birth } = personalInfo;
-  
-      // Check for empty fields
-      if (!legalFullName || !stageName || !date_of_birth) {
-          setSnackbarMessage("Please fill out all fields.");
-          setSnackbarOpen(true);
-          return;
-      }
-  
-      // Validate age (must be older than 18)
-      const birthDate = new Date(date_of_birth);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDifference = today.getMonth() - birthDate.getMonth();
-  
-      // Adjust age if the birthday hasn't occurred yet this year
-      if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
-          age--;
-      }
-  
-      if (age < 18) {
-          setSnackbarMessage("You must be at least 18 years old.");
-          setSnackbarOpen(true);
-          return;
-      }
-  
-      // If all validations pass, update talent data and proceed
-      setTalentData({
-          ...talentData,
-          legalFullName,
-          stageName,
-          date_of_birth,
-      });
-  
-      setActiveStep(activeStep + 1);
+  const handleContinue = () => {
+    const { legalFullName, stageName, date_of_birth } = personalInfo;
+
+    // Check for empty fields
+    if (!legalFullName || !stageName || !date_of_birth) {
+      setSnackbarMessage("Please fill out all fields.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    // Validate age (must be older than 18)
+    const birthDate = new Date(date_of_birth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    // Adjust age if the birthday hasn't occurred yet this year
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    if (age < 18) {
+      setSnackbarMessage("You must be at least 18 years old.");
+      setSnackbarOpen(true);
+      return;
+    }
+
+    // If all validations pass, update talent data and proceed
+    setTalentData({
+      ...talentData,
+      legalFullName,
+      stageName,
+      date_of_birth,
+    });
+
+    setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
@@ -233,21 +234,21 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
               },
             },
             "& input::-webkit-calendar-picker-indicator": {
-              filter: "invert(56%) sepia(34%) saturate(746%) hue-rotate(0deg)", 
-              cursor: "pointer", 
+              filter: "invert(56%) sepia(34%) saturate(746%) hue-rotate(0deg)",
+              cursor: "pointer",
             },
           }}
           InputLabelProps={{
             shrink: true,
             sx: {
-              color: "#977342", 
+              color: "#977342",
             },
           }}
           InputProps={{
             sx: {
-              color: "#977342", 
+              color: "#977342",
               "&::placeholder": {
-                color: "#977342", 
+                color: "#977342",
               },
             },
           }}
@@ -312,7 +313,8 @@ const PersonalInfo: React.FC<OnboardingStepProps> = ({
           textAlign: "center",
         }}
       >
-        Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Headshot Upload
+        Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - Headshot
+        Upload
       </Typography>
       <br />
       {/* Snackbar for feedback */}

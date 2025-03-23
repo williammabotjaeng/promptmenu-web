@@ -69,9 +69,9 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const [cookies] = useCookies(['user_role']);
+  const [cookies] = useCookies(["user_role"]);
 
-  const userRole = cookies['user_role'];
+  const userRole = cookies["user_role"];
 
   const [loading, setLoading] = useState(false);
 
@@ -282,7 +282,10 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
       }}
     >
       {/* Header Section */}
-      <OnboardingHeader steps={userRole === 'influencer' ? InfluencerSteps : steps} onClose={onClose} />
+      <OnboardingHeader
+        steps={userRole === "influencer" ? InfluencerSteps : steps}
+        onClose={onClose}
+      />
 
       {/* Payment Section */}
       <Box
@@ -403,7 +406,8 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
           mt: 2,
         }}
       >
-        Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Headshot Upload
+        Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - Headshot
+        Upload
       </Typography>
       {/* Snackbar for feedback */}
       <Snackbar

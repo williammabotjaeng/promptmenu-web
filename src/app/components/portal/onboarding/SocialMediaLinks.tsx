@@ -78,7 +78,7 @@ interface SocialData {
   twitter: string;
   facebook: string;
   linkedin: string;
-  // other?: string[]; 
+  // other?: string[];
 }
 
 export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
@@ -149,17 +149,17 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
 
   // const handleOtherInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   const value = event.target.value;
-  
+
   //   setSocialData((prevData) => ({
   //     ...prevData,
-  //     other: [...prevData?.other, value], 
+  //     other: [...prevData?.other, value],
   //   }));
   // };
-  
+
   const handleStandardInputChange =
     (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event?.target?.value;
-  
+
       setSocialData((prevData) => ({
         ...prevData,
         [field]: value,
@@ -256,9 +256,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
                   value={
                     socialData[input.icon as keyof typeof socialData] || ""
                   }
-                  onChange={
-                    handleStandardInputChange(input.icon)
-                  }
+                  onChange={handleStandardInputChange(input.icon)}
                 />
               )
             )}
@@ -285,12 +283,12 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
             {allSocialPlatforms
               .filter(
                 (platform) =>
-                  (!defaultSocialInputs.some(
+                  !defaultSocialInputs.some(
                     (input) => input.icon === platform.icon
                   ) &&
-                    !additionalInputs.some(
-                      (input) => input.icon === platform.icon
-                    ))
+                  !additionalInputs.some(
+                    (input) => input.icon === platform.icon
+                  )
               )
               .map((platform, index) => (
                 <ListItem
@@ -369,7 +367,7 @@ export const SocialMediaLinks: React.FC<OnboardingStepProps> = ({
         variant="caption"
         sx={{ paddingX: 2, color: "gray", textAlign: "center", marginTop: 2 }}
       >
-        Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Socials
+        Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - Socials
       </Typography>
       {/* Snackbar for feedback */}
       <Snackbar

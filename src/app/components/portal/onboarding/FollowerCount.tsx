@@ -107,7 +107,7 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
   }>({});
   const { talentData, setTalentData } = useStore(useTalentOnboardingStore);
 
-  const [cookies] = useCookies(['user_role']);
+  const [cookies] = useCookies(["user_role"]);
 
   const userRole = cookies?.user_role;
 
@@ -139,17 +139,20 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
 
   const handleContinue = () => {
     setTalentData({
-        ...talentData,
-        followerCounts: followerCounts
+      ...talentData,
+      followerCounts: followerCounts,
     });
 
-    if (Object.keys(followerCounts).length > 0 && Object.values(followerCounts).length > 0) {
-        setActiveStep(activeStep + 1);
+    if (
+      Object.keys(followerCounts).length > 0 &&
+      Object.values(followerCounts).length > 0
+    ) {
+      setActiveStep(activeStep + 1);
     } else {
-        setSnackbarMessage('Please fill in a Follower Count.');
-        setSnackbarOpen(true);
+      setSnackbarMessage("Please fill in a Follower Count.");
+      setSnackbarOpen(true);
     }
-};
+  };
 
   const handleSkip = () => {
     setActiveStep(activeStep + 1);
@@ -159,7 +162,7 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
     if (activeStep > 0) {
       setActiveStep(activeStep - 1);
     } else {
-      router.push('/portal');
+      router.push("/portal");
     }
   };
 
@@ -191,12 +194,14 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
             color: "#977342",
             fontSize: { xs: "20px", md: "32px" },
             ml: { md: 10, xs: 0 },
-            mt: { md: 4, xs: 0 }
+            mt: { md: 4, xs: 0 },
           }}
         >
           Follower Count
         </Typography>
-        <TableContainer sx={{ margin: { xs: 2 }, mr: { xs: 4, md: 0 }, p: { xs: 4 }}}>
+        <TableContainer
+          sx={{ margin: { xs: 2 }, mr: { xs: 4, md: 0 }, p: { xs: 4 } }}
+        >
           <Table>
             <TableHead>
               <TableRow>
@@ -252,48 +257,68 @@ const FollowerCount: React.FC<OnboardingStepProps> = ({
             </TableBody>
           </Table>
         </TableContainer>
-              
-        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: 'space-between', marginTop: 2, width: '90%', marginLeft: 'auto', marginRight: 'auto' }}>
-              <Button
-                sx={{
-                  color: '#977342',
-                  border: '2px solid #977342',
-                  '&:hover': { color: '#fff' },
-                  width: { xs: '100%', md: 'auto' },
-                  marginBottom: { xs: 1, md: 0 }
-                }}
-                onClick={handleBack}
-              >
-                Back
-              </Button>
-              <Button
-                sx={{
-                  color: '#000',
-                  backgroundColor: '#CEAB76',
-                  width: { xs: '100%', md: 'auto' } 
-                }}
-                onClick={handleContinue}
-              >
-                Continue
-              </Button>
-              <Button
-                sx={{
-                  color: '#977342',
-                  border: '2px solid #977342',
-                  '&:hover': { color: '#fff' },
-                  width: { xs: '100%', md: 'auto' },
-                  marginBottom: { xs: 1, md: 0 },
-                  mt: { xs: 1 }
-                }}
-                onClick={handleSkip}
-              >
-                Skip for Now
-              </Button>
-            </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-between",
+            marginTop: 2,
+            width: "90%",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          <Button
+            sx={{
+              color: "#977342",
+              border: "2px solid #977342",
+              "&:hover": { color: "#fff" },
+              width: { xs: "100%", md: "auto" },
+              marginBottom: { xs: 1, md: 0 },
+            }}
+            onClick={handleBack}
+          >
+            Back
+          </Button>
+          <Button
+            sx={{
+              color: "#000",
+              backgroundColor: "#CEAB76",
+              width: { xs: "100%", md: "auto" },
+            }}
+            onClick={handleContinue}
+          >
+            Continue
+          </Button>
+          <Button
+            sx={{
+              color: "#977342",
+              border: "2px solid #977342",
+              "&:hover": { color: "#fff" },
+              width: { xs: "100%", md: "auto" },
+              marginBottom: { xs: 1, md: 0 },
+              mt: { xs: 1 },
+            }}
+            onClick={handleSkip}
+          >
+            Skip for Now
+          </Button>
+        </Box>
 
         {/* Step Indicator Section */}
-        <Typography variant="caption" sx={{ paddingX: 2, paddingY: 1, marginBottom: 0, color: 'gray', textAlign: 'center' }}>
-          Step {activeStep + 1} of {userRole === 'talent' ? 8 : 11} - Headshot Upload
+        <Typography
+          variant="caption"
+          sx={{
+            paddingX: 2,
+            paddingY: 1,
+            marginBottom: 0,
+            color: "gray",
+            textAlign: "center",
+          }}
+        >
+          Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - Headshot
+          Upload
         </Typography>
 
         {/* Snackbar for feedback */}
