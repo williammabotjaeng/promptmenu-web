@@ -1,14 +1,15 @@
 import React from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, Link } from "@mui/material";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import TwitterIcon from "@mui/icons-material/Twitter";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTiktok } from "@fortawesome/free-brands-svg-icons";
+import { faTiktok, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
-import Link from "next/link";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+
 
 const Footer = () => {
   return (
@@ -165,6 +166,34 @@ const Footer = () => {
                     }}
                   >
                     +971 56 759 8878
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    color: "white",
+                    marginTop: 1,
+                  }}
+                >
+                  <WhatsAppIcon sx={{ color: "#977342", marginRight: "8px" }} />
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "#9CA3AF",
+                      fontSize: { xs: "14px", md: "16px" },
+                    }}
+                  >
+                    <Link href="https://wa.me/971567598878" target="_blank" sx={{ 
+                      color: "#9CA3AF",
+                      textDecoration: "none",
+                      "&:hover": {
+                        color: "#977342",
+                        textDecoration: "underline"
+                      }
+                    }}>
+                      +971 56 759 8878
+                    </Link>
                   </Typography>
                 </Box>
                 <Box
