@@ -1,373 +1,229 @@
 "use client";
 
-import * as React from 'react';
-import { WhiteHeader } from '@/components/WhiteHeader';
-import SidebarProfileCard from '@/components/SidebarProfileCard';
-import FilterForm, { FilterValues } from '@/components/FilterForm';
-import Pagination from '@/components/Pagination';
-import GreyFooter from '@/components/GreyFooter';
-import { 
-  Box, 
-  Typography, 
-  CircularProgress, 
-  Alert, 
-  Button,
-  Chip
-} from '@mui/material';
-import { useTalentProfile } from '@/providers/talent-profile-provider';
-import { useEffect, useState, useMemo } from 'react';
+import React, { useState, useEffect, act } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { Box, Typography, Grid, TextField, Button, Avatar, IconButton } from '@mui/material';
+import { AddAPhoto } from '@mui/icons-material';
+import { TalentProfileData } from '@/types/TalentProfileData';
+import PersonalInformation from '@/components/portal/onboarding/PersonalInfo';
+import { PhysicalAttributes } from '@/components/portal/onboarding/PhysicalAttr';
+import { IDandCreds } from '@/components/portal/onboarding/IDandCreds';
+import { ProfileReview } from '@/components/portal/onboarding/ProfileReview';
+import { SocialMediaLinks } from '@/components/portal/onboarding/SocialMediaLinks';
+import useTalentOnboardingStore from '@/state/use-talent-onboarding-store';
+import { useStore } from 'zustand';
+import HeadshotUploader from '@/components/portal/onboarding/HeadshotUploader';
+import SkillsSelection from '@/components/portal/onboarding/SkillsSelection';
+import { useOnboarding } from '@/providers/onboarding-providers';
+import { restCall } from '@/services/restCall';
+import axios from 'axios';
+import PortfolioMedia from '@/components/portal/onboarding/PortfolioMedia';
+import { PaymentSection } from '@/components/portal/onboarding/PaymentSection';
+import { PortfolioBuilder } from '@/components/portal/onboarding/PortfolioBuilder';
+import EthnicityNationality from '@/components/portal/onboarding/EthnicityNationality';
+import { useAuth } from '@/providers/auth-providers';
 
-// Default placeholder image for profiles without headshots
-const DEFAULT_PROFILE_IMAGE = "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/cda574f70ccd49a7abc97a1663f275bd69d56bce15ee1463e97ba119b97f026d?apiKey=7fae980a988640eea8add1e49a5d542e&";
+const TalentOnboarding: React.FC = () => {
+  const router = useRouter();
+  const [activeStep, setActiveStep] = useState(0);
+  const { createTalentProfile } = useOnboarding();
+  const [cookies, setCookie] = useCookies([
+    'headshotBlobUrl',
+    'username',
+    'access',
+    'governmentIDUrl',
+    'portfolioVideo',
+    'portfolioImages',
+    'portfolioPdf',
+    'onboarding_presented',
+    'ethnicity',
+    'nationality'
+  ]);
 
-const Talent: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [allProfiles, setAllProfiles] = useState<any[]>([]);
-  const [filteredProfiles, setFilteredProfiles] = useState<any[]>([]);
-  const [activeFilters, setActiveFilters] = useState<FilterValues>({
-    skill: '',
-    location: '',
-    ethnicity: '',
-    gender: '',
-    experience: ''
-  });
-  
-  // Store filter options derived from the data
-  const [filterOptions, setFilterOptions] = useState({
-    skills: [] as string[],
-    locations: [] as string[],
-    ethnicities: [] as string[],
-    genders: [] as string[]
-  });
-  
-  const { fetchTalentProfiles, profileSignedUrls } = useTalentProfile();
+  const accessToken = cookies?.access;
+  const onboardingPresented = cookies['onboarding_presented'] || false;
 
-  // Calculate age from date of birth
-  const calculateAge = (dateOfBirth: string): number => {
-    if (!dateOfBirth) return 0;
-    
-    try {
-      const dob = new Date(dateOfBirth);
-      const today = new Date();
-      let age = today.getFullYear() - dob.getFullYear();
-      const monthDiff = today.getMonth() - dob.getMonth();
-      
-      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
-        age--;
-      }
-      
-      return age;
-    } catch (error) {
-      console.error("Error calculating age:", error);
-      return 0;
+  const { updateUser } = useAuth();
+
+  const steps = [
+    { title: 'Step 1: Headshot', content: 'Upload a headshot photo.' },
+    { title: 'Step 2: Skills', content: 'Select your skills from the list below.' },
+    { title: 'Step 3: Physical Attributes', content: 'Provide your physical attributes.' },
+    { title: 'Step 4: Ethnicity & Nationality', content: 'Provide your ethnicity and nationality.' },
+    { title: 'Step 5: Identification and Credentials', content: 'Upload your government ID and banking details.' },
+    { title: 'Step 6: Social Media & Online', content: '' },
+    { title: 'Step 7: Portfolio & Media', content: 'Upload PDF Portfolio, Images and Video' },
+    { title: 'Step 8: Payment Information', content: 'Add your payment details.' },
+    { title: 'Step 9: Review', content: 'Review your information.' },
+  ];
+
+
+  const handleBack = () => {
+    if (activeStep > 0) {
+      setActiveStep(activeStep - 1);
     }
   };
 
-  // Process profiles coming from the API
-  const processProfiles = (data: any[]): any[] => {
-    // Extract unique values for filter options
-    const skillsSet = new Set<string>();
-    const locationsSet = new Set<string>();
-    const ethnicitiesSet = new Set<string>();
-    const gendersSet = new Set<string>();
-    
-    // Transform the backend data to match the SidebarProfileCard props
-    const formattedProfiles = data.map(profile => {
-      // Process skills to ensure they're all strings
-      const processedSkills = Array.isArray(profile.skills) 
-        ? profile.skills.map((skill: any) => 
-            typeof skill === 'object' && skill !== null 
-              ? (skill.name || String(skill)) 
-              : String(skill)
-          )
-        : [];
-      
-      // Add values to the filter option sets
-      processedSkills.forEach(skill => skillsSet.add(skill));
-      if (profile.location) locationsSet.add(profile.location);
-      if (profile.ethnicity) ethnicitiesSet.add(profile.ethnicity);
-      if (profile.gender) gendersSet.add(profile.gender);
-        
-      return {
-        id: profile.id,
-        name: `${profile.firstname || ''} ${profile.lastname || ''}`.trim() || 'Unknown',
-        location: profile.location || 'Not specified',
-        age: calculateAge(profile.date_of_birth),
-        skills: processedSkills,
-        imageUrl: "", // Will be populated with signed URL
-        headshot: profile.headshot || "",
-        isFeatured: profile.is_featured || false,
-        // Additional properties that might be useful
-        gender: profile.gender,
-        ethnicity: profile.ethnicity,
-        height: profile.height,
-        weight: profile.weight,
-        experience: profile.experience_level || "Beginner"
-      };
-    });
-    
-    // Update filter options
-    setFilterOptions({
-      skills: Array.from(skillsSet),
-      locations: Array.from(locationsSet),
-      ethnicities: Array.from(ethnicitiesSet),
-      genders: Array.from(gendersSet)
-    });
-    
-    return formattedProfiles;
+  const handleNext = () => {
+    if (activeStep < steps.length - 1) {
+      setActiveStep(activeStep + 1);
+    }
   };
 
-  // Fetch talent profiles and map them to the format needed by SidebarProfileCard
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    
-    fetchTalentProfiles()
-      .then((data) => {
-        if (Array.isArray(data)) {
-          const processedData = processProfiles(data);
-          setAllProfiles(processedData);
-          setFilteredProfiles(processedData);
+  const handleSkip = () => {
+    router.push('/dashboard');
+  };
+
+  const handleOnboardingStatus = () => {
+    updateUser(
+      { 
+        field: 'onboarding_presented',
+        value: true
+      }
+    )
+    setCookie('onboarding_presented', true);
+  };
+
+  const handleSubmit = () => {
+    uploadPortfolioPDF();
+    uploadPortfolioImages();
+    uploadPortfolioVideo();
+    uploadHeadshot();
+    uploadID();
+    // createTalentProfile();
+  }
+
+  const fileTypeMapping = {
+    'image/png': 'png',
+    'image/jpeg': 'jpg',
+    'application/pdf': 'pdf',
+    'image/gif': 'gif',
+    'video/mp4': 'mp4',
+  };
+
+  const getFileExtension = (blob) => {
+    return fileTypeMapping[blob.type] || 'bin';
+  };
+
+  const saveFileMetadata = async (fileName, s3Url) => {
+    try {
+      const response = await restCall('/portal/save-file-metadata/', 'POST', {
+        file_name: fileName,
+        s3_url: s3Url,
+      }, accessToken);
+
+      if (response.status === 201) {
+        console.log('File metadata saved:', response.data);
+      } else {
+        console.error('Failed to save file metadata:', response);
+      }
+    } catch (error) {
+      console.error('Error saving file metadata:', error);
+    }
+  };
+
+  const uploadToS3 = async (blob, fileName) => {
+    const fileType = blob.type;
+    try {
+      const response = await restCall(`/portal/generate-presigned-url/?file_name=${fileName}&file_type=${fileType}`, 'GET', {}, accessToken);
+
+      const { url } = response;
+
+      if (url) {
+        const uploadResponse = await axios.put(url, blob, {
+          headers: {
+            'Content-Type': fileType,
+          },
+        });
+
+        if (uploadResponse.status === 200) {
+          console.log('Upload successful!');
+          const s3Url = url.split('?')[0];
+          await saveFileMetadata(fileName, s3Url);
         } else {
-          console.error("Unexpected data format:", data);
-          setError("Received unexpected data format from server");
+          console.error('Upload failed:', uploadResponse.statusText);
         }
-      })
-      .catch(err => {
-        console.error("Error fetching talent profiles:", err);
-        setError("Failed to load talent profiles. Please try again.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      } else {
+        console.error('Failed to get presigned URL');
+      }
+    } catch (error) {
+      console.error('Error during upload:', error);
+    }
+  };
+
+  const uploadFiles = async (blobUrls, filePrefix) => {
+    if (!blobUrls || blobUrls.length === 0) {
+      console.error(`No ${filePrefix} blob URLs found.`);
+      return;
+    }
+
+    try {
+      for (const blobUrl of blobUrls) {
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+        const fileExtension = getFileExtension(blob);
+        const fileName = `${filePrefix}_${cookies['username']}_${Date.now()}.${fileExtension}`;
+
+        console.log("Blob:", blob);
+        console.log("Filename:", fileName);
+
+        await uploadToS3(blob, fileName);
+      }
+    } catch (error) {
+      console.error(`Error uploading ${filePrefix}:`, error);
+    }
+  };
+
+  const uploadPortfolioVideo = () => uploadFiles([cookies.portfolioVideo], 'portfolioVideo');
+  const uploadPortfolioImages = () => uploadFiles(Array.from(cookies.portfolioImages), 'portfolioImages');
+  const uploadPortfolioPDF = () => uploadFiles([cookies.portfolioPdf], 'portfolioPDF');
+  const uploadID = () => uploadFiles([cookies.governmentIDUrl], 'id');
+  const uploadHeadshot = () => uploadFiles([cookies.headshotBlobUrl], 'headshot');
+
+  useEffect(() => {
+    if (!onboardingPresented) handleOnboardingStatus();
   }, []);
 
-  // Update image URLs when profileSignedUrls changes
-  useEffect(() => {
-    if (profileSignedUrls && allProfiles.length > 0) {
-      // Add signed URLs to profile objects
-      const updatedProfiles = allProfiles.map(profile => {
-        // If there's a signed URL for this profile, use it; otherwise use default
-        const imageUrl = 
-          (profileSignedUrls[profile.id] && profileSignedUrls[profile.id] !== "") 
-            ? profileSignedUrls[profile.id] 
-            : DEFAULT_PROFILE_IMAGE;
-        
-        return {
-          ...profile,
-          imageUrl
-        };
-      });
-      
-      setAllProfiles(updatedProfiles);
-      
-      // Apply active filters to the updated profiles
-      applyFilters(updatedProfiles, activeFilters);
-    }
-  }, [profileSignedUrls]);
-
-  // Apply filters when they change
-  const applyFilters = (profiles: any[], filters: FilterValues) => {
-    let result = [...profiles];
-    
-    // Filter by skill
-    if (filters.skill) {
-      result = result.filter(profile => 
-        profile.skills && profile.skills.includes(filters.skill)
-      );
-    }
-    
-    // Filter by location
-    if (filters.location) {
-      result = result.filter(profile => 
-        profile.location === filters.location
-      );
-    }
-    
-    // Filter by ethnicity
-    if (filters.ethnicity) {
-      result = result.filter(profile => 
-        profile.ethnicity === filters.ethnicity
-      );
-    }
-    
-    // Filter by gender
-    if (filters.gender) {
-      result = result.filter(profile => 
-        profile.gender === filters.gender
-      );
-    }
-    
-    // Filter by experience
-    if (filters.experience) {
-      result = result.filter(profile => 
-        profile.experience === filters.experience
-      );
-    }
-    
-    setFilteredProfiles(result);
-  };
-
-  // Handle filter changes
-  const handleFilterChange = (filters: FilterValues) => {
-    setActiveFilters(filters);
-    applyFilters(allProfiles, filters);
-  };
-
-  // Reset filters
-  const resetFilters = () => {
-    const emptyFilters = {
-      skill: '',
-      location: '',
-      ethnicity: '',
-      gender: '',
-      experience: ''
-    };
-    setActiveFilters(emptyFilters);
-    setFilteredProfiles(allProfiles);
-  };
-
-  // Memoized profile count message
-  const profileCountMessage = useMemo(() => {
-    const totalCount = allProfiles.length;
-    const filteredCount = filteredProfiles.length;
-    
-    if (totalCount === 0) {
-      return "";
-    }
-    
-    if (filteredCount === totalCount) {
-      return `Showing all ${totalCount} talent profiles`;
-    }
-    
-    return `Showing ${filteredCount} of ${totalCount} talent profiles`;
-  }, [allProfiles.length, filteredProfiles.length]);
-
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        borderRadius: 2,
-        border: '2px solid #D1D5DB',
-        overflow: 'hidden',
-      }}
-    >
-      <WhiteHeader />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignSelf: 'center',
-          padding: { xs: 2, md: 3 },
-          width: '100%',
-          maxWidth: '1200px',
-        }}
-      >
-        <FilterForm 
-          onFilterChange={handleFilterChange}
-          skillOptions={filterOptions.skills}
-          locationOptions={filterOptions.locations}
-          ethnicityOptions={filterOptions.ethnicities}
-          genderOptions={filterOptions.genders}
-          experienceOptions={['Beginner', 'Intermediate', 'Advanced', 'Expert']}
-          isLoading={loading}
-        />
-        
-        {/* Profile count display */}
-        {!loading && allProfiles.length > 0 && (
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 2,
-            px: 1
-          }}>
-            <Typography variant="body2" sx={{ color: '#666' }}>
-              {profileCountMessage}
-            </Typography>
-          </Box>
-        )}
-        
-        {error ? (
-          <Alert 
-            severity="error" 
-            sx={{ mb: 3 }}
-            action={
-              <Button 
-                color="inherit" 
-                size="small" 
-                onClick={() => window.location.reload()}
-              >
-                Retry
-              </Button>
-            }
-          >
-            {error}
-          </Alert>
-        ) : loading ? (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', py: 8 }}>
-            <CircularProgress sx={{ color: '#977342' }} />
-          </Box>
-        ) : filteredProfiles.length === 0 ? (
-          <Box sx={{ 
-            textAlign: 'center', 
-            py: 8, 
-            backgroundColor: '#f9f9f9',
-            borderRadius: 2,
-            border: '1px dashed #ddd'
-          }}>
-            <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
-              No talent profiles match your filter criteria
-            </Typography>
-            
-            {Object.values(activeFilters).some(value => value !== '') && (
-              <Button 
-                variant="outlined" 
-                onClick={resetFilters}
-                sx={{ 
-                  borderColor: '#977342', 
-                  color: '#977342',
-                  '&:hover': { 
-                    borderColor: '#7d5f35',
-                    backgroundColor: 'rgba(151, 115, 66, 0.04)'
-                  }
-                }}
-              >
-                Clear All Filters
-              </Button>
-            )}
-          </Box>
-        ) : (
-          <Box sx={{ 
-            display: 'grid',
-            gap: 3,
-            gridTemplateColumns: {
-              xs: '1fr',
-              sm: 'repeat(2, 1fr)',
-              md: 'repeat(3, 1fr)',
-              lg: 'repeat(4, 1fr)'
-            }
-          }}>
-            {filteredProfiles.map((profile) => (
-              <SidebarProfileCard key={profile.id} profile={profile} />
-            ))}
-          </Box>
-        )}
-        
-        {!loading && filteredProfiles.length > 0 && (
-          <Box sx={{ mt: 4 }}>
-            <Pagination />
-          </Box>
-        )}
-      </Box>
-      <Box sx={{ mt: 'auto' }}>
-        <GreyFooter />
-      </Box>
+    <Box sx={{ width: '100%', backgroundColor: 'black', border: 'none' }}>
+      {activeStep === 0 && (
+        <HeadshotUploader activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 1 && (
+        <SkillsSelection activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 2 && (
+        <PhysicalAttributes activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 3 && (
+        <EthnicityNationality activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 4 && (
+        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 5 && (
+        <SocialMediaLinks activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 6 && (
+        <PortfolioBuilder  activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 7 && (
+        <PaymentSection activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 8 && (
+        <ProfileReview activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
     </Box>
   );
 };
 
-export default Talent;
+export default TalentOnboarding;
