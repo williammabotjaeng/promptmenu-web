@@ -16,6 +16,7 @@ export interface CurrentRole {
   ethnicities: string[];
   genders: string[];
   openings: number;
+  is_urgent: boolean;
   experience_level: string | null;
   role_type: string | null;
   skill: string | null;

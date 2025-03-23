@@ -40,7 +40,7 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
     
     const [loading, setLoading] = useState(false);
     const [animate, setAnimate] = useState(false);
-    const [cookies, removeCookie] = useCookies([
+    const [cookies, setCookie, removeCookie] = useCookies([
       'event_id', 'username', 
       'access', 'event_video',
       'event_photos','event_poster',
@@ -66,12 +66,16 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
 
     const updateAllRolesWithPoster = (eventPosterName) => {
       if (!eventDetails.roles || eventDetails.roles.length === 0) return;
+
+      console.log("Event Poster Name:", eventPosterName);
       
       // Map over existing roles and update each one with the eventPoster
       const updatedRoles = eventDetails.roles.map(role => ({
         ...role,
-        eventPoster: eventPosterName
+        eventPoster: cookies?.event_poster || eventPosterName
       }));
+
+      console.log("Updated Roles:", updatedRoles);
       
       // Update the store with the modified roles array
       setEventDetails({
@@ -97,6 +101,8 @@ const EventManager: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep 
             userName,
             accessToken
           );
+
+          setCookie('event_poster', eventPosterName);
       
           // Upload event video
           const eventVideoName = await uploadFileToS3(

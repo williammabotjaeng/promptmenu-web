@@ -7,11 +7,16 @@ import {
   CardContent, 
   InputAdornment,
   Divider,
-  Fade
+  Fade,
+  Switch,
+  FormControlLabel,
+  FormGroup,
+  Tooltip
 } from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import WorkIcon from '@mui/icons-material/Work';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import SkillSelector from "./SkillSelector";
 import useEventStore from "@/state/use-event-store";
 import { useStore } from "zustand";
@@ -21,6 +26,7 @@ const RoleRequirement: React.FC = () => {
   const { eventRole, setEventRole } = useStore(useEventStore);
   const [openings, setOpenings] = useState(eventRole?.openings || 0);
   const [location, setLocation] = useState(eventRole?.location || "");
+  const [isUrgent, setIsUrgent] = useState(eventRole?.isUrgent || false);
   const [animate, setAnimate] = useState(false);
   const [error, setError] = useState(false);
   
@@ -48,6 +54,15 @@ const RoleRequirement: React.FC = () => {
     setEventRole({
       ...eventRole,
       location: event?.target?.value
+    });
+  }
+
+  const handleUrgentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.checked;
+    setIsUrgent(newValue);
+    setEventRole({
+      ...eventRole,
+      isUrgent: newValue
     });
   }
 
@@ -286,6 +301,92 @@ const RoleRequirement: React.FC = () => {
               }}
               aria-label="Location (City/Town)"
             />
+          </Box>
+
+          <Divider sx={{ my: 4, opacity: 0.6 }} />
+
+          <Box sx={{ mt: 3 }}>
+            <Typography
+              variant="h6"
+              sx={{
+                color: "#333",
+                fontWeight: "600",
+                mb: 2,
+                display: "flex",
+                alignItems: "center",
+                "&:before": {
+                  content: '""',
+                  width: "4px",
+                  height: "24px",
+                  backgroundColor: "#977342",
+                  marginRight: "12px",
+                  borderRadius: "2px"
+                }
+              }}
+            >
+              Is this role urgent?
+            </Typography>
+            
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              backgroundColor: '#FFFFFF',
+              p: 2,
+              borderRadius: '12px',
+              boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.05)",
+              border: isUrgent ? '1px solid rgba(211, 47, 47, 0.5)' : '1px solid rgba(151, 115, 66, 0.3)',
+              transition: 'all 0.3s ease'
+            }}>
+              <Box sx={{ mr: 2, color: isUrgent ? '#d32f2f' : '#977342' }}>
+                <NotificationsActiveIcon />
+              </Box>
+              
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="body1" sx={{ fontWeight: 500, color: isUrgent ? '#d32f2f' : '#333' }}>
+                  Mark as urgent
+                </Typography>
+                <Typography variant="body2" sx={{ color: '#666', mt: 0.5 }}>
+                  Urgent roles get priority visibility and special highlighting
+                </Typography>
+              </Box>
+              
+              <Tooltip title={isUrgent ? "Marked as urgent" : "Mark as urgent"}>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={isUrgent}
+                      onChange={handleUrgentChange}
+                      sx={{
+                        '& .MuiSwitch-switchBase.Mui-checked': {
+                          color: '#d32f2f',
+                          '&:hover': {
+                            backgroundColor: 'rgba(211, 47, 47, 0.08)',
+                          },
+                        },
+                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                          backgroundColor: '#d32f2f',
+                        },
+                      }}
+                    />
+                  }
+                  label=""
+                />
+              </Tooltip>
+            </Box>
+            
+            {isUrgent && (
+              <Box sx={{ 
+                mt: 2, 
+                p: 2, 
+                borderRadius: '8px', 
+                backgroundColor: 'rgba(211, 47, 47, 0.08)',
+                border: '1px dashed rgba(211, 47, 47, 0.3)'
+              }}>
+                <Typography variant="body2" sx={{ color: '#d32f2f', fontStyle: 'italic' }}>
+                  Marking a role as urgent indicates immediate hiring needs. This will highlight your listing and improve its visibility to qualified candidates.
+                </Typography>
+              </Box>
+            )}
           </Box>
           
           <Box sx={{ 

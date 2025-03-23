@@ -125,7 +125,7 @@ const GreyFooter = () => {
                   />
                   <Typography
                     variant="body2"
-                    sx={{ color: "#4B5563", fontSize: "14px" }}
+                    sx={{ color: "#4B5563", fontSize: "12px" }}
                   >
                     ACICO Business Park
                     <br /> Port Saeed, Dubai - UAE

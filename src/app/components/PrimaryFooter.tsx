@@ -167,7 +167,10 @@ const Footer = () => {
                   <EmailIcon sx={{ color: "#fff", marginRight: "8px" }} />
                   <Typography
                     variant="body2"
-                    sx={{ color: "#fff", fontSize: "16px" }}
+                    sx={{ 
+                      color: "#fff", 
+                      fontSize: { xs: "16px", sm: "12px", md: "16px" },
+                    }}
                   >
                     info@staffingsolutionshub.com
                   </Typography>

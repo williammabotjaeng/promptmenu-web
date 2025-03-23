@@ -40,6 +40,7 @@ export interface EventRole {
   softDeadline: string;
   eventPoster: string;
   notes: string;
+  isUrgent: boolean;
   company_id: string | number;
   event: string | number;
   created_at: string;
@@ -99,6 +100,8 @@ const useEventStore = create<EventStoreState>((set) => ({
     event: "",
     id: "",
     eventPoster: "",
+    application_deadline: undefined,
+    isUrgent: false
   },
 
   setEventDetails: (updates) =>
@@ -168,6 +171,8 @@ const useEventStore = create<EventStoreState>((set) => ({
         event: "",
         id: "",
         eventPoster: "",
+        application_deadline: undefined,
+        isUrgent: false
       },
     }),
 }));
