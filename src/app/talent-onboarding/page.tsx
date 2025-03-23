@@ -21,6 +21,7 @@ import axios from 'axios';
 import PortfolioMedia from '@/components/portal/onboarding/PortfolioMedia';
 import { PaymentSection } from '@/components/portal/onboarding/PaymentSection';
 import { PortfolioBuilder } from '@/components/portal/onboarding/PortfolioBuilder';
+import EthnicityNationality from '@/components/portal/onboarding/EthnicityNationality';
 import { useAuth } from '@/providers/auth-providers';
 
 const TalentOnboarding: React.FC = () => {
@@ -35,8 +36,9 @@ const TalentOnboarding: React.FC = () => {
     'portfolioVideo',
     'portfolioImages',
     'portfolioPdf',
-    'onboarding_presented'
-
+    'onboarding_presented',
+    'ethnicity',
+    'nationality'
   ]);
 
   const accessToken = cookies?.access;
@@ -48,11 +50,12 @@ const TalentOnboarding: React.FC = () => {
     { title: 'Step 1: Headshot', content: 'Upload a headshot photo.' },
     { title: 'Step 2: Skills', content: 'Select your skills from the list below.' },
     { title: 'Step 3: Physical Attributes', content: 'Provide your physical attributes.' },
-    { title: 'Step 4: Identification and Credentials', content: 'Upload your government ID and banking details.' },
-    { title: 'Step 5: Social Media & Online', content: '' },
-    { title: 'Step 6: Portfolio & Media', content: 'Upload PDF Portfolio, Images and Video' },
-    { title: 'Step 7: Review', content: 'Review your information.' },
-    { title: 'Step 8: Submit', content: 'Submit your information.' },
+    { title: 'Step 4: Ethnicity & Nationality', content: 'Provide your ethnicity and nationality.' },
+    { title: 'Step 5: Identification and Credentials', content: 'Upload your government ID and banking details.' },
+    { title: 'Step 6: Social Media & Online', content: '' },
+    { title: 'Step 7: Portfolio & Media', content: 'Upload PDF Portfolio, Images and Video' },
+    { title: 'Step 8: Payment Information', content: 'Add your payment details.' },
+    { title: 'Step 9: Review', content: 'Review your information.' },
   ];
 
 
@@ -193,19 +196,19 @@ const TalentOnboarding: React.FC = () => {
       )}
 
       {activeStep === 2 && (
-        <PaymentSection activeStep={activeStep} setActiveStep={setActiveStep} />
-      )}
-
-      {activeStep === 3 && (
         <PhysicalAttributes activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
+      {activeStep === 3 && (
+        <EthnicityNationality activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
       {activeStep === 4 && (
-        <SocialMediaLinks activeStep={activeStep} setActiveStep={setActiveStep} />
+        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 5 && (
-        <IDandCreds activeStep={activeStep} setActiveStep={setActiveStep} />
+        <SocialMediaLinks activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
 
       {activeStep === 6 && (
@@ -213,6 +216,10 @@ const TalentOnboarding: React.FC = () => {
       )}
 
       {activeStep === 7 && (
+        <PaymentSection activeStep={activeStep} setActiveStep={setActiveStep} />
+      )}
+
+      {activeStep === 8 && (
         <ProfileReview activeStep={activeStep} setActiveStep={setActiveStep} />
       )}
     </Box>
