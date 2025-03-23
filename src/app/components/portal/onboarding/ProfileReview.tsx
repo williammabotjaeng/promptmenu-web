@@ -36,16 +36,19 @@ import { useOnboarding } from "@/providers/onboarding-providers";
 import { redirect } from "next/navigation";
 import AudienceDemographics from "./AudienceDemographics";
 import Creating from "@/components/Creating";
+import PublicIcon from '@mui/icons-material/Public';
+import FlagIcon from '@mui/icons-material/Flag';
 
 const steps = [
   { number: 1, title: "Headshot", isActive: false },
   { number: 2, title: "Skills", isActive: false },
   { number: 3, title: "Payment", isActive: false },
   { number: 4, title: "Attributes", isActive: false },
-  { number: 5, title: "Social", isActive: false },
-  { number: 6, title: "ID", isActive: false },
-  { number: 7, title: "Portfolio", isActive: false },
-  { number: 8, title: "Review", isActive: true },
+  { number: 5, title: "Ethnicity", isActive: false },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "ID", isActive: false },
+  { number: 8, title: "Portfolio", isActive: false },
+  { number: 9, title: "Review", isActive: true },
 ];
 
 export const ProfileReview: React.FC<OnboardingStepProps> = ({
@@ -60,10 +63,17 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
 
   const [loading, setLoading] = useState(false);
 
-  const [cookies, setCookie] = useCookies(["username", "access", "has_profile"]);
+  const [cookies, setCookie] = useCookies([
+    "username", "access", 
+    "has_profile", "ethnicity", 
+    "nationality", "user_role"
+  ]);
 
   const userName = cookies["username"];
   const accessToken = cookies["access"];
+  const ethnicity = cookies["ethnicity"] || talentData?.ethnicity || "";
+  const nationality = cookies["nationality"] || talentData?.nationality || "";
+  const userRole = cookies?.user_role || "";
 
   const router = useRouter();
 
@@ -143,10 +153,6 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
           uploadFileToS3(image, `additional_image_${index}`, userName, accessToken)
         )
       );
-
-      const handleSkip = () => {
-        setActiveStep(activeStep + 1);
-      };
   
       // Create user talent data object
       const userTalentData = {
@@ -166,7 +172,9 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
         eye_color: physicalAttributes?.eyeColor,
         hair_color: physicalAttributes?.hairColor,
         weight: physicalAttributes?.weight,
-        height: physicalAttributes?.height
+        height: physicalAttributes?.height,
+        ethnicity: ethnicity,
+        nationality: nationality
       };
   
       console.log("User Talent Data:", userTalentData);
@@ -253,7 +261,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
         </Box>
       </Box>
 
-      <Box sx={{
+      {userRole === "influencer" && (<Box sx={{
             display: 'flex',
             flexDirection: 'column'
       }}>
@@ -268,7 +276,7 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
           <Typography variant="h6">
               {`Date of Birth: ${talentData?.date_of_birth}`}
           </Typography>
-      </Box>
+      </Box>)}
 
       <Box sx={{ padding: 4 }}>
         <Typography
@@ -287,6 +295,90 @@ export const ProfileReview: React.FC<OnboardingStepProps> = ({
           {talentData?.skills.map((skill) => (
             <SkillBadge key={skill?.name} name={skill?.name} />
           ))}
+        </Box>
+
+        {/* Ethnicity & Nationality Section */}
+        <Typography
+          variant="h6"
+          sx={{
+            marginBottom: 2,
+            fontSize: { xs: "18px", md: "20px" },
+            fontWeight: "semi-bold",
+          }}
+        >
+          Ethnicity & Nationality
+        </Typography>
+        <Box
+          sx={{ 
+            display: "flex", 
+            gap: 2, 
+            flexWrap: { xs: "wrap", md: "nowrap" },
+            marginBottom: 3,
+          }}
+        >
+          <Box
+            sx={{
+              bgcolor: "white",
+              padding: { xs: 2, md: 3 },
+              borderRadius: "4px",
+              boxShadow: 1,
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Box sx={{ 
+              display: "flex", 
+              alignItems: "center", 
+              mb: 1,
+              color: "#977342"
+            }}>
+              <PublicIcon sx={{ mr: 1 }} />
+              <Typography
+                sx={{ fontWeight: "600", color: "#6B7280", fontSize: { xs: "16px", md: "18px" } }}
+              >
+                Ethnicity
+              </Typography>
+            </Box>
+            <Typography
+              sx={{ color: "#333", fontSize: { xs: "16px", md: "18px" }, fontWeight: "500" }}
+            >
+              {ethnicity || "Not specified"}
+            </Typography>
+          </Box>
+          
+          <Box
+            sx={{
+              bgcolor: "white",
+              padding: { xs: 2, md: 3 },
+              borderRadius: "4px",
+              boxShadow: 1,
+              flex: 1,
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column"
+            }}
+          >
+            <Box sx={{ 
+              display: "flex", 
+              alignItems: "center", 
+              mb: 1,
+              color: "#977342"
+            }}>
+              <FlagIcon sx={{ mr: 1 }} />
+              <Typography
+                sx={{ fontWeight: "600", color: "#6B7280", fontSize: { xs: "16px", md: "18px" } }}
+              >
+                Nationality
+              </Typography>
+            </Box>
+            <Typography
+              sx={{ color: "#333", fontSize: { xs: "16px", md: "18px" }, fontWeight: "500" }}
+            >
+              {nationality || "Not specified"}
+            </Typography>
+          </Box>
         </Box>
 
         <Typography
