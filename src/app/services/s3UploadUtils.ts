@@ -1,6 +1,5 @@
 import axios from "axios";
 import { restCall } from "./restCall";
-import { useCookies } from "react-cookie";
 
 const fileTypeMapping = {
   "image/png": "png",
@@ -36,9 +35,6 @@ const fetchFileAsBlob = async (fileUrl) => {
 
 // Updated uploadFileToS3 function
 export const uploadFileToS3 = async (file, filePrefix, username, accessToken) => {
-
-  const [cookies, setCookie] = useCookies(["event_poster"]);
-  
   console.log("File to Upload:", file);
 
   if (!file) {
@@ -56,11 +52,6 @@ export const uploadFileToS3 = async (file, filePrefix, username, accessToken) =>
   const fileName = `${filePrefix}_${username}_${Date.now()}.${fileExtension}`;
 
   console.log("Generated Filename:", fileName);
-
-  if (filePrefix === "event_poster")
-    {
-      setCookie("event_poster", fileName);
-    }
 
   try {
     const response = await restCall(
