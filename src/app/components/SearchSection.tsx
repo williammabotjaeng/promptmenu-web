@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { SearchBarProps } from '@/types/Props/pages/SearchBarProps';
 import { FilterButtonProps } from '@/types/Props/pages/FilterButtonProps';
+import DownArrow from "@/assets/down-arrow.svg";
 
 const FilterButton: React.FC<FilterButtonProps> = ({ label, onClick }) => (
   <Button
@@ -15,7 +16,7 @@ const FilterButton: React.FC<FilterButtonProps> = ({ label, onClick }) => (
     <Typography variant="body2" sx={{ textTransform: 'none', color: '#000', fontSize: '16px' }}>{label}</Typography>
     <img
       loading="lazy"
-      src="https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/e289c2de16c80c983332433cba33a0a8b54eac4d0f8a09844283b2d95e9bcd6a?apiKey=7fae980a988640eea8add1e49a5d542e&"
+      src={DownArrow?.src}
       alt=""
       style={{ width: '26px', height: '26px' }}
     />

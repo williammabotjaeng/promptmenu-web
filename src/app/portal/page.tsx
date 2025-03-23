@@ -30,8 +30,7 @@ const sidebarItems = [
   { icon: "work", label: "Jobs", href: '/jobs' },
   { icon: "theaters", label: "Auditions", href: '/auditions' },
   { icon: "person", label: "Profile", href: '/profile' },
-  { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
-  { icon: "settings", label: "Settings", href: '/settings' }
+  { icon: "portfolio", label: "Portfolio", href: '/portfolio' }
 ];
 
 

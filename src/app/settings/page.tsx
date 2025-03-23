@@ -40,13 +40,12 @@ import { IDandCreds } from "@/components/portal/profile/IDandCreds";
 import { Settings } from "@/components/portal/profile/Settings";
 
 const sidebarItems = [
-  { icon: "dashboard", label: "Portal", href: '/portal' },
-  { icon: "connect", label: "Connect Social", href: '/connect-social' },
-  { icon: "work", label: "Jobs", href: '/jobs' },
-  { icon: "theaters", label: "Auditions", href: '/auditions' },
-  { icon: "person", label: "Profile", href: '/profile' },
-  { icon: "portfolio", label: "Portfolio", href: '/portfolio' },
-  { icon: "settings", label: "Settings", href: '/settings' }
+  { icon: "dashboard", label: "Portal", href: "/portal" },
+  { icon: "connect", label: "Connect Social", href: "/connect-social" },
+  { icon: "work", label: "Jobs", href: "/jobs" },
+  { icon: "theaters", label: "Auditions", href: "/auditions" },
+  { icon: "person", label: "Profile", href: "/profile" },
+  { icon: "portfolio", label: "Portfolio", href: "/portfolio" },
 ];
 
 const jobs = [
@@ -76,7 +75,7 @@ const Portal: React.FC = () => {
     "firstname",
     "onboarding_presented",
     "user_role",
-    "username"
+    "username",
   ]);
 
   const firstName = cookies?.firstname || "User";
@@ -103,7 +102,7 @@ const Portal: React.FC = () => {
     setLoading(true);
     fetchTalentProfile();
     // getRoles();
-    
+
     if (!onboardingPresented) {
       console.log("Inside the condition, UserRole:", user_role);
       console.log("Check result:", user_role === "talent");
@@ -316,7 +315,7 @@ const Portal: React.FC = () => {
               </Grid>
               <br />
               <br />
-              
+
               <Settings />
             </Box>
           </Box>
