@@ -2,12 +2,35 @@
 
 import * as React from "react";
 import { PaymentInput } from "./PaymentInput";
-import { Box, Typography, Button, FormControlLabel, Switch } from "@mui/material";
+import { Box, Typography, Button, FormControlLabel, Switch, Tooltip } from "@mui/material";
+import InfoIcon from '@mui/icons-material/Info';
 import { PostEventStepProps } from "@/types/Props/PostEventStepProps";
 import RoleHeaderWithProgressBar from "./RoleHeaderWithProgressBar";
 import { useState, useEffect } from "react";
 import { useStore } from "zustand";
 import useEventStore from "@/state/use-event-store";
+
+// Types needed for time slots
+interface TimeSlot {
+  startTime: Date | null;
+  endTime: Date | null;
+}
+
+interface TimeSlots {
+  monday: TimeSlot;
+  tuesday: TimeSlot;
+  wednesday: TimeSlot;
+  thursday: TimeSlot;
+  friday: TimeSlot;
+  saturday: TimeSlot;
+  sunday: TimeSlot;
+}
+
+interface TimeSlotsConfig {
+  mode: 'universal' | 'perDay';
+  universalTimeSlot: TimeSlot;
+  dailyTimeSlots: TimeSlots;
+}
 
 export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setActiveStep }) => {
   const { eventDetails, eventRole, setEventRole } = useStore(useEventStore);
@@ -20,58 +43,148 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
   const [autoCalculate, setAutoCalculate] = useState<boolean>(true);
   const [lastChangedField, setLastChangedField] = useState<string | null>(null);
 
-  // Calculate event duration in hours and days
-  const calculateEventDuration = () => {
-    if (!eventDetails.startDateTime || !eventDetails.endDateTime) {
-      return { hours: 8, days: 1 }; // Default values if dates not available
-    }
+  // Event duration calculation state
+  const [eventDuration, setEventDuration] = useState({
+    totalHours: 0,
+    totalDays: 0,
+    workingHours: 0,
+    workingDays: 0
+  });
 
-    const startDate = new Date(eventDetails.startDateTime);
-    const endDate = new Date(eventDetails.endDateTime);
+  // Calculate event duration and working hours based on time slots
+  useEffect(() => {
+    const calculateEventDuration = () => {
+      if (!eventDetails.startDateTime || !eventDetails.endDateTime) {
+        return { totalHours: 8, totalDays: 1, workingHours: 8, workingDays: 1 }; // Default values
+      }
 
-    // Calculate duration in milliseconds
-    const durationMs = endDate.getTime() - startDate.getTime();
-    
-    // Convert to hours (rounded up)
-    const hours = Math.ceil(durationMs / (1000 * 60 * 60));
-    
-    // Convert to days (rounded up to nearest 0.5)
-    const rawDays = durationMs / (1000 * 60 * 60 * 24);
-    const days = Math.ceil(rawDays * 2) / 2; // Round to nearest 0.5
-    
-    return { hours, days };
-  };
+      const startDate = new Date(eventDetails.startDateTime);
+      const endDate = new Date(eventDetails.endDateTime);
 
-  // Get duration when component mounts
-  const { hours: eventHours, days: eventDays } = calculateEventDuration();
+      // Calculate total duration in milliseconds
+      const durationMs = endDate.getTime() - startDate.getTime();
+      
+      // Convert to hours and days
+      const totalHours = Math.ceil(durationMs / (1000 * 60 * 60));
+      const rawDays = durationMs / (1000 * 60 * 60 * 24);
+      const totalDays = Math.ceil(rawDays * 2) / 2; // Round to nearest 0.5
+      
+      // Default to total duration if no time slots defined
+      let workingHours = totalHours;
+      let workingDays = totalDays;
 
-  // Calculate rates based on the field that was changed
+      // Calculate working hours based on time slots if available
+      if (eventDetails.timeSlotsConfig) {
+        const { timeSlotsConfig } = eventDetails;
+        
+        if (timeSlotsConfig.mode === 'universal') {
+          // Universal time slot calculation
+          if (timeSlotsConfig.universalTimeSlot.startTime && timeSlotsConfig.universalTimeSlot.endTime) {
+            const start = new Date(timeSlotsConfig.universalTimeSlot.startTime);
+            const end = new Date(timeSlotsConfig.universalTimeSlot.endTime);
+            
+            // Hours per day based on universal slot
+            const hoursPerDay = (end.getHours() + end.getMinutes()/60) - 
+                               (start.getHours() + start.getMinutes()/60);
+            
+            // Unique days in the event
+            const uniqueDaysSet = new Set();
+            let currentDate = new Date(startDate);
+            
+            while (currentDate <= endDate) {
+              uniqueDaysSet.add(currentDate.getDay());
+              currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            const uniqueDaysCount = uniqueDaysSet.size;
+            workingHours = hoursPerDay * uniqueDaysCount;
+            workingDays = uniqueDaysCount;
+          }
+        } else {
+          // Per-day time slot calculation
+          let totalWorkingHours = 0;
+          const activeDays = new Set();
+          
+          // Map day of week (0-6) to day name
+          const dayMapping: Record<number, keyof TimeSlots> = {
+            0: 'sunday',
+            1: 'monday',
+            2: 'tuesday',
+            3: 'wednesday',
+            4: 'thursday',
+            5: 'friday',
+            6: 'saturday',
+          };
+          
+          // Iterate through each day of the event
+          let currentDate = new Date(startDate);
+          while (currentDate <= endDate) {
+            const dayName = dayMapping[currentDate.getDay()];
+            const daySlot = timeSlotsConfig.dailyTimeSlots[dayName];
+            
+            if (daySlot.startTime && daySlot.endTime) {
+              const start = new Date(daySlot.startTime);
+              const end = new Date(daySlot.endTime);
+              
+              // Calculate hours for this day
+              const hoursForDay = (end.getHours() + end.getMinutes()/60) - 
+                                 (start.getHours() + start.getMinutes()/60);
+              
+              totalWorkingHours += hoursForDay;
+              activeDays.add(dayName);
+            }
+            
+            // Move to next day
+            currentDate.setDate(currentDate.getDate() + 1);
+          }
+          
+          workingHours = totalWorkingHours;
+          workingDays = activeDays.size;
+        }
+      }
+      
+      return { 
+        totalHours, 
+        totalDays, 
+        workingHours: Math.max(workingHours, 1), // Ensure at least 1 hour
+        workingDays: Math.max(workingDays, 0.5)  // Ensure at least half a day
+      };
+    };
+
+    const duration = calculateEventDuration();
+    setEventDuration(duration);
+  }, [eventDetails.startDateTime, eventDetails.endDateTime, eventDetails.timeSlotsConfig]);
+
+  // Calculate rates based on the field that was changed and using working hours
   useEffect(() => {
     if (!autoCalculate || !lastChangedField) return;
+
+    const { workingHours, workingDays } = eventDuration;
+    const hoursPerDay = workingHours / workingDays || 8; // Default to 8 if calculation is invalid
 
     const calculateRates = () => {
       // Handle each possible input field as the source of truth
       if (lastChangedField === 'hourlyPay' && hourlyPay !== "") {
         const hourlyValue = Number(hourlyPay);
-        setDailyPay(Math.round(hourlyValue * 8)); // Assume 8-hour workday
-        setProjectPay(Math.round(hourlyValue * eventHours)); // Total project based on event hours
+        setDailyPay(Math.round(hourlyValue * hoursPerDay)); // Daily rate based on working hours per day
+        setProjectPay(Math.round(hourlyValue * workingHours)); // Total project based on working hours
       } 
       else if (lastChangedField === 'dailyPay' && dailyPay !== "") {
         const dailyValue = Number(dailyPay);
-        setHourlyPay(Math.round(dailyValue / 8)); // Derive hourly from daily
-        setProjectPay(Math.round(dailyValue * eventDays)); // Total project based on event days
+        setHourlyPay(Math.round(dailyValue / hoursPerDay)); // Derive hourly from daily
+        setProjectPay(Math.round(dailyValue * workingDays)); // Total project based on working days
       } 
       else if (lastChangedField === 'projectPay' && projectPay !== "") {
         const projectValue = Number(projectPay);
-        setDailyPay(Math.round(projectValue / eventDays)); // Daily rate based on project total
-        setHourlyPay(Math.round(projectValue / eventHours)); // Hourly rate based on project total
+        setDailyPay(Math.round(projectValue / workingDays)); // Daily rate based on project total
+        setHourlyPay(Math.round(projectValue / workingHours)); // Hourly rate based on project total
       }
     };
 
     calculateRates();
     // Reset last changed field after calculations
     setLastChangedField(null);
-  }, [lastChangedField, hourlyPay, dailyPay, projectPay, autoCalculate, eventHours, eventDays]);
+  }, [lastChangedField, hourlyPay, dailyPay, projectPay, autoCalculate, eventDuration]);
 
   const validateRates = () => {
     const newErrors: { [key: string]: string } = {};
@@ -88,7 +201,7 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
       newErrors.projectPay = "Project rate cannot be negative.";
     }
 
-    // Only check relationships if not auto-calculating (otherwise they're always in proper relation)
+    // Only check relationships if not auto-calculating
     if (!autoCalculate) {
       if (dailyPay !== "" && projectPay !== "" && Number(projectPay) < Number(dailyPay)) {
         newErrors.projectPay = "Project rate cannot be less than daily rate.";
@@ -110,7 +223,10 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
         hourlyPay: Number(hourlyPay) || 0,
         dailyPay: Number(dailyPay) || 0,
         projectPay: Number(projectPay) || 0,
-        paymentTerms: paymentTerms
+        paymentTerms: paymentTerms,
+        // Store calculated working hours/days for reference
+        calculatedHours: eventDuration.workingHours,
+        calculatedDays: eventDuration.workingDays
       });
       setActiveStep(activeStep + 1);
     }
@@ -167,10 +283,29 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
           Payment Details
         </Typography>
         
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-          <Typography variant="body2" sx={{ color: "text.secondary" }}>
-            Event Duration: ~{eventHours} hours ({eventDays} days)
-          </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 2, flexWrap: "wrap" }}>
+          <Box sx={{ mb: 1 }}>
+            <Typography variant="body2" sx={{ color: "text.secondary", display: "flex", alignItems: "center", mb: 0.5 }}>
+              Total Event Duration: {eventDuration.totalHours} hours ({eventDuration.totalDays} days)
+            </Typography>
+            
+            <Typography variant="body2" sx={{ 
+              color: "#977342", 
+              fontWeight: "medium", 
+              display: "flex", 
+              alignItems: "center",
+              mb: 0.5 
+            }}>
+              Working Hours: {eventDuration.workingHours} hours ({eventDuration.workingDays} days)
+              <Tooltip title="Calculated based on your event's working hours schedule" placement="right">
+                <InfoIcon sx={{ ml: 0.5, fontSize: 16 }} />
+              </Tooltip>
+            </Typography>
+            
+            <Typography variant="caption" sx={{ color: "text.secondary", display: "block" }}>
+              Calculations are based on working hours from your time slots
+            </Typography>
+          </Box>
           
           <FormControlLabel
             control={
@@ -199,6 +334,7 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
               value={dailyPay}
               onChange={(e) => handleRateChange("dailyPay", e.target.value)}
               error={errors.dailyPay}
+              hint={`Based on ${Math.round(eventDuration.workingHours / eventDuration.workingDays)} hours per day`}
             />
             <PaymentInput
               label="Per Project"
@@ -206,6 +342,7 @@ export const PaymentDetails: React.FC<PostEventStepProps> = ({ activeStep, setAc
               value={projectPay}
               onChange={(e) => handleRateChange("projectPay", e.target.value)}
               error={errors.projectPay}
+              hint={`For entire ${eventDuration.workingHours} working hours`}
             />
           </Box>
 
