@@ -86,7 +86,7 @@ const Home: React.FC = () => {
     <>
       <Header />
       <Hero />
-      <FeaturedTalent />
+      {/* <FeaturedTalent /> */}
       <ServicesSection services={services} />
       <StatisticsSection statistics={statistics} />
       <JourneySection />
