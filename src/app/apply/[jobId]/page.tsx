@@ -352,7 +352,7 @@ const RoleApplyPage = ({ params }) => {
           <Button
             variant="contained"
             onClick={() => {
-                clearCurrentRole();
+                // clearCurrentRole();
                 router.push("/jobs");
             }}
             sx={{
@@ -434,7 +434,7 @@ const RoleApplyPage = ({ params }) => {
           <Button
             variant="contained"
             onClick={() => {
-                clearCurrentRole();
+                // clearCurrentRole();
                 router.push("/jobs");
             }}
             sx={{
@@ -473,7 +473,7 @@ const RoleApplyPage = ({ params }) => {
         <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
           <IconButton
             onClick={() => { 
-                clearCurrentRole();
+                // clearCurrentRole();
                 router.push("/jobs"); 
             }}
             aria-label="go back"
@@ -782,7 +782,7 @@ const RoleApplyPage = ({ params }) => {
               <Button
                 variant="outlined"
                 onClick={() => { 
-                    clearCurrentRole();
+                    // clearCurrentRole();
                     router.push("/jobs");
                 }}
                 sx={{

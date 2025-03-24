@@ -8,6 +8,8 @@ import PrimaryFooter from '@/components/PrimaryFooter';
 import SecondaryHeader from '@/components/SecondaryHeader';
 import { useEvent } from '@/providers/event-provider';
 import { useEffect, useState, useMemo } from 'react';
+import { useStore } from 'zustand';
+import useCurrentRoleStore from '@/state/use-current-role-store';
 
 // Helper function to format date for display
 const formatDeadline = (dateString) => {
@@ -55,6 +57,8 @@ const Jobs = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(null);
+
+  const { clearCurrentRole } = useStore(useCurrentRoleStore);
   
   // Filter states
   const [activeFilters, setActiveFilters] = useState({
@@ -79,7 +83,7 @@ const Jobs = () => {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    
+    clearCurrentRole();
     getRoles()
       .then((data) => {
         if (Array.isArray(data)) {
