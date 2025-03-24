@@ -91,7 +91,7 @@ const Dashboard = () => {
     },
     {
       title: "Applications",
-      value: 0,
+      value: company?.applications || 0,
       icon: ApplicationsIcon?.src,
       color: "#FF9800",
       bgColor: "rgba(255, 152, 0, 0.1)"
