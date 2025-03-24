@@ -45,6 +45,16 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
     }
   }
 
+  const applicationsHandler = () => {
+    if (userRole === 'client')
+    {
+      setCurrentRole(role);
+      router.push(`/applications/${roleId}`)
+    } else {
+      
+    }
+  }
+
   return (
     <Paper
       elevation={3}
@@ -95,9 +105,9 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
               marginTop: { xs: 2, md: 0 },
               width: { xs: "100%", md: "auto" },
             }}
-            onClick={jobCardHandler}
+            onClick={applicationsHandler}
           >
-            Manage Job
+            View Applications
           </Button>}
         </Box>
 
