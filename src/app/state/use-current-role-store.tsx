@@ -11,6 +11,7 @@ export interface CurrentRole {
   soft_deadline: string | null;
   hard_deadline: string | null;
   application_deadline: string | null;
+  event_poster: string | null;
   max_age: number | null;
   min_age: number | null;
   ethnicities: string[];

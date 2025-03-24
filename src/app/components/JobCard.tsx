@@ -17,6 +17,8 @@ import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
 import { useRouter } from 'next/navigation';
+import { useStore } from 'zustand';
+import useCurrentRoleStore from '@/state/use-current-role-store';
 
 interface JobCardProps {
   imageUrl: string;
@@ -31,6 +33,7 @@ interface JobCardProps {
   projectPay?: number;
   openings?: number;
   skill?: string;
+  role?: any;
 }
 
 export const JobCard: React.FC<JobCardProps> = ({
@@ -45,11 +48,14 @@ export const JobCard: React.FC<JobCardProps> = ({
   dailyPay,
   projectPay,
   openings,
-  skill
+  skill,
+  role
 }) => {
   const router = useRouter();
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [imageError, setImageError] = React.useState(false);
+
+  const { setCurrentRole } = useStore(useCurrentRoleStore);
 
   // Truncate description to a reasonable length
   const truncateDescription = (text: string, maxLength: number = 100) => {
@@ -61,6 +67,10 @@ export const JobCard: React.FC<JobCardProps> = ({
   // Handle apply button click
   const handleApply = () => {
     // Navigate to role application page
+    setCurrentRole({
+      ...role,
+      event_poster: imageUrl
+    });
     router.push(`/apply/${roleId}`);
   };
 
@@ -236,7 +246,7 @@ export const JobCard: React.FC<JobCardProps> = ({
                       fontSize: '0.85rem'
                     }}
                   >
-                    {openings} {openings === 1 ? 'Position' : 'Positions'}
+                    {openings} {openings === 1 ? 'Position' : `${openings} Positions`}
                   </Typography>
                 </Box>
               </Tooltip>

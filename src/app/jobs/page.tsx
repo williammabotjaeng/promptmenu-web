@@ -407,6 +407,7 @@ const Jobs = () => {
                     dailyPay={role.dailyPay}
                     projectPay={role.projectPay}
                     roleId={role.id}
+                    role={role}
                   />
                 </Grid>
               ))}
