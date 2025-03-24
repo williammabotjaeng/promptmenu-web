@@ -8,12 +8,18 @@ export interface CurrentRole {
   daily_pay: number | null;
   hourly_pay: number | null;
   project_pay: number | null;
+  dailyPay?: number | null;
+  hourlyPay?: number | null;
+  projectPay?: number | null;
   soft_deadline: string | null;
   hard_deadline: string | null;
   application_deadline: string | null;
+  deadline?: string | null;
   event_poster: string | null;
   max_age: number | null;
   min_age: number | null;
+  maxAge?: number | null;
+  minAge?: number | null;
   ethnicities: string[];
   genders: string[];
   openings: number;

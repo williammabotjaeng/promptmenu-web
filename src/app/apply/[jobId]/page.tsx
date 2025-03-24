@@ -43,20 +43,25 @@ const DEFAULT_JOB_IMAGE =
 
 // Helper function to format date for display
 const formatDeadline = (dateString) => {
-  if (!dateString) return "No deadline";
-
-  try {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  } catch (error) {
-    console.error("Date formatting error:", error);
-    return dateString;
-  }
-};
+    if (!dateString) return "No deadline";
+    
+    try {
+      const date = new Date(dateString);
+      
+      // Format date with time
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      });
+    } catch (error) {
+      console.error("Date formatting error:", error);
+      return dateString;
+    }
+  };
 
 // Basic form validation
 const validateEmail = (email) => {
@@ -87,7 +92,7 @@ const RoleApplyPage = ({ params }) => {
   const router = useRouter();
   const { id } = params;
   const { submitApplication, roleSignedUrls } = useEvent();
-  const { currentRole } = useStore(useCurrentRoleStore);
+  const { currentRole, clearCurrentRole } = useStore(useCurrentRoleStore);
 
   // State for role data and application process
   const [role, setRole] = useState(null);
@@ -120,6 +125,7 @@ const RoleApplyPage = ({ params }) => {
   // Load role data from currentRole store
   useEffect(() => {
     const loadRoleData = () => {
+      console.log("Current Role:", currentRole);
       try {
         setLoading(true);
         setError(null);
@@ -140,25 +146,25 @@ const RoleApplyPage = ({ params }) => {
             description: currentRole.description || "No description available",
             location: currentRole.location || "Remote",
             deadline:
-              currentRole.application_deadline ||
+              currentRole.deadline ||
               currentRole.hard_deadline ||
               currentRole.soft_deadline,
             eventPoster: currentRole.event_poster || "",
             isUrgent:
               currentRole.is_urgent ||
               isDeadlineUrgent(
-                currentRole.application_deadline ||
+                currentRole.deadline ||
                 currentRole.hard_deadline ||
                 currentRole.soft_deadline
               ),
-            hourlyPay: currentRole.hourly_pay,
-            dailyPay: currentRole.daily_pay,
-            projectPay: currentRole.project_pay,
+            hourlyPay: currentRole.hourlyPay,
+            dailyPay: currentRole.dailyPay,
+            projectPay: currentRole.projectPay,
             openings: currentRole.openings,
             genders: currentRole.genders,
             ethnicities: currentRole.ethnicities,
-            minAge: currentRole.min_age,
-            maxAge: currentRole.max_age,
+            minAge: currentRole.minAge,
+            maxAge: currentRole.maxAge,
             skill: currentRole.skill,
             experienceLevel: currentRole.experience_level,
             roleType: currentRole.role_type,
@@ -356,7 +362,10 @@ const RoleApplyPage = ({ params }) => {
           </Typography>
           <Button
             variant="contained"
-            onClick={() => router.push("/jobs")}
+            onClick={() => {
+                clearCurrentRole();
+                router.push("/jobs");
+            }}
             sx={{
               backgroundColor: "#977342",
               color: "white",
@@ -433,7 +442,10 @@ const RoleApplyPage = ({ params }) => {
 
           <Button
             variant="contained"
-            onClick={() => router.push("/jobs")}
+            onClick={() => {
+                clearCurrentRole();
+                router.push("/jobs");
+            }}
             sx={{
               backgroundColor: "#977342",
               color: "white",
@@ -469,7 +481,10 @@ const RoleApplyPage = ({ params }) => {
       <Container maxWidth="lg" sx={{ my: { xs: 3, md: 5 }, flexGrow: 1 }}>
         <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
           <IconButton
-            onClick={() => router.push("/jobs")}
+            onClick={() => { 
+                clearCurrentRole();
+                router.push("/jobs"); 
+            }}
             aria-label="go back"
             sx={{
               mr: 2,
@@ -775,7 +790,10 @@ const RoleApplyPage = ({ params }) => {
               
               <Button
                 variant="outlined"
-                onClick={() => router.push("/jobs")}
+                onClick={() => { 
+                    clearCurrentRole();
+                    router.push("/jobs");
+                }}
                 sx={{
                   ml: 2,
                   borderColor: "#977342",
