@@ -54,6 +54,7 @@ import useCurrentRoleStore from "@/state/use-current-role-store";
 import WhiteLoading from "@/components/WhiteLoading";
 import { useCookies } from "react-cookie";
 import moment from "moment";
+import { useTalentProfile } from "@/providers/talent-profile-provider";
 
 // Default image to use when no poster is available
 const DEFAULT_JOB_IMAGE =
@@ -98,92 +99,8 @@ const isDeadlineUrgent = (deadlineStr) => {
   }
 };
 
-// Mock talent profiles for demonstration
-const mockTalentProfiles = [
-  {
-    id: 1,
-    user_id: 'user1',
-    name: 'Sarah Johnson',
-    profileImage: 'https://i.pravatar.cc/300?img=1',
-    email: 'sarah.j@example.com',
-    phone: '+1 555-123-4567',
-    location: 'Dubai, UAE',
-    skills: ['Modeling', 'Runway', 'Commercial'],
-    rating: 4.8,
-    experience: '5 years',
-    portfolio: 'https://portfolio.example.com/sarah',
-    applicationDate: '2024-02-15T14:30:00',
-    coverLetter: 'I am excited about this opportunity as it aligns perfectly with my experience in luxury fashion events. I have worked with brands like Gucci and Prada, and I believe I can bring a unique perspective to your show.',
-    status: 'pending'
-  },
-  {
-    id: 2,
-    user_id: 'user2',
-    name: 'Michael Chen',
-    profileImage: 'https://i.pravatar.cc/300?img=3',
-    email: 'michael.c@example.com',
-    phone: '+1 555-987-6543',
-    location: 'Abu Dhabi, UAE',
-    skills: ['Photography', 'Videography', 'Editing'],
-    rating: 4.5,
-    experience: '7 years',
-    portfolio: 'https://portfolio.example.com/michael',
-    applicationDate: '2024-02-16T09:15:00',
-    coverLetter: 'With my extensive background in fashion photography, I believe I can capture the essence of your event perfectly. I specialize in editorial style photography that tells a compelling story.',
-    status: 'pending'
-  },
-  {
-    id: 3,
-    user_id: 'user3',
-    name: 'Aisha Mohammed',
-    profileImage: 'https://i.pravatar.cc/300?img=5',
-    email: 'aisha.m@example.com',
-    phone: '+971 50 123 4567',
-    location: 'Sharjah, UAE',
-    skills: ['Hosting', 'Public Speaking', 'Event Management'],
-    rating: 4.9,
-    experience: '4 years',
-    portfolio: 'https://portfolio.example.com/aisha',
-    applicationDate: '2024-02-17T16:45:00',
-    coverLetter: 'I have hosted over 50 fashion events in the region and have developed a strong presence in the industry. My ability to engage audiences while maintaining a professional atmosphere would be perfect for your event.',
-    status: 'hired'
-  },
-  {
-    id: 4,
-    user_id: 'user4',
-    name: 'David Wilson',
-    profileImage: 'https://i.pravatar.cc/300?img=7',
-    email: 'david.w@example.com',
-    phone: '+1 555-765-4321',
-    location: 'Dubai, UAE',
-    skills: ['Makeup', 'Hair Styling', 'Fashion Consulting'],
-    rating: 4.2,
-    experience: '9 years',
-    portfolio: 'https://portfolio.example.com/david',
-    applicationDate: '2024-02-14T10:30:00',
-    coverLetter: 'Having worked with celebrities and major fashion brands, I bring a wealth of experience in creating stunning looks that align with brand aesthetics. I would love to contribute to your event.',
-    status: 'rejected'
-  },
-  {
-    id: 5,
-    user_id: 'user5',
-    name: 'Olivia Rahman',
-    profileImage: 'https://i.pravatar.cc/300?img=9',
-    email: 'olivia.r@example.com',
-    phone: '+971 54 987 6543',
-    location: 'Ajman, UAE',
-    skills: ['Modeling', 'Acting', 'Dancing'],
-    rating: 4.7,
-    experience: '3 years',
-    portfolio: 'https://portfolio.example.com/olivia',
-    applicationDate: '2024-02-18T11:20:00',
-    coverLetter: 'I would be thrilled to be part of this event. With my background in both modeling and performing arts, I can bring versatility to your show while maintaining the professional standards your brand is known for.',
-    status: 'pending'
-  }
-];
-
 // Talent application card component
-const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
+const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signedUrls }) => {
   const [actionMenuAnchor, setActionMenuAnchor] = useState(null);
   
   const handleActionMenuOpen = (event) => {
@@ -193,6 +110,13 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
   const handleActionMenuClose = () => {
     setActionMenuAnchor(null);
   };
+
+  // Get the signed URL for the talent's headshot
+  const profileImageUrl = talent?.user?.id && signedUrls && signedUrls[talent.user.id] 
+    ? signedUrls[talent.user.id] 
+    : DEFAULT_AVATAR;
+  
+  const status = talent?.application_data?.status || 'pending';
   
   return (
     <Card 
@@ -202,9 +126,9 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
         mb: 2.5,
         overflow: 'visible',
         border: '1px solid',
-        borderColor: talent.status === 'hired' 
+        borderColor: status === 'hired' 
           ? 'rgba(76, 175, 80, 0.3)' 
-          : talent.status === 'rejected' 
+          : status === 'rejected' 
             ? 'rgba(244, 67, 54, 0.3)' 
             : 'rgba(0, 0, 0, 0.05)',
         transition: 'transform 0.2s, box-shadow 0.2s',
@@ -220,27 +144,27 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
           <Grid item xs={12} sm={2} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Box sx={{ position: 'relative' }}>
               <Avatar 
-                src={talent.profileImage} 
-                alt={talent.name}
+                src={profileImageUrl} 
+                alt={`${talent.firstname} ${talent.lastname}`}
                 sx={{ 
                   width: 80, 
                   height: 80, 
                   border: '3px solid',
-                  borderColor: talent.status === 'hired' 
+                  borderColor: status === 'hired' 
                     ? 'success.main' 
-                    : talent.status === 'rejected' 
+                    : status === 'rejected' 
                       ? 'error.main' 
                       : "#977342",
                   mb: 1
                 }}
               />
-              {talent.status !== 'pending' && (
+              {status !== 'pending' && (
                 <Box 
                   sx={{ 
                     position: 'absolute', 
                     bottom: 5, 
                     right: -5,
-                    backgroundColor: talent.status === 'hired' ? 'success.main' : 'error.main',
+                    backgroundColor: status === 'hired' ? 'success.main' : 'error.main',
                     color: 'white',
                     borderRadius: '50%',
                     width: 28,
@@ -250,7 +174,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
                     justifyContent: 'center'
                   }}
                 >
-                  {talent.status === 'hired' 
+                  {status === 'hired' 
                     ? <CheckCircleOutlineIcon fontSize="small" /> 
                     : <CancelOutlinedIcon fontSize="small" />}
                 </Box>
@@ -258,7 +182,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
             </Box>
             
             <Rating 
-              value={talent.rating} 
+              value={talent.rating || 0} 
               precision={0.1} 
               readOnly 
               size="small"
@@ -266,7 +190,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
             />
             
             <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.75rem', textAlign: 'center' }}>
-              Applied {moment(talent.applicationDate).fromNow()}
+              Applied {moment(talent.application_data?.application_date || new Date()).fromNow()}
             </Typography>
           </Grid>
           
@@ -275,21 +199,22 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
             <Box sx={{ mb: 1.5 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                 <Typography variant="h6" sx={{ fontWeight: 600, mr: 1 }}>
-                  {talent.name}
+                  {talent.firstname} {talent.lastname}
                 </Typography>
                 <Chip 
-                  label={talent.experience} 
+                  label={talent.experience || ''}
                   size="small"
                   sx={{ 
                     backgroundColor: 'rgba(151, 115, 66, 0.1)', 
                     color: "#977342",
-                    height: 22
+                    height: 22,
+                    display: talent.experience ? 'flex' : 'none'
                   }}
                 />
               </Box>
               
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
-                {talent.skills.map((skill, index) => (
+                {Array.isArray(talent.skills) && talent.skills.map((skill, index) => (
                   <Chip 
                     key={index} 
                     label={skill} 
@@ -304,53 +229,61 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
               </Box>
               
               <Grid container spacing={1}>
-                <Grid item xs={12} sm={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                    <EmailOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      {talent.email}
-                    </Typography>
-                  </Box>
-                </Grid>
+                {talent.user?.email && (
+                  <Grid item xs={12} sm={6}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                      <EmailOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
+                      <Typography variant="body2" color="text.secondary">
+                        {talent.user.email}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                )}
                 
-                <Grid item xs={12} sm={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                    <PhoneOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      {talent.phone}
-                    </Typography>
-                  </Box>
-                </Grid>
+                {talent.phone_number && (
+                  <Grid item xs={12} sm={6}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                      <PhoneOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
+                      <Typography variant="body2" color="text.secondary">
+                        {talent.phone_number}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                )}
                 
-                <Grid item xs={12} sm={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                    <LocationOnOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
-                    <Typography variant="body2" color="text.secondary">
-                      {talent.location}
-                    </Typography>
-                  </Box>
-                </Grid>
+                {talent.nationality && (
+                  <Grid item xs={12} sm={6}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                      <LocationOnOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
+                      <Typography variant="body2" color="text.secondary">
+                        {talent.nationality}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                )}
                 
-                <Grid item xs={12} sm={6}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
-                    <LinkIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
-                    <Typography 
-                      variant="body2" 
-                      color="primary"
-                      sx={{ 
-                        cursor: 'pointer',
-                        '&:hover': { textDecoration: 'underline' } 
-                      }}
-                      onClick={() => window.open(talent.portfolio, '_blank')}
-                    >
-                      View Portfolio
-                    </Typography>
-                  </Box>
-                </Grid>
+                {talent.social_media_links?.website && (
+                  <Grid item xs={12} sm={6}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                      <LinkIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
+                      <Typography 
+                        variant="body2" 
+                        color="primary"
+                        sx={{ 
+                          cursor: 'pointer',
+                          '&:hover': { textDecoration: 'underline' } 
+                        }}
+                        onClick={() => window.open(talent.social_media_links.website, '_blank')}
+                      >
+                        View Portfolio
+                      </Typography>
+                    </Box>
+                  </Grid>
+                )}
               </Grid>
             </Box>
             
-            {talent.coverLetter && (
+            {talent.application_data?.cover_letter && (
               <Box 
                 sx={{ 
                   p: 1.5, 
@@ -360,9 +293,9 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
                 }}
               >
                 <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                  {talent.coverLetter.length > 150 
-                    ? `${talent.coverLetter.substring(0, 150)}...` 
-                    : talent.coverLetter}
+                  {talent.application_data.cover_letter.length > 150 
+                    ? `${talent.application_data.cover_letter.substring(0, 150)}...` 
+                    : talent.application_data.cover_letter}
                 </Typography>
               </Box>
             )}
@@ -370,12 +303,12 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
           
           {/* Right column: Actions */}
           <Grid item xs={12} sm={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-            {talent.status === 'pending' ? (
+            {status === 'pending' ? (
               <>
                 <Button 
                   variant="contained" 
                   startIcon={<CheckCircleOutlineIcon />}
-                  onClick={() => onHire(talent.id)}
+                  onClick={() => onHire(talent.user?.id)}
                   sx={{
                     mb: 1.5,
                     backgroundColor: 'success.main',
@@ -390,7 +323,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
                 <Button 
                   variant="outlined" 
                   startIcon={<CancelOutlinedIcon />}
-                  onClick={() => onReject(talent.id)}
+                  onClick={() => onReject(talent.user?.id)}
                   sx={{
                     mb: 1.5,
                     borderColor: 'error.main',
@@ -410,18 +343,18 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
                 variant="outlined"
                 sx={{
                   mb: 1.5,
-                  borderColor: talent.status === 'hired' ? 'success.main' : 'error.main',
-                  color: talent.status === 'hired' ? 'success.main' : 'error.main',
+                  borderColor: status === 'hired' ? 'success.main' : 'error.main',
+                  color: status === 'hired' ? 'success.main' : 'error.main',
                 }}
                 disabled
               >
-                {talent.status === 'hired' ? 'Hired' : 'Rejected'}
+                {status === 'hired' ? 'Hired' : 'Rejected'}
               </Button>
             )}
             
             <Button 
               variant="outlined"
-              onClick={() => onViewProfile(talent.id)}
+              onClick={() => onViewProfile(talent.user?.id)}
               sx={{
                 borderColor: "#977342",
                 color: "#977342",
@@ -451,13 +384,17 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile }) => {
               open={Boolean(actionMenuAnchor)}
               onClose={handleActionMenuClose}
             >
-              <MenuItem onClick={() => { handleActionMenuClose(); window.location.href = `mailto:${talent.email}`; }}>
-                Send Email
-              </MenuItem>
-              <MenuItem onClick={() => { handleActionMenuClose(); }}>
-                Download Resume
-              </MenuItem>
-              <MenuItem onClick={() => { handleActionMenuClose(); }}>
+              {talent.user?.email && (
+                <MenuItem onClick={() => { handleActionMenuClose(); window.location.href = `mailto:${talent.user.email}`; }}>
+                  Send Email
+                </MenuItem>
+              )}
+              {talent.portfolio_pdf && (
+                <MenuItem onClick={() => { handleActionMenuClose(); /* Logic to download resume */ }}>
+                  Download Resume
+                </MenuItem>
+              )}
+              <MenuItem onClick={() => { handleActionMenuClose(); /* Logic to add to favorites */ }}>
                 Add to Favorites
               </MenuItem>
             </Menu>
@@ -498,6 +435,12 @@ export default function ApplicationsPage ({ params }) {
   const { getRole, roleSignedUrls } = useEvent();
   const { currentRole } = useStore(useCurrentRoleStore);
   const [cookies] = useCookies(['username']);
+  const { 
+    roleApplicants, 
+    fetchRoleApplicants, 
+    updateApplicantStatus, 
+    profileSignedUrls 
+  } = useTalentProfile();
 
   // State
   const [role, setRole] = useState(null);
@@ -505,9 +448,13 @@ export default function ApplicationsPage ({ params }) {
   const [error, setError] = useState(null);
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [applications, setApplications] = useState([]);
   const [tabValue, setTabValue] = useState(0);
   const [filterMenuAnchor, setFilterMenuAnchor] = useState(null);
+  const [sortOption, setSortOption] = useState("newest");
+  const [filteredApplications, setFilteredApplications] = useState([]);
+  
+  // Track if initial data loading is complete
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
   // Gold color theme
   const goldPrimary = "#977342";
@@ -515,57 +462,59 @@ export default function ApplicationsPage ({ params }) {
 
   // Fetch role and applications data
   useEffect(() => {
-    const loadRoleData = () => {
+    // Skip if we've already completed the initial load or don't have a role yet
+    if (initialLoadComplete || !currentRole || !currentRole.id) return;
+    
+    const loadRoleData = async () => {
       console.log("Current Role:", currentRole);
+      
       try {
         setLoading(true);
-        setError(null);
         
-        // Check if we have a valid currentRole object
-        if (currentRole && currentRole.id) {
-          // Create a properly formatted role object
-          const formattedRole = {
-            id: currentRole.id,
-            title: currentRole.title || "Untitled Role",
-            description: currentRole.description || "No description available",
-            location: currentRole.location || "Remote",
-            deadline:
+        // Create a properly formatted role object
+        const formattedRole = {
+          id: currentRole.id,
+          title: currentRole.title || "Untitled Role",
+          description: currentRole.description || "No description available",
+          location: currentRole.location || "Remote",
+          deadline:
+            currentRole.deadline ||
+            currentRole.hard_deadline ||
+            currentRole.soft_deadline,
+          eventPoster: currentRole.event_poster || "",
+          isUrgent:
+            currentRole.is_urgent ||
+            isDeadlineUrgent(
               currentRole.deadline ||
               currentRole.hard_deadline ||
-              currentRole.soft_deadline,
-            eventPoster: currentRole.event_poster || "",
-            isUrgent:
-              currentRole.is_urgent ||
-              isDeadlineUrgent(
-                currentRole.deadline ||
-                currentRole.hard_deadline ||
-                currentRole.soft_deadline
-              ),
-            hourlyPay: currentRole.hourlyPay,
-            dailyPay: currentRole.dailyPay,
-            projectPay: currentRole.projectPay,
-            openings: currentRole.openings,
-            genders: currentRole.genders,
-            ethnicities: currentRole.ethnicities,
-            minAge: currentRole.minAge,
-            maxAge: currentRole.maxAge,
-            skill: currentRole.skill,
-            experienceLevel: currentRole.experience_level,
-            roleType: currentRole.role_type,
-            event: currentRole.event,
-            // For real implementation, get applicants from the role data
-            applicants: currentRole.applicants || []
-          };
-          
-          setRole(formattedRole);
-          
-          // In a real implementation, you would fetch talent profiles here
-          // and match them with the role's applicants
-          // For now, we'll use mock data
-          setApplications(mockTalentProfiles);
-        } else {
-          setError("Role not found. Please go back and try again.");
+              currentRole.soft_deadline
+            ),
+          hourlyPay: currentRole.hourlyPay,
+          dailyPay: currentRole.dailyPay,
+          projectPay: currentRole.projectPay,
+          openings: currentRole.openings,
+          genders: currentRole.genders,
+          ethnicities: currentRole.ethnicities,
+          minAge: currentRole.minAge,
+          maxAge: currentRole.maxAge,
+          skill: currentRole.skill,
+          experienceLevel: currentRole.experience_level,
+          roleType: currentRole.role_type,
+          event: currentRole.event,
+        };
+        
+        setRole(formattedRole);
+        
+        // Fetch real applicants for this role
+        try {
+          await fetchRoleApplicants(currentRole.id);
+        } catch (err) {
+          console.error("Error fetching role applicants:", err);
+          setError("Failed to load applicants. Please try again later.");
         }
+        
+        // Mark initial load as complete to prevent further reloads
+        setInitialLoadComplete(true);
       } catch (err) {
         console.error("Error processing role data:", err);
         setError("Failed to load role details. Please try again later.");
@@ -575,7 +524,7 @@ export default function ApplicationsPage ({ params }) {
     };
     
     loadRoleData();
-  }, [currentRole]);
+  }, [currentRole, initialLoadComplete, fetchRoleApplicants]);
 
   // Update image URL when roleSignedUrls changes
   useEffect(() => {
@@ -594,6 +543,47 @@ export default function ApplicationsPage ({ params }) {
       }
     }
   }, [roleSignedUrls, role?.id]);
+
+  // Filter and sort applications when role applicants change or tab changes
+  useEffect(() => {
+    if (!roleApplicants) return;
+    
+    let filtered = [...roleApplicants];
+    
+    // Apply tab filtering
+    if (tabValue === 1) {
+      filtered = filtered.filter(app => 
+        app.application_data?.status === 'pending'
+      );
+    } else if (tabValue === 2) {
+      filtered = filtered.filter(app => 
+        app.application_data?.status === 'hired'
+      );
+    } else if (tabValue === 3) {
+      filtered = filtered.filter(app => 
+        app.application_data?.status === 'rejected'
+      );
+    }
+    
+    // Apply sorting
+    if (sortOption === "newest") {
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.application_data?.application_date || 0);
+        const dateB = new Date(b.application_data?.application_date || 0);
+        return dateB - dateA;
+      });
+    } else if (sortOption === "oldest") {
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.application_data?.application_date || 0);
+        const dateB = new Date(b.application_data?.application_date || 0);
+        return dateA - dateB;
+      });
+    } else if (sortOption === "rating") {
+      filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    }
+    
+    setFilteredApplications(filtered);
+  }, [roleApplicants, tabValue, sortOption]);
 
   // Calculate highest pay rate to display
   const getPayDisplay = () => {
@@ -618,25 +608,39 @@ export default function ApplicationsPage ({ params }) {
   const handleFilterMenuClose = () => {
     setFilterMenuAnchor(null);
   };
+  
+  // Handle sorting menu item selection
+  const handleSortChange = (sortType) => {
+    setSortOption(sortType);
+    handleFilterMenuClose();
+  };
 
   // Handle talent actions
-  const handleHireTalent = (talentId) => {
-    // In a real implementation, you would call an API to update the talent status
-    setApplications(applications.map(talent => 
-      talent.id === talentId ? { ...talent, status: 'hired' } : talent
-    ));
+  const handleHireTalent = async (userId) => {
+    if (!userId || !role?.id) return;
+    
+    try {
+      await updateApplicantStatus(role.id, userId, 'hired');
+    } catch (error) {
+      console.error("Error hiring talent:", error);
+    }
   };
   
-  const handleRejectTalent = (talentId) => {
-    // In a real implementation, you would call an API to update the talent status
-    setApplications(applications.map(talent => 
-      talent.id === talentId ? { ...talent, status: 'rejected' } : talent
-    ));
+  const handleRejectTalent = async (userId) => {
+    if (!userId || !role?.id) return;
+    
+    try {
+      await updateApplicantStatus(role.id, userId, 'rejected');
+    } catch (error) {
+      console.error("Error rejecting talent:", error);
+    }
   };
   
-  const handleViewProfile = (talentId) => {
-    // In a real implementation, you would navigate to the talent profile page
-    console.log(`Viewing profile for talent ID: ${talentId}`);
+  const handleViewProfile = (userId) => {
+    if (!userId) return;
+    
+    // Navigate to the talent profile page
+    router.push(`/talent/profile/${userId}`);
   };
 
   if (loading) {
@@ -713,17 +717,11 @@ export default function ApplicationsPage ({ params }) {
 
   if (!currentRole) return <WhiteLoading />;
 
-  // Filter applications by tab
-  const filteredApplications = 
-    tabValue === 0 ? applications : 
-    tabValue === 1 ? applications.filter(app => app.status === 'pending') :
-    tabValue === 2 ? applications.filter(app => app.status === 'hired') :
-    applications.filter(app => app.status === 'rejected');
-
   // Calculate application statistics
-  const pendingCount = applications.filter(app => app.status === 'pending').length;
-  const hiredCount = applications.filter(app => app.status === 'hired').length;
-  const rejectedCount = applications.filter(app => app.status === 'rejected').length;
+  const applications = roleApplicants || [];
+  const pendingCount = applications.filter(app => app.application_data?.status === 'pending').length;
+  const hiredCount = applications.filter(app => app.application_data?.status === 'hired').length;
+  const rejectedCount = applications.filter(app => app.application_data?.status === 'rejected').length;
 
   return (
     <Box
@@ -828,387 +826,396 @@ export default function ApplicationsPage ({ params }) {
                 )}
               </Box>
               <CardContent sx={{ p: 3 }}>
-  <Typography
-    variant="h5"
-    component="h2"
-    sx={{
-      fontWeight: "600",
-      color: "#333",
-      mb: 2,
-    }}
-  >
-    {role?.title}
-  </Typography>
-
-  <Grid container spacing={2} sx={{ mb: 3 }}>
-    <Grid item xs={12}>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <LocationOnOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
-        <Typography variant="body1" color="text.secondary">
-          {role?.location || "Remote"}
-        </Typography>
-      </Box>
-    </Grid>
-
-    <Grid item xs={12}>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <AccessTimeOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
-        <Typography variant="body1" color="text.secondary">
-          Deadline: {formatDeadline(role?.deadline)}
-        </Typography>
-      </Box>
-    </Grid>
-
-    <Grid item xs={12}>
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <MonetizationOnOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
-        <Typography variant="body1" color="text.secondary">
-          {getPayDisplay()}
-        </Typography>
-      </Box>
-    </Grid>
-
-    {role?.openings && (
-      <Grid item xs={12}>
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <WorkOutlineOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
-          <Typography variant="body1" color="text.secondary">
-            {role.openings}{" "}
-            {parseInt(role.openings) === 1 ? "Position" : "Positions"}
-          </Typography>
-        </Box>
-      </Grid>
-    )}
-  </Grid>
-
-  <Divider sx={{ my: 2 }} />
-
-  {/* Application statistics */}
-  <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-    Application Stats
-  </Typography>
-
-  <Grid container spacing={2} sx={{ mb: 2 }}>
-    <Grid item xs={4}>
-      <Paper 
-        elevation={0} 
-        sx={{ 
-          p: 1.5, 
-          textAlign: 'center',
-          backgroundColor: 'rgba(151, 115, 66, 0.08)',
-          borderRadius: 2
-        }}
-      >
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: goldPrimary }}>
-          {applications.length}
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Total
-        </Typography>
-      </Paper>
-    </Grid>
-
-    <Grid item xs={4}>
-      <Paper 
-        elevation={0} 
-        sx={{ 
-          p: 1.5, 
-          textAlign: 'center',
-          backgroundColor: 'rgba(76, 175, 80, 0.08)',
-          borderRadius: 2
-        }}
-      >
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'success.main' }}>
-          {hiredCount}
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Hired
-        </Typography>
-      </Paper>
-    </Grid>
-
-    <Grid item xs={4}>
-      <Paper 
-        elevation={0} 
-        sx={{ 
-          p: 1.5, 
-          textAlign: 'center',
-          backgroundColor: 'rgba(244, 67, 54, 0.08)',
-          borderRadius: 2
-        }}
-      >
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'error.main' }}>
-          {rejectedCount}
-        </Typography>
-        <Typography variant="caption" color="text.secondary">
-          Rejected
-        </Typography>
-      </Paper>
-    </Grid>
-  </Grid>
-
-  <Divider sx={{ my: 2 }} />
-
-  {/* Quick actions */}
-  <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-    Actions
-  </Typography>
-
-  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-    <Button
-      variant="contained"
-      fullWidth
-      sx={{
-        backgroundColor: goldPrimary,
-        color: 'white',
-        '&:hover': {
-          backgroundColor: goldLight,
-        }
-      }}
-      onClick={() => router.push(`/events/edit/${role.id}`)}
-    >
-      Edit Role
-    </Button>
-
-    <Button
-      variant="outlined"
-      fullWidth
-      sx={{
-        borderColor: goldPrimary,
-        color: goldPrimary,
-        '&:hover': {
-          borderColor: goldLight,
-          backgroundColor: 'rgba(151, 115, 66, 0.05)',
-        }
-      }}
-      onClick={() => window.open(`/jobs/${role.id}`, '_blank')}
-    >
-      View Public Listing
-    </Button>
-  </Box>
-</CardContent>
-</Card>
-        </Grid>
-
-        {/* Right column: Applications */}
-        <Grid item xs={12} md={8} lg={9}>
-          <Card
-            elevation={0}
-            sx={{
-              borderRadius: "12px",
-              border: "1px solid #eee",
-              overflow: "visible",
-              mb: 4
-            }}
-          >
-            <CardContent sx={{ p: 3 }}>
-              {/* Tabs and filters header */}
-              <Box sx={{ 
-                display: 'flex', 
-                justifyContent: 'space-between', 
-                alignItems: 'center',
-                borderBottom: 1,
-                borderColor: 'divider',
-              }}>
-                <Tabs 
-                  value={tabValue} 
-                  onChange={handleTabChange}
-                  indicatorColor="primary"
-                  textColor="inherit"
+                <Typography
+                  variant="h5"
+                  component="h2"
                   sx={{
-                    '& .MuiTab-root': {
-                      color: 'text.secondary',
-                      fontWeight: 500,
-                      '&.Mui-selected': {
-                        color: goldPrimary,
-                        fontWeight: 600,
-                      }
-                    },
-                    '& .MuiTabs-indicator': {
-                      backgroundColor: goldPrimary,
-                    }
+                    fontWeight: "600",
+                    color: "#333",
+                    mb: 2,
                   }}
                 >
-                  <Tab label={`All (${applications.length})`} />
-                  <Tab label={`Pending (${pendingCount})`} />
-                  <Tab label={`Hired (${hiredCount})`} />
-                  <Tab label={`Rejected (${rejectedCount})`} />
-                </Tabs>
+                  {role?.title}
+                </Typography>
 
-                <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Tooltip title="Filter applications">
-                    <IconButton 
-                      onClick={handleFilterMenuOpen}
-                      size="small"
-                      sx={{ color: 'text.secondary' }}
+                <Grid container spacing={2} sx={{ mb: 3 }}>
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <LocationOnOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
+                      <Typography variant="body1" color="text.secondary">
+                        {role?.location || "Remote"}
+                      </Typography>
+                    </Box>
+                  </Grid>
+
+                  {role?.deadline && (
+                    <Grid item xs={12}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <AccessTimeOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
+                        <Typography variant="body1" color="text.secondary">
+                          Deadline: {formatDeadline(role?.deadline)}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  )}
+
+                  <Grid item xs={12}>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <MonetizationOnOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
+                      <Typography variant="body1" color="text.secondary">
+                        {getPayDisplay()}
+                      </Typography>
+                    </Box>
+                  </Grid>
+
+                  {role?.openings && (
+                    <Grid item xs={12}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <WorkOutlineOutlinedIcon sx={{ color: goldPrimary, mr: 1 }} />
+                        <Typography variant="body1" color="text.secondary">
+                          {role.openings}{" "}
+                          {parseInt(role.openings) === 1 ? "Position" : "Positions"}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  )}
+                </Grid>
+
+                <Divider sx={{ my: 2 }} />
+
+                {/* Application statistics */}
+                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                  Application Stats
+                </Typography>
+
+                <Grid container spacing={2} sx={{ mb: 2 }}>
+                  <Grid item xs={4}>
+                    <Paper 
+                      elevation={0} 
+                      sx={{ 
+                        p: 1.5, 
+                        textAlign: 'center',
+                        backgroundColor: 'rgba(151, 115, 66, 0.08)',
+                        borderRadius: 2
+                      }}
                     >
-                      <FilterListIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                  
-                  <Tooltip title="Sort applications">
-                    <IconButton 
-                      size="small"
-                      sx={{ color: 'text.secondary' }}
+                      <Typography variant="h5" sx={{ fontWeight: 'bold', color: goldPrimary }}>
+                        {applications.length}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Total
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <Paper 
+                      elevation={0} 
+                      sx={{ 
+                        p: 1.5, 
+                        textAlign: 'center',
+                        backgroundColor: 'rgba(76, 175, 80, 0.08)',
+                        borderRadius: 2
+                      }}
                     >
-                      <SortIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
+                      <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'success.main' }}>
+                        {hiredCount}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Hired
+                      </Typography>
+                    </Paper>
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <Paper 
+                      elevation={0} 
+                      sx={{ 
+                        p: 1.5, 
+                        textAlign: 'center',
+                        backgroundColor: 'rgba(244, 67, 54, 0.08)',
+                        borderRadius: 2
+                      }}
+                    >
+                      <Typography variant="h5" sx={{ fontWeight: 'bold', color: 'error.main' }}>
+                        {rejectedCount}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        Rejected
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grid>
+
+                <Divider sx={{ my: 2 }} />
+
+                {/* Quick actions */}
+                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+                  Actions
+                </Typography>
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      backgroundColor: goldPrimary,
+                      color: 'white',
+                      '&:hover': {
+                        backgroundColor: goldLight,
+                      }
+                    }}
+                    onClick={() => router.push(`/events/edit/${role.id}`)}
+                  >
+                    Edit Role
+                  </Button>
+
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    sx={{
+                      borderColor: goldPrimary,
+                      color: goldPrimary,
+                      '&:hover': {
+                        borderColor: goldLight,
+                        backgroundColor: 'rgba(151, 115, 66, 0.05)',
+                      }
+                    }}
+                    onClick={() => window.open(`/jobs/${role.id}`, '_blank')}
+                  >
+                    View Public Listing
+                  </Button>
                 </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-                <Menu
-                  anchorEl={filterMenuAnchor}
-                  open={Boolean(filterMenuAnchor)}
-                  onClose={handleFilterMenuClose}
-                >
-                  <MenuItem onClick={handleFilterMenuClose}>Experience: 0-1 years</MenuItem>
-                  <MenuItem onClick={handleFilterMenuClose}>Experience: 1-3 years</MenuItem>
-                  <MenuItem onClick={handleFilterMenuClose}>Experience: 3+ years</MenuItem>
-                  <MenuItem onClick={handleFilterMenuClose}>Rating: 4+ stars</MenuItem>
-                  <MenuItem onClick={handleFilterMenuClose}>Location: Dubai</MenuItem>
-                </Menu>
-              </Box>
-
-              {/* Applications content */}
-              <TabPanel value={tabValue} index={0}>
-                {filteredApplications.length > 0 ? (
-                  filteredApplications.map(talent => (
-                    <TalentApplicationCard
-                      key={talent.id}
-                      talent={talent}
-                      onHire={handleHireTalent}
-                      onReject={handleRejectTalent}
-                      onViewProfile={handleViewProfile}
-                    />
-                  ))
-                ) : (
-                  <Box sx={{ textAlign: 'center', py: 8 }}>
-                    <PersonOutlineOutlinedIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
-                    <Typography variant="h6" color="text.secondary">
-                      No applications found
-                    </Typography>
-                    <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
-                      There are no applications matching your current filters.
-                    </Typography>
-                  </Box>
-                )}
-              </TabPanel>
-
-              <TabPanel value={tabValue} index={1}>
-                {filteredApplications.length > 0 ? (
-                  filteredApplications.map(talent => (
-                    <TalentApplicationCard
-                      key={talent.id}
-                      talent={talent}
-                      onHire={handleHireTalent}
-                      onReject={handleRejectTalent}
-                      onViewProfile={handleViewProfile}
-                    />
-                  ))
-                ) : (
-                  <Box sx={{ textAlign: 'center', py: 8 }}>
-                    <PersonOutlineOutlinedIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
-                    <Typography variant="h6" color="text.secondary">
-                      No pending applications
-                    </Typography>
-                    <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
-                      All applications have been processed.
-                    </Typography>
-                  </Box>
-                )}
-              </TabPanel>
-
-              <TabPanel value={tabValue} index={2}>
-                {filteredApplications.length > 0 ? (
-                  filteredApplications.map(talent => (
-                    <TalentApplicationCard
-                      key={talent.id}
-                      talent={talent}
-                      onHire={handleHireTalent}
-                      onReject={handleRejectTalent}
-                      onViewProfile={handleViewProfile}
-                    />
-                  ))
-                ) : (
-                  <Box sx={{ textAlign: 'center', py: 8 }}>
-                    <CheckCircleOutlineIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
-                    <Typography variant="h6" color="text.secondary">
-                      No hired talents yet
-                    </Typography>
-                    <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
-                      Review your pending applications and hire talents.
-                    </Typography>
-                  </Box>
-                )}
-              </TabPanel>
-
-              <TabPanel value={tabValue} index={3}>
-                {filteredApplications.length > 0 ? (
-                  filteredApplications.map(talent => (
-                    <TalentApplicationCard
-                      key={talent.id}
-                      talent={talent}
-                      onHire={handleHireTalent}
-                      onReject={handleRejectTalent}
-                      onViewProfile={handleViewProfile}
-                    />
-                  ))
-                ) : (
-                  <Box sx={{ textAlign: 'center', py: 8 }}>
-                    <CancelOutlinedIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
-                    <Typography variant="h6" color="text.secondary">
-                      No rejected applications
-                    </Typography>
-                    <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
-                      You haven't rejected any applicants yet.
-                    </Typography>
-                  </Box>
-                )}
-              </TabPanel>
-            </CardContent>
-          </Card>
-          
-          {/* Help box */}
-          <Paper
-            elevation={0}
-            sx={{
-              p: 3,
-              borderRadius: '12px',
-              border: '1px solid #eee',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              bgcolor: 'rgba(151, 115, 66, 0.05)',
-            }}
-          >
-            <Box
+          {/* Right column: Applications */}
+          <Grid item xs={12} md={8} lg={9}>
+            <Card
+              elevation={0}
               sx={{
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                bgcolor: 'rgba(151, 115, 66, 0.1)',
-                color: goldPrimary,
+                borderRadius: "12px",
+                border: "1px solid #eee",
+                overflow: "visible",
+                mb: 4
               }}
             >
-              <CalendarTodayOutlinedIcon />
-            </Box>
-            <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#333' }}>
-                Event Date Approaching
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Remember to finalize your talent selections at least 7 days before your event date.
-              </Typography>
-            </Box>
-          </Paper>
-        </Grid>
-      </Grid>
-    </Container>
+              <CardContent sx={{ p: 3 }}>
+                {/* Tabs and filters header */}
+                <Box sx={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'center',
+                  borderBottom: 1,
+                  borderColor: 'divider',
+                }}>
+                  <Tabs 
+                    value={tabValue} 
+                    onChange={handleTabChange}
+                    indicatorColor="primary"
+                    textColor="inherit"
+                    sx={{
+                      '& .MuiTab-root': {
+                        color: 'text.secondary',
+                        fontWeight: 500,
+                        '&.Mui-selected': {
+                          color: goldPrimary,
+                          fontWeight: 600,
+                        }
+                      },
+                      '& .MuiTabs-indicator': {
+                        backgroundColor: goldPrimary,
+                      }
+                    }}
+                  >
+                    <Tab label={`All (${applications.length})`} />
+                    <Tab label={`Pending (${pendingCount})`} />
+                    <Tab label={`Hired (${hiredCount})`} />
+                    <Tab label={`Rejected (${rejectedCount})`} />
+                  </Tabs>
 
-    <PrimaryFooter />
-  </Box>
-);
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Tooltip title="Filter applications">
+                      <IconButton 
+                        onClick={handleFilterMenuOpen}
+                        size="small"
+                        sx={{ color: 'text.secondary' }}
+                      >
+                        <FilterListIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    
+                    <Tooltip title="Sort applications">
+                      <IconButton 
+                        size="small"
+                        onClick={handleFilterMenuOpen}
+                        sx={{ color: 'text.secondary' }}
+                      >
+                        <SortIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+
+                  <Menu
+                    anchorEl={filterMenuAnchor}
+                    open={Boolean(filterMenuAnchor)}
+                    onClose={handleFilterMenuClose}
+                  >
+                    <MenuItem onClick={() => handleSortChange("newest")}>Sort: Newest First</MenuItem>
+                    <MenuItem onClick={() => handleSortChange("oldest")}>Sort: Oldest First</MenuItem>
+                    <MenuItem onClick={() => handleSortChange("rating")}>Sort: Highest Rating</MenuItem>
+                    <Divider />
+                    <MenuItem onClick={handleFilterMenuClose}>Experience: 0-1 years</MenuItem>
+                    <MenuItem onClick={handleFilterMenuClose}>Experience: 1-3 years</MenuItem>
+                    <MenuItem onClick={handleFilterMenuClose}>Experience: 3+ years</MenuItem>
+                  </Menu>
+                </Box>
+
+                {/* Applications content */}
+                <TabPanel value={tabValue} index={0}>
+                  {filteredApplications.length > 0 ? (
+                    filteredApplications.map(talent => (
+                      <TalentApplicationCard
+                        key={talent.user?.id || talent.id}
+                        talent={talent}
+                        onHire={handleHireTalent}
+                        onReject={handleRejectTalent}
+                        onViewProfile={handleViewProfile}
+                        signedUrls={profileSignedUrls}
+                      />
+                    ))
+                  ) : (
+                    <Box sx={{ textAlign: 'center', py: 8 }}>
+                      <PersonOutlineOutlinedIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
+                      <Typography variant="h6" color="text.secondary">
+                        No applications found
+                      </Typography>
+                      <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
+                        There are no applications matching your current filters.
+                      </Typography>
+                    </Box>
+                  )}
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={1}>
+                  {filteredApplications.length > 0 ? (
+                    filteredApplications.map(talent => (
+                      <TalentApplicationCard
+                        key={talent.user?.id || talent.id}
+                        talent={talent}
+                        onHire={handleHireTalent}
+                        onReject={handleRejectTalent}
+                        onViewProfile={handleViewProfile}
+                        signedUrls={profileSignedUrls}
+                      />
+                    ))
+                  ) : (
+                    <Box sx={{ textAlign: 'center', py: 8 }}>
+                      <PersonOutlineOutlinedIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
+                      <Typography variant="h6" color="text.secondary">
+                        No pending applications
+                      </Typography>
+                      <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
+                        All applications have been processed.
+                      </Typography>
+                    </Box>
+                  )}
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={2}>
+                  {filteredApplications.length > 0 ? (
+                    filteredApplications.map(talent => (
+                      <TalentApplicationCard
+                        key={talent.user?.id || talent.id}
+                        talent={talent}
+                        onHire={handleHireTalent}
+                        onReject={handleRejectTalent}
+                        onViewProfile={handleViewProfile}
+                        signedUrls={profileSignedUrls}
+                      />
+                    ))
+                  ) : (
+                    <Box sx={{ textAlign: 'center', py: 8 }}>
+                      <CheckCircleOutlineIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
+                      <Typography variant="h6" color="text.secondary">
+                        No hired talents yet
+                      </Typography>
+                      <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
+                        Review your pending applications and hire talents.
+                      </Typography>
+                    </Box>
+                  )}
+                </TabPanel>
+
+                <TabPanel value={tabValue} index={3}>
+                  {filteredApplications.length > 0 ? (
+                    filteredApplications.map(talent => (
+                      <TalentApplicationCard
+                        key={talent.user?.id || talent.id}
+                        talent={talent}
+                        onHire={handleHireTalent}
+                        onReject={handleRejectTalent}
+                        onViewProfile={handleViewProfile}
+                        signedUrls={profileSignedUrls}
+                      />
+                    ))
+                  ) : (
+                    <Box sx={{ textAlign: 'center', py: 8 }}>
+                      <CancelOutlinedIcon sx={{ fontSize: 60, color: 'text.disabled', mb: 2 }} />
+                      <Typography variant="h6" color="text.secondary">
+                        No rejected applications
+                      </Typography>
+                      <Typography variant="body2" color="text.disabled" sx={{ mt: 1 }}>
+                        You haven't rejected any applicants yet.
+                      </Typography>
+                    </Box>
+                  )}
+                </TabPanel>
+              </CardContent>
+            </Card>
+            
+            {/* Help box */}
+            <Paper
+              elevation={0}
+              sx={{
+                p: 3,
+                borderRadius: '12px',
+                border: '1px solid #eee',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+                bgcolor: 'rgba(151, 115, 66, 0.05)',
+              }}
+            >
+              <Box
+                sx={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  bgcolor: 'rgba(151, 115, 66, 0.1)',
+                  color: goldPrimary,
+                }}
+              >
+                <CalendarTodayOutlinedIcon />
+              </Box>
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#333' }}>
+                  Event Date Approaching
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Remember to finalize your talent selections at least 7 days before your event date.
+                </Typography>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+
+      <PrimaryFooter />
+    </Box>
+  );
 }
