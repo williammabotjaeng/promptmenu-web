@@ -87,6 +87,18 @@ export const JobCard: React.FC<PortalJobCardProps> = ({
           >
             {userRole === 'client' ? 'Edit Job' : `Apply Now`}
           </Button>
+          {userRole === 'client' && <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#977342",
+              color: "white",
+              marginTop: { xs: 2, md: 0 },
+              width: { xs: "100%", md: "auto" },
+            }}
+            onClick={jobCardHandler}
+          >
+            Manage Job
+          </Button>}
         </Box>
 
         {/* Pay Details */}
