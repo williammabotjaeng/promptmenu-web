@@ -89,7 +89,7 @@ const isDeadlineUrgent = (deadlineStr) => {
   }
 };
 
-const RoleApplyPage = ({ params }) => {
+const ApplicationsPage = ({ params }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const router = useRouter();
@@ -810,4 +810,4 @@ const RoleApplyPage = ({ params }) => {
   );
 };
 
-export default RoleApplyPage;
+export default ApplicationsPage;

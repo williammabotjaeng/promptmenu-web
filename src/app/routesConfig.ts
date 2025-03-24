@@ -24,7 +24,7 @@ export const privateRoutes: string[] = [
     '/admin',
     '/talent',
     '/apply',
-    '/manage-job'
+    '/applications'
   ];
   
   export const publicRoutes: string[] = [
