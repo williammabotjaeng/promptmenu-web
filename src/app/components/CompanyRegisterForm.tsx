@@ -49,6 +49,7 @@ import {
   OnboardingProvider,
   useOnboarding,
 } from "@/providers/onboarding-providers";
+import CreatingCompany from "./CreatingCompany";
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -86,6 +87,7 @@ export const CompanyRegisterForm: React.FC = () => {
   const [nationality, setNationality] = useState("");
   const [region, setRegion] = useState("");
   const [hasAccepted, setHasAccepted] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [cookies, setCookie] = useCookies([
     "nationality",
     "vatPdf",
@@ -145,21 +147,29 @@ export const CompanyRegisterForm: React.FC = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
     "success"
   );
-
+  
   const fetchAddressSuggestions = async (value) => {
     if (value.length > 2) {
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search`,
-        {
-          params: {
-            q: value,
-            format: "json",
-            addressdetails: 1,
-            limit: 5,
-          },
-        }
-      );
-      setAddressOptions(response.data);
+      try {
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search`,
+          {
+            params: {
+              q: value,
+              format: "json",
+              addressdetails: 1,
+              limit: 5,
+            },
+            headers: {
+              'User-Agent': 'StaffingSolutionsHub/1.0 (gis@staffingsolutionshub.com)' 
+            }
+          }
+        );
+        setAddressOptions(response.data);
+      } catch (error) {
+        console.error('Error fetching address suggestions:', error);
+        setAddressOptions([]);
+      }
     } else {
       setAddressOptions([]);
     }
@@ -267,6 +277,8 @@ export const CompanyRegisterForm: React.FC = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setLoading(true);
+
     try {
       const vatCertificateFileName = await uploadFileToS3(
         cookies["vatPdf"],
@@ -305,9 +317,10 @@ export const CompanyRegisterForm: React.FC = () => {
       };
 
       createCompany(companyData);
-
+      setLoading(false);
       redirect("/company-success");
     } catch (error) {
+      setLoading(false);
       console.error("Error during form submission:", error);
     }
   };
@@ -330,6 +343,8 @@ export const CompanyRegisterForm: React.FC = () => {
       setSnackbarOpen(true);
     }
   };
+
+  if (loading) return <CreatingCompany />;
 
   return (
     <>
