@@ -22,6 +22,7 @@ interface EventContextType {
   deleteEvent: () => Promise<void>;
   getRole: (roleId: string) => Promise<void>;
   getRoles: () => Promise<void>;
+  getUserRoles: () => Promise<void>;
   getEventRoles: (eventId: string) => Promise<void>;
   getUserEvents: () => Promise<void>;
   getAllEvents: () => Promise<void>;
@@ -237,6 +238,37 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+  const getUserRolesMutation = useMutation({
+    mutationKey: ["get_user_roles"],
+    mutationFn: async () => {
+      const response = await restCall(
+        "/dashboard/events/user-roles/",
+        "GET",
+        {},
+        accessToken
+      );
+      console.log("User Roles Response", response);
+      return response;
+    },
+    onSuccess: async (data) => {
+      setRoles(data);
+      console.log("User roles fetched successfully", data);
+      
+      // Fetch signed URLs for role posters
+      if (Array.isArray(data) && data.length > 0) {
+        try {
+          const urls = await fetchRoleSignedUrls(data);
+          setRoleSignedUrls(urls);
+        } catch (error) {
+          console.error("Error fetching user role signed URLs:", error);
+        }
+      }
+    },
+    onError: (error) => {
+      console.error("Error fetching user roles: ", error);
+    },
+  });
+
 const submitApplicationMutation = useMutation({
   mutationKey: ["submit_application"],
   mutationFn: async (applicationData: ApplicationData) => {
@@ -400,6 +432,10 @@ const fetchRoleSignedUrls = async (roles: any[]): Promise<Record<string, string>
     return await getRoleMutation?.mutateAsync(roleId);
   };
 
+  const getUserRoles = async () => {
+    return await getUserRolesMutation?.mutateAsync();
+  };
+
   const getRoles = async () => {
     return await getRolesMutation?.mutateAsync();
   };
@@ -479,6 +515,7 @@ const fetchRoleSignedUrls = async (roles: any[]): Promise<Record<string, string>
         deleteEvent,
         getRole,
         getRoles,
+        getUserRoles,
         getEventRoles,
         getUserEvents,
         getAllEvents,

@@ -8,10 +8,6 @@ import {
   CardContent,
   Typography,
   Button,
-  DialogTitle,
-  Dialog,
-  DialogContent,
-  DialogActions,
   Chip,
   Divider,
   Fade,
@@ -20,31 +16,20 @@ import {
   IconButton,
   Stack,
   Tooltip,
-  LinearProgress,
   Container
 } from "@mui/material";
-import { StatCard } from "@/components/dashboard/StatCard";
 import { JobCard } from "@/components/dashboard/JobCard";
-import { ActivityItem } from "@/components/dashboard/ActivityItem";
-import { recentActivities } from "@/data/index";
 import { useAuth } from "@/providers/auth-providers";
 import Header from "@/components/dashboard/Header";
 import { useEffect, useState } from "react";
 import { useStore } from "zustand";
-import useAuthStore from "@/state/use-auth-store";
 import { useRouter, redirect } from "next/navigation";
 import { useCookies } from "react-cookie";
 import { 
-  PersonAdd, 
-  Star, 
   Add as AddIcon,
   KeyboardArrowDown,
   KeyboardArrowUp,
-  StarBorder,
-  PlayArrow,
-  Info as InfoIcon,
-  Refresh as RefreshIcon,
-  Settings as SettingsIcon
+  Refresh as RefreshIcon
 } from "@mui/icons-material";
 import Work from "@mui/icons-material/Work";
 import Loading from "@/components/Loading";
@@ -60,11 +45,12 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import GreyFooter from "@/components/GreyFooter";
 
 const Dashboard = () => {
-  const { user, updateUser } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
-  const [cookies, setCookie] = useCookies([
+  const [cookies] = useCookies([
     "ssh_session_id",
     "user_role",
+    "ssh_access",
     "onboarding_presented",
     "firstname",
   ]);
@@ -105,27 +91,38 @@ const Dashboard = () => {
     },
   ]);
 
-  let user_role = cookies["user_role"];
-
+  const userRole = cookies["user_role"];
+  const sshAccess = cookies["ssh_access"];
   const firstName = cookies["firstname"] || "User";
-
   const onboardingPresented = cookies["onboarding_presented"] || false;
 
-  const [openModal, setOpenModal] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const { roles } = useStore(useLocalRolesStore);
-
-  const { getRoles } = useEvent();
-
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
+  const { getRoles, getUserRoles } = useEvent();
 
   useEffect(() => {
-    console.log("User Role:", user_role);
+    console.log("User Role:", userRole);
+    console.log("SSH Access:", sshAccess);
     setLoading(true);
-    getRoles();
+    
+    // Determine which roles to fetch based on user role and access level
+    const fetchAppropriateRoles = async () => {
+      if (userRole === 'client') {
+        if (sshAccess === 'admin') {
+          console.log("Fetching all roles (admin view)");
+          await getRoles();
+        } else {
+          console.log("Fetching user-specific roles");
+          await getUserRoles();
+        }
+      } else {
+        console.log("Fetching standard roles");
+        await getRoles();
+      }
+    };
+    
+    fetchAppropriateRoles();
     fetchCompany();
 
     console.log("Company:", company);
@@ -137,12 +134,14 @@ const Dashboard = () => {
         prevStats.map((stat) =>
           stat.title === "Total Jobs"
             ? { ...stat, value: company.total_jobs || 0 }
+            : stat.title === "Applications"
+            ? { ...stat, value: company.applications || 0 }
             : stat
         )
       );
     }
 
-    if (user_role === "client") {
+    if (userRole === "client") {
       console.log("It's a client");
       if (!onboardingPresented) {
         router.push("/company-profile");
@@ -150,8 +149,7 @@ const Dashboard = () => {
       setTimeout(() => {
         setLoading(false);
       }, 500);
-      // router.push('/dashboard');
-    } else if (user_role === "talent" || user_role === "influencer") {
+    } else if (userRole === "talent" || userRole === "influencer") {
       console.log("It's talent");
       setLoading(false);
       redirect("/portal");
@@ -163,10 +161,23 @@ const Dashboard = () => {
     setTimeout(() => {
       setFadeIn(true);
     }, 100);
-  }, [user_role, router, cookies, company]);
+  }, [userRole, sshAccess, router, cookies, company]);
 
   const handleCreateNewJob = () => {
     router.push("/post-event");
+  };
+
+  const handleRefreshRoles = async () => {
+    // Use the same conditional logic to refresh roles
+    if (userRole === 'client') {
+      if (sshAccess === 'admin') {
+        await getRoles();
+      } else {
+        await getUserRoles();
+      }
+    } else {
+      await getRoles();
+    }
   };
 
   if (loading) return <Loading />;
@@ -317,7 +328,7 @@ const Dashboard = () => {
                           color: "#977342",
                         }}
                       >
-                        Recent Jobs
+                        {sshAccess === 'admin' ? 'All Jobs' : 'Your Jobs'}
                       </Typography>
                       <Chip
                         label={roles?.length || 0}
@@ -335,7 +346,7 @@ const Dashboard = () => {
                       <Tooltip title="Refresh jobs">
                         <IconButton 
                           size="small" 
-                          onClick={() => getRoles()}
+                          onClick={handleRefreshRoles}
                           sx={{ 
                             color: "#977342",
                             "&:hover": { bgcolor: "rgba(151, 115, 66, 0.1)" }
@@ -424,7 +435,7 @@ const Dashboard = () => {
                       >
                         <Work sx={{ fontSize: 48, color: "rgba(0,0,0,0.2)" }} />
                         <Typography variant="h6" color="text.secondary">
-                          No recent jobs available
+                          No jobs available
                         </Typography>
                         <Button
                           variant="outlined"
@@ -519,7 +530,6 @@ const Dashboard = () => {
                   </CardContent>
                 </Card>
               </Fade>
-
             </Stack>
           </Grid>
         </Grid>
