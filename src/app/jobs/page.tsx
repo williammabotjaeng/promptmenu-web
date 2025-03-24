@@ -91,7 +91,7 @@ const Jobs = () => {
             location: role.location || "Remote",
             deadline: role.application_deadline || role.hard_deadline || role.soft_deadline,
             eventPoster: role.event_poster || "",
-            isUrgent: isDeadlineUrgent(role.application_deadline || role.hard_deadline),
+            isUrgent: role?.is_urgent,
             imageUrl: "", // Will be populated with signed URL
             // Additional data that might be useful
             hourlyPay: role.hourly_pay,

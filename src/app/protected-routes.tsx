@@ -36,7 +36,8 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
     /^\/add-role\/\d+$/, 
     /^\/message\/\d+$/, 
     /^\/role\/\d+$/,
-    /^\/talent\/\d+$/
+    /^\/talent\/\d+$/,
+    /^\/apply\/\d+$/
   ];
 
   const dynamicPublicRoutes: RegExp[] = [

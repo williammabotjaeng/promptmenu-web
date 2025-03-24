@@ -29,11 +29,25 @@ interface EventContextType {
   updateEvent: (eventId: string, data: any) => Promise<void>;
   clearSignedUrls: () => void;
   fetchRoleSignedUrls: (roles: any[]) => Promise<Record<string, string>>;
+  submitApplication: (applicationData: ApplicationData) => Promise<void>;
 }
 
 interface GetRoleInput {
   eventId: string;
   roleId: string;
+}
+
+interface ApplicationData {
+  role_id: string;
+  event_id?: string;
+  applicant_name?: string;
+  applicant_email?: string;
+  applicant_phone?: string;
+  cover_letter?: string;
+  resume_link?: string;
+  work_samples?: string;
+  application_answers?: any[];
+  status?: string;
 }
 
 const EventContext = createContext<EventContextType | null>(null);
@@ -230,6 +244,25 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+const submitApplicationMutation = useMutation({
+  mutationKey: ["submit_application"],
+  mutationFn: async (applicationData: ApplicationData) => {
+    console.log("Application Data:", applicationData);
+    return await restCall(
+      "/dashboard/events/applications/submit/",
+      "POST",
+      applicationData,
+      accessToken
+    );
+  },
+  onSuccess: (data) => {
+    console.log("Application submitted successfully", data);
+  },
+  onError: (error) => {
+    console.error("Error submitting application: ", error);
+  },
+});
+
   const getRoleMutation = useMutation({
     mutationKey: ["get_role"],
     mutationFn: async (roleId: string) => {
@@ -366,6 +399,10 @@ const fetchRoleSignedUrls = async (roles: any[]): Promise<Record<string, string>
     return await allEventsMutation?.mutateAsync();
   };
 
+  const submitApplication = async (applicationData: ApplicationData) => {
+    return await submitApplicationMutation?.mutateAsync(applicationData);
+  };
+
   const getRole = async (roleId: string) => {
     return await getRoleMutation?.mutateAsync(roleId);
   };
@@ -453,7 +490,8 @@ const fetchRoleSignedUrls = async (roles: any[]): Promise<Record<string, string>
         getUserEvents,
         getAllEvents,
         clearSignedUrls,
-        fetchRoleSignedUrls
+        fetchRoleSignedUrls,
+        submitApplication
       }}
     >
       {children}
