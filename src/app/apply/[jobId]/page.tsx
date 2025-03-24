@@ -36,6 +36,7 @@ import { useEvent } from "@/providers/event-provider";
 import FetchingRole from "@/components/dashboard/FetchingRole";
 import { useStore } from "zustand";
 import useCurrentRoleStore from "@/state/use-current-role-store";
+import WhiteLoading from "@/components/WhiteLoading";
 
 // Default image to use when no poster is available
 const DEFAULT_JOB_IMAGE =
@@ -386,6 +387,8 @@ const RoleApplyPage = ({ params }) => {
       </Box>
     );
   }
+
+  if (!currentRole) return <WhiteLoading />;
 
   if (submissionSuccess) {
     return (
