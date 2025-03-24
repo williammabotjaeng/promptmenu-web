@@ -51,6 +51,7 @@
     "react-select-country-list": "^2.2.3",
     "react-spinners": "^0.15.0",
     "react-sticky-el": "^2.1.1",
+    "react-toastify": "^11.0.5",
     "react-use": "^17.6.0",
     "swiper": "^11.2.1",
     "zustand": "^5.0.2"
