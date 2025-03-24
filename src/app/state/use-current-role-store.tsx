@@ -20,6 +20,7 @@ export interface CurrentRole {
   min_age: number | null;
   maxAge?: number | null;
   minAge?: number | null;
+  event_id?: number | string;
   ethnicities: string[];
   genders: string[];
   openings: number;

@@ -37,6 +37,8 @@ import FetchingRole from "@/components/dashboard/FetchingRole";
 import { useStore } from "zustand";
 import useCurrentRoleStore from "@/state/use-current-role-store";
 import WhiteLoading from "@/components/WhiteLoading";
+import { useAnimationFrame } from "framer-motion";
+import { useCookies } from "react-cookie";
 
 // Default image to use when no poster is available
 const DEFAULT_JOB_IMAGE =
@@ -94,6 +96,7 @@ const RoleApplyPage = ({ params }) => {
   const { id } = params;
   const { submitApplication, roleSignedUrls } = useEvent();
   const { currentRole, clearCurrentRole } = useStore(useCurrentRoleStore);
+  const [cookies] = useCookies(['username']);
 
   // State for role data and application process
   const [role, setRole] = useState(null);
@@ -122,6 +125,8 @@ const RoleApplyPage = ({ params }) => {
     email: "",
     phone: "",
   });
+
+  const userName = cookies?.username;
 
   // Load role data from currentRole store
   useEffect(() => {
@@ -280,10 +285,12 @@ const RoleApplyPage = ({ params }) => {
 
   // Handle application submission
   const handleSubmit = async () => {
-    
-     try {
-        await submitApplication();
-
+      try {
+        await submitApplication({
+            user_id: userName,
+            event_id: currentRole?.event_id,
+            role_id: currentRole?.id            
+        });
         // Show success message
         setSubmissionSuccess(true);
       } catch (err) {
@@ -292,7 +299,6 @@ const RoleApplyPage = ({ params }) => {
       } finally {
         setSubmitting(false);
       }
-    }
   };
 
   if (loading) {

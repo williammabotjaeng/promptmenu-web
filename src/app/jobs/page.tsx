@@ -102,7 +102,8 @@ const Jobs = () => {
             ethnicities: role.ethnicities,
             minAge: role.min_age,
             maxAge: role.max_age,
-            skill: role.skill
+            skill: role.skill,
+            event_id: role.event
           }));
           
           // Extract unique skills and locations for filters
