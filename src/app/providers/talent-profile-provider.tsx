@@ -23,6 +23,9 @@ interface TalentProfileContextType {
     data: TalentProfileData
   ) => Promise<void>;
   fetchProfileSignedUrls: (profiles: any[]) => Promise<Record<string, string>>;
+  roleApplicants: any[] | null;
+  fetchRoleApplicants: (roleId: string) => Promise<any>;
+  updateApplicantStatus: (roleId: string, userId: string, status: string) => Promise<void>;
 }
 
 const TalentProfileContext = createContext<TalentProfileContextType | null>(
@@ -42,6 +45,9 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
   const [profileSignedUrls, setProfileSignedUrls] = useState<Record<string, string> | null>(null);
   const [talentProfiles, setTalentProfiles] = useState<any[] | null>(null);
 
+  const [roleApplicants, setRoleApplicants] = useState<any[] | null>(null);
+
+  
   const {
     setPersonalInfo,
     setPhysicalAttributes,
@@ -167,6 +173,80 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
+  const fetchRoleApplicantsMutation = useMutation({
+    mutationKey: ["fetch_role_applicants"],
+    mutationFn: async (roleId: string) => {
+      const response = await restCall(
+        `/portal/roles/${roleId}/applicants/`,
+        "GET",
+        {},
+        accessToken
+      );
+      console.log("Role Applicants Response", response);
+      return response;
+    },
+    onSuccess: async (data: any) => {
+      console.log('Role applicants fetched successfully', data);
+      setRoleApplicants(data);
+      
+      // Fetch signed URLs for applicants' profile images
+      if (Array.isArray(data) && data.length > 0) {
+        try {
+          const urls = await fetchProfileSignedUrls(data);
+          setProfileSignedUrls(urls);
+        } catch (error) {
+          console.error("Error fetching applicant profile signed URLs:", error);
+        }
+      }
+    },
+    onError: (error) => {
+      console.error('Error fetching role applicants: ', error);
+    },
+  });
+  
+  // Add this mutation for updating applicant status
+  const updateApplicantStatusMutation = useMutation({
+    mutationKey: ["update_applicant_status"],
+    mutationFn: async ({
+      roleId,
+      userId,
+      status,
+    }: {
+      roleId: string;
+      userId: string;
+      status: string;
+    }) => {
+      return await csrfRestCall(
+        `/portal/roles/${roleId}/applicants/${userId}/status/`,
+        "PUT",
+        { status },
+        accessToken,
+        csrfToken
+      );
+    },
+    onSuccess: (data) => {
+      console.log("Applicant status updated successfully", data);
+      // Update the local state to reflect the change
+      if (roleApplicants) {
+        setRoleApplicants(roleApplicants.map(applicant => {
+          if (applicant.user?.id === data.user_id) {
+            return {
+              ...applicant,
+              application_data: {
+                ...applicant.application_data,
+                status: data.status
+              }
+            };
+          }
+          return applicant;
+        }));
+      }
+    },
+    onError: (error) => {
+      console.error("Error updating applicant status: ", error);
+    },
+  });
+
   const fetchTalentProfile = async () => {
     await fetchTalentProfileQuery.refetch();
   };
@@ -180,6 +260,18 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     data: TalentProfileData
   ) => {
     await updateTalentProfileMutation.mutateAsync({ profileId, data });
+  };
+
+  const fetchRoleApplicants = async (roleId: string) => {
+    return await fetchRoleApplicantsMutation.mutateAsync(roleId);
+  };
+  
+  const updateApplicantStatus = async (
+    roleId: string,
+    userId: string,
+    status: string
+  ) => {
+    await updateApplicantStatusMutation.mutateAsync({ roleId, userId, status });
   };
 
   const deleteFiles = async (filePaths: string[]) => {
@@ -315,7 +407,10 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
         fetchTalentProfiles,
         updateTalentProfile,
         deleteFiles,
-        fetchProfileSignedUrls
+        fetchProfileSignedUrls, 
+        fetchRoleApplicants,
+        updateApplicantStatus,
+        roleApplicants
       }}
     >
       {children}
