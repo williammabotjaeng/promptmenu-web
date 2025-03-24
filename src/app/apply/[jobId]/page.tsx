@@ -280,27 +280,9 @@ const RoleApplyPage = ({ params }) => {
 
   // Handle application submission
   const handleSubmit = async () => {
-    if (validateForm()) {
-      try {
-        setSubmitting(true);
-
-        // Prepare application data
-        const applicationData = {
-          role_id: role.id,
-          event_id: role.event,
-          applicant_name: formData.fullName,
-          applicant_email: formData.email,
-          applicant_phone: formData.phone,
-          cover_letter: formData.coverLetter,
-          resume_link: formData.resumeLink,
-          work_samples: formData.workSamples,
-          message_to_hiring_manager: formData.messageToHiringManager,
-          application_answers: formData.answers,
-          status: "pending",
-        };
-
-        // Submit application
-        await submitApplication(applicationData);
+    
+     try {
+        await submitApplication();
 
         // Show success message
         setSubmissionSuccess(true);

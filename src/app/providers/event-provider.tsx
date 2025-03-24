@@ -38,16 +38,9 @@ interface GetRoleInput {
 }
 
 interface ApplicationData {
-  role_id: string;
-  event_id?: string;
-  applicant_name?: string;
-  applicant_email?: string;
-  applicant_phone?: string;
-  cover_letter?: string;
-  resume_link?: string;
-  work_samples?: string;
-  application_answers?: any[];
-  status?: string;
+  role_id: string | number;
+  event_id?: string | number;
+  user_id?: string | number;
 }
 
 const EventContext = createContext<EventContextType | null>(null);
