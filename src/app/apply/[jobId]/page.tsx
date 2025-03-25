@@ -295,7 +295,7 @@ const RoleApplyPage = ({ params }) => {
         setSubmissionSuccess(true);
       } catch (err) {
         console.error("Error submitting application:", err);
-        setError("Failed to submit application. Please try again later.");
+        setError("It Seems you have already applied for this Role.");
       } finally {
         setSubmitting(false);
       }

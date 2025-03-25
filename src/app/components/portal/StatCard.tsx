@@ -50,8 +50,7 @@ export const StatCard: React.FC<PortalStatCardProps> = ({ title, value, icon, su
         </Box>
         <Typography variant="h4" sx={{ marginTop: 2, fontWeight: 'bold', color: 'black', fontSize: '24px' }}>
           {value ?? 0}
-        </Typography>
-        
+        </Typography>     
       </CardContent>
     </Card>
   );

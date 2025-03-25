@@ -107,10 +107,10 @@ const Portal: React.FC = () => {
   }, []);
 
   const stats = [
-    { title: "Profile Views", value: talentProfile?.profile_views || 0, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
-    { title: "Applied Jobs", value: talentProfile?.applications?.length || 0, icon: "work", subtitle: "4 pending responses", subtitleColor: "#6B7280" },
+    { title: "Profile Views", value: (talentProfile?.profile_views/2) || 0, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
+    { title: "Applied Jobs", value: talentProfile?.applied_jobs || 0, icon: "work", subtitle: "4 pending responses", subtitleColor: "#6B7280" },
     { title: "Upcoming Auditions", value: talentProfile?.upcoming_auditions || 0, icon: "theaters", subtitle: "Next: March 18", subtitleColor: "#CEAB76" },
-    { title: "Unread Messages", value: talentProfile?.unread_messages || 0, icon: "mail", subtitle: "2 urgent", subtitleColor: "#EF4444" }
+    { title: "Hired Jobs", value: talentProfile?.hired_jobs || 0, icon: "mail", subtitle: "2 urgent", subtitleColor: "#EF4444" }
   ];
 
   if (loading) return <Loading />;

@@ -7,6 +7,7 @@ export interface TalentProfileData {
   profile_views: number;
   applied_jobs: number;
   upcoming_auditions: number;
+  hired_jobs: number;
   unread_messages: number;
   niches: NicheType[];
   legalFullName: string;
