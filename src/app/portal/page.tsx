@@ -295,6 +295,21 @@ const Portal: React.FC = () => {
                   <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>Profile Completion</Typography>
                   <Typography variant="body1" sx={{ color: '#977342', fontWeight: 600 }}>{Math.round((Number(talentProfile?.profile_progress) * 100))}%</Typography>
                 </Grid>
+                <Box sx={{ marginTop: 2, mb: 3 }}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={(Number(talentProfile?.profile_progress) * 100)}
+                    sx={{
+                      height: '8px',
+                      borderRadius: '4px',
+                      backgroundColor: '#E5E7EB',
+                      '& .MuiLinearProgress-bar': {
+                        backgroundColor: '#CEAB76',
+                      },
+                    }}
+                  />
+                </Box>
+                
                 <Button 
                   variant="outlined"
                   onClick={() => router.push('/profile')}
