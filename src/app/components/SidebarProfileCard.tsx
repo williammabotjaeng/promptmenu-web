@@ -20,6 +20,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { useRouter } from 'next/navigation';
 import ReactCountryFlag from 'react-country-flag';
 import countryList from 'react-select-country-list';
+import { useCookies } from 'react-cookie';
 
 interface ProfileProps {
   id: string | number;
@@ -27,14 +28,16 @@ interface ProfileProps {
   location?: string;
   nationality?: string;
   age: number;
+  date_of_birth?: string;
   skills: string[];
   imageUrl?: string;
-  headshot?: string;  // Original headshot path from API
+  headshot?: string;
   isFeatured?: boolean;
   gender?: string;
   ethnicity?: string;
-  height?: number;
-  weight?: number;
+  height?: string | number;
+  weight?: string | number;
+  experience?: string;
 }
 
 interface SidebarProfileCardProps {
@@ -47,8 +50,14 @@ const DEFAULT_PROFILE_IMAGE = "https://cdn.builder.io/api/v1/image/assets/7fae98
 const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
   const router = useRouter();
   const theme = useTheme();
+  const [cookies] = useCookies(['ssh_session_id', 'sessionID']);
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [imageError, setImageError] = React.useState(false);
+  
+  // Check if user is logged in
+  const isLoggedIn = React.useMemo(() => {
+    return !!(cookies.ssh_session_id || cookies.sessionID);
+  }, [cookies]);
   
   // Responsive breakpoints
   const isXsScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -57,7 +66,12 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
   const isLgScreen = useMediaQuery(theme.breakpoints.up('lg'));
   
   const handleViewProfile = () => {
-    router.push(`/talent/${profile.id}`);
+    if (isLoggedIn) {
+      router.push(`/talent/${profile.id}`);
+    } else {
+      // Redirect to registration page if not logged in
+      router.push('/register/2');
+    }
   };
 
   // Get initials for avatar fallback
@@ -121,7 +135,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
     
     // Second priority: use the headshot path if it exists
     if (profile.headshot && profile.headshot !== "") {
-      console.log(`Using headshot path for profile ${profile.id}: ${profile.headshot}`);
+      console.log(`Using image URL for profile ${profile.id}: ${profile.headshot}`);
       // In a real implementation, you might need to convert this to a full URL
     }
     
@@ -454,7 +468,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
             }
           }}
         >
-          View Profile
+          {isLoggedIn ? 'View Profile' : 'Sign Up to View'}
         </Button>
       </CardContent>
     </Card>
