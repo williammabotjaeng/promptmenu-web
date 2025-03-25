@@ -298,7 +298,6 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     await deleteFilesMutation.mutateAsync(filePaths);
   };
 
-  // New function to fetch signed URLs for talent profile headshots
   const fetchProfileSignedUrls = async (profiles: any[]): Promise<Record<string, string>> => {
     if (!profiles || profiles.length === 0) {
       return {};
@@ -306,20 +305,46 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     
     console.log("Fetching signed URLs for talent profiles:", profiles);
     
-    // Extract headshot paths from profiles with proper typing
-    const headshotPaths: Record<string, string> = profiles?.reduce((acc: Record<string, string>, profile) => {
-      if (profile && profile?.id && profile.headshot && typeof profile?.headshot === 'string') {
-        acc[profile?.id] = profile?.headshot;
+    // Create a mapping of profile ID to user ID
+    const profileIdToUserIdMap: Record<string, number | string> = {};
+    
+    // First, extract user IDs for each profile and map them to profile IDs
+    profiles.forEach(profile => {
+      let userId = null;
+      const profileId = profile?.id;
+      
+      // Try to get user ID from application_data first
+      if (profile?.application_data?.user_id) {
+        userId = profile.application_data.user_id;
       }
-      return acc;
-    }, {});
-
+      // Then try other possible locations
+      else if (profile?.original_user_id) {
+        userId = profile.original_user_id;
+      } 
+      else if (profile?.user?.id) {
+        userId = profile.user.id;
+      }
+      
+      if (profileId && userId) {
+        profileIdToUserIdMap[profileId] = userId;
+        console.log(`Mapped profile ID ${profileId} to user ID ${userId}`);
+      }
+    });
+    
+    // Extract headshot paths from profiles with proper typing
+    const headshotPaths: Record<string, string> = {};
+    profiles.forEach(profile => {
+      if (profile && profile?.id && profile.headshot && typeof profile?.headshot === 'string') {
+        headshotPaths[profile.id] = profile.headshot;
+      }
+    });
+  
     // Skip if no headshots to fetch
     if (Object.keys(headshotPaths).length === 0) {
       console.log("No profile headshots to fetch");
       return {};
     }
-
+  
     try {
       // Prepare the payload for the API
       const filenames = Object.values(headshotPaths).filter((path): path is string => Boolean(path));
@@ -350,9 +375,8 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
         return {};
       }
       
-      // Map the profile IDs to their respective signed URLs using array index
-      const profileUrlMap: Record<string, string> = {};
-      console.log("Profile URL Map initialized:", profileUrlMap);
+      // Create a map from profile ID to signed URL
+      const profileIdToUrlMap: Record<string, string> = {};
       
       // Convert headshotPaths to array for indexing
       const profileIds = Object.keys(headshotPaths);
@@ -360,18 +384,30 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
       // Map each profile ID to the corresponding URL by index
       profileIds.forEach((profileId, index) => {
         if (index < signedUrlsResponse.profileHeadshots.length) {
-          profileUrlMap[profileId] = signedUrlsResponse.profileHeadshots[index];
+          profileIdToUrlMap[profileId] = signedUrlsResponse.profileHeadshots[index];
         }
       });
       
-      console.log("Mapped profile IDs to signed URLs:", profileUrlMap);
-      return profileUrlMap;
+      // Now convert to a map from user ID to signed URL
+      const userIdToUrlMap: Record<string, string> = {};
+      
+      // For each profile ID, get the corresponding user ID and signed URL
+      Object.entries(profileIdToUrlMap).forEach(([profileId, signedUrl]) => {
+        const userId = profileIdToUserIdMap[profileId];
+        if (userId) {
+          userIdToUrlMap[String(userId)] = signedUrl;
+          console.log(`Mapped user ID ${userId} to signed URL for profile ID ${profileId}`);
+        }
+      });
+      
+      console.log("Final user ID to signed URL mapping:", userIdToUrlMap);
+      return userIdToUrlMap;
     } catch (error) {
       console.error("Error fetching profile signed URLs:", error);
       return {};
     }
   };
-
+  
   useEffect(() => {
     const fetchSignedUrls = async () => {
       if (fetchTalentProfileQuery.data) {

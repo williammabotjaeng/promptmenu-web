@@ -111,17 +111,42 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
     setActionMenuAnchor(null);
   };
 
-  // Get the signed URL for the talent's headshot
-  const profileImageUrl = talent?.user?.id && signedUrls && signedUrls[talent.user.id] 
-    ? signedUrls[talent.user.id] 
-    : DEFAULT_AVATAR;
+  // Look up the user ID correctly based on the response structure - prioritize application_data.user_id
+  let userId = null;
   
-  console.log(`Profile image for user ${talent?.user?.id}:`, {
-    hasUserID: Boolean(talent?.user?.id),
-    hasSignedUrls: Boolean(signedUrls),
-    hasSpecificURL: talent?.user?.id && signedUrls ? Boolean(signedUrls[talent.user.id]) : false,
-    finalURL: profileImageUrl
+  // First try to get user_id from application_data (most reliable as it comes directly from the role)
+  if (talent?.application_data?.user_id) {
+    userId = talent.application_data.user_id;
+  }
+  // Then try original_user_id (added by our backend)
+  else if (talent?.original_user_id) {
+    userId = talent.original_user_id;
+  }
+  // Then try user.id
+  else if (talent?.user?.id) {
+    userId = talent.user.id;
+  }
+  // Then try the talent's own id as fallback
+  else if (talent?.id) {
+    userId = talent.id;
+  }
+  
+  console.log(`Looking for profile image - User ID: ${userId}`, {
+    availableIds: {
+      applicationDataUserId: talent?.application_data?.user_id,
+      originalUserId: talent?.original_user_id,
+      userDotId: talent?.user?.id,
+      talentId: talent?.id
+    },
+    availableSignedUrls: signedUrls ? Object.keys(signedUrls) : [],
   });
+  
+  // Get the signed URL for the talent's headshot
+  const profileImageUrl = userId && signedUrls && signedUrls[userId] 
+    ? signedUrls[userId] 
+    : talent?.headshot  // Try to use the headshot URL directly if available
+      ? talent.headshot
+      : DEFAULT_AVATAR;
   
   const status = talent?.application_data?.status || 'pending';
   
