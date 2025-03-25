@@ -8,6 +8,8 @@ import {
   TextField,
   Snackbar,
   Alert,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { PaymentMethod } from "@/components/portal/onboarding/PaymentMethod";
 import OnboardingHeader from "@/components/portal/onboarding/OnboardingHeader";
@@ -20,14 +22,13 @@ import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import Loading from "@/components/Loading";
 
 const steps = [
-  { number: 1, title: "Headshot", isActive: false },
-  { number: 2, title: "Skills", isActive: false },
-  { number: 3, title: "Payment", isActive: true },
-  { number: 4, title: "Attributes", isActive: false },
-  { number: 5, title: "Social", isActive: false },
-  { number: 6, title: "ID", isActive: false },
+  { number: 3, title: "Attributes", isActive: false },
+  { number: 4, title: "Ethnicity", isActive: false },
+  { number: 5, title: "ID", isActive: false },
+  { number: 6, title: "Social", isActive: false },
   { number: 7, title: "Portfolio", isActive: false },
-  { number: 8, title: "Review", isActive: false },
+  { number: 8, title: "Payment", isActive: true },
+  { number: 9, title: "Review", isActive: false },
 ];
 
 const InfluencerSteps = [
@@ -52,6 +53,7 @@ export const skillsRequiringPhysicalAttributes: string[] = [
 const paymentMethodsTab = [
   { label: "Bank Transfer", value: "bankAccount" },
   { label: "via PayPal", value: "paypal" },
+  { label: "Cash", value: "cash" },
 ];
 
 export const PaymentSection: React.FC<OnboardingStepProps> = ({
@@ -74,6 +76,9 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
   const userRole = cookies["user_role"];
 
   const [loading, setLoading] = useState(false);
+  const [acceptsCash, setAcceptsCash] = useState(
+    paymentMethods?.acceptsCash || false
+  );
 
   const [paymentDetails, setPaymentDetails] = useState({
     ccNumber: paymentMethods?.ccNumber || "",
@@ -100,12 +105,17 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
     );
     setPaymentMethods({
       payment_method: activePaymentMethod,
+      acceptsCash,
       ...paymentDetails,
     });
+
+    // Check if at least one payment method is selected
     const areAllFieldsEmpty = Object.values(paymentDetails).every(
       (value) => value === ""
     );
-    if (!areAllFieldsEmpty) {
+    const hasPaymentMethod = !areAllFieldsEmpty || acceptsCash;
+
+    if (hasPaymentMethod) {
       if (hasPhysicalAttributeSkill) {
         setActiveStep(activeStep + 1);
       } else {
@@ -155,6 +165,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
         accountNumber: paymentMethods.accountNumber || "",
         iBAN: paymentMethods.iBAN || "",
       });
+      setAcceptsCash(paymentMethods.acceptsCash || false);
     }
   }, [paymentMethods]);
 
@@ -252,6 +263,40 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
                 },
               }}
             />
+          </Box>
+        );
+      case "cash":
+        return (
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="body1" sx={{ mb: 2, color: "#977342" }}>
+              Cash payment option:
+            </Typography>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={acceptsCash}
+                  onChange={(e) => setAcceptsCash(e.target.checked)}
+                  sx={{
+                    color: "#977342",
+                    "&.Mui-checked": {
+                      color: "#977342",
+                    },
+                  }}
+                />
+              }
+              label="I accept cash payments"
+              sx={{
+                color: "#977342",
+                "& .MuiFormControlLabel-label": {
+                  fontWeight: "medium",
+                },
+              }}
+            />
+            <Typography variant="body2" sx={{ mt: 2, color: "#666" }}>
+              By accepting cash payments, you understand that payment
+              arrangements will need to be made directly with the client. Cash
+              payments are typically made upon completion of services.
+            </Typography>
           </Box>
         );
       default:
@@ -389,7 +434,7 @@ export const PaymentSection: React.FC<OnboardingStepProps> = ({
             marginBottom: { xs: 1, md: 0 },
             mt: { xs: 1 },
           }}
-          onClick={handleSkip}
+          onClick={onClose}
         >
           Skip for Now
         </Button>

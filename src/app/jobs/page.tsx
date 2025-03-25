@@ -630,7 +630,7 @@ const Jobs = () => {
           subtitle="These are sample job listings. Sign up today to access all available roles and apply directly through our platform."
           primaryButtonText="Sign Up"
           secondaryButtonText="Sign In"
-          primaryButtonUrl="/register/2"
+          primaryButtonUrl="/register/1"
           secondaryButtonUrl="/login"
         />
       )}

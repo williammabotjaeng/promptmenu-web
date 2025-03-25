@@ -10,4 +10,5 @@ export interface PaymentMethods {
     bankName?: string | null;
     accountNumber?: string | null;
     iBAN?: string | null;
+    acceptsCash?: boolean | null;
 }

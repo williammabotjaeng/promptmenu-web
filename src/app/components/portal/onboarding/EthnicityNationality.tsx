@@ -30,14 +30,26 @@ import ReactCountryFlag from "react-country-flag";
 import { useStore } from "zustand";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import { useCookies } from "react-cookie";
+import { useRouter } from "next/navigation";
 import countryList from 'react-select-country-list';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+import OnboardingHeader from "./OnboardingHeader";
 
 interface EthnicityNationalityProps {
   activeStep: number;
   setActiveStep: (step: number) => void;
 }
+
+const steps = [
+  { number: 3, title: "Attributes", isActive: false },
+  { number: 4, title: "Ethnicity", isActive: true },
+  { number: 5, title: "ID", isActive: false },
+  { number: 6, title: "Social", isActive: false },
+  { number: 7, title: "Portfolio", isActive: false },
+  { number: 8, title: "Payment", isActive: false },
+  { number: 9, title: "Review", isActive: false },
+];
 
 const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({ 
   activeStep, 
@@ -52,6 +64,8 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
     personalInfo,
     setPersonalInfo
   } = useStore(useTalentOnboardingStore);
+
+  const router = useRouter();
 
   // Initialize state
   const [ethnicity, setEthnicity] = useState<string>(
@@ -211,6 +225,10 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
     setActiveStep(activeStep - 1);
   };
 
+  const handleSkip = () => {
+    setActiveStep(activeStep + 1);
+  };
+
   // Calculate age
   const calculateAge = (dob: Date | null): number => {
     if (!dob) return 0;
@@ -256,19 +274,29 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
     "Prefer not to say"
   ];
 
+  const onClose = () => {
+    router.push("/portal");
+  };
+
   return (
     <Box 
       sx={{ 
         backgroundColor: 'black',
         color: '#977342',
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
         py: 5,
         minHeight: '100vh',
-        display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}
     >
+      {/* Header Section */}
+              <OnboardingHeader
+                steps={steps}
+                onClose={onClose}
+              />
       <Container maxWidth="md">
         <Paper 
           elevation={3} 
@@ -594,6 +622,21 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
               variant="outlined"
             >
               Back
+            </Button>
+            <Button
+              endIcon={<ArrowForwardIcon />}
+              onClick={handleSkip}
+              sx={{
+                backgroundColor: "#977342",
+                color: "black",
+                fontWeight: "bold",
+                "&:hover": {
+                  backgroundColor: "#CEAB76",
+                },
+              }}
+              variant="contained"
+            >
+              Skip for now
             </Button>
             <Button
               endIcon={<ArrowForwardIcon />}

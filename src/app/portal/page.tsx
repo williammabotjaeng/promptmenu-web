@@ -175,7 +175,7 @@ const Portal = () => {
       await fetchTalentProfile();
 
       // Check for onboarding redirect
-      if (!onboardingPresented) {
+      if (!onboardingPresented && !hasProfile) {
         if (user_role === "talent") {
           router.push("/talent-onboarding");
         } else if (user_role === "influencer") {

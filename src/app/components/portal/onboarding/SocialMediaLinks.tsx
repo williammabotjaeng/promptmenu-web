@@ -30,14 +30,12 @@ import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import Loading from "@/components/Loading";
 
 const steps = [
-  { number: 1, title: "Headshot", isActive: false },
-  { number: 2, title: "Skills", isActive: false },
-  { number: 3, title: "Payment", isActive: false },
-  { number: 4, title: "Attributes", isActive: false },
-  { number: 5, title: "Social", isActive: true },
-  { number: 6, title: "ID", isActive: false },
+  { number: 4, title: "Ethnicity", isActive: false },
+  { number: 5, title: "ID", isActive: false },
+  { number: 6, title: "Social", isActive: true },
   { number: 7, title: "Portfolio", isActive: false },
-  { number: 8, title: "Review", isActive: false },
+  { number: 8, title: "Payment", isActive: false },
+  { number: 9, title: "Review", isActive: false },
 ];
 
 const InfluencerSteps = [

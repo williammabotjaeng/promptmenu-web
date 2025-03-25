@@ -86,7 +86,7 @@ export const JobCard = ({
       router.push(`/roles/${roleId}`);
     } else {
       // Redirect to registration page if not logged in
-      router.push('/register/2');
+      router.push('/register/1');
     }
   };
 
