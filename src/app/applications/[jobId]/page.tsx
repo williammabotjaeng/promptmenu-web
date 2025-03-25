@@ -470,6 +470,7 @@ export default function ApplicationsPage({ params }) {
         
         // Create a properly formatted role object
         const formattedRole = {
+          applicants: currentRole?.applicants,
           id: currentRole.id,
           title: currentRole.title || "Untitled Role",
           description: currentRole.description || "No description available",

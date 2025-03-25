@@ -13,6 +13,7 @@ import useUserEventStore from "@/state/use-user-events-store";
 import useAllEventsStore from "@/state/use-all-events-store";
 import { csrfRestCall } from "@/services/csrfRestCall";
 import useCurrentEventStore from "@/state/use-current-event-store";
+import useCurrentRoleStore from "@/state/use-current-role-store";
 
 interface EventContextType {
   event: EventData | null;
@@ -61,6 +62,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   const eventIDGlobal = cookies["event_id"];
 
   const { setCurrentEvent } = useStore(useCurrentEventStore);
+  const { setCurrentRole } = useStore(useCurrentRoleStore);
   const { setRoles } = useStore(useLocalRolesStore);
   const { setUserEvents } = useStore(useUserEventStore);
   const { setAllEvents } = useStore(useAllEventsStore);

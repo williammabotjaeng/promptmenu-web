@@ -173,36 +173,57 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     },
   });
 
-  const fetchRoleApplicantsMutation = useMutation({
-    mutationKey: ["fetch_role_applicants"],
-    mutationFn: async (roleId: string) => {
+  // Updated fetchRoleApplicants mutation in the TalentProfileProvider
+const fetchRoleApplicantsMutation = useMutation({
+  mutationKey: ["fetch_role_applicants"],
+  mutationFn: async (roleId: string) => {
+    console.log(`Fetching applicants for role ${roleId}`);
+    
+    try {
       const response = await restCall(
         `/portal/roles/${roleId}/applicants/`,
         "GET",
         {},
         accessToken
       );
-      console.log("Role Applicants Response", response);
-      return response;
-    },
-    onSuccess: async (data: any) => {
-      console.log('Role applicants fetched successfully', data);
-      setRoleApplicants(data);
       
-      // Fetch signed URLs for applicants' profile images
-      if (Array.isArray(data) && data.length > 0) {
-        try {
-          const urls = await fetchProfileSignedUrls(data);
-          setProfileSignedUrls(urls);
-        } catch (error) {
-          console.error("Error fetching applicant profile signed URLs:", error);
-        }
+      console.log("Role Applicants API Response:", response);
+      
+      // Handle empty response case
+      if (!response || response.length === 0) {
+        console.log("No applicants found or empty response");
+        return [];
       }
-    },
-    onError: (error) => {
-      console.error('Error fetching role applicants: ', error);
-    },
-  });
+      
+      return response;
+    } catch (error) {
+      console.error("Error in fetchRoleApplicants API call:", error);
+      throw error;
+    }
+  },
+  onSuccess: async (data) => {
+    console.log('Role applicants fetched successfully', data);
+    
+    // Ensure we have a valid array even if the API returns null/undefined
+    const applicants = Array.isArray(data) ? data : [];
+    setRoleApplicants(applicants);
+    
+    // Fetch signed URLs for applicants' profile images only if we have applicants
+    if (applicants.length > 0) {
+      try {
+        const urls = await fetchProfileSignedUrls(applicants);
+        setProfileSignedUrls(prev => ({ ...prev, ...urls }));
+      } catch (error) {
+        console.error("Error fetching applicant profile signed URLs:", error);
+      }
+    }
+  },
+  onError: (error) => {
+    console.error('Error fetching role applicants:', error);
+    // Set empty array to prevent null reference errors in the UI
+    setRoleApplicants([]);
+  },
+});
   
   // Add this mutation for updating applicant status
   const updateApplicantStatusMutation = useMutation({
@@ -287,9 +308,9 @@ export const TalentProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log("Fetching signed URLs for talent profiles:", profiles);
     
     // Extract headshot paths from profiles with proper typing
-    const headshotPaths: Record<string, string> = profiles.reduce((acc: Record<string, string>, profile) => {
-      if (profile && profile.id && profile.headshot && typeof profile.headshot === 'string') {
-        acc[profile.id] = profile.headshot;
+    const headshotPaths: Record<string, string> = profiles?.reduce((acc: Record<string, string>, profile) => {
+      if (profile && profile?.id && profile.headshot && typeof profile?.headshot === 'string') {
+        acc[profile?.id] = profile?.headshot;
       }
       return acc;
     }, {});
