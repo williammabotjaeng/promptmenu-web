@@ -17,7 +17,12 @@ import {
   OutlinedInput,
   FormHelperText,
   SelectChangeEvent,
-  alpha
+  alpha,
+  TextField,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormLabel
 } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -26,6 +31,8 @@ import { useStore } from "zustand";
 import useTalentOnboardingStore from "@/state/use-talent-onboarding-store";
 import { useCookies } from "react-cookie";
 import countryList from 'react-select-country-list';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 
 interface EthnicityNationalityProps {
   activeStep: number;
@@ -41,7 +48,9 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
     talentData,
     setTalentData,
     physicalAttributes,
-    setPhysicalAttributes
+    setPhysicalAttributes,
+    personalInfo,
+    setPersonalInfo
   } = useStore(useTalentOnboardingStore);
 
   // Initialize state
@@ -51,19 +60,30 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
   const [nationality, setNationality] = useState<string>(
     talentData?.nationality || ""
   );
+  const [gender, setGender] = useState<string>(
+    talentData?.gender || personalInfo?.gender || ""
+  );
+  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(
+    talentData?.date_of_birth ? new Date(talentData.date_of_birth) : 
+    personalInfo?.date_of_birth ? new Date(personalInfo.date_of_birth) : null
+  );
   const [countries, setCountries] = useState<{value: string, label: string}[]>([]);
   const [errors, setErrors] = useState({
     ethnicity: false,
-    nationality: false
+    nationality: false,
+    gender: false,
+    date_of_birth: false
   });
 
   // Set up cookies
-  const [cookies, setCookie] = useCookies(['ethnicity', 'nationality']);
+  const [cookies, setCookie] = useCookies(['ethnicity', 'nationality', 'gender', 'date_of_birth', 'user_role']);
 
   // Initialize country list on component mount
   useEffect(() => {
     setCountries(countryList().getData());
   }, []);
+
+  const userRole = cookies?.user_role || "";
 
   // Update the ethnicity state
   const handleEthnicityChange = (event: SelectChangeEvent) => {
@@ -111,11 +131,67 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
     }
   };
 
+  // Update the gender state
+  const handleGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setGender(value);
+    
+    // Update store
+    setTalentData({
+      ...talentData,
+      gender: value
+    });
+
+    // Update personal info
+    setPersonalInfo({
+      ...personalInfo,
+      gender: value
+    });
+    
+    // Set cookie
+    setCookie('gender', value);
+    
+    // Clear error if gender is selected
+    if (value) {
+      setErrors(prev => ({ ...prev, gender: false }));
+    }
+  };
+
+  // Update the date of birth state
+  const handleDateOfBirthChange = (date: Date | null) => {
+    setDateOfBirth(date);
+    
+    if (date) {
+      // Format date for API
+      const formattedDate = date.toISOString().split('T')[0];
+      
+      // Update store
+      setTalentData({
+        ...talentData,
+        date_of_birth: formattedDate
+      });
+
+      // Update personal info
+      setPersonalInfo({
+        ...personalInfo,
+        date_of_birth: formattedDate
+      });
+      
+      // Set cookie
+      setCookie('date_of_birth', formattedDate);
+      
+      // Clear error
+      setErrors(prev => ({ ...prev, date_of_birth: false }));
+    }
+  };
+
   // Validate form before proceeding
   const validateForm = (): boolean => {
     const newErrors = {
       ethnicity: !ethnicity,
-      nationality: !nationality
+      nationality: !nationality,
+      gender: !gender,
+      date_of_birth: !dateOfBirth
     };
     
     setErrors(newErrors);
@@ -133,6 +209,18 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
   // Handle back button click
   const handleBack = () => {
     setActiveStep(activeStep - 1);
+  };
+
+  // Calculate age
+  const calculateAge = (dob: Date | null): number => {
+    if (!dob) return 0;
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+    return age;
   };
 
   // Common ethnicities in the UAE
@@ -160,6 +248,14 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
     "Other",
   ];
 
+  // Gender options
+  const genderOptions = [
+    "Male",
+    "Female",
+    "Non-binary",
+    "Prefer not to say"
+  ];
+
   return (
     <Box 
       sx={{ 
@@ -185,18 +281,119 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
           }}
         >
           <Typography variant="h4" align="center" gutterBottom sx={{ color: "#977342", mb: 3, fontWeight: 600 }}>
-            Ethnicity & Nationality
+            Personal Information
           </Typography>
           
           <Typography variant="body1" align="center" paragraph sx={{ color: "#CEAB76", mb: 4 }}>
-            Please select your ethnicity and nationality. This information helps match you with relevant job opportunities.
+            Please provide your personal details. This information helps match you with relevant job opportunities.
           </Typography>
           
           <Divider sx={{ mb: 4, borderColor: 'rgba(151, 115, 66, 0.3)' }} />
           
           <Grid container spacing={4}>
+            {/* Date of Birth Selector */}
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6" gutterBottom sx={{ color: "#977342" }}>
+                Date of Birth
+              </Typography>
+              <Typography variant="body2" paragraph sx={{ color: "#CEAB76" }}>
+                Select your date of birth.
+              </Typography>
+              
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Date of Birth"
+                  value={dateOfBirth}
+                  onChange={handleDateOfBirthChange}
+                  disableFuture
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: errors.date_of_birth,
+                      helperText: errors.date_of_birth ? "Please select your date of birth" : 
+                        dateOfBirth ? `Age: ${calculateAge(dateOfBirth)} years` : "",
+                      sx: {
+                        "& .MuiInputLabel-root": {
+                          color: alpha('#977342', 0.8),
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          color: "#977342",
+                          "& fieldset": {
+                            borderColor: 'rgba(151, 115, 66, 0.5)',
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "#977342",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#977342",
+                          }
+                        },
+                        "& .MuiFormHelperText-root": {
+                          color: errors.date_of_birth ? "#FF6B6B" : "#CEAB76"
+                        },
+                        "& .MuiSvgIcon-root": {
+                          color: "#977342"
+                        },
+                        backgroundColor: 'rgba(0, 0, 0, 0.6)'
+                      }
+                    }
+                  }}
+                />
+              </LocalizationProvider>
+            </Grid>
+            
+            {/* Gender Selector */}
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6" gutterBottom sx={{ color: "#977342" }}>
+                Gender
+              </Typography>
+              <Typography variant="body2" paragraph sx={{ color: "#CEAB76" }}>
+                Select your gender.
+              </Typography>
+              
+              <FormControl 
+                component="fieldset" 
+                error={errors.gender}
+                sx={{ 
+                  width: '100%',
+                  "& .MuiFormLabel-root": {
+                    color: alpha('#977342', 0.8),
+                  },
+                  "& .MuiRadio-root": {
+                    color: "#977342",
+                  },
+                  "& .MuiFormControlLabel-label": {
+                    color: "#977342"
+                  },
+                  "& .MuiFormHelperText-root": {
+                    color: "#FF6B6B"
+                  },
+                }}
+              >
+                <RadioGroup
+                  aria-label="gender"
+                  name="gender"
+                  value={gender}
+                  onChange={handleGenderChange}
+                  row
+                >
+                  {genderOptions.map((option) => (
+                    <FormControlLabel
+                      key={option}
+                      value={option}
+                      control={<Radio />}
+                      label={option}
+                    />
+                  ))}
+                </RadioGroup>
+                {errors.gender && (
+                  <FormHelperText>Please select your gender</FormHelperText>
+                )}
+              </FormControl>
+            </Grid>
+            
             {/* Ethnicity Selector */}
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <Typography variant="h6" gutterBottom sx={{ color: "#977342" }}>
                 Ethnicity
               </Typography>
@@ -275,7 +472,7 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
             </Grid>
             
             {/* Nationality Selector */}
-            <Grid item xs={12} sx={{ mt: 2 }}>
+            <Grid item xs={12} md={6}>
               <Typography variant="h6" gutterBottom sx={{ color: "#977342" }}>
                 Nationality
               </Typography>
@@ -414,6 +611,12 @@ const EthnicityNationality: React.FC<EthnicityNationalityProps> = ({
               Next
             </Button>
           </Box>
+          {/* Step Indicator Section */}
+                <footer style={{ textAlign: "center", marginTop: "28px", color: "gray" }}>
+                  <Typography variant="body2">
+                    Step {activeStep + 1} of {userRole === "talent" ? 9 : 11} - Background
+                  </Typography>
+                </footer>
         </Paper>
       </Container>
     </Box>
