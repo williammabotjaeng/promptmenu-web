@@ -6,10 +6,12 @@ import { SearchSection } from '@/components/SearchSection';
 import { JobCard } from '@/components/JobCard';
 import PrimaryFooter from '@/components/PrimaryFooter';
 import SecondaryHeader from '@/components/SecondaryHeader';
+import MarketingBanner from '@/components/MarketingBanner';
 import { useEvent } from '@/providers/event-provider';
 import { useEffect, useState, useMemo } from 'react';
 import { useStore } from 'zustand';
 import useCurrentRoleStore from '@/state/use-current-role-store';
+import { useCookies } from 'react-cookie';
 
 // Helper function to format date for display
 const formatDeadline = (dateString) => {
@@ -47,6 +49,111 @@ const isDateWithinDays = (dateString, days) => {
 // Default placeholder image to use when no poster is available
 const DEFAULT_JOB_IMAGE = "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/fbf9227c806ec79d0dbbdfafe208eba075157780299caaa1a8b6d38ae92d7bb2?apiKey=7fae980a988640eea8add1e49a5d542e&";
 
+const DEMO_JOB_IMAGES = [
+  "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=500",
+  "https://images.pexels.com/photos/8101622/pexels-photo-8101622.jpeg?auto=compress&cs=tinysrgb&w=500",
+  "https://images.pexels.com/photos/6456303/pexels-photo-6456303.jpeg?auto=compress&cs=tinysrgb&w=500",
+  "https://images.pexels.com/photos/6299068/pexels-photo-6299068.jpeg?auto=compress&cs=tinysrgb&w=500",
+  "https://images.pexels.com/photos/7163731/pexels-photo-7163731.jpeg?auto=compress&cs=tinysrgb&w=500",
+  "https://images.pexels.com/photos/8285483/pexels-photo-8285483.jpeg?auto=compress&cs=tinysrgb&w=500"
+];
+
+// Create demo job listings
+const createDemoJobs = () => {
+  return [
+    {
+      id: "demo-1",
+      title: "Fashion Model for Spring Collection",
+      description: "We are looking for models to showcase our new spring collection. Experience with runway and photoshoots required.",
+      location: "New York",
+      deadline: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days from now
+      imageUrl: DEMO_JOB_IMAGES[0],
+      isUrgent: true,
+      hourlyPay: "$150-200",
+      skill: "Fashion Modeling",
+      openings: 4,
+      genders: ["Female", "Male", "Non-binary"],
+      minAge: 18,
+      maxAge: 35
+    },
+    {
+      id: "demo-2",
+      title: "Commercial Actors for Tech Brand",
+      description: "Tech company seeking diverse actors for a promotional commercial. Must be comfortable with technical jargon.",
+      location: "San Francisco",
+      deadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 days from now
+      imageUrl: DEMO_JOB_IMAGES[1],
+      isUrgent: false,
+      dailyPay: "$500",
+      skill: "Acting",
+      openings: 6,
+      genders: ["All"],
+      minAge: 25,
+      maxAge: 45
+    },
+    {
+      id: "demo-3",
+      title: "Fitness Models for Sports Brand",
+      description: "Athletic models needed for a sports apparel photoshoot. Must be fit and comfortable in activewear.",
+      location: "Los Angeles",
+      deadline: new Date(Date.now() + 21 * 24 * 60 * 60 * 1000).toISOString(), // 21 days from now
+      imageUrl: DEMO_JOB_IMAGES[2],
+      isUrgent: false,
+      projectPay: "$1,500",
+      skill: "Fitness Modeling",
+      openings: 8,
+      genders: ["Female", "Male"],
+      minAge: 20,
+      maxAge: 40
+    },
+    {
+      id: "demo-4",
+      title: "Event Hosts for Corporate Gala",
+      description: "Seeking professional hosts for an upcoming corporate event. Previous experience with high-profile events preferred.",
+      location: "London",
+      deadline: new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toISOString(), // 4 days from now
+      imageUrl: DEMO_JOB_IMAGES[3],
+      isUrgent: true,
+      hourlyPay: "£45",
+      skill: "Event Hosting",
+      openings: 2,
+      genders: ["All"],
+      minAge: 22,
+      maxAge: 50
+    },
+    {
+      id: "demo-5",
+      title: "Voice Actors for Animated Series",
+      description: "Animated series looking for voice actors with range. Must be able to portray multiple character types.",
+      location: "Remote",
+      deadline: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000).toISOString(), // 18 days from now
+      imageUrl: DEMO_JOB_IMAGES[4],
+      isUrgent: false,
+      projectPay: "$2,000-3,500",
+      skill: "Voice Acting",
+      openings: 5,
+      genders: ["All"],
+      minAge: 18,
+      maxAge: 65
+    },
+    {
+      id: "demo-6",
+      title: "Child Models for Back-to-School Campaign",
+      description: "Family-friendly clothing brand looking for child models for an upcoming back-to-school campaign.",
+      location: "Miami",
+      deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
+      imageUrl: DEMO_JOB_IMAGES[5],
+      isUrgent: true,
+      dailyPay: "$350",
+      skill: "Child Modeling",
+      openings: 10,
+      genders: ["All"],
+      minAge: 6,
+      maxAge: 14
+    }
+  ];
+};
+
 const Jobs = () => {
   // State for jobs data
   const [roles, setRoles] = useState([]);
@@ -57,6 +164,8 @@ const Jobs = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cookies] = useCookies(['ssh_session_id', 'sessionID']);
 
   const { clearCurrentRole } = useStore(useCurrentRoleStore);
   
@@ -79,67 +188,105 @@ const Jobs = () => {
   const [availableSkills, setAvailableSkills] = useState([]);
   const [availableLocations, setAvailableLocations] = useState([]);
   
-  // Initial data load
+  // Check if user is logged in
+  useEffect(() => {
+    const sessionId = cookies.ssh_session_id || cookies.sessionID;
+    setIsLoggedIn(!!sessionId);
+  }, [cookies]);
+
+  // Initial data load - either fetch from API or use demo data
   useEffect(() => {
     setLoading(true);
     setError(null);
     clearCurrentRole();
-    getRoles()
-      .then((data) => {
-        if (Array.isArray(data)) {
-          // Format the roles data for display
-          const formattedRoles = data.map(role => ({
-            id: role.id,
-            title: role.title || "Untitled Role",
-            description: role.description || "No description available",
-            location: role.location || "Remote",
-            deadline: role.application_deadline || role.hard_deadline || role.soft_deadline,
-            eventPoster: role.event_poster || "",
-            isUrgent: role?.is_urgent,
-            imageUrl: "", // Will be populated with signed URL
-            // Additional data that might be useful
-            hourlyPay: role.hourly_pay,
-            dailyPay: role.daily_pay,
-            projectPay: role.project_pay,
-            openings: role.openings,
-            genders: role.genders,
-            ethnicities: role.ethnicities,
-            minAge: role.min_age,
-            maxAge: role.max_age,
-            skill: role.skill,
-            event_id: role.event
-          }));
-          
-          // Extract unique skills and locations for filters
-          const skills = new Set();
-          const locations = new Set();
-          
-          formattedRoles.forEach(role => {
-            if (role.skill) skills.add(role.skill);
-            if (role.location) locations.add(role.location);
-          });
-          
-          setAvailableSkills(Array.from(skills));
-          setAvailableLocations(Array.from(locations));
-          setRoles(formattedRoles);
-          setFilteredRoles(formattedRoles);
-        } else {
-          console.error("Unexpected data format:", data);
-          setError("Unexpected data format received from server");
-        }
-      })
-      .catch(err => {
-        console.error("Error fetching roles:", err);
-        setError("Failed to load jobs. Please try again later.");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+    
+    if (isLoggedIn) {
+      // User is logged in, fetch real data from API
+      getRoles()
+        .then((data) => {
+          if (Array.isArray(data)) {
+            // Format the roles data for display
+            const formattedRoles = data.map(role => ({
+              id: role.id,
+              title: role.title || "Untitled Role",
+              description: role.description || "No description available",
+              location: role.location || "Remote",
+              deadline: role.application_deadline || role.hard_deadline || role.soft_deadline,
+              eventPoster: role.event_poster || "",
+              isUrgent: role?.is_urgent,
+              imageUrl: "", // Will be populated with signed URL
+              // Additional data that might be useful
+              hourlyPay: role.hourly_pay,
+              dailyPay: role.daily_pay,
+              projectPay: role.project_pay,
+              openings: role.openings,
+              genders: role.genders,
+              ethnicities: role.ethnicities,
+              minAge: role.min_age,
+              maxAge: role.max_age,
+              skill: role.skill,
+              event_id: role.event
+            }));
+            
+            // Extract unique skills and locations for filters
+            const skills = new Set();
+            const locations = new Set();
+            
+            formattedRoles.forEach(role => {
+              if (role.skill) skills.add(role.skill);
+              if (role.location) locations.add(role.location);
+            });
+            
+            setAvailableSkills(Array.from(skills));
+            setAvailableLocations(Array.from(locations));
+            setRoles(formattedRoles);
+            setFilteredRoles(formattedRoles);
+          } else {
+            console.error("Unexpected data format:", data);
+            setError("Unexpected data format received from server");
+            // Fallback to demo jobs if API call fails
+            useDemoJobs();
+          }
+        })
+        .catch(err => {
+          console.error("Error fetching roles:", err);
+          setError("Failed to load jobs. Showing demo jobs instead.");
+          // Use demo jobs when API call fails
+          useDemoJobs();
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      // User is not logged in, use demo jobs
+      useDemoJobs();
+      setLoading(false);
+    }
+  }, [isLoggedIn]);
   
-  // Update image URLs when roleSignedUrls changes
+  // Helper function to set up demo jobs
+  const useDemoJobs = () => {
+    console.log("Using demo jobs for display");
+    const demoJobs = createDemoJobs();
+    
+    // Extract skills and locations from demo jobs
+    const skills = new Set();
+    const locations = new Set();
+    
+    demoJobs.forEach(job => {
+      if (job.skill) skills.add(job.skill);
+      if (job.location) locations.add(job.location);
+    });
+    
+    setAvailableSkills(Array.from(skills));
+    setAvailableLocations(Array.from(locations));
+    setRoles(demoJobs);
+    setFilteredRoles(demoJobs);
+  };
+  
+  // Update image URLs when roleSignedUrls changes (only for logged in users)
   useEffect(() => {
-    if (roleSignedUrls && roles.length > 0) {
+    if (isLoggedIn && roleSignedUrls && roles.length > 0) {
       // Add signed URLs to role objects
       const updatedRoles = roles.map(role => {
         // If there's a signed URL for this role, use it; otherwise keep existing or use default
@@ -160,7 +307,7 @@ const Jobs = () => {
       // Apply filters to updated roles
       applyFilters(updatedRoles);
     }
-  }, [roleSignedUrls]);
+  }, [roleSignedUrls, isLoggedIn]);
   
   // Apply filters whenever activeFilters changes
   useEffect(() => {
@@ -216,6 +363,14 @@ const Jobs = () => {
     }
     
     setFilteredRoles(result);
+    
+    // Analytics tracking for filter usage by non-logged in users
+    if (!isLoggedIn && (searchQuery || totalActiveFilters > 0)) {
+      console.log("Demo user applied filters:", { 
+        search: searchQuery, 
+        filters: activeFilters 
+      });
+    }
   };
   
   // Check if a deadline is urgent (within 5 days)
@@ -225,6 +380,12 @@ const Jobs = () => {
   
   // Load more jobs
   const loadMoreJobs = () => {
+    if (!isLoggedIn) {
+      // For demo users, just show a message that they need to register
+      setHasMore(false);
+      return;
+    }
+    
     setLoadingMore(true);
     
     // This is a placeholder for pagination
@@ -271,7 +432,7 @@ const Jobs = () => {
       );
     }
     
-    if (error) {
+    if (error && isLoggedIn) {
       return (
         <Box sx={{ padding: 3 }}>
           <Alert severity="error" sx={{ mb: 2 }}>
@@ -394,6 +555,7 @@ const Jobs = () => {
               <Typography variant="body2" sx={{ color: '#666' }}>
                 Showing {filteredRoles.length} {filteredRoles.length === 1 ? 'job' : 'jobs'}
                 {(searchQuery || totalActiveFilters > 0) ? ' matching your criteria' : ''}
+                {!isLoggedIn && ' (sample listings)'}
               </Typography>
             </Box>
             
@@ -407,12 +569,12 @@ const Jobs = () => {
                     description={role.description}
                     location={role.location}
                     deadline={formatDeadline(role.deadline)}
-                    // You can add more props as needed for JobCard component
                     hourlyPay={role.hourlyPay}
                     dailyPay={role.dailyPay}
                     projectPay={role.projectPay}
                     roleId={role.id}
                     role={role}
+                    isDemo={!isLoggedIn}
                   />
                 </Grid>
               ))}
@@ -450,7 +612,7 @@ const Jobs = () => {
                 width: { xs: '100%', sm: '240px' } 
               }}
             >
-              {loadingMore ? 'Loading...' : 'Load More Jobs'}
+              {!isLoggedIn ? 'Sign Up to See More' : (loadingMore ? 'Loading...' : 'Load More Jobs')}
             </Button>
           </Box>
         )}
@@ -461,6 +623,18 @@ const Jobs = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', backgroundColor: 'white', overflow: 'hidden', minHeight: '100vh' }}>
       <SecondaryHeader />
+      
+      {!isLoggedIn && (
+        <MarketingBanner 
+          title="Explore Job Opportunities"
+          subtitle="These are sample job listings. Sign up today to access all available roles and apply directly through our platform."
+          primaryButtonText="Sign Up"
+          secondaryButtonText="Sign In"
+          primaryButtonUrl="/register/2"
+          secondaryButtonUrl="/login"
+        />
+      )}
+      
       <MainContent />
       <PrimaryFooter />
     </Box>

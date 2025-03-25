@@ -25,7 +25,8 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
     <Box
       sx={{
         backgroundColor: '#f8f4e8',
-        backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), url("/images/talent-banner-bg.jpg")',
+        // Using a gradient background instead of an image to avoid 404 errors
+        backgroundImage: 'linear-gradient(135deg, #f8f4e8 0%, #e5d9c1 100%)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         borderBottom: '1px solid #e5d9c1',
@@ -109,7 +110,7 @@ const MarketingBanner: React.FC<MarketingBannerProps> = ({
         </Box>
       </Container>
       
-      {/* Decorative elements */}
+      {/* Decorative elements using CSS instead of images */}
       <Box 
         sx={{ 
           position: 'absolute',
