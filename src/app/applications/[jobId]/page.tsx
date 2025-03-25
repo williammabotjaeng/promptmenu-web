@@ -116,6 +116,13 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
     ? signedUrls[talent.user.id] 
     : DEFAULT_AVATAR;
   
+  console.log(`Profile image for user ${talent?.user?.id}:`, {
+    hasUserID: Boolean(talent?.user?.id),
+    hasSignedUrls: Boolean(signedUrls),
+    hasSpecificURL: talent?.user?.id && signedUrls ? Boolean(signedUrls[talent.user.id]) : false,
+    finalURL: profileImageUrl
+  });
+  
   const status = talent?.application_data?.status || 'pending';
   
   return (
