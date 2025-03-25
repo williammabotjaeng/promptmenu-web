@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from 'react';
-import { WhiteHeader } from '@/components/WhiteHeader';
+import Header from "@/components/dashboard/Header";
 import SidebarProfileCard from '@/components/SidebarProfileCard';
 import FilterForm, { FilterValues } from '@/components/FilterForm';
 import Pagination from '@/components/Pagination';
@@ -247,7 +247,7 @@ const Talent: React.FC = () => {
         overflow: 'hidden',
       }}
     >
-      <WhiteHeader />
+      <Header />
       <Box
         sx={{
           display: 'flex',
