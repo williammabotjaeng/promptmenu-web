@@ -87,14 +87,18 @@ const Talent: React.FC = () => {
       if (profile.location) locationsSet.add(profile.location);
       if (profile.ethnicity) ethnicitiesSet.add(profile.ethnicity);
       if (profile.gender) gendersSet.add(profile.gender);
+      
+      // Store the user ID for easier access
+      const userId = profile.user?.id || profile.id;
         
       return {
-        id: profile.id,
+        id: userId,  // Use the user ID as the profile ID
         name: `${profile.firstname || ''} ${profile.lastname || ''}`.trim() || 'Unknown',
-        location: profile.nationality || 'Not specified',
+        location: profile.nationality || profile.location || 'Not specified',
+        nationality: profile.nationality || '',
         age: calculateAge(profile.date_of_birth),
         skills: processedSkills,
-        imageUrl: "", // Will be populated with signed URL
+        imageUrl: "",  // This will be updated when signed URLs are available
         headshot: profile.headshot || "",
         isFeatured: profile.is_featured || false,
         // Additional properties that might be useful
@@ -102,7 +106,9 @@ const Talent: React.FC = () => {
         ethnicity: profile.ethnicity,
         height: profile.height,
         weight: profile.weight,
-        experience: profile.experience_level || "Beginner"
+        experience: profile.experience_level || "Beginner",
+        // Keep original data for debugging
+        _original: profile
       };
     });
     
@@ -125,7 +131,9 @@ const Talent: React.FC = () => {
     fetchTalentProfiles()
       .then((data) => {
         if (Array.isArray(data)) {
+          console.log("Fetched talent profiles:", data);
           const processedData = processProfiles(data);
+          console.log("Processed profiles:", processedData);
           setAllProfiles(processedData);
           setFilteredProfiles(processedData);
         } else {
@@ -144,14 +152,23 @@ const Talent: React.FC = () => {
 
   // Update image URLs when profileSignedUrls changes
   useEffect(() => {
-    if (profileSignedUrls && allProfiles.length > 0) {
+    if (profileSignedUrls && Object.keys(profileSignedUrls).length > 0) {
+      console.log("Received profile signed URLs:", profileSignedUrls);
+      
       // Add signed URLs to profile objects
       const updatedProfiles = allProfiles.map(profile => {
-        // If there's a signed URL for this profile, use it; otherwise use default
-        const imageUrl = 
-          (profileSignedUrls[profile.id] && profileSignedUrls[profile.id] !== "") 
-            ? profileSignedUrls[profile.id] 
-            : DEFAULT_PROFILE_IMAGE;
+        // First try to get URL by user ID
+        let imageUrl = DEFAULT_PROFILE_IMAGE;
+        const profileId = profile.id;
+        
+        if (profileId && profileSignedUrls[profileId]) {
+          console.log(`Found signed URL for profile ${profileId}`);
+          imageUrl = profileSignedUrls[profileId];
+        } 
+        // If no URL found by profile ID, keep existing or use default
+        else if (profile.imageUrl && profile.imageUrl !== "") {
+          imageUrl = profile.imageUrl;
+        }
         
         return {
           ...profile,
@@ -159,6 +176,7 @@ const Talent: React.FC = () => {
         };
       });
       
+      console.log("Updated profiles with signed URLs:", updatedProfiles);
       setAllProfiles(updatedProfiles);
       
       // Apply active filters to the updated profiles

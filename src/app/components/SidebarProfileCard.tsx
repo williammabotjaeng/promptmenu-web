@@ -28,7 +28,8 @@ interface ProfileProps {
   nationality?: string;
   age: number;
   skills: string[];
-  imageUrl: string;
+  imageUrl?: string;
+  headshot?: string;  // Original headshot path from API
   isFeatured?: boolean;
   gender?: string;
   ethnicity?: string;
@@ -39,6 +40,9 @@ interface ProfileProps {
 interface SidebarProfileCardProps {
   profile: ProfileProps;
 }
+
+// Default placeholder image for profiles without headshots
+const DEFAULT_PROFILE_IMAGE = "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/cda574f70ccd49a7abc97a1663f275bd69d56bce15ee1463e97ba119b97f026d?apiKey=7fae980a988640eea8add1e49a5d542e&";
 
 const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
   const router = useRouter();
@@ -58,6 +62,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
 
   // Get initials for avatar fallback
   const getInitials = (name: string) => {
+    if (!name) return "?";
     return name
       .split(' ')
       .map(part => part.charAt(0))
@@ -66,7 +71,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
       .substring(0, 2);
   };
   
-  // Get country name from nationality code, fall back to location if needed
+  // Get country name from nationality code
   const getCountryName = (code: string) => {
     if (!code) return '';
     
@@ -87,14 +92,45 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
   
   // Get location display text
   const getLocationDisplay = () => {
+    if (profile.nationality) {
+      return getCountryName(profile.nationality);
+    }
     if (profile.location) {
       return getCountryName(profile.location);
     }
-    return profile.location || 'Location not specified';
+    return 'Location not specified';
   };
   
-  // Check if the nationality is a valid country code (2 characters)
-  const isValidCountryCode = profile.location && profile.location.length === 2;
+  // Check if the code is a valid country code (2 characters)
+  const getCountryCode = () => {
+    if (profile.nationality && profile.nationality.length === 2) {
+      return profile.nationality;
+    }
+    if (profile.location && profile.location.length === 2) {
+      return profile.location;
+    }
+    return null;
+  };
+  
+  // Determine which image URL to use
+  const getImageUrl = () => {
+    // First priority: use the provided imageUrl if it exists and isn't empty
+    if (profile.imageUrl && profile.imageUrl !== "") {
+      return profile.imageUrl;
+    }
+    
+    // Second priority: use the headshot path if it exists
+    if (profile.headshot && profile.headshot !== "") {
+      console.log(`Using headshot path for profile ${profile.id}: ${profile.headshot}`);
+      // In a real implementation, you might need to convert this to a full URL
+    }
+    
+    // Fallback to default image
+    return DEFAULT_PROFILE_IMAGE;
+  };
+  
+  const countryCode = getCountryCode();
+  const displayImageUrl = getImageUrl();
 
   return (
     <Card 
@@ -179,7 +215,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
         ) : (
           <CardMedia
             component="img"
-            image={profile.imageUrl}
+            image={displayImageUrl}
             alt={`${profile.name}'s profile photo`}
             sx={{ 
               position: { xs: 'relative', sm: 'absolute' },
@@ -194,6 +230,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
             }}
             onLoad={() => setImageLoaded(true)}
             onError={() => {
+              console.error(`Error loading image for profile ${profile.id}: ${displayImageUrl}`);
               setImageError(true);
               setImageLoaded(true);
             }}
@@ -251,10 +288,10 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
         </Typography>
         
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.75, mb: 0.5 }}>
-          {isValidCountryCode ? (
+          {countryCode ? (
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <ReactCountryFlag
-                countryCode={profile.location}
+                countryCode={countryCode}
                 svg
                 style={{
                   width: '1em',
@@ -317,6 +354,18 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
               </Typography>
             </Box>
           )}
+          
+          {profile.age > 0 && (
+            <Box sx={{ display: 'flex', alignItems: 'center', minWidth: { xs: '48%', sm: 'auto' } }}>
+              <CakeOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
+              <Typography 
+                variant="body2" 
+                sx={{ fontSize: { xs: '0.75rem', sm: '0.85rem' }, color: '#666' }}
+              >
+                {profile.age} years
+              </Typography>
+            </Box>
+          )}
         </Box>
         
         <Typography 
@@ -341,23 +390,32 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
             minHeight: { xs: '22px', sm: '28px' },        
           }}
         >
-          {profile.skills && Array.isArray(profile.skills) && profile.skills.slice(0, 3).map((skill, index) => (
-            <Chip
-              key={index}
-              label={String(skill)}
-              size="small"
-              sx={{
-                fontSize: { xs: '0.65rem', sm: '0.7rem' },
-                height: { xs: '20px', sm: '22px' },
-                backgroundColor: 'rgba(151, 115, 66, 0.08)',
-                color: '#977342',
-                fontWeight: 500,
-                '& .MuiChip-label': {
-                  px: { xs: 0.75, sm: 1 }
-                }
-              }}
-            />
-          ))}
+          {profile.skills && Array.isArray(profile.skills) && profile.skills.slice(0, 3).map((skill: any, index) => {
+            // Handle case where skill might be an object with name property
+            const skillLabel = typeof skill === 'string' 
+              ? skill 
+              : (typeof skill === 'object' && skill !== null && 'name' in skill) 
+                ? skill.name 
+                : '';
+                
+            return skillLabel ? (
+              <Chip
+                key={index}
+                label={skillLabel}
+                size="small"
+                sx={{
+                  fontSize: { xs: '0.65rem', sm: '0.7rem' },
+                  height: { xs: '20px', sm: '22px' },
+                  backgroundColor: 'rgba(151, 115, 66, 0.08)',
+                  color: '#977342',
+                  fontWeight: 500,
+                  '& .MuiChip-label': {
+                    px: { xs: 0.75, sm: 1 }
+                  }
+                }}
+              />
+            ) : null;
+          })}
           
           {profile.skills && Array.isArray(profile.skills) && profile.skills.length > 3 && (
             <Chip
