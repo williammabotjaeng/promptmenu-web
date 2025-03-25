@@ -52,7 +52,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     "website",
     "ssh_access",
     "has_settings",
-    "has_profile"
+    "has_profile",
+    "company_id",
+    "company_logo",
+    "sshsessionid",
+    "current_event"
   ]);
 
   const accessToken = cookies?.access;
@@ -207,6 +211,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       removeCookie("has_profile", { path: "/" });
       removeCookie("sshsessionid", { path: "/" });
       removeCookie("company_id", { path: "/" });
+      removeCookie("company_logo", { path: "/" });
+      removeCookie("sshsessionid", { path: "/" });
+      removeCookie("current_event", { path: "/" });
       router.push("/login");
     },
     onError: (error) => {

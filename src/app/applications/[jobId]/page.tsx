@@ -405,7 +405,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
   );
 };
 
-// Tab panel component
+  // Tab panel component
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -427,7 +427,7 @@ function TabPanel(props) {
 }
 
 // Main ApplicationsPage component
-export default function ApplicationsPage ({ params }) {
+export default function ApplicationsPage({ params }) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const router = useRouter();
@@ -435,9 +435,11 @@ export default function ApplicationsPage ({ params }) {
   const { getRole, roleSignedUrls } = useEvent();
   const { currentRole } = useStore(useCurrentRoleStore);
   const [cookies] = useCookies(['username']);
+  
+  // Get talent profile functions from context
   const { 
     roleApplicants, 
-    fetchRoleApplicants, 
+    fetchRoleApplicants,
     updateApplicantStatus, 
     profileSignedUrls 
   } = useTalentProfile();
@@ -452,24 +454,19 @@ export default function ApplicationsPage ({ params }) {
   const [filterMenuAnchor, setFilterMenuAnchor] = useState(null);
   const [sortOption, setSortOption] = useState("newest");
   const [filteredApplications, setFilteredApplications] = useState([]);
-  
-  // Track if initial data loading is complete
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
 
   // Gold color theme
   const goldPrimary = "#977342";
   const goldLight = "#CEAB76";
 
-  // Fetch role and applications data
+  // Fetch role and applications data on initial mount only
   useEffect(() => {
-    // Skip if we've already completed the initial load or don't have a role yet
-    if (initialLoadComplete || !currentRole || !currentRole.id) return;
+    if (!currentRole?.id || !fetchRoleApplicants) return;
     
     const loadRoleData = async () => {
-      console.log("Current Role:", currentRole);
-      
       try {
         setLoading(true);
+        setError(null);
         
         // Create a properly formatted role object
         const formattedRole = {
@@ -507,14 +504,11 @@ export default function ApplicationsPage ({ params }) {
         
         // Fetch real applicants for this role
         try {
-          await fetchRoleApplicants(currentRole.id);
+          await fetchRoleApplicants(String(currentRole.id));
         } catch (err) {
           console.error("Error fetching role applicants:", err);
           setError("Failed to load applicants. Please try again later.");
         }
-        
-        // Mark initial load as complete to prevent further reloads
-        setInitialLoadComplete(true);
       } catch (err) {
         console.error("Error processing role data:", err);
         setError("Failed to load role details. Please try again later.");
@@ -524,7 +518,9 @@ export default function ApplicationsPage ({ params }) {
     };
     
     loadRoleData();
-  }, [currentRole, initialLoadComplete, fetchRoleApplicants]);
+    // Only run this effect once on mount or when currentRole.id changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRole?.id]);
 
   // Update image URL when roleSignedUrls changes
   useEffect(() => {
@@ -568,14 +564,14 @@ export default function ApplicationsPage ({ params }) {
     // Apply sorting
     if (sortOption === "newest") {
       filtered.sort((a, b) => {
-        const dateA = new Date(a.application_data?.application_date || 0);
-        const dateB = new Date(b.application_data?.application_date || 0);
+        const dateA: any = new Date(a.application_data?.application_date || 0);
+        const dateB: any = new Date(b.application_data?.application_date || 0);
         return dateB - dateA;
       });
     } else if (sortOption === "oldest") {
       filtered.sort((a, b) => {
-        const dateA = new Date(a.application_data?.application_date || 0);
-        const dateB = new Date(b.application_data?.application_date || 0);
+        const dateA: any = new Date(a.application_data?.application_date || 0);
+        const dateB: any = new Date(b.application_data?.application_date || 0);
         return dateA - dateB;
       });
     } else if (sortOption === "rating") {
