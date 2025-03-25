@@ -56,7 +56,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     "company_id",
     "company_logo",
     "sshsessionid",
-    "current_event"
+    "current_event", 
+    "ethnicity", 
+    "nationality"
   ]);
 
   const accessToken = cookies?.access;
@@ -214,6 +216,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       removeCookie("company_logo", { path: "/" });
       removeCookie("sshsessionid", { path: "/" });
       removeCookie("current_event", { path: "/" });
+      removeCookie("nationality", { path: "/" });
+      removeCookie("ethnicity", { path: "/" });
       router.push("/login");
     },
     onError: (error) => {

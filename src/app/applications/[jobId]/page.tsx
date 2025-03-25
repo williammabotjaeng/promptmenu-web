@@ -140,6 +140,8 @@ const TalentApplicationCard = ({
     userId = talent.id;
   }
 
+  console.log("Talent Object:", talent);
+
   console.log(`Looking for profile image - User ID: ${userId}`, {
     availableIds: {
       applicationDataUserId: talent?.application_data?.user_id,
@@ -424,7 +426,7 @@ const TalentApplicationCard = ({
                 <Button
                   variant="contained"
                   startIcon={<CheckCircleOutlineIcon />}
-                  onClick={() => onHire(talent.user?.id)}
+                  onClick={() => onHire(talent?.application_data?.user_id)}
                   sx={{
                     mb: 1.5,
                     backgroundColor: "success.main",
@@ -439,7 +441,7 @@ const TalentApplicationCard = ({
                 <Button
                   variant="outlined"
                   startIcon={<CancelOutlinedIcon />}
-                  onClick={() => onReject(talent.user?.id)}
+                  onClick={() => onReject(talent?.application_data?.user_id)}
                   sx={{
                     mb: 1.5,
                     borderColor: "error.main",
@@ -739,10 +741,12 @@ export default function ApplicationsPage({ params }) {
 
   // Handle talent actions
   const handleHireTalent = async (userId) => {
+    console.log("User to edit", userId, role?.id);
     if (!userId || !role?.id) return;
-
+    console.log("Passed check");
     try {
       await updateApplicantStatus(role.id, userId, "hired");
+      alert("Applicant Hired!");
     } catch (error) {
       console.error("Error hiring talent:", error);
     }
