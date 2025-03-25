@@ -13,7 +13,7 @@ export const AttributeInput: React.FC<AttributeInputProps> = ({ label, placehold
         placeholder={placeholder}
         variant="outlined"
         value={value}
-        type="number"
+        type="text"
         onChange={onChange}
         sx={{
           bgcolor: 'black',
