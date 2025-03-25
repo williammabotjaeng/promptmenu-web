@@ -6,7 +6,7 @@ import { StatCard } from '@/components/portal/StatCard';
 import { JobCard } from '@/components/portal/JobCard';
 import { AuditionCard } from '@/components/portal/AuditionCard';
 import { ProfileTask } from '@/components/portal/ProfileTask';
-import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress, IconButton, Drawer } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button, LinearProgress, IconButton, Drawer, Chip, Skeleton } from '@mui/material';
 import Sticky from 'react-sticky-el';
 import { useEffect, useState } from 'react';
 import { useRouter, redirect } from 'next/navigation';
@@ -23,6 +23,7 @@ import useLocalRolesStore from '@/state/use-local-roles-store';
 import { useStore } from 'zustand';
 import { useSettings } from '@/providers/settings-provider';
 import { useAuth } from '@/providers/auth-providers';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const sidebarItems = [
   { icon: "dashboard", label: "Portal", href: '/portal' },
@@ -31,21 +32,6 @@ const sidebarItems = [
   { icon: "theaters", label: "Auditions", href: '/auditions' },
   { icon: "person", label: "Profile", href: '/profile' },
   { icon: "portfolio", label: "Portfolio", href: '/portfolio' }
-];
-
-
-
-const jobs = [
-  {
-    title: "TV Commercial - Leading Automotive Brand",
-    location: "Dubai Media City",
-    tags: ["Acting", "Commercial"]
-  },
-  {
-    title: "Fashion Show Model - Luxury Brand",
-    location: "Dubai Mall Fashion Avenue",
-    tags: ["Modeling", "Fashion"]
-  }
 ];
 
 const profileTasks = [
@@ -57,7 +43,9 @@ const profileTasks = [
 
 const Portal: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [jobsLoading, setJobsLoading] = useState(true);
+  const [loadedJobs, setLoadedJobs] = useState([]);
   const [cookies, setCookie] = useCookies([
     'firstname', 
     'onboarding_presented', 
@@ -68,25 +56,15 @@ const Portal: React.FC = () => {
   ]);
 
   const firstName = cookies?.firstname || 'User';
-
   const user_role = cookies?.user_role || '';
-
   const has_settings = cookies?.has_settings || false;
-
   const userName = cookies?.username || '';
-
   const hasProfile = cookies?.has_profile || false;
-
   const onboardingPresented = cookies?.onboarding_presented || false;
 
-  const { roles } = useStore(useLocalRolesStore);
-
   const router = useRouter();
-
   const { fetchTalentProfile, talentProfile, signedUrls } = useTalentProfile();
-
   const { updateUser } = useAuth();
-
   const { getRoles } = useEvent();
 
   const toggleDrawer = () => {
@@ -94,31 +72,45 @@ const Portal: React.FC = () => {
   };
 
   useEffect(() => {
+    const initializeData = async () => {
       setLoading(true);
-      fetchTalentProfile();
-      // getRoles();
+      setJobsLoading(true);
+
+      // Fetch all available jobs without any checks
+      try {
+        const jobsData: any = await getRoles();
+        if (jobsData && Array.isArray(jobsData)) {
+          setLoadedJobs(jobsData);
+        }
+        setJobsLoading(false);
+      } catch (error) {
+        console.error("Error fetching jobs:", error);
+        setJobsLoading(false);
+      }
+
+      // Fetch talent profile
+      await fetchTalentProfile();
+
+      // Check for onboarding redirect
       if (!onboardingPresented) {
-        console.log("Inside the condition, UserRole:", user_role);
-        console.log("Check result:", user_role === 'talent');
         if (user_role === 'talent') {
-          console.log("About to redirect");
-          redirect('/talent-onboarding');
+          router.push('/talent-onboarding');
         } else if (user_role === 'influencer') {
-          redirect('/influencer-onboarding')
+          router.push('/influencer-onboarding');
         }
       }
-      console.log("Outside the check, UserRole:", user_role);
-      console.log("Signed URLS:", signedUrls);
-      setTimeout(() => {
-        setLoading(false)
-      }, 500);
-  }, [cookies, roles]);
+
+      setLoading(false);
+    };
+
+    initializeData();
+  }, []);
 
   const stats = [
-    { title: "Profile Views", value: talentProfile?.profile_views, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
-    { title: "Applied Jobs", value: talentProfile?.profile_views, icon: "work", subtitle: "4 pending responses", subtitleColor: "#6B7280" },
-    { title: "Upcoming Auditions", value: talentProfile?.profile_views, icon: "theaters", subtitle: "Next: March 18", subtitleColor: "#CEAB76" },
-    { title: "Unread Messages", value: talentProfile?.profile_views, icon: "mail", subtitle: "2 urgent", subtitleColor: "#EF4444" }
+    { title: "Profile Views", value: talentProfile?.profile_views || 0, icon: "visibility", subtitle: "+12% this week", subtitleColor: "#22C55E" },
+    { title: "Applied Jobs", value: talentProfile?.applications?.length || 0, icon: "work", subtitle: "4 pending responses", subtitleColor: "#6B7280" },
+    { title: "Upcoming Auditions", value: talentProfile?.upcoming_auditions || 0, icon: "theaters", subtitle: "Next: March 18", subtitleColor: "#CEAB76" },
+    { title: "Unread Messages", value: talentProfile?.unread_messages || 0, icon: "mail", subtitle: "2 urgent", subtitleColor: "#EF4444" }
   ];
 
   if (loading) return <Loading />;
@@ -189,59 +181,121 @@ const Portal: React.FC = () => {
               ))}
             </Box>
 
-            <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
+            <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)' } }}>
               <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Recent Job Opportunities</Typography>
-                <Box sx={{ marginTop: 2 }}>
-                  {(roles && roles?.length > 0) && roles?.map((job, index) => (
-                    <JobCard 
-                        key={index} 
-                        roleId={job?.role?.id}
-                        title={job?.role?.title} 
-                        location={job?.role?.location} 
-                        ethnicities={job?.role?.ethnicities}
-                        hourlyPay={job?.role?.hourly_pay}
-                        dailyPay={job?.role?.daily_pay}
-                        skill={job?.role?.skill}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>Job Opportunities</Typography>
+                    <Chip 
+                      label={loadedJobs?.length || 0} 
+                      size="small" 
+                      sx={{ 
+                        backgroundColor: 'rgba(151, 115, 66, 0.1)', 
+                        color: '#977342',
+                        fontWeight: 600,
+                        height: '22px'
+                      }} 
+                    />
+                  </Box>
+                  <Button 
+                    endIcon={<ArrowForwardIcon />}
+                    onClick={() => router.push('/jobs')}
+                    sx={{ 
+                      color: '#977342',
+                      fontWeight: 500,
+                      '&:hover': {
+                        backgroundColor: 'rgba(151, 115, 66, 0.05)'
+                      }
+                    }}
+                  >
+                    View all
+                  </Button>
+                </Box>
+                
+                {jobsLoading ? (
+                  // Show skeleton loaders while jobs are loading
+                  Array(3).fill(0).map((_, index) => (
+                    <Box key={index} sx={{ mb: 2, borderRadius: '12px', overflow: 'hidden' }}>
+                      <Skeleton variant="rectangular" height={140} />
+                    </Box>
+                  ))
+                ) : loadedJobs && loadedJobs.length > 0 ? (
+                  // Display actual jobs when available
+                  loadedJobs.slice(0, 3).map((job, index) => (
+                    <Box 
+                      key={index} 
+                      sx={{ 
+                        mb: 2,
+                        transition: 'transform 0.2s',
+                        '&:hover': { transform: 'translateY(-4px)' }
+                      }}
+                    >
+                      <JobCard 
+                        roleId={job?.id}
+                        title={job?.title} 
+                        location={job?.location} 
+                        ethnicities={job?.ethnicities}
+                        hourlyPay={job?.hourly_pay}
+                        dailyPay={job?.daily_pay}
+                        skill={job?.skill}
                         hardDeadline={
-                          job?.role?.hard_deadline
-                            ? `Closes in ${moment.duration(moment(job?.role?.hard_deadline).diff(moment())).humanize()}`
+                          job?.application_deadline || job?.hard_deadline
+                            ? `Closes in ${moment.duration(moment(job?.application_deadline || job?.hard_deadline).diff(moment())).humanize()}`
                             : "No Deadline"
                         }
-                        openings={job?.role?.openings}
-                        genders={job?.role?.genders}
-                        maxAge={job?.role?.max_age}
-                        minAge={job?.role?.min_age}
-                        />
-                  ))}
-                </Box>
-                <Button sx={{ marginTop: 2, backgroundColor: 'white', color: '#977342' }}>
-                  View all opportunities
-                </Button>
+                        openings={job?.openings}
+                        genders={job?.genders}
+                        maxAge={job?.max_age}
+                        minAge={job?.min_age}
+                      />
+                    </Box>
+                  ))
+                ) : (
+                  // Show message when no jobs are available
+                  <Box sx={{ textAlign: 'center', py: 4, backgroundColor: 'rgba(0,0,0,0.02)', borderRadius: '8px' }}>
+                    <Typography variant="body1" color="text.secondary">No job opportunities available at the moment</Typography>
+                  </Box>
+                )}
               </CardContent>
             </Card>
 
-            {talentProfile?.upcoming_auditions > 0 && (<Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1 }}>
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Upcoming Auditions</Typography>
-                <br />
-                <AuditionCard
-                  month="MAR"
-                  date="18"
-                  title="Feature Film Audition"
-                  time="10:00 AM"
-                  location="Dubai Studio City"
-                />
-              </CardContent>
-            </Card>)}
+            {talentProfile?.upcoming_auditions > 0 && (
+              <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)' } }}>
+                <CardContent>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>Upcoming Auditions</Typography>
+                    <Button 
+                      endIcon={<ArrowForwardIcon />}
+                      onClick={() => router.push('/auditions')}
+                      sx={{ 
+                        color: '#977342',
+                        fontWeight: 500,
+                        '&:hover': {
+                          backgroundColor: 'rgba(151, 115, 66, 0.05)'
+                        }
+                      }}
+                    >
+                      View all
+                    </Button>
+                  </Box>
+                  <AuditionCard
+                    month="MAR"
+                    date="18"
+                    title="Feature Film Audition"
+                    time="10:00 AM"
+                    location="Dubai Studio City"
+                  />
+                </CardContent>
+              </Card>
+            )}
 
-            <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: 1, backgroundColor: 'white' }}>
+            <Card sx={{ marginTop: 4, padding: 2, borderRadius: '12px', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)', backgroundColor: 'white', transition: 'transform 0.3s, box-shadow 0.3s', '&:hover': { boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)' } }}>
               <CardContent>
                 <Grid container justifyContent="space-between" alignItems="center">
-                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Profile Completion</Typography>
-                  <Typography variant="body1" sx={{ color: '#977342' }}>{(Number(talentProfile?.profile_progress) * 100)}%</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333' }}>Profile Completion</Typography>
+                  <Typography variant="body1" sx={{ color: '#977342', fontWeight: 600 }}>{Math.round((Number(talentProfile?.profile_progress) * 100))}%</Typography>
                 </Grid>
-                <Box sx={{ marginTop: 2 }}>
+                <Box sx={{ marginTop: 2, mb: 3 }}>
                   <LinearProgress
                     variant="determinate"
                     value={(Number(talentProfile?.profile_progress) * 100)}
@@ -260,6 +314,23 @@ const Portal: React.FC = () => {
                     <ProfileTask key={index} {...task} />
                   ))}
                 </Box>
+                
+                <Button 
+                  variant="outlined"
+                  onClick={() => router.push('/profile')}
+                  sx={{ 
+                    mt: 3,
+                    borderColor: '#977342',
+                    color: '#977342',
+                    fontWeight: 500,
+                    '&:hover': {
+                      backgroundColor: 'rgba(151, 115, 66, 0.05)',
+                      borderColor: '#CEAB76'
+                    }
+                  }}
+                >
+                  Complete Your Profile
+                </Button>
               </CardContent>
             </Card>
           </Box>

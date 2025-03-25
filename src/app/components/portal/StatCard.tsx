@@ -51,11 +51,7 @@ export const StatCard: React.FC<PortalStatCardProps> = ({ title, value, icon, su
         <Typography variant="h4" sx={{ marginTop: 2, fontWeight: 'bold', color: 'black', fontSize: '24px' }}>
           {value ?? 0}
         </Typography>
-        {subtitle && (
-          <Typography variant="caption" sx={{ marginTop: 2, color: subtitleColor || 'gray.500' }}>
-            {subtitle}
-          </Typography>
-        )}
+        
       </CardContent>
     </Card>
   );
