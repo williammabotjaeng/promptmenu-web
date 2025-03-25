@@ -11,6 +11,8 @@ export interface CompanyData {
     website?: string | null; 
     total_jobs?: number | string;
     applications?: number | string;
+    hired?: number | string;
+    active_talents?: number | string;
     social_media_links?: Record<string, string> | null; 
     created_at?: string; 
     updated_at?: string; 

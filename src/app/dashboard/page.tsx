@@ -70,7 +70,7 @@ const Dashboard = () => {
     },
     {
       title: "Active Talents",
-      value: 0,
+      value: company?.active_talents || 0,
       icon: ActiveTalentsIcon?.src,
       color: "#2196F3",
       bgColor: "rgba(33, 150, 243, 0.1)"
@@ -84,7 +84,7 @@ const Dashboard = () => {
     },
     {
       title: "Hired",
-      value: 0,
+      value: company?.hired || 0,
       icon: HiredIcon?.src,
       color: "#9C27B0",
       bgColor: "rgba(156, 39, 176, 0.1)"

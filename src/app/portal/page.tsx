@@ -97,7 +97,7 @@ const Portal: React.FC = () => {
       setLoading(true);
       fetchTalentProfile();
       // getRoles();
-      if (!onboardingPresented || !hasProfile) {
+      if (!onboardingPresented) {
         console.log("Inside the condition, UserRole:", user_role);
         console.log("Check result:", user_role === 'talent');
         if (user_role === 'talent') {
