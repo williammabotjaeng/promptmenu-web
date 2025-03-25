@@ -91,7 +91,7 @@ const Talent: React.FC = () => {
       return {
         id: profile.id,
         name: `${profile.firstname || ''} ${profile.lastname || ''}`.trim() || 'Unknown',
-        location: profile.location || 'Not specified',
+        location: profile.nationality || 'Not specified',
         age: calculateAge(profile.date_of_birth),
         skills: processedSkills,
         imageUrl: "", // Will be populated with signed URL

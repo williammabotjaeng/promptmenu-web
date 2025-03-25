@@ -18,11 +18,14 @@ import WcOutlinedIcon from '@mui/icons-material/WcOutlined';
 import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined';
 import StarIcon from '@mui/icons-material/Star';
 import { useRouter } from 'next/navigation';
+import ReactCountryFlag from 'react-country-flag';
+import countryList from 'react-select-country-list';
 
 interface ProfileProps {
   id: string | number;
   name: string;
-  location: string;
+  location?: string;
+  nationality?: string;
   age: number;
   skills: string[];
   imageUrl: string;
@@ -62,6 +65,36 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
       .toUpperCase()
       .substring(0, 2);
   };
+  
+  // Get country name from nationality code, fall back to location if needed
+  const getCountryName = (code: string) => {
+    if (!code) return '';
+    
+    // Convert two-letter code to uppercase for better matching
+    const upperCode = code.toUpperCase();
+    
+    // Use react-select-country-list to get country name
+    try {
+      const countries = countryList().getData();
+      const country = countries.find(country => country.value.toUpperCase() === upperCode);
+      return country ? country.label : code;
+    } catch (error) {
+      // Fallback if countryList has an issue
+      console.error("Error getting country name:", error);
+      return code;
+    }
+  };
+  
+  // Get location display text
+  const getLocationDisplay = () => {
+    if (profile.location) {
+      return getCountryName(profile.location);
+    }
+    return profile.location || 'Location not specified';
+  };
+  
+  // Check if the nationality is a valid country code (2 characters)
+  const isValidCountryCode = profile.location && profile.location.length === 2;
 
   return (
     <Card 
@@ -218,19 +251,49 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
         </Typography>
         
         <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.75, mb: 0.5 }}>
-          <LocationOnOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              fontSize: { xs: '0.75rem', sm: '0.85rem' },
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              color: '#666'
-            }}
-          >
-            {profile.location}
-          </Typography>
+          {isValidCountryCode ? (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <ReactCountryFlag
+                countryCode={profile.location}
+                svg
+                style={{
+                  width: '1em',
+                  height: '1em',
+                  marginRight: '8px',
+                  borderRadius: '2px'
+                }}
+                title={getLocationDisplay()}
+              />
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  color: '#666'
+                }}
+              >
+                {getLocationDisplay()}
+              </Typography>
+            </Box>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <LocationOnOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  fontSize: { xs: '0.75rem', sm: '0.85rem' },
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  color: '#666'
+                }}
+              >
+                {profile.location || 'Location not specified'}
+              </Typography>
+            </Box>
+          )}
         </Box>
         
         <Divider sx={{ my: { xs: 1, sm: 1.5 }, opacity: 0.5 }} />
@@ -242,17 +305,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
           mb: { xs: 1, sm: 1.5 },
           flexWrap: { xs: 'wrap', sm: 'nowrap' },
           gap: { xs: 0.5, sm: 0 }
-        }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: { xs: '48%', sm: 'auto' } }}>
-            <CakeOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
-            <Typography 
-              variant="body2" 
-              sx={{ fontSize: { xs: '0.75rem', sm: '0.85rem' }, color: '#666' }}
-            >
-              {profile.age} years
-            </Typography>
-          </Box>
-          
+        }}>      
           {profile.gender && (
             <Box sx={{ display: 'flex', alignItems: 'center', minWidth: { xs: '48%', sm: 'auto' } }}>
               <WcOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
