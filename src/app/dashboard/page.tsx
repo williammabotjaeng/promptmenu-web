@@ -69,13 +69,6 @@ const Dashboard = () => {
       bgColor: "rgba(76, 175, 80, 0.1)"
     },
     {
-      title: "Active Talents",
-      value: company?.active_talents || 0,
-      icon: ActiveTalentsIcon?.src,
-      color: "#2196F3",
-      bgColor: "rgba(33, 150, 243, 0.1)"
-    },
-    {
       title: "Applications",
       value: company?.applications || 0,
       icon: ApplicationsIcon?.src,
