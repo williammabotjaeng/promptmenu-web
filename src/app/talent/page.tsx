@@ -30,7 +30,6 @@ const Talent: React.FC = () => {
     location: '',
     ethnicity: '',
     gender: '',
-    experience: ''
   });
   
   // Store filter options derived from the data
@@ -199,13 +198,6 @@ const Talent: React.FC = () => {
       );
     }
     
-    // Filter by experience
-    if (filters.experience) {
-      result = result.filter(profile => 
-        profile.experience === filters.experience
-      );
-    }
-    
     setFilteredProfiles(result);
   };
 
@@ -272,7 +264,6 @@ const Talent: React.FC = () => {
           locationOptions={filterOptions.locations}
           ethnicityOptions={filterOptions.ethnicities}
           genderOptions={filterOptions.genders}
-          experienceOptions={['Beginner', 'Intermediate', 'Advanced', 'Expert']}
           isLoading={loading}
         />
         

@@ -9,7 +9,9 @@ import {
   Chip,
   Skeleton,
   Avatar,
-  Divider
+  Divider,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import WcOutlinedIcon from '@mui/icons-material/WcOutlined';
@@ -37,8 +39,15 @@ interface SidebarProfileCardProps {
 
 const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
   const router = useRouter();
+  const theme = useTheme();
   const [imageLoaded, setImageLoaded] = React.useState(false);
   const [imageError, setImageError] = React.useState(false);
+  
+  // Responsive breakpoints
+  const isXsScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmScreen = useMediaQuery(theme.breakpoints.between('sm', 'md'));
+  const isMdScreen = useMediaQuery(theme.breakpoints.between('md', 'lg'));
+  const isLgScreen = useMediaQuery(theme.breakpoints.up('lg'));
   
   const handleViewProfile = () => {
     router.push(`/talent/${profile.id}`);
@@ -57,13 +66,13 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
   return (
     <Card 
       sx={{ 
-        width: { xs: '100%', sm: '100%', md: '31%', lg: '23%' },
+        width: '100%',
         borderRadius: '12px',
         overflow: 'hidden',
         transition: 'transform 0.2s, box-shadow 0.2s',
         height: '100%',
         display: 'flex',
-        flexDirection: 'column',
+        flexDirection: { xs: 'row', sm: 'column' },
         '&:hover': {
           transform: 'translateY(-5px)',
           boxShadow: '0 8px 16px rgba(151, 115, 66, 0.15)'
@@ -75,28 +84,31 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
       <Box 
         sx={{ 
           position: 'relative',
-          pt: '100%', // 1:1 Aspect ratio
-          width: '100%',
+          width: { xs: '40%', sm: '100%' },
+          height: { xs: 'auto', sm: '0' },
+          pt: { xs: 0, sm: '100%' }, // 1:1 Aspect ratio for sm and up
           backgroundColor: 'rgba(151, 115, 66, 0.05)'
         }}
       >
         {!imageLoaded && !imageError && (
           <Box
             sx={{
-              position: 'absolute',
+              position: { xs: 'relative', sm: 'absolute' },
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
+              height: { xs: '100%', sm: 'auto' },
+              aspectRatio: { xs: '3/4', sm: 'auto' },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}
           >
             <Skeleton 
-              variant="circular" 
-              width="40%" 
-              height="40%" 
+              variant="rectangular" 
+              width="100%" 
+              height="100%" 
               animation="wave" 
               sx={{ backgroundColor: 'rgba(151, 115, 66, 0.1)' }} 
             />
@@ -106,11 +118,13 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
         {imageError ? (
           <Box
             sx={{
-              position: 'absolute',
+              position: { xs: 'relative', sm: 'absolute' },
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
+              height: { xs: '100%', sm: 'auto' },
+              aspectRatio: { xs: '3/4', sm: 'auto' },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -118,10 +132,10 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
           >
             <Avatar
               sx={{ 
-                width: '60%', 
-                height: '60%',
+                width: { xs: '60%', sm: '60%' }, 
+                height: { xs: '40%', sm: '60%' },
                 bgcolor: 'rgba(151, 115, 66, 0.2)',
-                fontSize: '2.5rem',
+                fontSize: { xs: '1.8rem', sm: '2.2rem', md: '2.5rem' },
                 fontWeight: 'bold',
                 color: '#977342'
               }}
@@ -135,11 +149,12 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
             image={profile.imageUrl}
             alt={`${profile.name}'s profile photo`}
             sx={{ 
-              position: 'absolute',
+              position: { xs: 'relative', sm: 'absolute' },
               top: 0,
               left: 0,
               width: '100%',
-              height: '100%',
+              height: { xs: '100%', sm: '100%' },
+              aspectRatio: { xs: '3/4', sm: 'auto' },
               objectFit: 'cover',
               objectPosition: 'center top',
               display: imageLoaded ? 'block' : 'none'
@@ -158,7 +173,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
               position: 'absolute',
               top: 0,
               right: 0,
-              width: '40%',
+              width: '40px',
               height: '40px',
               background: 'linear-gradient(135deg, transparent 0%, transparent 50%, #977342 50%, #977342 100%)',
               zIndex: 1
@@ -180,10 +195,11 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
       {/* Profile Info Section */}
       <CardContent 
         sx={{ 
-          padding: 2, 
+          padding: { xs: 1.5, sm: 2 }, 
           flexGrow: 1,
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          width: { xs: '60%', sm: '100%' }
         }}
       >
         <Typography 
@@ -191,7 +207,7 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
           component="h2" 
           sx={{ 
             fontWeight: 600, 
-            fontSize: '1.1rem',
+            fontSize: { xs: '0.95rem', sm: '1.05rem', md: '1.1rem' },
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
@@ -201,12 +217,12 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
           {profile.name}
         </Typography>
         
-        <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 0.5 }}>
-          <LocationOnOutlinedIcon sx={{ color: '#977342', fontSize: 16, mr: 0.5 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', mt: 0.75, mb: 0.5 }}>
+          <LocationOnOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
           <Typography 
             variant="body2" 
             sx={{ 
-              fontSize: '0.85rem',
+              fontSize: { xs: '0.75rem', sm: '0.85rem' },
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -217,30 +233,32 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
           </Typography>
         </Box>
         
-        <Divider sx={{ my: 1.5, opacity: 0.5 }} />
+        <Divider sx={{ my: { xs: 1, sm: 1.5 }, opacity: 0.5 }} />
         
         <Box sx={{ 
           display: 'flex', 
           alignItems: 'center', 
           justifyContent: 'space-between',
-          mb: 1.5 
+          mb: { xs: 1, sm: 1.5 },
+          flexWrap: { xs: 'wrap', sm: 'nowrap' },
+          gap: { xs: 0.5, sm: 0 }
         }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CakeOutlinedIcon sx={{ color: '#977342', fontSize: 16, mr: 0.5 }} />
+          <Box sx={{ display: 'flex', alignItems: 'center', minWidth: { xs: '48%', sm: 'auto' } }}>
+            <CakeOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
             <Typography 
               variant="body2" 
-              sx={{ fontSize: '0.85rem', color: '#666' }}
+              sx={{ fontSize: { xs: '0.75rem', sm: '0.85rem' }, color: '#666' }}
             >
               {profile.age} years
             </Typography>
           </Box>
           
           {profile.gender && (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <WcOutlinedIcon sx={{ color: '#977342', fontSize: 16, mr: 0.5 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center', minWidth: { xs: '48%', sm: 'auto' } }}>
+              <WcOutlinedIcon sx={{ color: '#977342', fontSize: { xs: 14, sm: 16 }, mr: 0.5 }} />
               <Typography 
                 variant="body2" 
-                sx={{ fontSize: '0.85rem', color: '#666' }}
+                sx={{ fontSize: { xs: '0.75rem', sm: '0.85rem' }, color: '#666' }}
               >
                 {profile.gender}
               </Typography>
@@ -251,10 +269,11 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
         <Typography 
           variant="body2" 
           sx={{ 
-            fontSize: '0.75rem', 
+            fontSize: { xs: '0.7rem', sm: '0.75rem' }, 
             color: '#888', 
-            mb: 1,
-            fontWeight: 500
+            mb: 0.75,
+            fontWeight: 500,
+            display: { xs: 'none', sm: 'block' }
           }}
         >
           SKILLS
@@ -262,11 +281,11 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
         
         <Box 
           sx={{ 
-            display: 'flex', 
+            display: { xs: 'none', sm: 'flex' },
             flexWrap: 'wrap', 
-            gap: 0.75, 
+            gap: { xs: 0.5, sm: 0.75 }, 
             mb: 'auto',
-            minHeight: '28px' 
+            minHeight: { xs: '22px', sm: '28px' },        
           }}
         >
           {profile.skills && Array.isArray(profile.skills) && profile.skills.slice(0, 3).map((skill, index) => (
@@ -275,13 +294,13 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
               label={String(skill)}
               size="small"
               sx={{
-                fontSize: '0.7rem',
-                height: '22px',
+                fontSize: { xs: '0.65rem', sm: '0.7rem' },
+                height: { xs: '20px', sm: '22px' },
                 backgroundColor: 'rgba(151, 115, 66, 0.08)',
                 color: '#977342',
                 fontWeight: 500,
                 '& .MuiChip-label': {
-                  px: 1
+                  px: { xs: 0.75, sm: 1 }
                 }
               }}
             />
@@ -292,12 +311,12 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
               label={`+${profile.skills.length - 3}`}
               size="small"
               sx={{
-                fontSize: '0.7rem',
-                height: '22px',
+                fontSize: { xs: '0.65rem', sm: '0.7rem' },
+                height: { xs: '20px', sm: '22px' },
                 backgroundColor: 'rgba(151, 115, 66, 0.04)',
                 color: '#977342',
                 '& .MuiChip-label': {
-                  px: 1
+                  px: { xs: 0.75, sm: 1 }
                 }
               }}
             />
@@ -314,10 +333,10 @@ const SidebarProfileCard: React.FC<SidebarProfileCardProps> = ({ profile }) => {
             '&:hover': {
               backgroundColor: '#7D5F35',
             },
-            fontSize: '0.85rem',
+            fontSize: { xs: '0.75rem', sm: '0.85rem' },
             borderRadius: '8px',
-            py: 1,
-            mt: 2,
+            py: { xs: 0.75, sm: 1 },
+            mt: { xs: 1, sm: 2 },
             fontWeight: 500,
             '&:focus': {
               boxShadow: '0 0 0 3px rgba(151, 115, 66, 0.3)'

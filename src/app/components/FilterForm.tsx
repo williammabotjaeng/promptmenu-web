@@ -22,7 +22,6 @@ interface FilterFormProps {
   locationOptions: string[];
   ethnicityOptions: string[];
   genderOptions: string[];
-  experienceOptions: string[];
   isLoading: boolean;
 }
 
@@ -31,7 +30,6 @@ export interface FilterValues {
   location: string;
   ethnicity: string;
   gender: string;
-  experience: string;
 }
 
 const FilterForm: React.FC<FilterFormProps> = ({
@@ -40,7 +38,6 @@ const FilterForm: React.FC<FilterFormProps> = ({
   locationOptions = [],
   ethnicityOptions = [],
   genderOptions = [],
-  experienceOptions = ['Beginner', 'Intermediate', 'Advanced', 'Expert'],
   isLoading = false
 }) => {
   // State for filter values
@@ -48,8 +45,7 @@ const FilterForm: React.FC<FilterFormProps> = ({
     skill: '',
     location: '',
     ethnicity: '',
-    gender: '',
-    experience: ''
+    gender: ''
   });
 
   // Track whether filters have been applied
@@ -304,49 +300,6 @@ const FilterForm: React.FC<FilterFormProps> = ({
               {genderOptions.map((gender) => (
                 <MenuItem key={gender} value={gender}>
                   {gender}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl 
-            variant="outlined" 
-            sx={{ minWidth: { xs: '100%', sm: '48%', md: '180px' }, flex: 1 }}
-          >
-            <InputLabel id="experience-label">Experience</InputLabel>
-            <Select
-              labelId="experience-label"
-              value={filters.experience}
-              onChange={handleFilterChange('experience')}
-              label="Experience"
-              disabled={isLoading}
-              sx={{ 
-                borderRadius: 1,
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#977342"
-                }
-              }}
-              endAdornment={
-                filters.experience ? (
-                  <IconButton 
-                    size="small" 
-                    sx={{ mr: 2 }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleClearSingleFilter('experience');
-                    }}
-                  >
-                    <ClearIcon fontSize="small" />
-                  </IconButton>
-                ) : null
-              }
-            >
-              <MenuItem value="">
-                <em>Any Experience</em>
-              </MenuItem>
-              {experienceOptions.map((experience) => (
-                <MenuItem key={experience} value={experience}>
-                  {experience}
                 </MenuItem>
               ))}
             </Select>
