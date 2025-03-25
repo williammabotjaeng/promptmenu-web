@@ -199,10 +199,10 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
             <Box sx={{ mb: 1.5 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                 <Typography variant="h6" sx={{ fontWeight: 600, mr: 1 }}>
-                  {talent.firstname} {talent.lastname}
+                  {typeof talent.firstname === 'string' ? talent.firstname : ''} {typeof talent.lastname === 'string' ? talent.lastname : ''}
                 </Typography>
                 <Chip 
-                  label={talent.experience || ''}
+                  label={typeof talent.experience === 'string' ? talent.experience : ''}
                   size="small"
                   sx={{ 
                     backgroundColor: 'rgba(151, 115, 66, 0.1)', 
@@ -214,18 +214,27 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
               </Box>
               
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 2 }}>
-                {Array.isArray(talent.skills) && talent.skills.map((skill, index) => (
-                  <Chip 
-                    key={index} 
-                    label={skill} 
-                    size="small"
-                    sx={{ 
-                      backgroundColor: 'rgba(0, 0, 0, 0.05)', 
-                      fontSize: '0.7rem',
-                      height: 20
-                    }}
-                  />
-                ))}
+                {Array.isArray(talent.skills) && talent.skills.map((skill, index) => {
+                  // Handle case where skill might be an object with name property
+                  const skillLabel = typeof skill === 'string' 
+                    ? skill 
+                    : (typeof skill === 'object' && skill !== null && 'name' in skill) 
+                      ? skill.name 
+                      : '';
+                      
+                  return (
+                    <Chip 
+                      key={index} 
+                      label={skillLabel}
+                      size="small"
+                      sx={{ 
+                        backgroundColor: 'rgba(0, 0, 0, 0.05)', 
+                        fontSize: '0.7rem',
+                        height: 20
+                      }}
+                    />
+                  );
+                })}
               </Box>
               
               <Grid container spacing={1}>
@@ -234,7 +243,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                       <EmailOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
                       <Typography variant="body2" color="text.secondary">
-                        {talent.user.email}
+                        {typeof talent.user?.email === 'string' ? talent.user.email : ''}
                       </Typography>
                     </Box>
                   </Grid>
@@ -245,7 +254,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                       <PhoneOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
                       <Typography variant="body2" color="text.secondary">
-                        {talent.phone_number}
+                        {typeof talent.phone_number === 'string' ? talent.phone_number : ''}
                       </Typography>
                     </Box>
                   </Grid>
@@ -256,7 +265,7 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                       <LocationOnOutlinedIcon sx={{ color: 'text.secondary', fontSize: '0.9rem', mr: 1 }} />
                       <Typography variant="body2" color="text.secondary">
-                        {talent.nationality}
+                        {typeof talent.nationality === 'string' ? talent.nationality : ''}
                       </Typography>
                     </Box>
                   </Grid>
@@ -293,9 +302,11 @@ const TalentApplicationCard = ({ talent, onHire, onReject, onViewProfile, signed
                 }}
               >
                 <Typography variant="body2" color="text.secondary" sx={{ fontStyle: 'italic' }}>
-                  {talent.application_data.cover_letter.length > 150 
-                    ? `${talent.application_data.cover_letter.substring(0, 150)}...` 
-                    : talent.application_data.cover_letter}
+                  {typeof talent.application_data?.cover_letter === 'string' 
+                    ? (talent.application_data.cover_letter.length > 150 
+                      ? `${talent.application_data.cover_letter.substring(0, 150)}...` 
+                      : talent.application_data.cover_letter)
+                    : ''}
                 </Typography>
               </Box>
             )}
@@ -470,7 +481,6 @@ export default function ApplicationsPage({ params }) {
         
         // Create a properly formatted role object
         const formattedRole = {
-          applicants: currentRole?.applicants,
           id: currentRole.id,
           title: currentRole.title || "Untitled Role",
           description: currentRole.description || "No description available",
