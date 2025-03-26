@@ -28,8 +28,9 @@ jobs:
           # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
-          output_location: "out" # Set to "out" for Next.js static export
+          output_location: "" # Set to empty for Next.js when using app_artifact_location
           app_build_command: "npm run build" # Add this for Next.js build
+          app_artifact_location: "out" # Specify where Next.js exports the static files
           ###### End of Repository/Build Configurations ######
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
