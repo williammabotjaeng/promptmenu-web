@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  output: 'export',
+  images: {
+    unoptimized: true
+  }
+
   // Custom Webpack configuration
   webpack: (config) => {
     // Example: Add a custom loader
@@ -25,7 +30,7 @@ const nextConfig: NextConfig = {
 
   // Image optimization settings
   images: {
-    domains: ['example.com'], // Allow images from this domain
+    domains: ['cdn.builder.io'], // Allow images from this domain
   },
 
   // Internationalization (i18n) settings
