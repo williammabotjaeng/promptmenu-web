@@ -29,6 +29,7 @@ jobs:
           app_location: "/"
           api_location: ""  # Leave empty if you don't have an API
           output_location: "out"  # For Next.js static export
+          app_artifact_location: "out"
           app_build_command: "npm run build"  # Add this for Next.js
 
   close_pull_request_job:
