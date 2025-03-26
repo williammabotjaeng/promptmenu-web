@@ -29,7 +29,7 @@ jobs:
           app_location: "/" # App source code path
           api_location: "" # Api source code path - optional
           output_location: "" # Built app content directory - optional
-          app_artifact_location: "" # Add this for Next.js static export
+          app_artifact_location: "out" # Add this for Next.js static export
           app_build_command: "npm run build" # Add this for Next.js build command
           ###### End of Repository/Build Configurations ######
   close_pull_request_job:
