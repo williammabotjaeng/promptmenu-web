@@ -9,8 +9,6 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   
-  output: 'export',
-  
   // Fix 1: Add comma here
   images: {
     unoptimized: true
