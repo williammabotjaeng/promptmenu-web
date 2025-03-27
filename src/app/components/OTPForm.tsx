@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Box, Button, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { Facebook, Instagram, Twitter } from '@mui/icons-material';

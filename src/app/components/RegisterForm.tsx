@@ -1,6 +1,7 @@
 import * as React from "react";
-import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar, Grid, InputAdornment, IconButton } from "@mui/material";
+import { Box, Typography, TextField, Button, Checkbox, FormControlLabel, Avatar, InputAdornment, IconButton } from "@mui/material";
 import Snackbar from '@mui/material/Snackbar';
+import Grid from '@mui/material/GridLegacy';
 import SSHGoldLogo from '@/assets/GoldLogo.png';
 import Image from 'next/image';
 import { useState } from "react";

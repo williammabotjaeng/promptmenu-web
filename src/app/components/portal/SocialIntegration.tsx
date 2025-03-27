@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Box, Card, CardContent, Typography, Button, Grid } from "@mui/material";
+import { Box, Card, CardContent, Typography, Button } from "@mui/material";
+import Grid from '@mui/material/GridLegacy';
 import { useState, useEffect } from "react";
 import { LinearProgress } from "@mui/material";
 import { useTikTok } from "@/providers/tiktok-provider";

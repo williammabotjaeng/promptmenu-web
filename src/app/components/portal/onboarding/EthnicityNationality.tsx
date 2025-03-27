@@ -12,7 +12,6 @@ import {
   Button,
   Container,
   Paper,
-  Grid,
   Divider,
   OutlinedInput,
   FormHelperText,
@@ -24,6 +23,7 @@ import {
   FormControlLabel,
   FormLabel
 } from "@mui/material";
+import Grid from '@mui/material/GridLegacy';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ReactCountryFlag from "react-country-flag";

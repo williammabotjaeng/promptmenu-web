@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Grid, Button, Snackbar } from '@mui/material';
+import { Box, TextField, RadioGroup, FormControlLabel, Radio, Typography, Button, Snackbar } from '@mui/material';
 import useTalentOnboardingStore from '@/state/use-talent-onboarding-store'; 
+import Grid from '@mui/material/GridLegacy';
 import { useStore } from 'zustand';
 
 const PaymentMethods = ({ activeStep }) => {

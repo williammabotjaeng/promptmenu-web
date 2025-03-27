@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useRef } from 'react';
-import { Grid, TextField, Box, Button } from '@mui/material';
+import { TextField, Box, Button } from '@mui/material';
 import useClientOnboardingStore from '@/state/use-client-onboarding-store'; 
 import { useStore } from 'zustand';
+import Grid from '@mui/material/GridLegacy';
 
 const SocialMediaLinks = ({ activeStep }) => {
     const { socialMediaLinks, setSocialMediaLinks } = useStore(useClientOnboardingStore);

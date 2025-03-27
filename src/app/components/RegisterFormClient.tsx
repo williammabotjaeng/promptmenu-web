@@ -7,10 +7,10 @@ import {
   Checkbox,
   FormControlLabel,
   Avatar,
-  Grid,
   InputAdornment,
   IconButton,
 } from "@mui/material";
+import Grid from '@mui/material/GridLegacy';
 import Snackbar from "@mui/material/Snackbar";
 import SSHGoldLogo from "@/assets/GoldLogo.png";
 import Image from "next/image";
