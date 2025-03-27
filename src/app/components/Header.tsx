@@ -392,29 +392,6 @@ export const Header: React.FC = () => {
               </Typography>
             </Link>
             
-            <Chip
-              label={
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  <svg width="12" height="12" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
-                    <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
-                    <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
-                    <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
-                  </svg>
-                  <Typography variant="caption" sx={{ fontWeight: 500 }}>
-                    Azure AI
-                  </Typography>
-                </Box>
-              }
-              size="small"
-              sx={{ 
-                ml: 2, 
-                bgcolor: 'rgba(0, 120, 212, 0.1)', 
-                color: theme.colors.secondary,
-                border: `1px solid rgba(0, 120, 212, 0.2)`,
-                display: { xs: 'none', md: 'flex' }
-              }}
-            />
           </Box>
 
           {/* Navigation Menu for larger screens */}

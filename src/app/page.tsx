@@ -5,6 +5,7 @@ import { Box, CircularProgress, Fade } from "@mui/material";
 import { Header } from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
+import LoadingScreen from "@/components/LoadingScreen";
 import "@/styles/globals.css";
 
 // Import refactored components
@@ -181,36 +182,7 @@ const Home: React.FC = () => {
   return (
     <>
       {/* Loading screen */}
-      {loading && (
-        <Box
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: theme.colors.white,
-            zIndex: 9999,
-          }}
-        >
-          <Box sx={{ textAlign: 'center' }}>
-            <CircularProgress sx={{ color: theme.colors.primary, mb: 2 }} />
-            <Box
-              sx={{
-                color: theme.colors.primary,
-                fontWeight: 600,
-                fontSize: '1.25rem',
-                opacity: 0.9,
-              }}
-            >
-              Loading PromptMenu...
-            </Box>
-          </Box>
-        </Box>
-      )}
+      {loading && (<LoadingScreen />)}
       
       {/* Main content */}
       <Fade in={!loading} timeout={800}>
