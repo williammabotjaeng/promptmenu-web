@@ -12,28 +12,64 @@ import {
   Drawer,
   MenuItem,
   Menu,
+  Container,
+  Chip,
+  Divider
 } from "@mui/material";
 import Image from "next/image";
-import SSHGoldLogo from "@/assets/GoldLogo.png";
 import { useCookies } from "react-cookie";
 import { useStore } from "zustand";
 import MenuIcon from "@mui/icons-material/Menu";
+import {
+  Restaurant,
+  MenuBook,
+  VideoLibrary,
+  Translate,
+  Dashboard,
+  Login as LoginIcon,
+  HelpOutline,
+  Assignment
+} from "@mui/icons-material";
 import useAuthStore from "@/state/use-auth-store";
 import { useState } from "react";
 
+// Microsoft-inspired color scheme
+const theme = {
+  colors: {
+    primary: "#107C10", // Microsoft green
+    secondary: "#0078D4", // Microsoft blue
+    accent: "#50E6FF", // Azure blue
+    text: "#323130",
+    lightText: "#605E5C",
+    white: "#FFFFFF",
+    background: "#f5f5f5",
+  },
+};
+
 export const Header: React.FC = () => {
-  const [cookies] = useCookies(["access", "ssh_session_id"]);
-  const sessionID = cookies["ssh_session_id"];
+  const [cookies] = useCookies(["access"]);
+  const isLoggedIn = !!cookies["access"];
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [solutionsAnchorEl, setSolutionsAnchorEl] = useState(null);
+  const [registerAnchorEl, setRegisterAnchorEl] = useState(null);
+  const [accountAnchorEl, setAccountAnchorEl] = useState(null);
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const handleSolutionsClick = (event) => {
+    setSolutionsAnchorEl(event.currentTarget);
+  };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleRegisterClick = (event) => {
+    setRegisterAnchorEl(event.currentTarget);
+  };
+
+  const handleAccountClick = (event) => {
+    setAccountAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setSolutionsAnchorEl(null);
+    setRegisterAnchorEl(null);
+    setAccountAnchorEl(null);
   };
 
   const toggleDrawer = (open: boolean) => () => {
@@ -42,126 +78,272 @@ export const Header: React.FC = () => {
 
   const menuItems = (
     <Box
-      sx={{ width: 250 }}
+      sx={{ 
+        width: 280,
+        p: 2,
+        display: "flex",
+        flexDirection: "column",
+        gap: 1
+      }}
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      <Link href="/">
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <MenuBook sx={{ color: theme.colors.primary, fontSize: 32, mr: 1 }} />
+        <Typography 
+          variant="h6" 
+          sx={{ 
+            fontWeight: 700,
+            background: `linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent"
+          }}
+        >
+          PromptMenu
+        </Typography>
+      </Box>
+      
+      <Divider sx={{ mb: 2 }} />
+      
+      <Link href="/" style={{ textDecoration: 'none' }}>
         <Button
+          fullWidth
+          startIcon={<Dashboard />}
           sx={{
-            color: "black",
-            width: "100%",
+            color: theme.colors.text,
+            justifyContent: "flex-start",
+            py: 1,
+            borderRadius: 2,
             "&:hover": {
-              color: "white",
+              backgroundColor: `${theme.colors.primary}10`,
             },
           }}
         >
           Home
         </Button>
       </Link>
-      <Link href="/about">
-        <Button
-          sx={{
-            color: "black",
-            width: "100%",
-            "&:hover": {
-              color: "white",
-            },
-          }}
-        >
-          About
-        </Button>
-      </Link>
-      <Link href="/jobs">
-        <Button
-          sx={{
-            color: "black",
-            width: "100%",
-            "&:hover": {
-              color: "white",
-            },
-          }}
-        >
-          Jobs
-        </Button>
-      </Link>
-      <Link href="/talent">
-        <Button
-          sx={{
-            color: "black",
-            width: "100%",
-            "&:hover": {
-              color: "white",
-            },
-          }}
-        >
-          Talents
-        </Button>
-      </Link>
-      <Link href="/contact">
-        <Button
-          sx={{
-            color: "black",
-            width: "100%",
-            "&:hover": {
-              color: "white",
-            },
-          }}
-        >
-          Contact
-        </Button>
-      </Link>
+      
       <Button
-        className="px-6 rounded primary"
-        sx={{ backgroundColor: "#977342", color: "#ffffff", width: "100%" }}
-        onClick={handleClick}
+        fullWidth
+        startIcon={<Restaurant />}
+        sx={{
+          color: theme.colors.text,
+          justifyContent: "flex-start",
+          py: 1,
+          borderRadius: 2,
+          "&:hover": {
+            backgroundColor: `${theme.colors.primary}10`,
+          },
+        }}
       >
-        Join Now
+        Solutions
       </Button>
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        sx={{ mt: 1 }}
-      >
-        <MenuItem sx={{ textDecoration: "none", color: "#977342", backgroundColor: "#fff", width: "100%", "&:hover": {
-                      textDecoration: "none",
-                      backgroundColor: "#977342",
-                      color: "#fff"
-                 }}} onClick={handleClose}>
-          <Link href="/register-talent" sx={{ color: "#CEAB76", textDecoration: "none", "&:hover": {
-                    color: "#fff",
-                    textDecoration: "none"
-                 }}}>
-              Join as Talent
-          </Link>
-        </MenuItem>
-        <MenuItem sx={{ textDecoration: "none", color: "#977342", backgroundColor: "#fff", width: "100%", "&:hover": {
-                      textDecoration: "none",
-                      backgroundColor: "#977342",
-                      color: "#fff"
-                 }}} onClick={handleClose}>
-          <Link href="/register-client" sx={{ color: "#CEAB76", textDecoration: "none", "&:hover": {
-                    color: "#fff",
-                    textDecoration: "none"
-                 }}}>
-              Hire Talent
-          </Link>
-        </MenuItem>
-      </Menu>
-      {(!sessionID || sessionID === "undefined") && (
-        <Link href="/login">
+      
+      <Link href="/features" style={{ textDecoration: 'none' }}>
+        <Button
+          fullWidth
+          startIcon={<VideoLibrary />}
+          sx={{
+            color: theme.colors.text,
+            justifyContent: "flex-start",
+            py: 1,
+            borderRadius: 2,
+            pl: 4,
+            "&:hover": {
+              backgroundColor: `${theme.colors.primary}10`,
+            },
+          }}
+        >
+          Multimedia Menus
+        </Button>
+      </Link>
+      
+      <Link href="/translation" style={{ textDecoration: 'none' }}>
+        <Button
+          fullWidth
+          startIcon={<Translate />}
+          sx={{
+            color: theme.colors.text,
+            justifyContent: "flex-start",
+            py: 1,
+            borderRadius: 2,
+            pl: 4,
+            "&:hover": {
+              backgroundColor: `${theme.colors.primary}10`,
+            },
+          }}
+        >
+          AI Translation
+        </Button>
+      </Link>
+      
+      <Link href="/pricing" style={{ textDecoration: 'none' }}>
+        <Button
+          fullWidth
+          startIcon={<Assignment />}
+          sx={{
+            color: theme.colors.text,
+            justifyContent: "flex-start",
+            py: 1,
+            borderRadius: 2,
+            "&:hover": {
+              backgroundColor: `${theme.colors.primary}10`,
+            },
+          }}
+        >
+          Pricing
+        </Button>
+      </Link>
+      
+      <Link href="/help" style={{ textDecoration: 'none' }}>
+        <Button
+          fullWidth
+          startIcon={<HelpOutline />}
+          sx={{
+            color: theme.colors.text,
+            justifyContent: "flex-start",
+            py: 1,
+            borderRadius: 2,
+            "&:hover": {
+              backgroundColor: `${theme.colors.primary}10`,
+            },
+          }}
+        >
+          Help Center
+        </Button>
+      </Link>
+      
+      <Divider sx={{ my: 2 }} />
+      
+      {!isLoggedIn ? (
+        <>
           <Button
+            fullWidth
+            variant="contained"
+            onClick={handleRegisterClick}
             sx={{
-              color: "#977342",
-              width: "100%",
+              backgroundColor: theme.colors.primary,
+              color: theme.colors.white,
+              py: 1.5,
+              borderRadius: 2,
+              mb: 1,
               "&:hover": {
-                backgroundColor: "#CEAB76",
-                color: "#fff",
+                backgroundColor: "#0b5e0b",
               },
             }}
           >
-            Login
+            Register
+          </Button>
+          
+          <Menu
+            anchorEl={registerAnchorEl}
+            open={Boolean(registerAnchorEl)}
+            onClose={handleClose}
+            elevation={3}
+            sx={{ mt: 1.5 }}
+          >
+            <MenuItem 
+              sx={{ 
+                textDecoration: "none", 
+                color: theme.colors.primary, 
+                backgroundColor: theme.colors.white, 
+                width: "100%", 
+                "&:hover": {
+                  textDecoration: "none",
+                  backgroundColor: theme.colors.primary,
+                  color: theme.colors.white
+                }
+              }} 
+              onClick={handleClose}
+            >
+              <Link 
+                href="/register/restaurant" 
+                sx={{ 
+                  color: theme.colors.primary, 
+                  textDecoration: "none", 
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%',
+                  "&:hover": {
+                    color: theme.colors.white,
+                    textDecoration: "none"
+                  }
+                }}
+              >
+                <Restaurant sx={{ mr: 1.5 }} />
+                Register as Restaurant
+              </Link>
+            </MenuItem>
+            <MenuItem 
+              sx={{ 
+                textDecoration: "none", 
+                color: theme.colors.secondary, 
+                backgroundColor: theme.colors.white, 
+                width: "100%", 
+                "&:hover": {
+                  textDecoration: "none",
+                  backgroundColor: theme.colors.secondary,
+                  color: theme.colors.white
+                }
+              }} 
+              onClick={handleClose}
+            >
+              <Link 
+                href="/register/diner" 
+                sx={{ 
+                  color: theme.colors.secondary, 
+                  textDecoration: "none", 
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%',
+                  "&:hover": {
+                    color: theme.colors.white,
+                    textDecoration: "none"
+                  }
+                }}
+              >
+                <MenuBook sx={{ mr: 1.5 }} />
+                Register as Diner
+              </Link>
+            </MenuItem>
+          </Menu>
+          
+          <Link href="/login" style={{ textDecoration: 'none' }}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<LoginIcon />}
+              sx={{
+                borderColor: theme.colors.secondary,
+                color: theme.colors.secondary,
+                py: 1.5,
+                borderRadius: 2,
+                "&:hover": {
+                  borderColor: theme.colors.secondary,
+                  backgroundColor: `${theme.colors.secondary}10`,
+                },
+              }}
+            >
+              Sign In
+            </Button>
+          </Link>
+        </>
+      ) : (
+        <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{
+              backgroundColor: theme.colors.secondary,
+              color: theme.colors.white,
+              py: 1.5,
+              borderRadius: 2,
+              "&:hover": {
+                backgroundColor: "#00619a",
+              },
+            }}
+          >
+            My Dashboard
           </Button>
         </Link>
       )}
@@ -171,171 +353,344 @@ export const Header: React.FC = () => {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "#000", padding: "10px 0" }}
+      elevation={0}
+      sx={{ 
+        backgroundColor: "rgba(255, 255, 255, 0.95)", 
+        backdropFilter: "blur(10px)",
+        borderBottom: "1px solid rgba(0, 0, 0, 0.05)"
+      }}
     >
-      <Toolbar
-        sx={{
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        {/* Logo and Title Section */}
-        <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-          <Link
-            href={!sessionID || sessionID === "undefined" ? "/dashboard" : "/"}
-          >
-            <Image
-              src={SSHGoldLogo}
-              alt="Logo"
-              width={60}
-              height={60}
-              style={{ cursor: "pointer" }}
-            />
-          </Link>
-          <Typography
-            variant="h6"
-            sx={{ color: "#977342", marginLeft: "10px", fontWeight: "bold" }}
-          >
-            Staffing Solutions Hub
-          </Typography>
-        </Box>
-
-        {/* Hamburger Menu Icon */}
-        <IconButton
-          size="large"
-          edge="end"
-          color="secondary"
-          aria-label="menu"
-          onClick={toggleDrawer(true)}
-          sx={{ display: { xs: "block", md: "none" } }} // Show only on mobile
-        >
-          <MenuIcon />
-        </IconButton>
-
-        {/* Navigation Menu for larger screens */}
-        <Box
+      <Container maxWidth="xl">
+        <Toolbar
           sx={{
-            display: { xs: "none", md: "flex" },
-            gap: "20px",
-            alignItems: "center",
+            justifyContent: "space-between",
+            padding: { xs: "8px 0", md: "12px 0" },
           }}
+          disableGutters
         >
-          <Link href="/">
-            <Button
-              sx={{
-                color: "white",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              Home
-            </Button>
-          </Link>
-          <Link href="/about">
-            <Button
-              sx={{
-                color: "white",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              About
-            </Button>
-          </Link>
-          <Link href="/jobs">
-            <Button sx={{ color: "white" }}>Jobs</Button>
-          </Link>
-          <Link href="/talent">
-            <Button
-              sx={{
-                color: "white",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              Talents
-            </Button>
-          </Link>
-          <Link href="/contact">
-            <Button
-              sx={{
-                color: "white",
-                "&:hover": {
-                  color: "white",
-                },
-              }}
-            >
-              Contact
-            </Button>
-          </Link>
-          <Button
-            className="px-6 rounded primary"
-            sx={{ backgroundColor: "#977342", color: "#ffffff", width: "100%" }}
-            onClick={handleClick}
-          >
-            Join Now
-          </Button>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            sx={{ mt: 1 }}
-          >
-            <MenuItem sx={{ textDecoration: "none", color: "#977342", backgroundColor: "#fff", width: "100%", "&:hover": {
-                      textDecoration: "none",
-                      backgroundColor: "#977342",
-                      color: "#fff"
-                 }}}  onClick={handleClose}>
-              <Link
-                href="/register/1"
-                sx={{ color: "#CEAB76", textDecoration: "none", "&:hover": {
-                    color: "#fff",
-                    textDecoration: "none"
-                 }}}
+          {/* Logo and Title Section */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+              <MenuBook 
+                sx={{ 
+                  color: theme.colors.primary, 
+                  fontSize: { xs: 34, md: 38 },
+                  mr: 1 
+                }} 
+              />
+              <Typography
+                variant="h5"
+                sx={{ 
+                  fontWeight: 700,
+                  display: { xs: 'none', sm: 'block' },
+                  background: `linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent"
+                }}
               >
-                Join as Talent
-              </Link>
-            </MenuItem>
-            <MenuItem sx={{ textDecoration: "none", color: "#977342", backgroundColor: "#fff", width: "100%", "&:hover": {
-                      textDecoration: "none",
-                      backgroundColor: "#977342",
-                      color: "#fff"
-                 }}} onClick={handleClose}>
-              <Link
-                href="/register/2"
-                sx={{ color: "#CEAB76", textDecoration: "none", "&:hover": {
-                    color: "#fff",
-                    textDecoration: "none"
-                 }}}
-              >
-                Hire Talent
-              </Link>
-            </MenuItem>
-          </Menu>
-          {(!sessionID || sessionID === "undefined") && (
-            <Link href="/login">
+                PromptMenu
+              </Typography>
+            </Link>
+            
+            <Chip
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <svg width="12" height="12" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+                    <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+                    <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+                    <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+                  </svg>
+                  <Typography variant="caption" sx={{ fontWeight: 500 }}>
+                    Azure AI
+                  </Typography>
+                </Box>
+              }
+              size="small"
+              sx={{ 
+                ml: 2, 
+                bgcolor: 'rgba(0, 120, 212, 0.1)', 
+                color: theme.colors.secondary,
+                border: `1px solid rgba(0, 120, 212, 0.2)`,
+                display: { xs: 'none', md: 'flex' }
+              }}
+            />
+          </Box>
+
+          {/* Navigation Menu for larger screens */}
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              gap: { md: 1, lg: 2 }
+            }}
+          >
+            <Link href="/" style={{ textDecoration: 'none' }}>
               <Button
                 sx={{
-                  color: "#977342",
+                  color: theme.colors.text,
+                  px: { md: 1, lg: 2 },
                   "&:hover": {
-                    backgroundColor: "#CEAB76",
-                    color: "#fff",
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
                   },
                 }}
               >
-                Login
+                Home
               </Button>
             </Link>
-          )}
-        </Box>
-      </Toolbar>
+            
+            <Button
+              sx={{
+                color: theme.colors.text,
+                px: { md: 1, lg: 2 },
+                "&:hover": {
+                  backgroundColor: "rgba(0, 0, 0, 0.04)",
+                },
+              }}
+              onClick={handleSolutionsClick}
+              endIcon={<Box sx={{ fontSize: 10 }}>▼</Box>}
+            >
+              Solutions
+            </Button>
+            
+            <Menu
+              anchorEl={solutionsAnchorEl}
+              open={Boolean(solutionsAnchorEl)}
+              onClose={handleClose}
+              elevation={3}
+              sx={{ mt: 1.5 }}
+              transformOrigin={{ horizontal: 'center', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+            >
+              <MenuItem onClick={handleClose} sx={{ minWidth: 220 }}>
+                <Link href="/features" style={{ 
+                  textDecoration: 'none', 
+                  color: theme.colors.text,
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%'
+                }}>
+                  <VideoLibrary sx={{ mr: 1.5, color: theme.colors.primary }} />
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Multimedia Menus</Typography>
+                    <Typography variant="caption" sx={{ color: theme.colors.lightText }}>
+                      Rich content for menu items
+                    </Typography>
+                  </Box>
+                </Link>
+              </MenuItem>
+              
+              <MenuItem onClick={handleClose}>
+                <Link href="/translation" style={{ 
+                  textDecoration: 'none', 
+                  color: theme.colors.text,
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%'
+                }}>
+                  <Translate sx={{ mr: 1.5, color: theme.colors.secondary }} />
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>AI Translation</Typography>
+                    <Typography variant="caption" sx={{ color: theme.colors.lightText }}>
+                      Multilingual menu support
+                    </Typography>
+                  </Box>
+                </Link>
+              </MenuItem>
+              
+              <MenuItem onClick={handleClose}>
+                <Link href="/insights" style={{ 
+                  textDecoration: 'none', 
+                  color: theme.colors.text,
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%'
+                }}>
+                  <Dashboard sx={{ mr: 1.5, color: theme.colors.accent }} />
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Customer Insights</Typography>
+                    <Typography variant="caption" sx={{ color: theme.colors.lightText }}>
+                      Analytics and feedback
+                    </Typography>
+                  </Box>
+                </Link>
+              </MenuItem>
+            </Menu>
+            
+            <Link href="/pricing" style={{ textDecoration: 'none' }}>
+              <Button
+                sx={{
+                  color: theme.colors.text,
+                  px: { md: 1, lg: 2 },
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  },
+                }}
+              >
+                Pricing
+              </Button>
+            </Link>
+            
+            <Link href="/help" style={{ textDecoration: 'none' }}>
+              <Button
+                sx={{
+                  color: theme.colors.text,
+                  px: { md: 1, lg: 2 },
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.04)",
+                  },
+                }}
+              >
+                Help
+              </Button>
+            </Link>
+            
+            {!isLoggedIn ? (
+              <>
+                <Button
+                  variant="contained"
+                  onClick={handleRegisterClick}
+                  sx={{
+                  ml: { md: 1, lg: 2 },
+                  backgroundColor: theme.colors.primary,
+                  color: theme.colors.white,
+                  px: { md: 2, lg: 3 },
+                  "&:hover": {
+                    backgroundColor: "#0b5e0b",
+                  },
+                  }}
+                >
+                  Register
+                </Button>
+
+                <Menu
+                  anchorEl={registerAnchorEl}
+                  open={Boolean(registerAnchorEl)}
+                  onClose={handleClose}
+                  elevation={3}
+                  sx={{ mt: 1.5 }}
+                >
+                  <MenuItem onClick={handleClose}>
+                  <Link
+                    href="/register/restaurant"
+                    style={{
+                    textDecoration: "none",
+                    color: theme.colors.text,
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    }}
+                  >
+                    <Restaurant sx={{ mr: 1.5, color: theme.colors.primary }} />
+                    Register as Restaurant
+                  </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                  <Link
+                    href="/register/diner"
+                    style={{
+                    textDecoration: "none",
+                    color: theme.colors.text,
+                    display: "flex",
+                    alignItems: "center",
+                    width: "100%",
+                    }}
+                  >
+                    <MenuBook sx={{ mr: 1.5, color: theme.colors.secondary }} />
+                    Register as Diner
+                  </Link>
+                  </MenuItem>
+                </Menu>
+                
+                <Link href="/login" style={{ textDecoration: 'none' }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<LoginIcon />}
+                    sx={{
+                      ml: 1,
+                      borderColor: theme.colors.secondary,
+                      color: theme.colors.secondary,
+                      "&:hover": {
+                        borderColor: theme.colors.secondary,
+                        backgroundColor: `${theme.colors.secondary}10`,
+                      },
+                    }}
+                  >
+                    Sign In
+                  </Button>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Button
+                  sx={{
+                    ml: 2,
+                    color: theme.colors.text,
+                    "&:hover": {
+                      backgroundColor: "rgba(0, 0, 0, 0.04)",
+                    },
+                  }}
+                  onClick={handleAccountClick}
+                  endIcon={<Box sx={{ fontSize: 10 }}>▼</Box>}
+                >
+                  My Account
+                </Button>
+                
+                <Menu
+                  anchorEl={accountAnchorEl}
+                  open={Boolean(accountAnchorEl)}
+                  onClose={handleClose}
+                  elevation={3}
+                  sx={{ mt: 1.5 }}
+                >
+                  <MenuItem onClick={handleClose}>
+                    <Link href="/dashboard" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
+                      Dashboard
+                    </Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link href="/settings" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
+                      Settings
+                    </Link>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem onClick={handleClose}>
+                    <Link href="/logout" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
+                      Sign Out
+                    </Link>
+                  </MenuItem>
+                </Menu>
+              </>
+            )}
+          </Box>
+
+          {/* Hamburger Menu Icon */}
+          <IconButton
+            edge="end"
+            aria-label="menu"
+            onClick={toggleDrawer(true)}
+            sx={{ 
+              display: { xs: "flex", md: "none" },
+              color: theme.colors.text
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </Container>
 
       {/* Drawer for mobile menu */}
-      <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
+      <Drawer 
+        anchor="right" 
+        open={drawerOpen} 
+        onClose={toggleDrawer(false)}
+        PaperProps={{
+          sx: {
+            borderTopLeftRadius: 16,
+            borderBottomLeftRadius: 16,
+          }
+        }}
+      >
         {menuItems}
       </Drawer>
     </AppBar>
