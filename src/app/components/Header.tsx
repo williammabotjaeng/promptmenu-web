@@ -158,7 +158,7 @@ export const Header: React.FC = () => {
         </Button>
       </Link>
       
-      <Link href="/#service" style={{ textDecoration: 'none' }}>
+      <Link href="#service" style={{ textDecoration: 'none' }}>
         <Button
           fullWidth
           startIcon={<Translate />}
@@ -177,7 +177,7 @@ export const Header: React.FC = () => {
         </Button>
       </Link>
       
-      <Link href="/#howitworks" style={{ textDecoration: 'none' }}>
+      <Link href="#howitworks" style={{ textDecoration: 'none' }}>
         <Button
           fullWidth
           startIcon={<Assignment />}

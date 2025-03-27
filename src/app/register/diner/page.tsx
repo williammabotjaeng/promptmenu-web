@@ -207,6 +207,7 @@ const RegisterDiner: React.FC = () => {
               background: 'linear-gradient(90deg, #107C10, #0078D4)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
+              cursor: 'pointer'
             }}
             onClick={() => router.push('/')}
           >
