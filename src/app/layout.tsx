@@ -11,6 +11,7 @@ import { TalentProfileProvider } from "@/providers/talent-profile-provider";
 import { EventProvider } from "@/providers/event-provider";
 import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
+import { CookiesProvider } from "react-cookie";
 import { MessageProvider } from "./providers/message-provider";
 import { TikTokProvider } from "./providers/tiktok-provider";
 import { SnapchatProvider } from "./providers/snapchat-provider";
@@ -51,13 +52,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+      <CookiesProvider>
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
                           <AuthProvider>
+                            
                               <ProtectedRoutes>{children}</ProtectedRoutes>
+                        
                           </AuthProvider>
           </QueryClientProvider>
         </ThemeProvider>
+        </CookiesProvider>
       </body>
     </html>
   );
