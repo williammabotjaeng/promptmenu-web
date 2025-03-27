@@ -51,13 +51,11 @@ const RegisterRestaurant: React.FC = () => {
     password: '',
     confirmPassword: '',
   });
-  const [stepErrors, setStepErrors] = useState({
-    // Restaurant info
+  const [errors, setErrors] = useState({
     restaurantName: '',
     businessEmail: '',
     phoneNumber: '',
     address: '',
-    // Owner info
     ownerName: '',
     ownerEmail: '',
     password: '',
@@ -83,36 +81,80 @@ const RegisterRestaurant: React.FC = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' });
+    }
   };
 
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  const validateRestaurantInfo = () => {
+    const newErrors = { ...errors };
+    let isValid = true;
+
+    if (!formData.restaurantName.trim()) {
+      newErrors.restaurantName = 'Restaurant name is required';
+      isValid = false;
+    }
+
+    if (!formData.businessEmail.trim()) {
+      newErrors.businessEmail = 'Business email is required';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.businessEmail)) {
+      newErrors.businessEmail = 'Please enter a valid email';
+      isValid = false;
+    }
+
+    if (!formData.phoneNumber.trim()) {
+      newErrors.phoneNumber = 'Phone number is required';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const validateAccountDetails = () => {
+    const newErrors = { ...errors };
+    let isValid = true;
+
+    if (!formData.ownerName.trim()) {
+      newErrors.ownerName = 'Name is required';
+      isValid = false;
+    }
+
+    if (!formData.ownerEmail.trim()) {
+      newErrors.ownerEmail = 'Email is required';
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(formData.ownerEmail)) {
+      newErrors.ownerEmail = 'Please enter a valid email';
+      isValid = false;
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      isValid = false;
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+      isValid = false;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleNext = () => {
-    // Validate first step
-    if (activeStep === 0) {
-      const stepErrors = {
-        // Restaurant info
-        restaurantName: '',
-        businessEmail: '',
-        phoneNumber: '',
-        address: '',
-        // Owner info
-        ownerName: '',
-        ownerEmail: '',
-        password: '',
-        confirmPassword: '',
-      };
-      if (!formData.restaurantName) stepErrors.restaurantName = 'Restaurant name is required';
-      if (!formData.businessEmail) stepErrors.businessEmail = 'Business email is required';
-      if (!formData.phoneNumber) stepErrors.phoneNumber = 'Phone number is required';
-      
-      setStepErrors(stepErrors);
-      
-      if (Object.keys(stepErrors).length === 0) {
-        setActiveStep(1);
-      }
+    if (activeStep === 0 && validateRestaurantInfo()) {
+      setActiveStep(1);
     }
   };
 
@@ -123,75 +165,55 @@ const RegisterRestaurant: React.FC = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Validate second step
-    const stepErrors = {
-      // Restaurant info
-    restaurantName: '',
-    businessEmail: '',
-    phoneNumber: '',
-    address: '',
-    // Owner info
-    ownerName: '',
-    ownerEmail: '',
-    password: '',
-    confirmPassword: '',
-    };
-    if (!formData.ownerName) stepErrors.ownerName = 'Name is required';
-    if (!formData.ownerEmail) stepErrors.ownerEmail = 'Email is required';
-    if (!formData.password) stepErrors.password = 'Password is required';
-    if (formData.password !== formData.confirmPassword) {
-      stepErrors.confirmPassword = 'Passwords do not match';
+    if (!validateAccountDetails()) {
+      return;
     }
     
-    setStepErrors(stepErrors);
-    
-    if (Object.keys(stepErrors).length === 0) {
-      try {
-        // Call Azure Function to register restaurant
-        const response = await fetch('/api/register-restaurant', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            restaurantName: formData.restaurantName,
-            businessEmail: formData.businessEmail,
-            phoneNumber: formData.phoneNumber,
-            address: formData.address,
-            ownerName: formData.ownerName,
-            ownerEmail: formData.ownerEmail,
-            password: formData.password,
-            userType: 'restaurant'
-          }),
-        });
-        
-        const data = await response.json();
-        
-        if (response.ok) {
-          setSnackbar({
-            open: true,
-            message: 'Registration successful! Redirecting to login...',
-            severity: 'success',
-          });
-          
-          // Redirect to login after 2 seconds
-          setTimeout(() => {
-            router.push('/login');
-          }, 2000);
-        } else {
-          setSnackbar({
-            open: true,
-            message: data.message || 'Registration failed. Please try again.',
-            severity: 'error',
-          });
-        }
-      } catch (error) {
+    try {
+      // Call Azure Function to register restaurant
+      const response = await fetch('/api/register-restaurant', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          restaurantName: formData.restaurantName,
+          businessEmail: formData.businessEmail,
+          phoneNumber: formData.phoneNumber,
+          address: formData.address,
+          ownerName: formData.ownerName,
+          ownerEmail: formData.ownerEmail,
+          password: formData.password,
+          userType: 'restaurant'
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
         setSnackbar({
           open: true,
-          message: 'An error occurred. Please try again later.',
+          message: 'Registration successful! Redirecting to login...',
+          severity: 'success',
+        });
+        
+        // Redirect to login after 2 seconds
+        setTimeout(() => {
+          router.push('/login');
+        }, 2000);
+      } else {
+        setSnackbar({
+          open: true,
+          message: data.message || 'Registration failed. Please try again.',
           severity: 'error',
         });
       }
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: 'An error occurred. Please try again later.',
+        severity: 'error',
+      });
     }
   };
 
@@ -230,6 +252,174 @@ const RegisterRestaurant: React.FC = () => {
   const handleHome = () => {
     router.push("/")
   }
+
+  // Render form based on active step
+  const renderForm = () => {
+    if (activeStep === 0) {
+      return (
+        <form>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            Tell us about your restaurant
+          </Typography>
+          
+          <TextField
+            fullWidth
+            label="Restaurant Name"
+            name="restaurantName"
+            value={formData.restaurantName}
+            onChange={handleChange}
+            margin="normal"
+            error={!!errors.restaurantName}
+            helperText={errors.restaurantName || ''}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Business Email"
+            name="businessEmail"
+            type="email"
+            value={formData.businessEmail}
+            onChange={handleChange}
+            margin="normal"
+            error={!!errors.businessEmail}
+            helperText={errors.businessEmail || ''}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Phone Number"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+            margin="normal"
+            error={!!errors.phoneNumber}
+            helperText={errors.phoneNumber || ''}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Restaurant Address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            margin="normal"
+            multiline
+            rows={2}
+            error={!!errors.address}
+            helperText={errors.address || ''}
+            sx={{ mb: 3 }}
+          />
+          
+          <Button
+            variant="contained"
+            onClick={handleNext}
+            sx={{
+              py: 1.5,
+              px: 4,
+              backgroundColor: '#107C10',
+              '&:hover': {
+                backgroundColor: '#0b5e0b',
+              },
+            }}
+          >
+            Continue
+          </Button>
+        </form>
+      );
+    } else {
+      return (
+        <form onSubmit={handleSubmit}>
+          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+            Create your account
+          </Typography>
+          
+          <TextField
+            fullWidth
+            label="Owner/Manager Name"
+            name="ownerName"
+            value={formData.ownerName}
+            onChange={handleChange}
+            margin="normal"
+            error={!!errors.ownerName}
+            helperText={errors.ownerName || ''}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Owner/Manager Email"
+            name="ownerEmail"
+            type="email"
+            value={formData.ownerEmail}
+            onChange={handleChange}
+            margin="normal"
+            error={!!errors.ownerEmail}
+            helperText={errors.ownerEmail || ''}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            margin="normal"
+            error={!!errors.password}
+            helperText={errors.password || ''}
+            sx={{ mb: 2 }}
+          />
+          
+          <TextField
+            fullWidth
+            label="Confirm Password"
+            name="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            margin="normal"
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword || ''}
+            sx={{ mb: 3 }}
+          />
+          
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={handleBack}
+              sx={{
+                py: 1.5,
+                px: 3,
+                borderColor: '#0078D4',
+                color: '#0078D4',
+              }}
+            >
+              Back
+            </Button>
+            
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{
+                py: 1.5,
+                px: 4,
+                backgroundColor: '#107C10',
+                '&:hover': {
+                  backgroundColor: '#0b5e0b',
+                },
+              }}
+            >
+              Register Restaurant
+            </Button>
+          </Box>
+        </form>
+      );
+    }
+  };
 
   return (
     <Box
@@ -402,164 +592,8 @@ const RegisterRestaurant: React.FC = () => {
               ))}
             </Stepper>
             
-            {activeStep === 0 ? (
-              <form>
-                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                  Tell us about your restaurant
-                </Typography>
-                
-                <TextField
-                  fullWidth
-                  label="Restaurant Name"
-                  name="restaurantName"
-                  value={formData.restaurantName}
-                  onChange={handleChange}
-                  margin="normal"
-                  error={!!stepErrors.restaurantName}
-                  helperText={stepErrors.restaurantName || ''}
-                  sx={{ mb: 2 }}
-                />
-                
-                <TextField
-                  fullWidth
-                  label="Business Email"
-                  name="businessEmail"
-                  type="email"
-                  value={formData.businessEmail}
-                  onChange={handleChange}
-                  margin="normal"
-                  error={!!stepErrors.businessEmail}
-                  helperText={stepErrors.businessEmail || ''}
-                  sx={{ mb: 2 }}
-                />
-                
-                <TextField
-                  fullWidth
-                  label="Phone Number"
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  margin="normal"
-                  error={!!stepErrors.phoneNumber}
-                  helperText={stepErrors.phoneNumber || ''}
-                  sx={{ mb: 2 }}
-                />
-                
-                <TextField
-                  fullWidth
-                  label="Restaurant Address"
-                  name="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  margin="normal"
-                  multiline
-                  rows={2}
-                  sx={{ mb: 3 }}
-                />
-                
-                <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{
-                    py: 1.5,
-                    px: 4,
-                    backgroundColor: '#107C10',
-                    '&:hover': {
-                      backgroundColor: '#0b5e0b',
-                    },
-                  }}
-                >
-                  Continue
-                </Button>
-              </form>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                  Create your account
-                </Typography>
-                
-                <TextField
-                  fullWidth
-                  label="Owner/Manager Name"
-                  name="ownerName"
-                  value={formData.ownerName}
-                  onChange={handleChange}
-                  margin="normal"
-                  error={!!stepErrors.ownerName}
-                  helperText={stepErrors.ownerName || ''}
-                  sx={{ mb: 2 }}
-                />
-                
-                <TextField
-                  fullWidth
-                  label="Owner/Manager Email"
-                  name="ownerEmail"
-                  type="email"
-                  value={formData.ownerEmail}
-                  onChange={handleChange}
-                  margin="normal"
-                  error={!!stepErrors.ownerEmail}
-                  helperText={stepErrors.ownerEmail || ''}
-                  sx={{ mb: 2 }}
-                />
-                
-                <TextField
-                  fullWidth
-                  label="Password"
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  margin="normal"
-                  error={!!stepErrors.password}
-                  helperText={stepErrors.password || ''}
-                  sx={{ mb: 2 }}
-                />
-                
-                <TextField
-                  fullWidth
-                  label="Confirm Password"
-                  name="confirmPassword"
-                  type="password"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  margin="normal"
-                  error={!!stepErrors.confirmPassword}
-                  helperText={stepErrors.confirmPassword || ''}
-                  sx={{ mb: 3 }}
-                />
-                
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <Button
-                    variant="outlined"
-                    onClick={handleBack}
-                    sx={{
-                      py: 1.5,
-                      px: 3,
-                      borderColor: '#0078D4',
-                      color: '#0078D4',
-                    }}
-                  >
-                    Back
-                  </Button>
-                  
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    sx={{
-                      py: 1.5,
-                      px: 4,
-                      backgroundColor: '#107C10',
-                      '&:hover': {
-                        backgroundColor: '#0b5e0b',
-                      },
-                    }}
-                  >
-                    Register Restaurant
-                  </Button>
-                </Box>
-              </form>
-            )}
+            {/* Render the appropriate form based on active step */}
+            {renderForm()}
             
             <Box sx={{ mt: 4, textAlign: 'center' }}>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
