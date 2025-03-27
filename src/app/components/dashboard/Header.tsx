@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Button, IconButton, Typography, Box, Drawer, Grid } from '@mui/material';
+import { AppBar, Toolbar, Button, IconButton, Typography, Box, Drawer } from '@mui/material';
+import Grid from '@mui/material/GridLegacy';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/navigation';
