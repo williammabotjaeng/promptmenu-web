@@ -171,7 +171,7 @@ const RegisterRestaurant: React.FC = () => {
     
     try {
       // Call Azure Function to register restaurant
-      const response = await fetch('/api/register-restaurant', {
+      const response = await fetch('https://api.promptmenu.xyz/register-users-db', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
