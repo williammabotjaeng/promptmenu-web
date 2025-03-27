@@ -30,8 +30,8 @@ export const privateRoutes: string[] = [
   export const publicRoutes: string[] = [
     '/',
     '/login',
-    '/register/1',
-    '/register/2',
+    '/register/diner',
+    '/register/restaurant',
     '/otp',
     '/forgot',
     '/reset',
