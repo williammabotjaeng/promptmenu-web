@@ -582,7 +582,7 @@ export const LoginForm: React.FC = () => {
                   <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
                 </svg>
                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  Powered by Azure AI & Microsoft
+                  Powered by Azure AI
                 </Typography>
               </Box>
             </Box>
