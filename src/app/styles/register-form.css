@@ -1,0 +1,73 @@
+.custom-input {
+  background-color: white;
+  color: #3f3c3c;
+}
+
+.custom-input .MuiOutlinedInput-root {
+  border-color: var(--dark-gold);
+}
+
+.custom-input .MuiOutlinedInput-root:hover fieldset {
+  border-color: var(--dark-gold);
+}
+
+.custom-input .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: var(--dark-gold);
+}
+
+/* Custom Checkbox Styles */
+.custom-checkbox {
+  color: white;
+  background-color: white;
+}
+
+.custom-checkbox.Mui-checked {
+  color: white;
+}
+
+.custom-checkbox.Mui-checked + .MuiFormControlLabel-label {
+  color: black;
+}
+
+/* Country Dropdown Container */
+.country-dropdown-container {
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.country-dropdown {
+  flex: 1;
+  height: 100%;
+  width: 75%;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.region-dropdown {
+  flex: 1;
+  width: 27vw;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* Media Query for Tablet and Mobile Screens */
+@media (max-width: 768px) {
+  .country-dropdown-container {
+    width: 100%; 
+    flex-direction: column; 
+  }
+
+  .country-dropdown {
+    width: 100%; 
+  }
+
+  .region-dropdown {
+    width: 138%; 
+  }
+}
+
+/* Hide the asterisk for required fields */
+.MuiFormLabel-asterisk {
+  display: none !important;
+}
