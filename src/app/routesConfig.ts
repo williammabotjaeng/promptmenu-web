@@ -37,7 +37,9 @@ export const privateRoutes: string[] = [
     '/reset',
     '/forgot-success',
     '/help',
-    '/pricing'
+    '/pricing',
+    '/termsofservice',
+    '/privacypolicy'
   ];
   
   export const hybridRoutes: string[] = [
