@@ -5,7 +5,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Grid,
   IconButton,
   InputAdornment,
   Link,
@@ -13,6 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Grid from '@mui/material/GridLegacy';
 import {
   Facebook,
   Google,
