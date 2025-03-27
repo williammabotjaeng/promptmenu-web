@@ -195,12 +195,12 @@ const Home: React.FC = () => {
           </div>
           
           {/* Feature Showcase */}
-          <div ref={addSectionRef(1)} className="scroll-section">
+          <div ref={addSectionRef(1)} id="features" className="scroll-section">
             <FeatureShowcase />
           </div>
           
           {/* Services Section */}
-          <div ref={addSectionRef(2)} className="scroll-section">
+          <div ref={addSectionRef(2)} id="service" className="scroll-section">
             <ServiceSection services={services} />
           </div>
           
@@ -210,7 +210,7 @@ const Home: React.FC = () => {
           </div>
           
           {/* How It Works */}
-          <div ref={addSectionRef(4)} className="scroll-section">
+          <div ref={addSectionRef(4)} id="howitworks" className="scroll-section">
             <HowItWorksSection />
           </div>
           

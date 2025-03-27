@@ -139,7 +139,7 @@ export const Header: React.FC = () => {
         Solutions
       </Button>
       
-      <Link href="/features" style={{ textDecoration: 'none' }}>
+      <Link href="#features" style={{ textDecoration: 'none' }}>
         <Button
           fullWidth
           startIcon={<VideoLibrary />}
@@ -158,7 +158,7 @@ export const Header: React.FC = () => {
         </Button>
       </Link>
       
-      <Link href="/translation" style={{ textDecoration: 'none' }}>
+      <Link href="/#service" style={{ textDecoration: 'none' }}>
         <Button
           fullWidth
           startIcon={<Translate />}
@@ -177,7 +177,7 @@ export const Header: React.FC = () => {
         </Button>
       </Link>
       
-      <Link href="/pricing" style={{ textDecoration: 'none' }}>
+      <Link href="/#howitworks" style={{ textDecoration: 'none' }}>
         <Button
           fullWidth
           startIcon={<Assignment />}
@@ -191,7 +191,7 @@ export const Header: React.FC = () => {
             },
           }}
         >
-          Pricing
+          How it Works
         </Button>
       </Link>
       
