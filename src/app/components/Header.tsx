@@ -440,7 +440,7 @@ export const Header: React.FC = () => {
               anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
             >
               <MenuItem onClick={handleClose} sx={{ minWidth: 220 }}>
-                <Link href="/features" style={{ 
+                <Link href="#features" style={{ 
                   textDecoration: 'none', 
                   color: theme.colors.text,
                   display: 'flex',
@@ -458,7 +458,7 @@ export const Header: React.FC = () => {
               </MenuItem>
               
               <MenuItem onClick={handleClose}>
-                <Link href="/translation" style={{ 
+                <Link href="#service" style={{ 
                   textDecoration: 'none', 
                   color: theme.colors.text,
                   display: 'flex',
@@ -476,7 +476,7 @@ export const Header: React.FC = () => {
               </MenuItem>
               
               <MenuItem onClick={handleClose}>
-                <Link href="/insights" style={{ 
+                <Link href="#howitworks" style={{ 
                   textDecoration: 'none', 
                   color: theme.colors.text,
                   display: 'flex',
