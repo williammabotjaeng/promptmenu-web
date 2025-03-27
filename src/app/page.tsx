@@ -1,96 +1,259 @@
 "use client";
 
+import { useEffect, useState, useRef } from "react";
+import { Box, CircularProgress, Fade } from "@mui/material";
 import { Header } from "@/components/Header";
-import FeaturedTalent from "@/components/FeaturedTalent";
-import ServicesSection from "@/components/ServicesSection";
-import StatisticsSection from "@/components/StatisticsSection";
-import JourneySection from "@/components/JourneySection";
 import Footer from "@/components/Footer";
-import { useEffect } from "react";
 import Hero from "@/components/Hero";
 import "@/styles/globals.css";
-import { ServiceCardProps } from "@/types/Props/ServiceCardProps";
-import { StatisticProps } from "@/types/Props/StatisticProps";
-import { SocialLinkProps } from "@/types/Props/SocialLinkProps";
-import { ContactInfoProps } from "@/types/Props/ContactInfoProps";
-import { QuickLinkProps } from "@/types/Props/QuickLinkProps";
 
-const services: ServiceCardProps[] = [
+// Import refactored components
+import FeatureShowcase from "@/components/FeatureShowcase";
+import ServiceSection from "@/components/ServiceSection";
+import StatisticsSection from "@/components/StatisticsSection";
+import HowItWorksSection from "@/components/HowItWorksSection";
+import CTASection from "@/components/CTASection";
+
+// Microsoft-inspired color scheme
+const theme = {
+  colors: {
+    primary: "#107C10", // Microsoft green
+    secondary: "#0078D4", // Microsoft blue
+    accent: "#50E6FF", // Azure blue
+    lightGreen: "#84c680",
+    background: "#f5f5f5",
+    text: "#323130",
+    lightText: "#605E5C",
+    white: "#FFFFFF",
+  },
+};
+
+// PromptMenu services
+const services = [
   {
-    icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/5d79f1fffd1e7620a4c338cddbef99884683a36925aa74be6680c52bafef7600?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    title: "Model Casting",
-    description:
-      "Professional casting services for fashion shows, commercials, and photo shoots.",
+    icon: "menu_book",
+    title: "Digital Menu Creation",
+    description: "Create interactive, multimedia-rich digital menus that showcase your dishes in stunning detail.",
   },
   {
-    icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/a705e2853423149ee6ba544e5efa45d2c810aa41e433eb08d372d93276e7cc72?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    title: "Talent Management",
-    description: "Comprehensive management services for models and talents.",
+    icon: "videocam",
+    title: "Video Integration",
+    description: "Add preparation videos, chef introductions, and ingredient highlights to your menu items.",
   },
   {
-    icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/c9e285a0bbf12737dd32ab774704c26d6dd0e38b70a605e90d3a72a426647251?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    title: "Event Staffing",
-    description:
-      "Professional staff for events, exhibitions, and promotional activities.",
+    icon: "translate",
+    title: "AI Translation",
+    description: "Break language barriers with automatic menu translation powered by Azure AI technology.",
+  },
+  {
+    icon: "analytics",
+    title: "Customer Insights",
+    description: "Collect and analyze customer feedback to optimize your menu and improve satisfaction.",
   },
 ];
 
-const statistics: StatisticProps[] = [
-  { value: "500+", label: "Active Talents" },
-  { value: "1000+", label: "Projects Completed" },
-  { value: "10+", label: "Years Experience" },
+// PromptMenu statistics
+const statistics = [
+  { value: "300+", label: "Restaurant Partners" },
+  { value: "50,000+", label: "Dishes Digitized" },
+  { value: "15+", label: "Languages Supported" },
 ];
 
-const quickLinks: QuickLinkProps[] = [
+// PromptMenu quick links
+const quickLinks = [
   { label: "About Us", url: "/about" },
-  { label: "Services", url: "/services" },
-  { label: "Talents", url: "/talents" },
-  { label: "Contact", url: "/contact" },
+  { label: "Features", url: "/features" },
+  { label: "Pricing", url: "/pricing" },
+  { label: "Help Center", url: "/help" },
 ];
 
-const contactInfo: ContactInfoProps[] = [
+// PromptMenu contact info
+const contactInfo = [
   {
-    icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/bd9218bddf10ff4202f017f0da0dd77b751fff6efa58c75c2f7f1d8195f2464e?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    text: "ACICO Business Park<br /> Port Saeed, Dubai - UAE",
+    icon: "location_on",
+    text: "Microsoft Technology Center<br />New York, NY - USA",
     alt: "Location icon",
   },
   {
-    icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/848db9fc87c68681b29840fb17094f6e480c9d600bd326929935bbef800e9af0?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    text: "+971 56 759 8878",
+    icon: "phone",
+    text: "+1 (800) 123-4567",
     alt: "Phone icon",
   },
   {
-    icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/4fa58bbacc4d342ef6cfc871e5d077eac587efbf1733a329c80d04f593df603f?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    text: "info@staffingsolutionshub.com",
+    icon: "email",
+    text: "support@promptmenu.com",
     alt: "Email icon",
   },
 ];
 
-const socialLinks: SocialLinkProps[] = [
+// PromptMenu social links
+const socialLinks = [
   {
-    icon: "https://cdn.builder.io/api/v1/image/assets/7fae980a988640eea8add1e49a5d542e/54b48ce2587af5184710fbdfd924c8c960f07e7e104fa0112c85e634e4d7143c?apiKey=7fae980a988640eea8add1e49a5d542e&",
-    url: "#",
-    alt: "Social media icons",
+    icon: "facebook",
+    url: "https://facebook.com",
+    alt: "Facebook",
+  },
+  {
+    icon: "twitter",
+    url: "https://twitter.com",
+    alt: "Twitter",
+  },
+  {
+    icon: "instagram",
+    url: "https://instagram.com",
+    alt: "Instagram",
+  },
+];
+
+// Testimonials data
+const testimonials = [
+  {
+    name: "Michael Rodriguez",
+    role: "Executive Chef, Bistro Elegance",
+    quote: "PromptMenu has transformed our dining experience. Our customers love seeing how dishes are prepared, and the AI translation has been perfect for our international guests.",
+    image: "https://images.unsplash.com/photo-1583394293214-28ded15ee548?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80"
+  },
+  {
+    name: "Sarah Chen",
+    role: "Owner, Fusion Kitchen",
+    quote: "Since implementing PromptMenu, we've seen a 30% increase in orders of our specialty dishes. The video previews give diners confidence to try new items.",
+    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1558&q=80"
+  },
+  {
+    name: "David Wilson",
+    role: "Marketing Director, Harvest Table",
+    quote: "The insights we get from PromptMenu have been invaluable. We've optimized our menu based on customer feedback and saw our ratings improve within weeks.",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
   },
 ];
 
 const Home: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const sectionsRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Handle initial loading
   useEffect(() => {
-    const textElement = document.querySelector(".slide-in-text");
-    if (textElement) {
-      textElement.classList.add("animate");
-    }
+    // Simulate page loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
+
+  // Handle scroll effects
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      
+      // Update header state
+      setScrolled(scrollY > 50);
+      
+      // Check each section for animations
+      sectionsRef.current.forEach((section, index) => {
+        if (!section) return;
+        
+        const rect = section.getBoundingClientRect();
+        const triggerPoint = window.innerHeight * 0.75;
+        
+        if (rect.top < triggerPoint) {
+          section.classList.add('section-visible');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    
+    // Initialize animation classes
+    setTimeout(() => {
+      handleScroll();
+    }, 100);
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Add a ref to a section
+  const addSectionRef = (index: number) => (el: HTMLDivElement) => {
+    sectionsRef.current[index] = el;
+  };
 
   return (
     <>
-      <Header />
-      <Hero />
-      {/* <FeaturedTalent /> */}
-      <ServicesSection services={services} />
-      <StatisticsSection statistics={statistics} />
-      <JourneySection />
-      <Footer />
+      {/* Loading screen */}
+      {loading && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: theme.colors.white,
+            zIndex: 9999,
+          }}
+        >
+          <Box sx={{ textAlign: 'center' }}>
+            <CircularProgress sx={{ color: theme.colors.primary, mb: 2 }} />
+            <Box
+              sx={{
+                color: theme.colors.primary,
+                fontWeight: 600,
+                fontSize: '1.25rem',
+                opacity: 0.9,
+              }}
+            >
+              Loading PromptMenu...
+            </Box>
+          </Box>
+        </Box>
+      )}
+      
+      {/* Main content */}
+      <Fade in={!loading} timeout={800}>
+        <Box sx={{ overflowX: 'hidden' }}>
+          <Header />
+          
+          {/* Hero Section */}
+          <div ref={addSectionRef(0)} className="scroll-section">
+            <Hero />
+          </div>
+          
+          {/* Feature Showcase */}
+          <div ref={addSectionRef(1)} className="scroll-section">
+            <FeatureShowcase />
+          </div>
+          
+          {/* Services Section */}
+          <div ref={addSectionRef(2)} className="scroll-section">
+            <ServiceSection services={services} />
+          </div>
+          
+          {/* Statistics Section */}
+          <div ref={addSectionRef(3)} className="scroll-section">
+            <StatisticsSection statistics={statistics} />
+          </div>
+          
+          {/* How It Works */}
+          <div ref={addSectionRef(4)} className="scroll-section">
+            <HowItWorksSection />
+          </div>
+          
+          {/* Call To Action */}
+          <div ref={addSectionRef(6)} className="scroll-section">
+            <CTASection />
+          </div>
+          
+          <Footer
+            quickLinks={quickLinks}
+            contactInfo={contactInfo}
+            socialLinks={socialLinks}
+          />
+        </Box>
+      </Fade>
     </>
   );
 };

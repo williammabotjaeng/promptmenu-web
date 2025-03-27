@@ -5,7 +5,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  Grid,
   Link,
   Snackbar,
   TextField,
@@ -16,6 +15,7 @@ import SSHGoldLogo from "@/assets/GoldLogo.png";
 import LoginBG from "@/assets/login-img.png";
 import { useAuth } from "@/providers/auth-providers";
 import { useState } from "react";
+import Grid from "@mui/material/GridLegacy";
 
 export const ForgotForm: React.FC = () => {
 

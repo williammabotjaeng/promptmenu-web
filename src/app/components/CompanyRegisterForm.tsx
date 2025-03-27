@@ -6,7 +6,6 @@ import {
   Checkbox,
   FormControlLabel,
   Avatar,
-  Grid,
   FormControl,
   Radio,
   RadioGroup,
@@ -14,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
+import Grid from "@mui/material/GridLegacy";
 import SSHGoldLogo from "@/assets/GoldLogo.png";
 import Image from "next/image";
 import { useState } from "react";
