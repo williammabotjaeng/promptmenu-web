@@ -227,6 +227,10 @@ const RegisterRestaurant: React.FC = () => {
     }
   };
 
+  const handleHome = () => {
+    router.push("/")
+  }
+
   return (
     <Box
       sx={{
@@ -289,6 +293,7 @@ const RegisterRestaurant: React.FC = () => {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
+            onClick={handleHome}
           >
             PromptMenu
           </Typography>

@@ -208,6 +208,7 @@ const RegisterDiner: React.FC = () => {
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
+            onClick={() => router.push('/')}
           >
             PromptMenu
           </Typography>
