@@ -3,17 +3,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/providers/auth-providers";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CssBaseline } from "@mui/material";
-import { OnboardingProvider } from "@/providers/onboarding-providers";
-import { CompanyProvider } from "@/providers/company-provider";
-import { TalentProfileProvider } from "@/providers/talent-profile-provider";
-import { EventProvider } from "@/providers/event-provider";
 import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
 import { CookiesProvider } from "react-cookie";
-import { MessageProvider } from "./providers/message-provider";
-import { TikTokProvider } from "./providers/tiktok-provider";
-import { SnapchatProvider } from "./providers/snapchat-provider";
 
 const theme = createTheme({
   palette: {
