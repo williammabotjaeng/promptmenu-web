@@ -1,6 +1,5 @@
 "use client";
 
-import { Geist, Geist_Mono } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/providers/auth-providers";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -15,16 +14,6 @@ import { CookiesProvider } from "react-cookie";
 import { MessageProvider } from "./providers/message-provider";
 import { TikTokProvider } from "./providers/tiktok-provider";
 import { SnapchatProvider } from "./providers/snapchat-provider";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 const theme = createTheme({
   palette: {
@@ -50,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`antialiased`}
       >
       <CookiesProvider>
         <ThemeProvider theme={theme}>
