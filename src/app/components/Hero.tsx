@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Box, Button, Typography, Container, Stack, Chip } from '@mui/material';
+import { Box, Button, Typography, Container, Stack, Chip, useMediaQuery, useTheme } from '@mui/material';
 import Link from 'next/link';
 import { Restaurant, MenuBook, VideoCameraBack } from '@mui/icons-material';
 
@@ -23,18 +23,23 @@ const theme = {
 const heroImage = "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80";
 
 const Hero: React.FC = () => {
+  const muiTheme = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down('sm'));
+  const isTablet = useMediaQuery(muiTheme.breakpoints.between('sm', 'md'));
+
   return (
     <Box
       sx={{
         position: 'relative',
-        height: '90vh',
+        minHeight: { xs: '100vh', md: '90vh' }, // Ensure full height on mobile
         overflow: 'hidden',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundImage: `url(${heroImage})`,
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: { xs: '70% center', md: 'center' }, // Better mobile positioning
+        py: { xs: 10, md: 0 }, // Add vertical padding on mobile
       }}
     >
       {/* Gradient overlay */}
@@ -45,7 +50,7 @@ const Hero: React.FC = () => {
           left: 0,
           width: '100%',
           height: '100%',
-          background: 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8))',
+          background: 'linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85))',
           zIndex: 1,
         }}
       />
@@ -57,21 +62,23 @@ const Hero: React.FC = () => {
           position: 'relative', 
           zIndex: 2,
           textAlign: 'center',
-          py: 5
+          py: { xs: 4, md: 5 },
+          px: { xs: 2, sm: 3, md: 4 }, // Responsive padding
         }}
       >
         {/* TIP Chip */}
         <Chip
-          label="To Insure Promptness in your menu experience"
+          label={isMobile ? "To Insure Promptness" : "To Insure Promptness in your menu experience"}
           sx={{
             backgroundColor: 'rgba(255, 255, 255, 0.15)',
             color: theme.colors.white,
             backdropFilter: 'blur(4px)',
-            mb: 4,
+            mb: { xs: 3, md: 4 },
             fontWeight: 500,
-            fontSize: '0.9rem',
-            py: 1,
-            borderRadius: 6
+            fontSize: { xs: '0.75rem', md: '0.9rem' },
+            py: { xs: 0.75, md: 1 },
+            borderRadius: 6,
+            maxWidth: { xs: '90%', sm: 'none' }, // Prevent overflow on small screens
           }}
         />
 
@@ -81,9 +88,9 @@ const Hero: React.FC = () => {
           sx={{
             color: theme.colors.white,
             fontWeight: 800,
-            fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem', lg: '5rem' },
-            lineHeight: 1.1,
-            mb: 2,
+            fontSize: { xs: '2rem', sm: '3rem', md: '4rem', lg: '5rem' }, // Smaller sizes for mobile
+            lineHeight: { xs: 1.2, md: 1.1 },
+            mb: { xs: 1.5, md: 2 },
             textShadow: '0 2px 10px rgba(0,0,0,0.3)',
             '& .highlight': {
               color: theme.colors.accent,
@@ -92,10 +99,10 @@ const Hero: React.FC = () => {
               '&::after': {
                 content: '""',
                 position: 'absolute',
-                bottom: '0px',
+                bottom: { xs: '-2px', md: '0px' },
                 left: 0,
                 width: '100%',
-                height: '8px',
+                height: { xs: '6px', md: '8px' },
                 background: `linear-gradient(90deg, ${theme.colors.primary}, ${theme.colors.secondary})`,
                 borderRadius: '4px',
                 opacity: 0.7,
@@ -113,10 +120,12 @@ const Hero: React.FC = () => {
           sx={{ 
             color: 'rgba(255,255,255,0.9)',
             fontWeight: 400,
+            fontSize: { xs: '1rem', sm: '1.15rem', md: '1.5rem' }, // Responsive font sizes
             maxWidth: '800px',
             mx: 'auto',
-            mb: 6,
-            lineHeight: 1.5
+            mb: { xs: 4, md: 6 },
+            lineHeight: 1.5,
+            px: { xs: 1, md: 0 }, // Add horizontal padding on mobile
           }}
         >
           Digital menus that <strong>TIP</strong> the scales in your favor — 
@@ -125,57 +134,67 @@ const Hero: React.FC = () => {
 
         {/* Features */}
         <Stack 
-          direction={{ xs: 'column', md: 'row' }} 
-          spacing={3} 
+          direction={{ xs: 'column', sm: 'row' }} // Stack vertically on mobile, horizontally on tablet+
+          spacing={{ xs: 1.5, md: 3 }} // Less spacing on mobile
           justifyContent="center"
-          sx={{ mb: 6 }}
+          alignItems="center"
+          sx={{ 
+            mb: { xs: 4, md: 6 },
+            width: '100%',
+          }}
         >
           <Box sx={{
             bgcolor: 'rgba(255,255,255,0.1)',
             backdropFilter: 'blur(10px)',
             borderRadius: 3,
-            px: 3,
-            py: 2,
+            px: { xs: 2, md: 3 },
+            py: { xs: 1.5, md: 2 },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 1.5,
-            border: '1px solid rgba(255,255,255,0.1)'
+            border: '1px solid rgba(255,255,255,0.1)',
+            width: { xs: '100%', sm: 'auto' }, // Full width on mobile
+            maxWidth: { xs: '100%', sm: '220px' }, // Limit width on tablet
           }}>
-            <VideoCameraBack sx={{ color: theme.colors.accent }} />
-            <Typography color="white" fontWeight={500}>Rich Media Integration</Typography>
+            <VideoCameraBack sx={{ color: theme.colors.accent, fontSize: { xs: 20, md: 24 } }} />
+            <Typography color="white" fontWeight={500} fontSize={{ xs: '0.9rem', md: '1rem' }}>Rich Media Integration</Typography>
           </Box>
           
           <Box sx={{
             bgcolor: 'rgba(255,255,255,0.1)',
             backdropFilter: 'blur(10px)',
             borderRadius: 3,
-            px: 3,
-            py: 2,
+            px: { xs: 2, md: 3 },
+            py: { xs: 1.5, md: 2 },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 1.5,
-            border: '1px solid rgba(255,255,255,0.1)'
+            border: '1px solid rgba(255,255,255,0.1)',
+            width: { xs: '100%', sm: 'auto' }, // Full width on mobile
+            maxWidth: { xs: '100%', sm: '220px' }, // Limit width on tablet
           }}>
-            <Restaurant sx={{ color: theme.colors.primary }} />
-            <Typography color="white" fontWeight={500}>Elevated Dining Experience</Typography>
+            <Restaurant sx={{ color: theme.colors.primary, fontSize: { xs: 20, md: 24 } }} />
+            <Typography color="white" fontWeight={500} fontSize={{ xs: '0.9rem', md: '1rem' }}>Elevated Dining Experience</Typography>
           </Box>
           
           <Box sx={{
             bgcolor: 'rgba(255,255,255,0.1)',
             backdropFilter: 'blur(10px)',
             borderRadius: 3,
-            px: 3,
-            py: 2,
+            px: { xs: 2, md: 3 },
+            py: { xs: 1.5, md: 2 },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             gap: 1.5,
-            border: '1px solid rgba(255,255,255,0.1)'
+            border: '1px solid rgba(255,255,255,0.1)',
+            width: { xs: '100%', sm: 'auto' }, // Full width on mobile
+            maxWidth: { xs: '100%', sm: '220px' }, // Limit width on tablet
           }}>
-            <MenuBook sx={{ color: theme.colors.secondary }} />
-            <Typography color="white" fontWeight={500}>Azure AI Translation</Typography>
+            <MenuBook sx={{ color: theme.colors.secondary, fontSize: { xs: 20, md: 24 } }} />
+            <Typography color="white" fontWeight={500} fontSize={{ xs: '0.9rem', md: '1rem' }}>Azure AI Translation</Typography>
           </Box>
         </Stack>
 
@@ -183,23 +202,26 @@ const Hero: React.FC = () => {
         <Box sx={{ 
           display: 'flex', 
           flexDirection: { xs: 'column', sm: 'row' }, 
-          gap: 2,
+          gap: { xs: 1.5, md: 2 },
           justifyContent: 'center',
           alignItems: 'center',
-          mt: 4
+          mt: { xs: 2, md: 4 },
+          width: '100%', // Full width on mobile
         }}>
-          <Link href="/register/restaurant" style={{ textDecoration: 'none' }}>
+          <Link href="/register/restaurant" style={{ textDecoration: 'none', width: isMobile ? '100%' : 'auto' }}>
             <Button
               variant="contained"
               startIcon={<Restaurant />}
-              size="large"
+              size={isMobile ? "medium" : "large"}
+              fullWidth={isMobile}
               sx={{
                 backgroundColor: theme.colors.primary,
                 color: theme.colors.white,
                 borderRadius: '50px',
-                padding: '12px 30px',
-                fontSize: '1rem',
+                padding: { xs: '10px 20px', md: '12px 30px' },
+                fontSize: { xs: '0.9rem', md: '1rem' },
                 fontWeight: 600,
+                width: isMobile ? '100%' : 'auto', // Full width on mobile
                 boxShadow: '0 4px 20px rgba(16, 124, 16, 0.25)',
                 '&:hover': {
                   backgroundColor: theme.colors.lightGreen,
@@ -213,18 +235,20 @@ const Hero: React.FC = () => {
             </Button>
           </Link>
 
-          <Link href="/register/diner" style={{ textDecoration: 'none' }}>
+          <Link href="/register/diner" style={{ textDecoration: 'none', width: isMobile ? '100%' : 'auto' }}>
             <Button
               variant="outlined"
               startIcon={<MenuBook />}
-              size="large"
+              size={isMobile ? "medium" : "large"}
+              fullWidth={isMobile}
               sx={{
                 borderColor: theme.colors.white,
                 color: theme.colors.white,
                 borderRadius: '50px',
-                padding: '12px 30px',
-                fontSize: '1rem',
+                padding: { xs: '10px 20px', md: '12px 30px' },
+                fontSize: { xs: '0.9rem', md: '1rem' },
                 fontWeight: 600,
+                width: isMobile ? '100%' : 'auto', // Full width on mobile
                 '&:hover': {
                   borderColor: theme.colors.accent,
                   backgroundColor: 'rgba(80, 230, 255, 0.1)',
@@ -245,8 +269,11 @@ const Hero: React.FC = () => {
             color: 'rgba(255,255,255,0.7)',
             maxWidth: '650px',
             mx: 'auto',
-            mt: 5,
-            fontStyle: 'italic'
+            mt: { xs: 3, md: 5 },
+            mb: { xs: 2, md: 0 }, // Add bottom margin on mobile
+            fontStyle: 'italic',
+            fontSize: { xs: '0.8rem', md: '0.875rem' }, // Smaller on mobile
+            px: { xs: 1, md: 0 }, // Add padding on mobile
           }}
         >
           Your menu experience deserves a <strong>PROMPT</strong> upgrade — because first impressions matter.
@@ -258,10 +285,10 @@ const Hero: React.FC = () => {
       <Box
         sx={{
           position: 'absolute',
-          bottom: -100,
-          left: -100,
-          width: 200,
-          height: 200,
+          bottom: { xs: '-50px', md: '-100px' },
+          left: { xs: '-50px', md: '-100px' },
+          width: { xs: '150px', md: '200px' },
+          height: { xs: '150px', md: '200px' },
           backgroundColor: theme.colors.primary,
           borderRadius: '50%',
           opacity: 0.1,
@@ -272,10 +299,10 @@ const Hero: React.FC = () => {
       <Box
         sx={{
           position: 'absolute',
-          top: -100,
-          right: -100,
-          width: 300,
-          height: 300,
+          top: { xs: '-50px', md: '-100px' },
+          right: { xs: '-50px', md: '-100px' },
+          width: { xs: '200px', md: '300px' },
+          height: { xs: '200px', md: '300px' },
           backgroundColor: theme.colors.secondary,
           borderRadius: '50%',
           opacity: 0.12,
