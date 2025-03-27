@@ -434,7 +434,7 @@ const Footer: React.FC<FooterProps> = ({ quickLinks, contactInfo, socialLinks })
               <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
             </svg>
             <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)', fontWeight: 500 }}>
-              Powered by Azure AI & Microsoft
+              Powered by Azure AI
             </Typography>
           </Box>
         </Box>
