@@ -26,7 +26,7 @@ import {
 } from '@mui/icons-material';
 import Link from 'next/link';
 
-const TermsOfService = () => {
+export const TermsOfService = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -379,5 +379,3 @@ const TermsOfService = () => {
     </Box>
   );
 };
-
-export default TermsOfService;

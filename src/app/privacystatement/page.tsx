@@ -38,7 +38,7 @@ import {
 } from "@mui/icons-material";
 import Link from "next/link";
 
-const PrivacyPolicy = () => {
+export const PrivacyPolicy = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [expanded, setExpanded] = useState<string | false>(false);
