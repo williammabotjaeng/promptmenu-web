@@ -26,7 +26,7 @@ import {
 } from '@mui/icons-material';
 import Link from 'next/link';
 
-export const TermsOfService = () => {
+export default function TermsOfService() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
