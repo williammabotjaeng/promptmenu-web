@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useAuth } from '@/providers/auth-providers';
 import '@/styles/globals.css';
+import { config } from 'dotenv';
+import { DotenvConfigOptions } from 'dotenv';
 import { 
   Box, 
   Typography, 
@@ -30,15 +32,41 @@ import {
   TouchApp,
   QrCode2,
   BarChart,
-  CheckCircleOutline
+  CheckCircleOutline,
+  ReceiptLong,
+  ImageSearch,
+  Fastfood,
+  QuestionAnswer
 } from '@mui/icons-material';
 import Link from 'next/link';
 
-const RegisterRestaurant: React.FC = () => {
+// Configure dotenv
+const dotenvConfig = {
+  path: '.env.local'
+};
+
+// Load environment variables
+config(dotenvConfig);
+
+// Set up environment variables
+const ENV = {
+  NEXT_PUBLIC_AZURE_FUNCTION_KEY: process.env.NEXT_PUBLIC_AZURE_FUNCTION_KEY,
+  NEXT_PUBLIC_AZURE_FUNCTION_AI: process.env.NEXT_PUBLIC_AZURE_FUNCTION_AI,
+  NEXT_PUBLIC_AZURE_FUNCTION_DASHBOARD: process.env.NEXT_PUBLIC_AZURE_FUNCTION_DASHBOARD,
+  NEXT_PUBLIC_AZURE_FUNCTION_AUTH: process.env.NEXT_PUBLIC_AZURE_FUNCTION_AUTH 
+};
+
+const RegisterRestaurant = () => {
   const { login } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
+  const [envConfig, setEnvConfig] = useState({
+    apiAuthUrl: ENV.NEXT_PUBLIC_AZURE_FUNCTION_AUTH,
+    apiKey: ENV.NEXT_PUBLIC_AZURE_FUNCTION_KEY,
+    apiAiUrl: ENV.NEXT_PUBLIC_AZURE_FUNCTION_AI,
+    apiDashboardUrl: ENV.NEXT_PUBLIC_AZURE_FUNCTION_DASHBOARD
+  });
   const [formData, setFormData] = useState({
     // Restaurant info
     restaurantName: '',
@@ -74,6 +102,11 @@ const RegisterRestaurant: React.FC = () => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
+    
+    // Validate environment configuration
+    if (!envConfig.apiAuthUrl || !envConfig.apiKey) {
+      console.warn('Environment variables may not be properly loaded. Using fallback values.');
+    }
     
     return () => clearTimeout(timer);
   }, []);
@@ -171,22 +204,25 @@ const RegisterRestaurant: React.FC = () => {
     
     try {
       // Call Azure Function to register restaurant
-      const response = await fetch('https://api.promptmenu.xyz/register-users-db', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          restaurantName: formData.restaurantName,
-          businessEmail: formData.businessEmail,
-          phoneNumber: formData.phoneNumber,
-          address: formData.address,
-          ownerName: formData.ownerName,
-          ownerEmail: formData.ownerEmail,
-          password: formData.password,
-          userType: 'restaurant'
-        }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_AZURE_FUNCTION_AUTH}/register-users-db?code=${encodeURIComponent(process.env.NEXT_PUBLIC_AZURE_FUNCTION_KEY)}`, 
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            restaurantName: formData.restaurantName,
+            businessEmail: formData.businessEmail,
+            phoneNumber: formData.phoneNumber,
+            address: formData.address,
+            ownerName: formData.ownerName,
+            ownerEmail: formData.ownerEmail,
+            password: formData.password,
+            user_role: 'restaurant'
+          }),
+        }
+      );
       
       const data = await response.json();
       
@@ -197,18 +233,19 @@ const RegisterRestaurant: React.FC = () => {
           severity: 'success',
         });
         
-        // Redirect to login after 2 seconds
+        // Redirect to login after 2 seconds using Next.js router.replace
         setTimeout(() => {
-          router.push('/login');
+          router.replace('/login');
         }, 2000);
       } else {
         setSnackbar({
           open: true,
-          message: data.message || 'Registration failed. Please try again.',
+          message: data.error || data.message || 'Registration failed. Please try again.',
           severity: 'error',
         });
       }
     } catch (error) {
+      console.error('Registration error:', error);
       setSnackbar({
         open: true,
         message: 'An error occurred. Please try again later.',
@@ -219,28 +256,12 @@ const RegisterRestaurant: React.FC = () => {
 
   const handleMicrosoftLogin = async () => {
     try {
-      // Call Azure Function to get Microsoft login URL
-      const response = await fetch('/api/microsoft-login', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-User-Type': 'restaurant', // Add user type for the callback
-        },
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok && data.redirectUrl) {
-        // Redirect to Microsoft login
-        window.location.href = data.redirectUrl;
-      } else {
-        setSnackbar({
-          open: true,
-          message: 'Failed to initialize Microsoft login. Please try again.',
-          severity: 'error',
-        });
-      }
+      // Redirect to the Microsoft login endpoint using Next.js redirect
+      const microsoftLoginUrl = `${process.env.NEXT_PUBLIC_AZURE_FUNCTION_AUTH}/register-users-ms?code=${encodeURIComponent(process.env.NEXT_PUBLIC_AZURE_FUNCTION_KEY)}&userType=restaurant`;
+      console.log(microsoftLoginUrl);
+      redirect(microsoftLoginUrl);
     } catch (error) {
+      console.error('Microsoft login error:', error);
       setSnackbar({
         open: true,
         message: 'An error occurred. Please try again later.',
@@ -249,8 +270,12 @@ const RegisterRestaurant: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    console.log("Environment:", process.env.NEXT_PUBLIC_AZURE_FUNCTION_KEY);
+  }, [])
+
   const handleHome = () => {
-    router.push("/")
+    router.replace("/");
   }
 
   // Render form based on active step
@@ -549,10 +574,10 @@ const RegisterRestaurant: React.FC = () => {
               Register Your Restaurant
             </Typography>
             <Typography variant="body1" sx={{ mb: 4, color: 'text.secondary' }}>
-              Join PromptMenu to create interactive, multimedia-rich digital menus
+              Join PromptMenu to enhance operations with AI-powered receipt processing, menu analysis, and customer assistance
             </Typography>
             
-            <Button
+            {/* <Button
               fullWidth
               variant="outlined"
               startIcon={
@@ -576,7 +601,7 @@ const RegisterRestaurant: React.FC = () => {
               }}
             >
               Register with Microsoft
-            </Button>
+            </Button> */}
             
             <Divider sx={{ my: 3 }}>
               <Typography variant="body2" sx={{ px: 1, color: 'text.secondary' }}>
@@ -635,54 +660,54 @@ const RegisterRestaurant: React.FC = () => {
               }}
             >
               <Typography variant="h5" sx={{ mb: 3, fontWeight: 700, color: '#0078D4' }}>
-                Why Restaurants Choose PromptMenu
+                Our AI-Powered Solutions
               </Typography>
               
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                  <CheckCircleOutline sx={{ color: '#107C10', mt: 0.5 }} />
+                  <ReceiptLong sx={{ color: '#107C10', mt: 0.5 }} />
                   <Box>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                      Eliminate Paper Waste
+                      Intelligent Receipt & Invoice Processing
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      Digital menus save printing costs and are eco-friendly.
+                      Automatically scan and process incoming invoices and receipts to streamline receiving and accounting.
                     </Typography>
                   </Box>
                 </Box>
                 
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                  <CheckCircleOutline sx={{ color: '#107C10', mt: 0.5 }} />
+                  <ImageSearch sx={{ color: '#107C10', mt: 0.5 }} />
                   <Box>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                      Increase Order Values
+                      Menu Image Analysis
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      Visual content drives 27% higher spending per table.
+                      AI-powered visual menu interpretation helps customers understand dishes better with detailed ingredient analysis.
                     </Typography>
                   </Box>
                 </Box>
                 
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                  <CheckCircleOutline sx={{ color: '#107C10', mt: 0.5 }} />
+                  <Fastfood sx={{ color: '#107C10', mt: 0.5 }} />
                   <Box>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                      Update Menus Instantly
+                      Informed Food Choice Assistant
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      Change prices, add specials, or update availability in real-time.
+                      Help customers make dietary-appropriate choices with nutritional insights and allergen information.
                     </Typography>
                   </Box>
                 </Box>
                 
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                  <CheckCircleOutline sx={{ color: '#107C10', mt: 0.5 }} />
+                  <QuestionAnswer sx={{ color: '#107C10', mt: 0.5 }} />
                   <Box>
                     <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                      Multilingual Support
+                      Interactive Q&A Bot
                     </Typography>
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                      AI-powered translation into 15+ languages to serve international guests.
+                      Comprehensive AI assistant that answers any customer questions about menu items, ingredients, or preparation methods.
                     </Typography>
                   </Box>
                 </Box>
@@ -722,7 +747,7 @@ const RegisterRestaurant: React.FC = () => {
                     1
                   </Box>
                   <Typography variant="body1">
-                    <strong>Create your digital menu</strong> by adding items, descriptions, prices, and images
+                    <strong>Upload your receipts and invoices</strong> to automate processing and inventory management
                   </Typography>
                 </Box>
                 
@@ -744,7 +769,7 @@ const RegisterRestaurant: React.FC = () => {
                     2
                   </Box>
                   <Typography variant="body1">
-                    <strong>Add multimedia content</strong> like preparation videos, ingredient spotlights, and chef introductions
+                    <strong>Create an AI-enhanced digital menu</strong> with detailed dish information and visual analysis
                   </Typography>
                 </Box>
                 
@@ -766,7 +791,7 @@ const RegisterRestaurant: React.FC = () => {
                     3
                   </Box>
                   <Typography variant="body1">
-                    <strong>Generate QR codes</strong> for your tables that customers can scan with their phones
+                    <strong>Enable the interactive Q&A assistant</strong> for personalized customer support and food recommendations
                   </Typography>
                 </Box>
                 
@@ -788,7 +813,7 @@ const RegisterRestaurant: React.FC = () => {
                     4
                   </Box>
                   <Typography variant="body1">
-                    <strong>Track performance</strong> with detailed analytics on customer engagement and popular items
+                    <strong>Track customer engagement</strong> with detailed analytics on how users interact with your menu
                   </Typography>
                 </Box>
               </Box>
@@ -801,7 +826,7 @@ const RegisterRestaurant: React.FC = () => {
                     fontWeight: 500
                   }}
                 >
-                  Join today and <strong>TIP</strong> your restaurant experience into the digital age!
+                  Join today and transform your restaurant operations with our intelligent AI solutions!
                 </Typography>
               </Box>
             </Paper>
@@ -821,7 +846,7 @@ const RegisterRestaurant: React.FC = () => {
         }}
       >
         <Typography variant="body2" color="text.secondary">
-          © {new Date().getFullYear()} PromptMenu — Transform your restaurant experience with digital menus
+          © {new Date().getFullYear()} PromptMenu — AI-powered solutions for modern restaurant management
         </Typography>
       </Box>
       
