@@ -128,7 +128,11 @@ export function AuthProvider({ children }) {
       setCookie('userPrincipalName', data.userPrincipalName, cookieOptions);
       
       // Redirect to dashboard
-      router.push('/dashboard');
+      if (data?.user_type === "owner") {
+        router.push('/dashboard/restaurant'); 
+      } else if (data?.user_type === "customer") {
+        router.push('/dashboard/diner');
+      }
     },
     onError: (error) => {
       console.error('Login error:', error);
