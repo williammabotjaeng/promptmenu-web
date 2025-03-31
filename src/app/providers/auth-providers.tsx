@@ -150,7 +150,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
     
     // Redirect to dashboard
-    router.push('/dashboard');
+    if (data.user_type === "owner") {
+        router.push('/dashboard/restaurant');
+    } else {
+        router.push('/dashboard/diner');
+    }
   };
 
   // Handle logout
