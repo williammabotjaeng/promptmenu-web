@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useAuth } from '@/providers/auth-providers';
+import { useAuth } from '@/providers/auth-providers'; 
 import '@/styles/globals.css';
-import axios from 'axios';
 import { 
   Box, 
   Typography, 
@@ -19,23 +18,22 @@ import {
   Stepper,
   Step,
   StepLabel,
+  CircularProgress
 } from '@mui/material';
 
 import { MenuBook, ReceiptLong, ImageSearch, Fastfood, QuestionAnswer } from '@mui/icons-material';
 import Link from 'next/link';
-import { useCookies } from "react-cookie";
 
 // Environment variables
 const ENV = {
-  NEXT_PUBLIC_X_API_KEY: process.env.NEXT_PUBLIC_X_API_KEY,
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_HELP_BOT_URL: process.env.NEXT_PUBLIC_HELP_BOT_URL
 };
 
 const RegisterRestaurant = () => {
-  const { login } = useAuth();
+  const { register, isLoading, error } = useAuth(); // Use auth hook functions
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     // Restaurant info
@@ -67,16 +65,25 @@ const RegisterRestaurant = () => {
 
   const steps = ['Restaurant Information', 'Account Details'];
 
-  const [cookies, setCookie] = useCookies(['access_token']); 
-
   useEffect(() => {
     // Add animation effect on mount
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setIsPageLoading(false);
     }, 500);
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Show snackbar for auth errors
+  useEffect(() => {
+    if (error) {
+      setSnackbar({
+        open: true,
+        message: error.message || 'Registration failed. Please try again.',
+        severity: 'error',
+      });
+    }
+  }, [error]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -168,15 +175,10 @@ const RegisterRestaurant = () => {
     if (!validateAccountDetails()) {
       return;
     }
-    
+
     try {
-      // Build the request URL using environment variables
-      const url = `${ENV.NEXT_PUBLIC_API_URL}/accounts/register/`;
-      
-      console.log('Submitting registration to URL:', url);
-      
-      // Create request payload matching the expected API format
-      const payload = {
+      // Create formatted registration data for auth provider
+      const registrationData = {
         displayName: formData.ownerName,
         givenName: formData.ownerName.split(' ')[0],
         surname: formData.ownerName.split(' ').slice(1).join(' '),
@@ -188,58 +190,20 @@ const RegisterRestaurant = () => {
         business_address: formData.address
       };
 
-      // Make the API call using Axios
-      const response = await axios.post(url, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-API-Key': ENV.NEXT_PUBLIC_X_API_KEY
-        }
-      });
+      // Use the register function from auth provider
+      await register(registrationData);
       
-      console.log('Registration successful:', response.data);
-
-      // Save token if it exists in the response
-      if (response.data.token) {
-        setCookie('access_token', response.data.token.access_token, { path: '/' });
-      }
-      
+      // Show success message
       setSnackbar({
         open: true,
         message: 'Registration successful! Redirecting to Dashboard...',
         severity: 'success',
       });
       
-      // Redirect to login after 2 seconds
-      setTimeout(() => {
-        router.push('/dashboard');
-      }, 2000);
-    } catch (error) {
-      console.error('Registration error:', error);
-      
-      // Extract error message from Axios error object
-      const errorMessage = error.response 
-        ? `Error: ${error.response.data?.error || error.response.data || error.message}`
-        : `Error: ${error.message}`;
-      
-      setSnackbar({
-        open: true,
-        message: errorMessage,
-        severity: 'error',
-      });
-    }
-  };
-
-  // Function to ask the help bot for assistance
-  const askHelpBot = async (question) => {
-    try {
-      const response = await axios.post(ENV.NEXT_PUBLIC_HELP_BOT_URL, {
-        message: question
-      });
-      
-      return response.data;
-    } catch (error) {
-      console.error('Error asking help bot:', error);
-      return null;
+      // Note: no need to manually redirect - the auth provider will handle this
+    } catch (err) {
+      // Error handling is now done via the useEffect watching the error state
+      console.error('Registration error:', err);
     }
   };
 
@@ -286,6 +250,7 @@ const RegisterRestaurant = () => {
             error={!!errors.restaurantName}
             helperText={errors.restaurantName || ''}
             sx={{ mb: 2 }}
+            disabled={isLoading}
           />
           
           <TextField
@@ -299,6 +264,7 @@ const RegisterRestaurant = () => {
             error={!!errors.businessEmail}
             helperText={errors.businessEmail || ''}
             sx={{ mb: 2 }}
+            disabled={isLoading}
           />
           
           <TextField
@@ -311,6 +277,7 @@ const RegisterRestaurant = () => {
             error={!!errors.phoneNumber}
             helperText={errors.phoneNumber || ''}
             sx={{ mb: 2 }}
+            disabled={isLoading}
           />
           
           <TextField
@@ -325,11 +292,13 @@ const RegisterRestaurant = () => {
             error={!!errors.address}
             helperText={errors.address || ''}
             sx={{ mb: 3 }}
+            disabled={isLoading}
           />
           
           <Button
             variant="contained"
             onClick={handleNext}
+            disabled={isLoading}
             sx={{
               py: 1.5,
               px: 4,
@@ -360,6 +329,7 @@ const RegisterRestaurant = () => {
             error={!!errors.ownerName}
             helperText={errors.ownerName || ''}
             sx={{ mb: 2 }}
+            disabled={isLoading}
           />
           
           <TextField
@@ -373,6 +343,7 @@ const RegisterRestaurant = () => {
             error={!!errors.ownerEmail}
             helperText={errors.ownerEmail || ''}
             sx={{ mb: 2 }}
+            disabled={isLoading}
           />
           
           <TextField
@@ -386,6 +357,7 @@ const RegisterRestaurant = () => {
             error={!!errors.password}
             helperText={errors.password || ''}
             sx={{ mb: 2 }}
+            disabled={isLoading}
           />
           
           <TextField
@@ -399,12 +371,14 @@ const RegisterRestaurant = () => {
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword || ''}
             sx={{ mb: 3 }}
+            disabled={isLoading}
           />
           
           <Box sx={{ display: 'flex', gap: 2 }}>
             <Button
               variant="outlined"
               onClick={handleBack}
+              disabled={isLoading}
               sx={{
                 py: 1.5,
                 px: 3,
@@ -418,6 +392,7 @@ const RegisterRestaurant = () => {
             <Button
               type="submit"
               variant="contained"
+              disabled={isLoading}
               sx={{
                 py: 1.5,
                 px: 4,
@@ -427,7 +402,11 @@ const RegisterRestaurant = () => {
                 },
               }}
             >
-              Register Restaurant
+              {isLoading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                'Register Restaurant'
+              )}
             </Button>
           </Box>
         </form>
@@ -540,8 +519,8 @@ const RegisterRestaurant = () => {
         <Box 
           sx={{
             width: '100%',
-            opacity: isLoading ? 0 : 1,
-            transform: isLoading ? 'translateY(20px)' : 'translateY(0)',
+            opacity: isPageLoading ? 0 : 1,
+            transform: isPageLoading ? 'translateY(20px)' : 'translateY(0)',
             transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out',
             display: 'flex',
             gap: 4,
@@ -578,6 +557,7 @@ const RegisterRestaurant = () => {
                 </svg>
               }
               onClick={handleMicrosoftLogin}
+              disabled={isLoading}
               sx={{
                 py: 1.5,
                 mb: 3,
