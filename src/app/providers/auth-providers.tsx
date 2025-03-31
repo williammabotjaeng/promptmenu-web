@@ -1,224 +1,355 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useCookies } from "react-cookie";
-import { useRouter } from "next/navigation";
-import { restCall } from "@/services/restCall";
+import { createContext, useContext } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import useTokenStore from '@/state/use-token-store'; // Assuming you have this store
+import useAuthStore from '@/state/use-auth-store'; // Assuming you have this store
+import { useStore } from 'zustand';
 
-// Type definitions
-interface AuthUser {
-  displayName: string;
-  email: string;
-  user_type: "owner" | "customer" | "staff";
-  givenName?: string;
-  surname?: string;
-  company_name?: string;
-  business_address?: string;
-  subscription_tier?: string;
-  mobile_number?: string;
-}
+// Create authentication context
+const AuthContext = createContext(null);
 
-interface AuthContextType {
-  user: AuthUser | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (userData: any) => Promise<void>;
-  logout: () => Promise<void>;
-  error: any;
-}
+// Create axios instance
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
 
-// Create auth context
-const AuthContext = createContext<AuthContextType | null>(null);
+// Cookie options
+const cookieOptions : any = {
+  path: '/',
+  maxAge: 7 * 24 * 60 * 60, // 7 days
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict'
+};
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "access_token",
-    "user_type",
-    "displayName",
-    "email",
-    "company_name",
-    "subscription_tier"
-  ]);
+// Token cookie options
+const tokenCookieOptions : any = {
+  ...cookieOptions,
+  maxAge: 65 * 60 // 65 minutes (matching backend token lifetime)
+};
+
+export function AuthProvider({ children }) {
   const router = useRouter();
+  const { setTokens } = useStore(useTokenStore);
+  const { setAuth, clearAuth } = useStore(useAuthStore);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    'access_token',
+    'refresh_token',
+    'user',
+    'user_role',
+    'username',
+    'displayName',
+    'userPrincipalName'
+  ]);
 
-  // Check if user is already authenticated on mount
-  useEffect(() => {
-    const token = cookies.access_token;
-    if (token) {
-      checkAuthStatus(token);
-    }
-  }, []);
-
-  // Check auth status with API
-  const checkAuthStatus = async (token: string) => {
-    try {
-      const response = await restCall('/accounts/check-auth/', 'GET', null, token);
-      
-      if (response?.authenticated) {
-        setUser(response.user);
-        setIsAuthenticated(true);
-      } else {
-        // Clear invalid auth state
-        handleLogout();
+  // Setup axios interceptor for auth headers
+  api.interceptors.request.use(
+    (config) => {
+      const accessToken = cookies.access_token;
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
-    } catch (error) {
-      console.error("Auth check failed:", error);
-      handleLogout();
-    }
-  };
-
-  // Register mutation
-  const registerMutation = useMutation({
-    mutationFn: async (userData: any) => {
-      // For registration, we don't have a token yet
-      // We'll use a temporary empty token that will be replaced by restCall's internal logic
-      const endpoint = '/accounts/register/';
-      
-      return await restCall(endpoint, 'POST', userData, '');
+      return config;
     },
-    onSuccess: (data) => {
-      // Handle successful registration
-      if (data.token) {
-        // Auto login if token is provided
-        handleLoginSuccess(data);
-      } else {
-        // Redirect to login if no token
-        router.push('/login?registered=true');
+    (error) => Promise.reject(error)
+  );
+
+  // Handle token refresh on 401 responses
+  api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+      
+      if (error.response?.status === 401 && !originalRequest._retry && cookies.refresh_token) {
+        originalRequest._retry = true;
+        
+        try {
+          const response = await refreshTokenMutation.mutateAsync(cookies.refresh_token);
+          
+          if (response?.access_token) {
+            // Update the auth header for the retry
+            originalRequest.headers.Authorization = `Bearer ${response.access_token}`;
+            return axios(originalRequest);
+          }
+        } catch (refreshError) {
+          // If refresh fails, logout
+          console.error('Token refresh failed:', refreshError);
+          logoutMutation.mutate();
+          return Promise.reject(refreshError);
+        }
       }
+      
+      return Promise.reject(error);
     }
-  });
+  );
 
   // Login mutation
   const loginMutation = useMutation({
-    mutationFn: async ({ email, password }: { email: string; password: string }) => {
-      return await restCall('/accounts/login/', 'POST', { email, password }, '');
+    mutationKey: ['login'],
+    mutationFn: async (credentials) => {
+      const response = await api.post('/auth/login', credentials);
+      return response.data;
     },
     onSuccess: (data) => {
-      handleLoginSuccess(data);
+      console.log('Login successful:', data);
+      
+      // Store tokens
+      setTokens(data.token.refresh_token, data.token.access_token);
+      setAuth(true);
+      
+      // Calculate token expiry time
+      const expiryTime = new Date();
+      expiryTime.setSeconds(expiryTime.getSeconds() + data.token.expires_in);
+      
+      // Store user data in cookie
+      const userToStore = {
+        id: data.userId,
+        mongodb_id: data.mongodb_id,
+        username: data.username,
+        displayName: data.displayName,
+        userPrincipalName: data.userPrincipalName,
+        user_type: data.user_type
+      };
+      
+      // Set cookies
+      setCookie('user', userToStore, cookieOptions);
+      setCookie('access_token', data.token.access_token, tokenCookieOptions);
+      setCookie('refresh_token', data.token.refresh_token, cookieOptions);
+      setCookie('user_role', data.user_type, cookieOptions);
+      setCookie('username', data.username, cookieOptions);
+      setCookie('displayName', data.displayName, cookieOptions);
+      setCookie('userPrincipalName', data.userPrincipalName, cookieOptions);
+      
+      // Redirect to dashboard
+      router.push('/dashboard');
+    },
+    onError: (error) => {
+      console.error('Login error:', error);
+    }
+  });
+
+  // Register mutation
+  const registerMutation = useMutation({
+    mutationKey: ['register'],
+    mutationFn: async (userData) => {
+      const response = await api.post('/auth/register', userData);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      console.log('Registration successful:', data);
+      
+      // If auto-login is enabled and token is included
+      if (data.token) {
+        // Store tokens
+        setTokens(data.token.refresh_token, data.token.access_token);
+        setAuth(true);
+        
+        // Calculate token expiry time
+        const expiryTime = new Date();
+        expiryTime.setSeconds(expiryTime.getSeconds() + data.token.expires_in);
+        
+        // Store user data
+        const userToStore = {
+          id: data.userId,
+          mongodb_id: data.mongodb_id,
+          username: data.username,
+          displayName: data.displayName,
+          userPrincipalName: data.userPrincipalName,
+          user_type: data.user_type
+        };
+        
+        // Set cookies
+        setCookie('user', userToStore, cookieOptions);
+        setCookie('access_token', data.token.access_token, tokenCookieOptions);
+        setCookie('refresh_token', data.token.refresh_token, cookieOptions);
+        setCookie('user_role', data.user_type, cookieOptions);
+        setCookie('username', data.username, cookieOptions);
+        setCookie('displayName', data.displayName, cookieOptions);
+        setCookie('userPrincipalName', data.userPrincipalName, cookieOptions);
+        
+        // Redirect to dashboard
+        router.push('/dashboard');
+      } else {
+        // If no auto-login, redirect to login page
+        router.push('/login');
+      }
+    },
+    onError: (error) => {
+      console.error('Registration error:', error);
     }
   });
 
   // Logout mutation
   const logoutMutation = useMutation({
+    mutationKey: ['logout'],
     mutationFn: async () => {
-      const token = cookies.access_token;
-      return await restCall('/accounts/logout/', 'POST', {}, token);
+      try {
+        // Only call the logout endpoint if we have an access token
+        if (cookies.access_token) {
+          await api.post('/auth/logout');
+        }
+        return true;
+      } catch (error) {
+        console.error('Logout error:', error);
+        return true; // Still proceed with local logout even if API fails
+      }
     },
     onSuccess: () => {
-      handleLogout();
-    },
-    onError: () => {
-      // Even if API call fails, still clear local state
-      handleLogout();
+      // Clear auth state
+      clearAuth();
+      
+      // Remove all auth cookies
+      removeCookie('user', { path: '/' });
+      removeCookie('access_token', { path: '/' });
+      removeCookie('refresh_token', { path: '/' });
+      removeCookie('user_role', { path: '/' });
+      removeCookie('username', { path: '/' });
+      removeCookie('displayName', { path: '/' });
+      removeCookie('userPrincipalName', { path: '/' });
+      
+      // Redirect to login page
+      router.push('/login');
     }
   });
 
-  // Handle successful login
-  const handleLoginSuccess = (data: any) => {
-    // Store user data
-    setUser({
-      displayName: data.display_name || data.displayName,
-      email: data.email,
-      user_type: data.user_type,
-      givenName: data.given_name || data.givenName,
-      surname: data.surname,
-      company_name: data.company_name,
-      business_address: data.business_address,
-      subscription_tier: data.subscription_tier,
-      mobile_number: data.mobile_number
-    });
-    
-    setIsAuthenticated(true);
-    
-    // Set cookies
-    const token = data.token || data.access_token;
-    setCookie("access_token", token, { path: "/", maxAge: 604800 }); // 7 days
-    setCookie("user_type", data.user_type, { path: "/", maxAge: 604800 });
-    setCookie("displayName", data.display_name || data.displayName, { path: "/", maxAge: 604800 });
-    setCookie("email", data.email, { path: "/", maxAge: 604800 });
-    
-    if (data.company_name) {
-      setCookie("company_name", data.company_name, { path: "/", maxAge: 604800 });
+  // Refresh token mutation
+  const refreshTokenMutation = useMutation({
+    mutationKey: ['refreshToken'],
+    mutationFn: async (refreshToken) => {
+      const response = await api.post('/auth/refresh-token', { refresh_token: refreshToken });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      // Update stored tokens
+      setTokens(data.refresh_token, data.access_token);
+      
+      // Calculate token expiry time
+      const expiryTime = new Date();
+      expiryTime.setSeconds(expiryTime.getSeconds() + data.expires_in);
+      
+      // Update cookies
+      setCookie('access_token', data.access_token, tokenCookieOptions);
+      if (data.refresh_token) {
+        setCookie('refresh_token', data.refresh_token, cookieOptions);
+      }
+      
+      return data;
+    },
+    onError: (error: any) => {
+      console.error('Token refresh error:', error);
+      
+      // Check for session expiry
+      if (error?.data?.status === 'SESSION_EXPIRED') {
+        logoutMutation.mutate();
+        router.push('/login?expired=true');
+      } else {
+        // Logout on any refresh error
+        logoutMutation.mutate();
+      }
+      
+      throw error;
     }
-    
-    if (data.subscription_tier) {
-      setCookie("subscription_tier", data.subscription_tier, { path: "/", maxAge: 604800 });
+  });
+
+  // Microsoft login mutation
+  const microsoftLoginMutation = useMutation({
+    mutationKey: ['microsoftLogin'],
+    mutationFn: async (userType: any) => {
+      const microsoftLoginUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/microsoft/login`;
+      const params = new URLSearchParams({
+        userType: userType || 'customer'
+      }).toString();
+      
+      window.location.href = `${microsoftLoginUrl}?${params}`;
+      return true;
     }
-    
-    // Redirect to dashboard
-    if (data.user_type === "owner") {
-        router.push('/dashboard/restaurant');
-    } else {
-        router.push('/dashboard/diner');
+  });
+
+  // Password reset request mutation
+  const forgotPasswordMutation = useMutation({
+    mutationKey: ['forgotPassword'],
+    mutationFn: async (email) => {
+      const response = await api.post('/auth/forgot-password', { email });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      router.push('/forgot-password-confirmation');
     }
-  };
+  });
 
-  // Handle logout
-  const handleLogout = () => {
-    // Clear user data
-    setUser(null);
-    setIsAuthenticated(false);
+  // Password reset mutation
+  const resetPasswordMutation = useMutation({
+    mutationKey: ['resetPassword'],
+    mutationFn: async ({ token, password } : { token: string; password: string }) => {
+      const response = await api.post('/auth/reset-password', { token, password });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      router.push('/login?reset=success');
+    }
+  });
+
+  // User profile update mutation
+  const updateProfileMutation = useMutation({
+    mutationKey: ['updateProfile'],
+    mutationFn: async (profileData) => {
+      const response = await api.put('/user/profile', profileData);
+      return response.data;
+    }
+  });
+
+  // Expose auth methods
+  const auth = {
+    login: (credentials) => loginMutation.mutateAsync(credentials),
+    register: (userData) => registerMutation.mutateAsync(userData),
+    logout: () => logoutMutation.mutateAsync(),
+    refreshToken: (token) => refreshTokenMutation.mutateAsync(token),
+    microsoftLogin: (userType) => microsoftLoginMutation.mutateAsync(userType),
+    forgotPassword: (email) => forgotPasswordMutation.mutateAsync(email),
+    resetPassword: (data) => resetPasswordMutation.mutateAsync(data),
+    updateProfile: (data) => updateProfileMutation.mutateAsync(data),
     
-    // Clear cookies
-    removeCookie("access_token", { path: "/" });
-    removeCookie("user_type", { path: "/" });
-    removeCookie("displayName", { path: "/" });
-    removeCookie("email", { path: "/" });
-    removeCookie("company_name", { path: "/" });
-    removeCookie("subscription_tier", { path: "/" });
+    // Auth state
+    user: cookies.user || null,
+    isAuthenticated: !!cookies.user,
+    userRole: cookies.user_role,
     
-    // Redirect to login
-    router.push('/login');
-  };
-
-  // Register function
-  const register = async (userData: any) => {
-    await registerMutation.mutateAsync(userData);
-  };
-
-  // Login function
-  const login = async (email: string, password: string) => {
-    await loginMutation.mutateAsync({ email, password });
-  };
-
-  // Logout function
-  const logout = async () => {
-    await logoutMutation.mutateAsync();
-  };
-
-  // Determine loading state
-  const isLoading = loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending;
-
-  // Determine error state
-  const error = loginMutation.error || registerMutation.error || logoutMutation.error;
-
-  // Create auth context value
-  const authContextValue: AuthContextType = {
-    user,
-    isAuthenticated,
-    isLoading,
-    login,
-    register,
-    logout,
-    error
+    // Loading states
+    isLoggingIn: loginMutation.isPending,
+    isRegistering: registerMutation.isPending,
+    isLoggingOut: logoutMutation.isPending,
+    isRefreshing: refreshTokenMutation.isPending,
+    
+    // Error states
+    loginError: loginMutation.error,
+    registerError: registerMutation.error,
+    logoutError: logoutMutation.error,
+    refreshError: refreshTokenMutation.error,
+    
+    // API instance for authenticated requests
+    api
   };
 
   return (
-    <AuthContext.Provider value={authContextValue}>
+    <AuthContext.Provider value={auth}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-// Hook to use the auth context
-export const useAuth = () => {
+// Custom hook to use auth context
+export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}
+
+export default AuthContext;
