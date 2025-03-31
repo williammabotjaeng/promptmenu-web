@@ -1,0 +1,322 @@
+@import "@fontsource/raleway"; 
+@import "@fontsource/raleway/400.css"; 
+@import "@fontsource/raleway/400-italic.css"; 
+
+@import "@fontsource/inter/400.css"; 
+@import "@fontsource/inter/400-italic.css";
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  --blue-munsell: #459099ff; 
+  --moonstone: #7AAEB8ff;   
+  --blue-munsell-2: #44919Cff; 
+  --non-photo-blue: #91C8D5ff; 
+  --dark-cyan: #458A91ff;   
+  --primary-bg: #000000;     
+  --primary-text: #CEAB76;   
+  --dark-gold: #977342;       
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", "Raleway", Arial, sans-serif !important;
+  background-color: var(--primary-bg); 
+  color: var(--primary-text); 
+}
+
+h1, h2, h3 {
+  color: var(--primary-text);
+  font-family: "Open Sans";
+}
+
+a {
+  color: var(--blue-munsell-2);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  background-color: var(--blue-munsell-2);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: "Open Sans";
+}
+
+button:hover {
+  background-color: var(--moonstone);
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+.typing-effect {
+  display: inline-block;
+  overflow: hidden; 
+  white-space: nowrap; 
+  border-right: 3px solid var(--primary-text); 
+  animation: typing 4s steps(30, end), blink 0.75s step-end infinite; 
+  font-size: 2rem; 
+  color: var(--primary-text); 
+}
+
+/* Additional styles using Dark Gold */
+h1 {
+  color: var(--dark-gold); 
+}
+
+button {
+  border: 2px solid var(--dark-gold); 
+}
+
+button:hover {
+  background-color: var(--dark-gold); 
+}
+
+.MuiFormLabel-root {
+  margin-bottom: 10px !important;
+}
+
+.onboarding-container {
+  color: 'black' !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, var(--dark-gold), var(--primary-text), var(--dark-gold));
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  width: '100vw' !important;
+}
+
+.onboarding-content {
+  color: 'black' !important;
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1); 
+  border-radius: 10px;
+  width: '100vw' !important;
+}
+
+.custom-phone-input::placeholder {
+  color: gray !important;
+  opacity: 1 !important;
+}
+
+.event-creation-content {
+  text-align: center;
+}
+
+.tiktok-footer:hover {
+  color: white !important;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add these styles to your globals.css file */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Scroll section animations */
+.scroll-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered animation for child elements */
+.scroll-section .stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.section-visible .stagger-item {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-visible .stagger-item:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.section-visible .stagger-item:nth-child(2) {
+  transition-delay: 0.2s;
+}
+
+.section-visible .stagger-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+
+.section-visible .stagger-item:nth-child(4) {
+  transition-delay: 0.4s;
+}
+
+/* Scroll indicator animation */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.scroll-indicator .mouse {
+  width: 30px;
+  height: 50px;
+  border: 2px solid white;
+  border-radius: 20px;
+  position: relative;
+}
+
+.scroll-indicator .mouse::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  animation: scrollDown 2s infinite;
+}
+
+@keyframes scrollDown {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, 20px);
+    opacity: 0;
+  }
+}
+
+/* Parallax effect for hero section */
+.parallax-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Floating animation for UI elements */
+.float-animation {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Progress bar styles */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #107C10, #0078D4);
+  width: 0%;
+  transition: width 0.1s;
+}
+
+/* Smooth header transition */
+.header-scrolled {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Fade transitions between sections */
+.fade-transition {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Subtle section dividers */
+.section-divider {
+  height: 100px;
+  margin-top: -50px;
+  margin-bottom: -50px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, 
+    rgba(16, 124, 16, 0), 
+    rgba(16, 124, 16, 0.3), 
+    rgba(0, 120, 212, 0.3), 
+    rgba(0, 120, 212, 0)
+  );
+  transform: translateY(-50%);
+}
