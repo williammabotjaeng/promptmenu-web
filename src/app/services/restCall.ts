@@ -16,7 +16,7 @@ const axiosInstance = axios.create({
 export const restCall = async (endpoint: string, method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE', body: any = null, accessToken: string) => {
     
     const response = await axiosInstance({
-    url: APP_ENV === 'local' ? `https://localhost:8000${endpoint}` : `https://api.staffingsolutionshub.com${endpoint}`,
+    url: APP_ENV === 'local' ? `https://localhost:8000${endpoint}` : `https://api.promptmenu.xyz${endpoint}`,
     method,
     data: body,
     headers: {

@@ -3,8 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { restCall } from "@/services/restCall";
 
 // Type definitions
 interface AuthUser {
@@ -32,34 +32,11 @@ interface AuthContextType {
 // Create auth context
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// Environment variables - safely accessed
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || "";
-
-// Create a configured axios instance
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json"
-  }
-});
-
-// Add API key to every request if available
-if (API_KEY) {
-  api.interceptors.request.use(
-    (config) => {
-      config.headers["X-API-Key"] = API_KEY;
-      return config;
-    },
-    (error) => Promise.reject(error)
-  );
-}
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [cookies, setCookie, removeCookie] = useCookies([
-    "accessToken",
+    "access_token",
     "user_type",
     "displayName",
     "email",
@@ -70,32 +47,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Check if user is already authenticated on mount
   useEffect(() => {
-    const token = cookies.accessToken;
+    const token = cookies.access_token;
     if (token) {
       checkAuthStatus(token);
     }
   }, []);
 
-  // Get CSRF token from cookies
-  const getCsrfToken = () => {
-    if (typeof document !== 'undefined') {
-      return document.cookie.match(/csrftoken=([^;]+)/)?.[1] || '';
-    }
-    return '';
-  };
-
   // Check auth status with API
   const checkAuthStatus = async (token: string) => {
     try {
-      const response = await axios.get(`${API_URL}/api/accounts/check-auth/`, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "X-CSRFToken": getCsrfToken()
-        }
-      });
+      const response = await restCall('/accounts/check-auth/', 'GET', null, token);
       
-      if (response.data?.authenticated) {
-        setUser(response.data.user);
+      if (response?.authenticated) {
+        setUser(response.user);
         setIsAuthenticated(true);
       } else {
         // Clear invalid auth state
@@ -110,18 +74,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Register mutation
   const registerMutation = useMutation({
     mutationFn: async (userData: any) => {
-      const endpoint = userData.user_type === 'customer' 
-        ? '/api/accounts/register-azure/' 
-        : '/accounts/register/';
+      // For registration, we don't have a token yet
+      // We'll use a temporary empty token that will be replaced by restCall's internal logic
+      const endpoint = '/accounts/register/';
       
-      return await api.post(endpoint, userData, {
-        headers: {
-          "X-CSRFToken": getCsrfToken()
-        }
-      });
+      return await restCall(endpoint, 'POST', userData, '');
     },
-    onSuccess: (response) => {
-      const data = response.data;
+    onSuccess: (data) => {
       // Handle successful registration
       if (data.token) {
         // Auto login if token is provided
@@ -136,27 +95,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // Login mutation
   const loginMutation = useMutation({
     mutationFn: async ({ email, password }: { email: string; password: string }) => {
-      return await api.post('/api/accounts/login/', { email, password }, {
-        headers: {
-          "X-CSRFToken": getCsrfToken()
-        }
-      });
+      return await restCall('/accounts/login/', 'POST', { email, password }, '');
     },
-    onSuccess: (response) => {
-      handleLoginSuccess(response.data);
+    onSuccess: (data) => {
+      handleLoginSuccess(data);
     }
   });
 
   // Logout mutation
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      const token = cookies.accessToken;
-      return await api.post('/accounts/logout/', {}, {
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "X-CSRFToken": getCsrfToken()
-        }
-      });
+      const token = cookies.access_token;
+      return await restCall('/accounts/logout/', 'POST', {}, token);
     },
     onSuccess: () => {
       handleLogout();
@@ -185,7 +135,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAuthenticated(true);
     
     // Set cookies
-    setCookie("accessToken", data.token || data.access_token, { path: "/", maxAge: 604800 }); // 7 days
+    const token = data.token || data.access_token;
+    setCookie("access_token", token, { path: "/", maxAge: 604800 }); // 7 days
     setCookie("user_type", data.user_type, { path: "/", maxAge: 604800 });
     setCookie("displayName", data.display_name || data.displayName, { path: "/", maxAge: 604800 });
     setCookie("email", data.email, { path: "/", maxAge: 604800 });
@@ -209,7 +160,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAuthenticated(false);
     
     // Clear cookies
-    removeCookie("accessToken", { path: "/" });
+    removeCookie("access_token", { path: "/" });
     removeCookie("user_type", { path: "/" });
     removeCookie("displayName", { path: "/" });
     removeCookie("email", { path: "/" });
