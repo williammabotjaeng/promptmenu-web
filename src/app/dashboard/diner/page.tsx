@@ -32,6 +32,7 @@ import {
   Close,
   ArrowBack
 } from '@mui/icons-material';
+import DinerDashboardHeader from '@/components/diner/Header';
 
 // Mock API service for demo
 const mockApi = {
@@ -561,51 +562,7 @@ const Dashboard = () => {
         }}
       />
 
-      {/* Header Bar */}
-      <Box 
-        sx={{
-          py: 2, 
-          px: 4, 
-          display: 'flex', 
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          backdropFilter: 'blur(8px)',
-          backgroundColor: 'rgba(255,255,255,0.8)',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-          position: 'relative',
-          zIndex: 5,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <MenuBook sx={{ color: '#107C10', fontSize: 32 }} />
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontWeight: 700, 
-              background: 'linear-gradient(90deg, #107C10, #0078D4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              cursor: 'pointer'
-            }}
-            onClick={() => router.push('/')}
-          >
-            PromptMenu
-          </Typography>
-        </Box>
-        <Box>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              color: '#555', 
-              display: 'flex', 
-              alignItems: 'center',
-              gap: 0.5,
-            }}
-          >
-           Logout
-          </Typography>
-        </Box>
-      </Box>
+      <DinerDashboardHeader />
 
       {/* Main Content */}
       <Container 
