@@ -16,7 +16,8 @@ const AuthContext = createContext(null);
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'x-api-key': process.env.NEXT_PUBLIC_X_API_KEY,
   }
 });
 
@@ -93,7 +94,7 @@ export function AuthProvider({ children }) {
   const loginMutation = useMutation({
     mutationKey: ['login'],
     mutationFn: async (credentials) => {
-      const response = await api.post('/auth/login', credentials);
+      const response = await api.post('/accounts/login/', credentials);
       return response.data;
     },
     onSuccess: (data) => {
@@ -138,7 +139,7 @@ export function AuthProvider({ children }) {
   const registerMutation = useMutation({
     mutationKey: ['register'],
     mutationFn: async (userData) => {
-      const response = await api.post('/auth/register', userData);
+      const response = await api.post('/accounts/register/', userData);
       return response.data;
     },
     onSuccess: (data) => {
@@ -174,7 +175,11 @@ export function AuthProvider({ children }) {
         setCookie('userPrincipalName', data.userPrincipalName, cookieOptions);
         
         // Redirect to dashboard
-        router.push('/dashboard');
+        if (data?.user_type === "owner") {
+          router.push('/dashboard/restaurant');
+        } else {
+          router.push('/dashboard/diner');
+        } 
       } else {
         // If no auto-login, redirect to login page
         router.push('/login');
@@ -192,7 +197,7 @@ export function AuthProvider({ children }) {
       try {
         // Only call the logout endpoint if we have an access token
         if (cookies.access_token) {
-          await api.post('/auth/logout');
+          await api.post('/accounts/logout/');
         }
         return true;
       } catch (error) {
@@ -222,7 +227,7 @@ export function AuthProvider({ children }) {
   const refreshTokenMutation = useMutation({
     mutationKey: ['refreshToken'],
     mutationFn: async (refreshToken) => {
-      const response = await api.post('/auth/refresh-token', { refresh_token: refreshToken });
+      const response = await api.post('/accounts/refresh-token/', { refresh_token: refreshToken });
       return response.data;
     },
     onSuccess: (data) => {
@@ -261,7 +266,7 @@ export function AuthProvider({ children }) {
   const microsoftLoginMutation = useMutation({
     mutationKey: ['microsoftLogin'],
     mutationFn: async (userType: any) => {
-      const microsoftLoginUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/microsoft/login`;
+      const microsoftLoginUrl = `${process.env.NEXT_PUBLIC_API_URL}/accounts/microsoft/login/`;
       const params = new URLSearchParams({
         userType: userType || 'customer'
       }).toString();
@@ -275,7 +280,7 @@ export function AuthProvider({ children }) {
   const forgotPasswordMutation = useMutation({
     mutationKey: ['forgotPassword'],
     mutationFn: async (email) => {
-      const response = await api.post('/auth/forgot-password', { email });
+      const response = await api.post('/accounts/forgot-password/', { email });
       return response.data;
     },
     onSuccess: (data) => {
@@ -287,7 +292,7 @@ export function AuthProvider({ children }) {
   const resetPasswordMutation = useMutation({
     mutationKey: ['resetPassword'],
     mutationFn: async ({ token, password } : { token: string; password: string }) => {
-      const response = await api.post('/auth/reset-password', { token, password });
+      const response = await api.post('/accounts/reset-password/', { token, password });
       return response.data;
     },
     onSuccess: (data) => {
@@ -299,7 +304,7 @@ export function AuthProvider({ children }) {
   const updateProfileMutation = useMutation({
     mutationKey: ['updateProfile'],
     mutationFn: async (profileData) => {
-      const response = await api.put('/user/profile', profileData);
+      const response = await api.put('/user/profile/', profileData);
       return response.data;
     }
   });
