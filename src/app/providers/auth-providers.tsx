@@ -40,8 +40,8 @@ export function AuthProvider({ children }) {
   const { setTokens } = useStore(useTokenStore);
   const { setAuth, clearAuth } = useStore(useAuthStore);
   const [cookies, setCookie, removeCookie] = useCookies([
-    'access',
-    'refresh',
+    'access_token',
+    'refresh_token',
     'user_role',
     'username',
     'firstname',
@@ -56,7 +56,7 @@ export function AuthProvider({ children }) {
   // Setup axios interceptor for auth headers
   api.interceptors.request.use(
     (config) => {
-      const accessToken = cookies.access;
+      const accessToken = cookies.access_token;
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
@@ -71,15 +71,15 @@ export function AuthProvider({ children }) {
     async (error) => {
       const originalRequest = error.config;
       
-      if (error.response?.status === 401 && !originalRequest._retry && cookies.refresh) {
+      if (error.response?.status === 401 && !originalRequest._retry && cookies.refresh_token) {
         originalRequest._retry = true;
         
         try {
-          const response = await refreshTokenMutation.mutateAsync(cookies.refresh);
+          const response = await refreshTokenMutation.mutateAsync(cookies.refresh_token);
           
-          if (response?.access) {
+          if (response?.access_token) {
             // Update the auth header for the retry
-            originalRequest.headers.Authorization = `Bearer ${response.access}`;
+            originalRequest.headers.Authorization = `Bearer ${response.access_token}`;
             return axios(originalRequest);
           }
         } catch (refreshError) {
@@ -109,8 +109,8 @@ export function AuthProvider({ children }) {
       setAuth(true);
       
       // Set user cookies based on response data
-      setCookie('access', data.tokens.access, tokenCookieOptions);
-      setCookie('refresh', data.tokens.refresh, cookieOptions);
+      setCookie('access_token', data.tokens.access, tokenCookieOptions);
+      setCookie('refresh_token', data.tokens.refresh, cookieOptions);
       setCookie('user_role', data.tokens.user_role, cookieOptions);
       setCookie('username', data.username, cookieOptions);
       setCookie('firstname', data.tokens.firstname, cookieOptions);
@@ -173,8 +173,8 @@ export function AuthProvider({ children }) {
       setAuth(true);
       
       // Set cookies based on response
-      setCookie('access', data.tokens.access, tokenCookieOptions);
-      setCookie('refresh', data.tokens.refresh, cookieOptions);
+      setCookie('access_token', data.tokens.access, tokenCookieOptions);
+      setCookie('refresh_token', data.tokens.refresh, cookieOptions);
       setCookie('user_role', data.tokens.user_role === 'None' ? undefined : data.tokens.user_role, cookieOptions);
       setCookie('firstname', data.tokens.firstname, cookieOptions);
       setCookie('lastname', data.tokens.lastname, cookieOptions);
@@ -192,7 +192,7 @@ export function AuthProvider({ children }) {
   const logoutMutation = useMutation({
     mutationKey: ['logout'],
     mutationFn: async () => {
-      if (cookies.access) {
+      if (cookies.access_token) {
         try {
           await api.post('/accounts/logout/');
         } catch (error) {
@@ -234,9 +234,9 @@ export function AuthProvider({ children }) {
       setTokens(data.refresh, data.access);
       
       // Update cookies
-      setCookie('access', data.access, tokenCookieOptions);
+      setCookie('access_token', data.access, tokenCookieOptions);
       if (data.refresh) {
-        setCookie('refresh', data.refresh, cookieOptions);
+        setCookie('refresh_token', data.refresh, cookieOptions);
       }
       
       return data;
@@ -306,7 +306,7 @@ export function AuthProvider({ children }) {
     microsoftLogin: () => microsoftLoginMutation.mutateAsync(),
     
     // Auth state
-    isAuthenticated: !!cookies.access,
+    isAuthenticated: !!cookies.access_token,
     userRole: cookies.user_role,
     username: cookies.username,
     
