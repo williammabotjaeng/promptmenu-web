@@ -23,6 +23,7 @@ import {
 
 import { MenuBook, ReceiptLong, ImageSearch, Fastfood, QuestionAnswer } from '@mui/icons-material';
 import Link from 'next/link';
+import Loading from '@/components/Loading';
 
 // Environment variables
 const ENV = {
@@ -34,6 +35,7 @@ const RegisterRestaurant = () => {
   const { register, isLoading, error } = useAuth(); // Use auth hook functions
   const router = useRouter();
   const [isPageLoading, setIsPageLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     // Restaurant info
@@ -171,6 +173,8 @@ const RegisterRestaurant = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
     
     if (!validateAccountDetails()) {
       return;
@@ -199,11 +203,14 @@ const RegisterRestaurant = () => {
         message: 'Registration successful! Redirecting to Dashboard...',
         severity: 'success',
       });
+
+      setLoading(false);
       
       // Note: no need to manually redirect - the auth provider will handle this
     } catch (err) {
       // Error handling is now done via the useEffect watching the error state
       console.error('Registration error:', err);
+      setLoading(false);
     }
   };
 
