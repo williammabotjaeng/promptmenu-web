@@ -4,16 +4,18 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { useAuth } from '@/providers/auth-providers';
+import { useAuth } from '@/providers/auth-providers'; 
 import '@/styles/globals.css';
-import { Box, Typography, Container, Paper, Button, TextField, Divider, Link as MuiLink } from '@mui/material';
+import { Box, Typography, Container, Paper, Button, TextField, Divider, Link as MuiLink, CircularProgress } from '@mui/material';
 import { MenuBook, RestaurantMenu, VerifiedUser, Translate, Fastfood } from '@mui/icons-material';
 import Link from 'next/link';
+import Loading from '@/components/Loading';
 
 const RegisterDiner: React.FC = () => {
-  const { login } = useAuth();
+  const { register, isLoading, error } = useAuth(); // Use the auth provider hook with register function
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -35,15 +37,31 @@ const RegisterDiner: React.FC = () => {
   useEffect(() => {
     // Add animation effect on mount
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setIsPageLoading(false);
     }, 500);
     
     return () => clearTimeout(timer);
   }, []);
 
+  // Watch for errors from auth provider
+  useEffect(() => {
+    if (error) {
+      setSnackbar({
+        open: true,
+        message: error.message || 'Registration failed. Please try again.',
+        severity: 'error',
+      });
+    }
+  }, [error]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    
+    // Clear error for this field when user types
+    if (errors[name]) {
+      setErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleSnackbarClose = () => {
@@ -52,99 +70,92 @@ const RegisterDiner: React.FC = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setLoading(true);
     // Validate form
+    let hasErrors = false;
     const newErrors = {
       name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     };
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.email) newErrors.email = 'Email is required';
-    if (!formData.password) newErrors.password = 'Password is required';
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+      hasErrors = true;
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+      hasErrors = true;
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email';
+      hasErrors = true;
+    }
+    
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      hasErrors = true;
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+      hasErrors = true;
+    }
+    
     if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
+      hasErrors = true;
     }
     
     setErrors(newErrors);
     
-    if (Object.keys(newErrors).length === 0) {
+    if (!hasErrors) {
       try {
-        // Call Azure Function to register diner
-        const response = await fetch('/api/register-diner', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            password: formData.password,
-            userType: 'diner'
-          }),
-        });
+        // Format data for auth provider
+        const registrationData = {
+          displayName: formData.name,
+          givenName: formData.name.split(' ')[0],
+          surname: formData.name.split(' ').slice(1).join(' ') || '',
+          email: formData.email,
+          password: formData.password,
+          user_type: 'customer', // Use customer as user_type for diners
+        };
+
+        // Call register from auth provider
+        await register(registrationData);
         
-        const data = await response.json();
+        // Success message is handled by the auth provider,
+        // which will automatically redirect after successful registration
+        setLoading(false);
         
-        if (response.ok) {
-          setSnackbar({
-            open: true,
-            message: 'Registration successful! Redirecting to login...',
-            severity: 'success',
-          });
-          
-          // Redirect to login after 2 seconds
-          setTimeout(() => {
-            router.push('/login');
-          }, 2000);
-        } else {
-          setSnackbar({
-            open: true,
-            message: data.message || 'Registration failed. Please try again.',
-            severity: 'error',
-          });
-        }
-      } catch (error) {
-        setSnackbar({
-          open: true,
-          message: 'An error occurred. Please try again later.',
-          severity: 'error',
-        });
+      } catch (err) {
+        console.error('Registration error:', err);
+        // Error handling is done via the useEffect watching the error state from auth provider
+        setLoading(false);
       }
     }
   };
 
-  const handleMicrosoftLogin = async () => {
+  const handleMicrosoftLogin = () => {
     try {
-      // Call Azure Function to get Microsoft login URL
-      const response = await fetch('/api/microsoft-login', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // Build the Microsoft login URL
+      const microsoftLoginUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/microsoft/login`;
+      const params = new URLSearchParams({
+        userType: 'customer'
+      }).toString();
       
-      const data = await response.json();
-      
-      if (response.ok && data.redirectUrl) {
-        // Redirect to Microsoft login
-        window.location.href = data.redirectUrl;
-      } else {
-        setSnackbar({
-          open: true,
-          message: 'Failed to initialize Microsoft login. Please try again.',
-          severity: 'error',
-        });
-      }
+      // Redirect to Microsoft login page
+      window.location.href = `${microsoftLoginUrl}?${params}`;
     } catch (error) {
+      console.error('Microsoft login error:', error);
       setSnackbar({
         open: true,
-        message: 'An error occurred. Please try again later.',
+        message: `Error redirecting to Microsoft login: ${error.message}`,
         severity: 'error',
       });
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <Box
@@ -251,8 +262,8 @@ const RegisterDiner: React.FC = () => {
         <Box 
           sx={{
             width: '100%',
-            opacity: isLoading ? 0 : 1,
-            transform: isLoading ? 'translateY(20px)' : 'translateY(0)',
+            opacity: isPageLoading ? 0 : 1,
+            transform: isPageLoading ? 'translateY(20px)' : 'translateY(0)',
             transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out',
             display: 'flex',
             gap: 4,
@@ -289,6 +300,7 @@ const RegisterDiner: React.FC = () => {
                 </svg>
               }
               onClick={handleMicrosoftLogin}
+              disabled={isLoading}
               sx={{
                 py: 1.5,
                 mb: 3,
@@ -320,6 +332,7 @@ const RegisterDiner: React.FC = () => {
                 error={!!errors.name}
                 helperText={errors.name || ''}
                 sx={{ mb: 2 }}
+                disabled={isLoading}
               />
               
               <TextField
@@ -333,6 +346,7 @@ const RegisterDiner: React.FC = () => {
                 error={!!errors.email}
                 helperText={errors.email || ''}
                 sx={{ mb: 2 }}
+                disabled={isLoading}
               />
               
               <TextField
@@ -346,6 +360,7 @@ const RegisterDiner: React.FC = () => {
                 error={!!errors.password}
                 helperText={errors.password || ''}
                 sx={{ mb: 2 }}
+                disabled={isLoading}
               />
               
               <TextField
@@ -359,12 +374,14 @@ const RegisterDiner: React.FC = () => {
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword || ''}
                 sx={{ mb: 3 }}
+                disabled={isLoading}
               />
               
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
+                disabled={isLoading}
                 sx={{
                   py: 1.5,
                   backgroundColor: '#107C10',
@@ -373,7 +390,11 @@ const RegisterDiner: React.FC = () => {
                   },
                 }}
               >
-                Create Account
+                {isLoading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  'Create Account'
+                )}
               </Button>
             </form>
             

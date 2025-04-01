@@ -32,6 +32,7 @@ import {
   Close,
   ArrowBack
 } from '@mui/icons-material';
+import RestaurantDashboardHeader from '@/components/restaurant/Header';
 
 // Mock API service for demo
 const mockApi = {
@@ -561,57 +562,7 @@ const Dashboard = () => {
         }}
       />
 
-      {/* Header Bar */}
-      <Box 
-        sx={{
-          py: 2, 
-          px: 4, 
-          display: 'flex', 
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          backdropFilter: 'blur(8px)',
-          backgroundColor: 'rgba(255,255,255,0.8)',
-          boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-          position: 'relative',
-          zIndex: 5,
-        }}
-      >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <MenuBook sx={{ color: '#107C10', fontSize: 32 }} />
-          <Typography 
-            variant="h5" 
-            sx={{ 
-              fontWeight: 700, 
-              background: 'linear-gradient(90deg, #107C10, #0078D4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              cursor: 'pointer'
-            }}
-            onClick={() => router.push('/')}
-          >
-            PromptMenu
-          </Typography>
-        </Box>
-        <Box>
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              color: '#555', 
-              display: 'flex', 
-              alignItems: 'center',
-              gap: 0.5,
-            }}
-          >
-            <svg width="16" height="16" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
-              <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
-              <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
-              <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
-              <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
-            </svg>
-            Powered by Azure AI
-          </Typography>
-        </Box>
-      </Box>
+      <RestaurantDashboardHeader />
 
       {/* Main Content */}
       <Container 

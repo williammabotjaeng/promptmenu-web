@@ -17,13 +17,14 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
   const [routesResolved, setRoutesResolved] = useState(true);
   const [loading, setLoading] = useState(false); 
 
-  const [cookies] = useCookies(['access', 'access_token']);
+  const [cookies] = useCookies(['user_type', 'access_token']);
   const accessToken = cookies?.access_token;
+  const userType = cookies?.user_type;
 
   const { loginIsLoading, verifyOtpIsLoading } = useAuth();
   const { isAuthenticated } = useStore(useAuthStore);
   
-  const accessRoute = '/dashboard';
+  const accessRoute = userType === 'owner' ? '/dashboard/restaurant' : '/dashboard/diner';
 
   const isDynamicRouteMatch = (pathname: string, regexPatterns: RegExp[]): boolean => {
     return regexPatterns.some((regex) => regex.test(pathname));

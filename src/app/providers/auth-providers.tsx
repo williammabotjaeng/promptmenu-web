@@ -1,356 +1,344 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { LoginData } from "@/types/LoginData";
-import { RegistrationData } from "@/types/RegistrationData";
-import { RegistrationSuccessData } from "@/types/RegistrationSuccessData";
-import { RegistrationErrorData } from "@/types/RegistrationErrorData";
-import { ErrorData } from "@/types/ErrorData";
-import { OTPData } from "@/types/OTPData";
-import { useCookies } from "react-cookie";
-import { apiCall } from "@/services/apiCall";
-import { useStore } from "zustand";
-import useTokenStore from "@/state/use-token-store";
-import { AuthContextType } from "@/types/AuthContext";
-import { useRouter, redirect } from "next/navigation";
-import useAuthStore from "@/state/use-auth-store";
-import { UserUpdateData } from "@/types/UserUpdateData";
-import { restCall } from "@/services/restCall";
-import { Alert } from "@mui/material";
+import { createContext, useContext } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import useTokenStore from '@/state/use-token-store'; // Assuming you have this store
+import useAuthStore from '@/state/use-auth-store'; // Assuming you have this store
+import { useStore } from 'zustand';
 
-const AuthContext = createContext<AuthContextType | null>(null);
+// Create authentication context
+const AuthContext = createContext(null);
 
-interface ResetData {
-  username: string;
-  password: string;
-}
+// Create axios instance
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'x-api-key': process.env.NEXT_PUBLIC_X_API_KEY,
+  }
+});
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [user, setUser] = useState(false);
+// Cookie options
+const cookieOptions : any = {
+  path: '/',
+  maxAge: 7 * 24 * 60 * 60, // 7 days
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict'
+};
+
+// Token cookie options
+const tokenCookieOptions : any = {
+  ...cookieOptions,
+  maxAge: 60 * 60 // 60 minutes (adjust based on token expiry)
+};
+
+export function AuthProvider({ children }) {
+  const router = useRouter();
   const { setTokens } = useStore(useTokenStore);
   const { setAuth, clearAuth } = useStore(useAuthStore);
   const [cookies, setCookie, removeCookie] = useCookies([
-    "access",
-    "refresh",
-    "ssh_session_id",
-    "user_role",
-    "username",
-    "firstname",
-    "lastname",
-    "onboarding_presented",
-    "skills",
-    "headshotBlobUrl",
-    "sshsessionid",
-    "instagram",
-    "tiktok",
-    "company_id",
-    "vatPdf",
-    "tradePdf",
-    "website",
-    "ssh_access",
-    "has_settings",
-    "has_profile",
-    "company_id",
-    "company_logo",
-    "sshsessionid",
-    "current_event", 
-    "ethnicity", 
-    "nationality"
+    'access_token',
+    'refresh_token',
+    'user_role',
+    'username',
+    'firstname',
+    'lastname',
+    'ssh_session_id',
+    'onboarding_presented',
+    'has_settings',
+    'has_profile',
+    'company_name'
   ]);
 
-  const accessToken = cookies?.access;
+  // Setup axios interceptor for auth headers
+  api.interceptors.request.use(
+    (config) => {
+      const accessToken = cookies.access_token;
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
 
-  const router = useRouter();
+  // Handle token refresh on 401 responses
+  api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+      
+      if (error.response?.status === 401 && !originalRequest._retry && cookies.refresh_token) {
+        originalRequest._retry = true;
+        
+        try {
+          const response = await refreshTokenMutation.mutateAsync(cookies.refresh_token);
+          
+          if (response?.access_token) {
+            // Update the auth header for the retry
+            originalRequest.headers.Authorization = `Bearer ${response.access_token}`;
+            return axios(originalRequest);
+          }
+        } catch (refreshError) {
+          // If refresh fails, logout
+          console.error('Token refresh failed:', refreshError);
+          logoutMutation.mutate();
+          return Promise.reject(refreshError);
+        }
+      }
+      
+      return Promise.reject(error);
+    }
+  );
 
+  // Login mutation - matches backend expectations
   const loginMutation = useMutation({
-    mutationKey: ["login_user"],
-    mutationFn: async ({ email, password }: LoginData) => {
-      return await apiCall("/accounts/login/", "POST", { email, password });
+    mutationKey: ['login'],
+    mutationFn: async ({ email, password }: { email: string; password: string; }) => {
+      const response = await api.post('/accounts/login/', { email, password });
+      return response.data;
     },
     onSuccess: (data) => {
-      console.log("Login Successful:", data);
-      setTokens(data?.tokens?.refresh, data?.tokens?.access);
-      setUser(true);
+      console.log('Login successful:', data);
+      
+      // Store tokens from response structure matching your backend
+      setTokens(data.tokens.refresh, data.tokens.access);
       setAuth(true);
-      setCookie("access", data?.tokens?.access, { path: "/", maxAge: 604800 });
-      setCookie("refresh", data?.tokens?.refresh, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("user_role", data?.tokens?.user_role, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("firstname", data?.tokens?.firstname, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("lastname", data?.tokens?.lastname, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("username", data?.username, { path: "/", maxAge: 604800 });
-      setCookie("ssh_access", data?.ssh_access, { path: "/", maxAge: 604800 });
-      setCookie("has_settings", data?.has_settings, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("has_profile", data?.has_settings, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("onboarding_presented", data?.tokens?.onboarding_presented, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("ssh_session_id", data?.ssh_session_id, {
-        path: "/",
-        maxAge: 604800,
-      });
-      router.push("/dashboard");
+      
+      // Set user cookies based on response data
+      setCookie('access_token', data.tokens.access, tokenCookieOptions);
+      setCookie('refresh_token', data.tokens.refresh, cookieOptions);
+      setCookie('user_role', data.tokens.user_role, cookieOptions);
+      setCookie('username', data.username, cookieOptions);
+      setCookie('firstname', data.tokens.firstname, cookieOptions);
+      setCookie('lastname', data.tokens.lastname, cookieOptions);
+      setCookie('onboarding_presented', data.tokens.onboarding_presented, cookieOptions);
+      
+      // Set additional cookies if session ID is available
+      if (data.ssh_session_id) {
+        setCookie('ssh_session_id', data.ssh_session_id, cookieOptions);
+      }
+      
+      // Set profile-specific cookies
+      setCookie('has_settings', data.has_settings || false, cookieOptions);
+      setCookie('has_profile', data.has_profile || false, cookieOptions);
+      
+      // Set owner-specific data if applicable
+      if (data.owner_profile) {
+        setCookie('company_name', data.owner_profile.company_name, cookieOptions);
+      }
+      
+      // Redirect based on user type
+      if (data.user_type === 'owner') {
+        router.push('/dashboard');
+      } else {
+        router.push('/dashboard');
+      }
     },
     onError: (error) => {
-      console.error("Login error: ", error);
-    },
+      console.error('Login error:', error);
+    }
   });
 
+  // Register mutation
   const registerMutation = useMutation({
-    mutationKey: ["register_user"],
-    mutationFn: async (userData: RegistrationData) => {
-      return await apiCall("/accounts/register/", "POST", {
-        username: userData.username,
-        firstname: userData.firstname,
-        lastname: userData.lastname,
-        email: userData.email,
-        password: userData.password,
-        user_role: userData.user_role,
-      });
-    },
-    onSuccess: (data: RegistrationSuccessData) => {},
-    onError: (error: RegistrationErrorData) => {
-      console.error("Registration error: ", { ...error });
-    },
-  });
-
-  const verifyOtpMutation = useMutation({
-    mutationKey: ["verify_otp"],
-    mutationFn: async (data: OTPData) => {
-      return await apiCall("/accounts/verify_otp/", "POST", data);
+    mutationKey: ['register'],
+    mutationFn: async (userData) => {
+      const response = await api.post('/accounts/register/', userData);
+      return response.data;
     },
     onSuccess: (data) => {
-      setTokens(data?.tokens?.refresh, data?.tokens?.access);
-      setUser(true);
-      setAuth(true);
-      let temp_user_role =
-        data?.tokens?.user_role === "None"
-          ? undefined
-          : data?.tokens?.user_role;
-      setCookie("access", data?.tokens?.access, { path: "/", maxAge: 604800 });
-      setCookie("refresh", data?.tokens?.refresh, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("user_role", temp_user_role, { path: "/", maxAge: 604800 });
-      setCookie("firstname", data?.tokens?.firstname, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("lastname", data?.tokens?.lastname, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("onboarding_presented", data?.tokens?.onboarding_presented, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("ssh_session_id", data?.session_id, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("ssh_access", data?.ssh_access, { path: "/", maxAge: 604800 });
-      setCookie("has_settings", data?.has_settings, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("has_profile", data?.has_settings, {
-        path: "/",
-        maxAge: 604800,
-      });
-      setCookie("username", data?.username, { path: "/", maxAge: 604800 });
+      console.log('Registration successful:', data);
+      // Redirect to login or verification page
+      router.push('/login');
     },
     onError: (error) => {
-      console.error("OTP verification error: ", error);
-    },
+      console.error('Registration error:', error);
+    }
   });
 
+  // OTP verification mutation
+  const verifyOtpMutation = useMutation({
+    mutationKey: ['verify_otp'],
+    mutationFn: async (otpData) => {
+      const response = await api.post('/accounts/verify_otp/', otpData);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      // Store tokens
+      setTokens(data.tokens.refresh, data.tokens.access);
+      setAuth(true);
+      
+      // Set cookies based on response
+      setCookie('access_token', data.tokens.access, tokenCookieOptions);
+      setCookie('refresh_token', data.tokens.refresh, cookieOptions);
+      setCookie('user_role', data.tokens.user_role === 'None' ? undefined : data.tokens.user_role, cookieOptions);
+      setCookie('firstname', data.tokens.firstname, cookieOptions);
+      setCookie('lastname', data.tokens.lastname, cookieOptions);
+      setCookie('username', data.username, cookieOptions);
+      
+      // Redirect to dashboard
+      router.push('/dashboard');
+    },
+    onError: (error) => {
+      console.error('OTP verification error:', error);
+    }
+  });
+
+  // Logout mutation
   const logoutMutation = useMutation({
-    mutationKey: ["logout_user"],
+    mutationKey: ['logout'],
     mutationFn: async () => {
-      return await apiCall("/accounts/logout/", "POST");
+      if (cookies.access_token) {
+        try {
+          await api.post('/accounts/logout/');
+        } catch (error) {
+          console.error('Logout API error:', error);
+          // Continue with client-side logout regardless of API errors
+        }
+      }
+      return true;
     },
     onSuccess: () => {
-      removeCookie("access", { path: "/" });
-      removeCookie("refresh", { path: "/" });
-      removeCookie("ssh_session_id", { path: "/" });
-      removeCookie("user_role", { path: "/" });
-      removeCookie("username", { path: "/" });
-      removeCookie("onboarding_presented", { path: "/" });
-      removeCookie("firstname", { path: "/" });
-      removeCookie("lastname", { path: "/" });
-      removeCookie("has_settings", { path: "/" });
-      removeCookie("skills", { path: "/" });
-      removeCookie("headshotBlobUrl", { path: "/" });
-      removeCookie("sshsessionid", { path: "/" });
-      removeCookie("instagram", { path: "/" });
-      removeCookie("tiktok", { path: "/" });
-      removeCookie("website", { path: "/" });
-      removeCookie("vatPdf", { path: "/" });
-      removeCookie("tradePdf", { path: "/" });
-      removeCookie("ssh_access", { path: "/" });
-      removeCookie("has_profile", { path: "/" });
-      removeCookie("sshsessionid", { path: "/" });
-      removeCookie("company_id", { path: "/" });
-      removeCookie("company_logo", { path: "/" });
-      removeCookie("sshsessionid", { path: "/" });
-      removeCookie("current_event", { path: "/" });
-      removeCookie("nationality", { path: "/" });
-      removeCookie("ethnicity", { path: "/" });
-      router.push("/login");
-    },
-    onError: (error) => {
-      console.error("Logout error: ", error);
-    },
+      // Clear auth state
+      clearAuth();
+      
+      // Remove all auth cookies
+      const allCookies = [
+        'access', 'refresh', 'user_role', 'username', 'firstname', 'lastname',
+        'onboarding_presented', 'ssh_session_id', 'has_settings', 'has_profile',
+        'company_name', 'ssh_access'
+      ];
+      
+      allCookies.forEach((cookieName: any) => {
+        removeCookie(cookieName, { path: '/' });
+      });
+      
+      // Redirect to login page
+      router.push('/login');
+    }
   });
 
-  const forgotMutation = useMutation({
-    mutationKey: ["forgot_password"],
-    mutationFn: async (userEmail: { email: string }) => {
-      return await apiCall("/accounts/forgot-password/", "POST", {
-        email: userEmail
-      });
+  // Refresh token mutation
+  const refreshTokenMutation = useMutation({
+    mutationKey: ['refreshToken'],
+    mutationFn: async (refreshToken) => {
+      const response = await api.post('/accounts/refresh-token/', { refresh: refreshToken });
+      return response.data;
     },
     onSuccess: (data) => {
-      console.log("Email Sent:", data);
-      router.push("/forgot-success");
+      // Update stored tokens
+      setTokens(data.refresh, data.access);
+      
+      // Update cookies
+      setCookie('access_token', data.access, tokenCookieOptions);
+      if (data.refresh) {
+        setCookie('refresh_token', data.refresh, cookieOptions);
+      }
+      
+      return data;
     },
     onError: (error) => {
-      console.error("Forgot Password error: ", { ...error });
-    },
+      console.error('Token refresh error:', error);
+      // Logout on any refresh error
+      logoutMutation.mutate();
+      throw error;
+    }
   });
 
-  const resetMutation = useMutation({
-    mutationKey: ["reset_password"],
-    mutationFn: async ({username, password}: ResetData) => {
-      console.log("U: P:", username, password);
-      return await apiCall("/accounts/reset-password/", "POST", {
-        username: username,
-        password: password
-      });
+  // Forgot password mutation
+  const forgotPasswordMutation = useMutation({
+    mutationKey: ['forgotPassword'],
+    mutationFn: async (email) => {
+      const response = await api.post('/accounts/forgot-password/', { email });
+      return response.data;
     },
     onSuccess: (data) => {
-      console.log("Password Reset:", data);
-      router.push("/login");
-    },
-    onError: (error) => {
-      console.error("Forgot Password error: ", { ...error });
-    },
+      router.push('/forgot-password-confirmation');
+    }
   });
 
+  // Reset password mutation
+  const resetPasswordMutation = useMutation({
+    mutationKey: ['resetPassword'],
+    mutationFn: async ({ username, password }: { username: string; password: string; }) => {
+      const response = await api.post('/accounts/reset-password/', { username, password });
+      return response.data;
+    },
+    onSuccess: (data) => {
+      router.push('/login');
+    }
+  });
+
+  // Update user mutation
   const updateUserMutation = useMutation({
-    mutationKey: ["update_user"],
-    mutationFn: async ({ field, value }: UserUpdateData) => {
-      return await restCall(
-        "/accounts/update-user/",
-        "PATCH",
-        {
-          [field]: value,
-        },
-        accessToken
-      );
-    },
-    onSuccess: (data) => {
-      console.log("User updated successfully:", data);
-    },
-    onError: (error) => {
-      console.error("Update user error: ", error);
-    },
+    mutationKey: ['updateUser'],
+    mutationFn: async ({ field, value }: { field: string; value: string; }) => {
+      const response = await api.patch('/accounts/update-user/', { [field]: value });
+      return response.data;
+    }
   });
 
-  const login = async (email, password) => {
-    await loginMutation.mutateAsync({ email, password });
-  };
+  // Microsoft login mutation
+  const microsoftLoginMutation = useMutation({
+    mutationKey: ['microsoftLogin'],
+    mutationFn: async () => {
+      // Redirect to Microsoft login
+      const response = await api.get('/auth/microsoft/login');
+      window.location.href = response.data.url;
+      return true;
+    }
+  });
 
-  const logout = async () => {
-    await logoutMutation.mutateAsync();
-  };
-
-  const verifyOtp = async (username: string, otp: string) => {
-    await verifyOtpMutation.mutateAsync({ username, otp });
-  };
-
-  const register = async (
-    username: string,
-    password: string,
-    email: string,
-    firstname: string,
-    lastname: string,
-    user_role: "talent" | "client" | "influencer"
-  ) => {
-    const registrationData = {
-      username,
-      password,
-      email,
-      firstname,
-      lastname,
-      user_role,
-    };
-
-    await registerMutation.mutateAsync(registrationData);
-  };
-
-  const updateUser = async (userData) => {
-    await updateUserMutation.mutateAsync(userData);
-  };
-
-  const forgot = async (email) => {
-    await forgotMutation.mutateAsync(email);
-  };
-
-  const reset = async (username, password) => {
-    await resetMutation.mutateAsync({username, password});
+  // Expose auth methods and state
+  const auth = {
+    // Auth methods
+    login: (credentials) => loginMutation.mutateAsync(credentials),
+    register: (userData) => registerMutation.mutateAsync(userData),
+    verifyOtp: (otpData) => verifyOtpMutation.mutateAsync(otpData),
+    logout: () => logoutMutation.mutateAsync(),
+    forgotPassword: (email) => forgotPasswordMutation.mutateAsync(email),
+    resetPassword: (data) => resetPasswordMutation.mutateAsync(data),
+    updateUser: (userData) => updateUserMutation.mutateAsync(userData),
+    microsoftLogin: () => microsoftLoginMutation.mutateAsync(),
+    
+    // Auth state
+    isAuthenticated: !!cookies.access_token,
+    userRole: cookies.user_role,
+    username: cookies.username,
+    
+    // Loading states
+    loginIsLoading: loginMutation.isPending,
+    registerIsLoading: registerMutation.isPending,
+    logoutIsLoading: logoutMutation.isPending,
+    verifyOtpIsLoading: verifyOtpMutation.isPending,
+    
+    // Error states
+    loginError: loginMutation.error,
+    registerError: registerMutation.error,
+    verifyOtpError: verifyOtpMutation.error,
+    
+    // Api instance for authenticated requests
+    api
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        login,
-        verifyOtp,
-        logout,
-        register,
-        updateUser,
-        forgot,
-        reset,
-        loginIsLoading: loginMutation.isPending,
-        loginError: loginMutation.isError,
-        verifyOtpIsLoading: verifyOtpMutation.isPending,
-        verifyOtpError: verifyOtpMutation.isError,
-        registerIsLoading: registerMutation.isPending,
-        registerError: registerMutation.error as ErrorData | null,
-      }}
-    >
+    <AuthContext.Provider value={auth}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => {
+// Custom hook to use auth context
+export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-};
+}
+
+export default AuthContext;
