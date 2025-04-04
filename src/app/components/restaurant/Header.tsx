@@ -51,6 +51,7 @@ import {
   AttachMoney
 } from "@mui/icons-material";
 import { useAuth } from "@/providers/auth-providers";
+import LogoutLoading from "../CleanUpLoading";
 
 // Microsoft-inspired color scheme
 const theme = {
@@ -85,12 +86,14 @@ export const RestaurantDashboardHeader: React.FC = () => {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [analyticsAnchorEl, setAnalyticsAnchorEl] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { logout } = useAuth();
 
   const handleLogout = () => {
-    console.log('Logging out...');
+    setLoading(true);
     logout();
+    setLoading(false);
   }
 
   // Get restaurant name from cookies
@@ -440,6 +443,8 @@ export const RestaurantDashboardHeader: React.FC = () => {
       </Button>
     </Box>
   );
+
+  if (loading) return <LogoutLoading />;
 
   return (
     <AppBar

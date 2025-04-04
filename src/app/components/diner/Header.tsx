@@ -38,6 +38,8 @@ import {
   MenuOutlined,
   LocalOfferOutlined
 } from "@mui/icons-material";
+import { useAuth } from "@/providers/auth-providers";
+import LogoutLoading from "../CleanUpLoading";
 
 // Microsoft-inspired color scheme
 const theme = {
@@ -67,6 +69,9 @@ export const DinerDashboardHeader: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [profileAnchorEl, setProfileAnchorEl] = useState(null);
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const { logout } = useAuth();
 
   // Get user display name from cookies
   const userDisplayName = cookies.displayName || cookies.username || "Diner";
@@ -92,19 +97,9 @@ export const DinerDashboardHeader: React.FC = () => {
   };
 
   const handleLogout = () => {
-    // Clear auth store state
-    clearAuth();
-    
-    // Remove all auth-related cookies
-    removeCookie("access", { path: "/" });
-    removeCookie("refresh", { path: "/" });
-    removeCookie("user", { path: "/" });
-    removeCookie("user_role", { path: "/" });
-    removeCookie("username", { path: "/" });
-    removeCookie("displayName", { path: "/" });
-    
-    // Redirect to login page
-    router.push("/login");
+     setLoading(true);
+     logout();
+     setLoading(false);
   };
 
   // Drawer content for mobile view
@@ -310,6 +305,8 @@ export const DinerDashboardHeader: React.FC = () => {
       </Button>
     </Box>
   );
+
+  if (loading) return <LogoutLoading />;
 
   return (
     <AppBar
