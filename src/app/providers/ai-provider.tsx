@@ -43,6 +43,17 @@ interface MenuAnalysisParams {
   [key: string]: any; // For any additional metadata
 }
 
+// Define interface for receipt analysis parameters
+interface ReceiptAnalysisParams {
+  file: File;
+  userId?: string;
+  displayName?: string;
+  fullName?: string;
+  email?: string;
+  restaurant?: string;
+  [key: string]: any; // For any additional metadata
+}
+
 export function AIProvider({ children }) {
   const [cookies] = useCookies(["access_token"]);
 
@@ -117,6 +128,40 @@ export function AIProvider({ children }) {
     },
   });
 
+  // Receipt Analysis mutation
+  const receiptAnalysisMutation = useMutation({
+    mutationKey: ["receiptAnalysis"],
+    mutationFn: async (params: ReceiptAnalysisParams) => {
+      console.log("Sending receipt analysis request for:", params.file.name);
+      
+      // Create FormData object for file upload
+      const formData = new FormData();
+      
+      // Append the file
+      formData.append('file', params.file);
+      
+      // Append all other parameters to the form data
+      Object.keys(params).forEach(key => {
+        if (key !== 'file' && params[key] !== undefined) {
+          formData.append(key, params[key]);
+        }
+      });
+      
+      // Need to change the content type for file uploads
+      const response = await api.post("/ai/analyze-receipt/", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          // Authorization header will be added by the interceptor
+        },
+      });
+      
+      return response.data;
+    },
+    onError: (error) => {
+      console.error("Receipt Analysis API error:", error);
+    },
+  });
+
   // Expose AI methods and state
   const aiServices = {
     // Assistant method
@@ -124,22 +169,29 @@ export function AIProvider({ children }) {
     
     // Menu Analysis method
     analyzeMenuImage: (data) => menuAnalysisMutation.mutateAsync(data),
+
+    // Receipt Analysis method
+    analyzeReceipt: (data) => receiptAnalysisMutation.mutateAsync(data),
     
     // Loading states
     isAssistantLoading: assistantMutation.isPending,
     isMenuAnalysisLoading: menuAnalysisMutation.isPending,
+    isReceiptAnalysisLoading: receiptAnalysisMutation.isPending,
     
     // Response data
     assistantResponse: assistantMutation.data,
     menuAnalysisResponse: menuAnalysisMutation.data,
+    receiptAnalysisResponse: receiptAnalysisMutation.data,
     
     // Error states
     assistantError: assistantMutation.error,
     menuAnalysisError: menuAnalysisMutation.error,
+    receiptAnalysisError: receiptAnalysisMutation.error,
     
     // Reset functions
     resetAssistantResponse: () => assistantMutation.reset(),
     resetMenuAnalysisResponse: () => menuAnalysisMutation.reset(),
+    resetReceiptAnalysisResponse: () => receiptAnalysisMutation.reset(),
     
     // Api instance for authenticated requests
     api,

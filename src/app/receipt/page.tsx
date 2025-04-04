@@ -1,9 +1,7 @@
-// src/app/dashboard/receipt-processing/page.tsx
 "use client";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import '@/styles/globals.css';
 import Grid from '@mui/material/GridLegacy';
 import { 
@@ -33,59 +31,23 @@ import {
   AttachFile
 } from '@mui/icons-material';
 
-// API service for receipt processing
-const receiptApi = {
-  processReceipt: async (file, userData) => {
-    try {
-      // Create form data for the file upload
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      // Add user data if available
-      if (userData) {
-        Object.entries(userData).forEach(([key, value]) => {
-          formData.append(key, value as string);
-        });
-      }
-      
-      // Call the Azure Function with the file
-      const response = await axios.post(
-        'http://localhost:7072/api/analyze-document',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      
-      return response.data;
-    } catch (error) {
-      console.error('Error processing receipt:', error);
-      throw error;
-    }
-  },
-  
-  // Get detailed information about a processed receipt
-  getReceiptDetails: async (documentId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:7072/api/document-details?id=${documentId}`
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching receipt details:', error);
-      throw error;
-    }
-  }
-};
+// Import the AI provider hook
+import { useAI } from '@/providers/ai-provider';
 
 const ReceiptProcessing = () => {
   const router = useRouter();
+  
+  // Use our AI provider hooks
+  const { 
+    analyzeReceipt, 
+    isReceiptAnalysisLoading, 
+    receiptAnalysisResponse, 
+    receiptAnalysisError,
+    resetReceiptAnalysisResponse
+  } = useAI();
+  
   const [isLoading, setIsLoading] = useState(true);
   const [file, setFile] = useState(null);
-  const [processingFile, setProcessingFile] = useState(false);
-  const [initialResults, setInitialResults] = useState(null);
   const [detailedResults, setDetailedResults] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -103,26 +65,30 @@ const ReceiptProcessing = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  // When initialResults is updated with a document ID, fetch detailed results
+  // Handle responses from the API
   useEffect(() => {
-    if (initialResults && initialResults.document_id) {
-      fetchReceiptDetails(initialResults.document_id);
-    }
-  }, [initialResults]);
-  
-  const fetchReceiptDetails = async (documentId) => {
-    try {
-      const details = await receiptApi.getReceiptDetails(documentId);
-      setDetailedResults(details);
-    } catch (error) {
-      console.error('Error fetching receipt details:', error);
+    if (receiptAnalysisResponse) {
+      // When receipt analysis is complete, update the detailed results
+      setDetailedResults(receiptAnalysisResponse);
+      
       setSnackbar({
         open: true,
-        message: `Error fetching receipt details: ${error.message}`,
+        message: 'Receipt processed successfully!',
+        severity: 'success',
+      });
+    }
+  }, [receiptAnalysisResponse]);
+  
+  // Handle errors from the API
+  useEffect(() => {
+    if (receiptAnalysisError) {
+      setSnackbar({
+        open: true,
+        message: `Error processing receipt: ${receiptAnalysisError.response?.data?.error || receiptAnalysisError.message}`,
         severity: 'error',
       });
     }
-  };
+  }, [receiptAnalysisError]);
   
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
@@ -154,8 +120,8 @@ const ReceiptProcessing = () => {
     }
 
     try {
-      setProcessingFile(true);
-      setInitialResults(null);
+      // Reset previous analysis
+      resetReceiptAnalysisResponse();
       setDetailedResults(null);
       
       // Prepare user data
@@ -166,9 +132,11 @@ const ReceiptProcessing = () => {
         email: 'demo@example.com'
       };
       
-      // Process the receipt
-      const response = await receiptApi.processReceipt(file, userData);
-      setInitialResults(response);
+      // Process the receipt using our AIProvider
+      await analyzeReceipt({
+        file,
+        ...userData
+      });
       
       setSnackbar({
         open: true,
@@ -179,16 +147,15 @@ const ReceiptProcessing = () => {
       console.error('Error processing receipt:', error);
       setSnackbar({
         open: true,
-        message: `Error processing receipt: ${error.response?.data?.error || error.message}`,
+        message: `Error processing receipt: ${error.message}`,
         severity: 'error',
       });
-      setProcessingFile(false);
     }
   };
 
   const renderReceiptResults = () => {
-    // Display loading state during initial processing
-    if (processingFile && !initialResults) {
+    // Display loading state during processing
+    if (isReceiptAnalysisLoading) {
       return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', py: 4 }}>
           <CircularProgress size={40} sx={{ mb: 2 }} />
@@ -197,33 +164,8 @@ const ReceiptProcessing = () => {
       );
     }
     
-    // Display initial processing results with status
-    if (initialResults && !detailedResults) {
-      return (
-        <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Receipt Uploaded Successfully
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            <strong>Document ID:</strong> {initialResults.document_id}
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            <strong>Document Type:</strong> {initialResults.receipt_type || 'Receipt'}
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 3 }}>
-            <strong>Status:</strong> Analyzing document...
-          </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress size={30} />
-          </Box>
-        </Paper>
-      );
-    }
-
     // Display detailed receipt results once available
     if (detailedResults) {
-      setProcessingFile(false);
-      
       // Extract common receipt fields from raw documents
       let displayData = {
         merchant: 'Unknown Merchant',
@@ -235,7 +177,7 @@ const ReceiptProcessing = () => {
       };
       
       // Extract data from the raw document if available
-      if (detailedResults.raw_documents && detailedResults.raw_documents.length > 0) {
+      if (detailedResults.raw_document_count > 0 && detailedResults.raw_documents && detailedResults.raw_documents.length > 0) {
         const doc = detailedResults.raw_documents[0];
         
         // Set merchant name if available
@@ -294,7 +236,10 @@ const ReceiptProcessing = () => {
                 <strong>Date:</strong> {displayData.date}
               </Typography>
               <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Document Type:</strong> {detailedResults.receipt_type || initialResults.receipt_type || 'Receipt'}
+                <strong>Document Type:</strong> {detailedResults.receipt_type || 'Receipt'}
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 1 }}>
+                <strong>Document ID:</strong> {detailedResults.document_id}
               </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
@@ -559,13 +504,13 @@ const ReceiptProcessing = () => {
                   <Button
                     variant="contained"
                     onClick={handleFileUpload}
-                    disabled={!file || (processingFile && !detailedResults)}
+                    disabled={!file || isReceiptAnalysisLoading}
                     sx={{ 
                       backgroundColor: '#107C10',
                       '&:hover': { backgroundColor: '#0b5e0b' }
                     }}
                   >
-                    {processingFile && !detailedResults ? 
+                    {isReceiptAnalysisLoading ? 
                       <CircularProgress size={24} color="inherit" /> : 
                       'Process Receipt'
                     }
