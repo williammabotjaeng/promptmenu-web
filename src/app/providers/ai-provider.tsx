@@ -62,7 +62,7 @@ export function AIProvider({ children }) {
         payload.filters = filters;
       }
       
-      const response = await api.post("/api/assistant/", payload);
+      const response = await api.post("/ai/assistant/", payload);
       return response.data;
     },
     onError: (error) => {

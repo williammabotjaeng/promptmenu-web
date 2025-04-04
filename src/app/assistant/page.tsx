@@ -1,9 +1,7 @@
-// src/app/dashboard/qna-assistant/page.tsx
 "use client";
 
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import '@/styles/globals.css';
 import { 
   Box, 
@@ -29,46 +27,28 @@ import {
   LocalOffer,
   Favorite
 } from '@mui/icons-material';
-
-// API service for the help bot
-const helpBotApi = {
-  askQuestion: async (message) => {
-    try {
-      // Call the Azure Function help-bot endpoint
-      const response = await axios.post(
-        'http://localhost:7072/api/help-bot',
-        { message },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      
-      return response.data;
-    } catch (error) {
-      console.error('Error with help bot:', error);
-      throw error;
-    }
-  }
-};
+import { useAI } from '@/providers/ai-provider';
 
 // Sample suggested questions
 const suggestedQuestions = [
-  "What are your vegetarian options?",
-  "Does this dish contain allergens?",
-  "How many calories are in the chicken parmesan?",
-  "Can you recommend a wine pairing?",
-  "What are today's specials?",
-  "Is this dish gluten-free?",
-  "What's in your signature sauce?"
+  "What is PromptMenu?",
+  "Who created PromptMenu?",
+  "What problem does PromptMenu solve?",
+  "How is PromptMenu different from other digital menu solutions?",
+  "What are the main features of PromptMenu?",
+  "Can customers see videos of food preparation?",
+  "Does PromptMenu support multiple languages?",
+  "Can PromptMenu handle customer reviews?",
+  "Is PromptMenu mobile-friendly?",
+  "What is video indexing in PromptMenu?",
+  "Can PromptMenu process digital receipts?"
 ];
 
 const QnAAssistant = () => {
   const router = useRouter();
+  const { askQuestion, isAssistantLoading, assistantResponse, assistantError, resetAssistantResponse } = useAI();
   const [isLoading, setIsLoading] = useState(true);
   const [question, setQuestion] = useState('');
-  const [processingQuestion, setProcessingQuestion] = useState(false);
   const [chatHistory, setChatHistory] = useState<Array<{
     type: string;
     text: string;
@@ -105,6 +85,48 @@ const QnAAssistant = () => {
     }
   }, [chatHistory]);
 
+  // Effect to handle assistant responses
+  useEffect(() => {
+    if (assistantResponse) {
+      // Add AI response to chat history
+      setChatHistory(prev => [...prev, { 
+        type: 'ai', 
+        text: assistantResponse.answer || "I'm sorry, I don't have information about that yet.",
+        isDefaultAnswer: assistantResponse.is_default_answer
+      }]);
+      
+      // If it was a default answer, show a notification
+      if (assistantResponse.is_default_answer) {
+        setSnackbar({
+          open: true,
+          message: "I don't have specific information about that yet. I've provided a general response.",
+          severity: 'info',
+        });
+      }
+      
+      // Reset the response after processing
+      resetAssistantResponse();
+    }
+  }, [assistantResponse, resetAssistantResponse]);
+
+  // Effect to handle assistant errors
+  useEffect(() => {
+    if (assistantError) {
+      // Add error message to chat
+      setChatHistory(prev => [...prev, { 
+        type: 'ai', 
+        text: "I'm sorry, I'm having trouble processing your request right now. Please try again in a moment.",
+        isError: true
+      }]);
+      
+      setSnackbar({
+        open: true,
+        message: `Error: ${assistantError.response?.data?.error || assistantError.message}`,
+        severity: 'error',
+      });
+    }
+  }, [assistantError]);
+
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
   };
@@ -117,8 +139,6 @@ const QnAAssistant = () => {
     }
 
     try {
-      setProcessingQuestion(true);
-      
       // Add user question to chat history
       setChatHistory(prev => [...prev, { type: 'user', text: question }]);
       
@@ -126,41 +146,11 @@ const QnAAssistant = () => {
       const currentQuestion = question;
       setQuestion('');
       
-      // Call the help bot API
-      const response = await helpBotApi.askQuestion(currentQuestion);
+      // Call the AI assistant through the context
+      await askQuestion({ question: currentQuestion });
       
-      // Add AI response to chat history
-      setChatHistory(prev => [...prev, { 
-        type: 'ai', 
-        text: response.answer_text || "I'm sorry, I don't have information about that yet.",
-        isDefaultAnswer: response.is_default_answer
-      }]);
-      
-      // If it was a default answer, show a notification
-      if (response.is_default_answer) {
-        setSnackbar({
-          open: true,
-          message: "I don't have specific information about that yet. I've provided a general response.",
-          severity: 'info',
-        });
-      }
     } catch (error) {
       console.error('Error with help bot:', error);
-      
-      // Add error message to chat
-      setChatHistory(prev => [...prev, { 
-        type: 'ai', 
-        text: "I'm sorry, I'm having trouble processing your request right now. Please try again in a moment.",
-        isError: true
-      }]);
-      
-      setSnackbar({
-        open: true,
-        message: `Error: ${error.response?.data?.error || error.message}`,
-        severity: 'error',
-      });
-    } finally {
-      setProcessingQuestion(false);
     }
   };
   
@@ -366,7 +356,7 @@ const QnAAssistant = () => {
                   ))}
                   
                   {/* Typing indicator */}
-                  {processingQuestion && (
+                  {isAssistantLoading && (
                     <Box 
                       sx={{
                         alignSelf: 'flex-start',
@@ -406,7 +396,7 @@ const QnAAssistant = () => {
                     placeholder="Ask about menu items, ingredients, or dietary options..."
                     value={question}
                     onChange={(e) => setQuestion(e.target.value)}
-                    disabled={processingQuestion}
+                    disabled={isAssistantLoading}
                     variant="outlined"
                     size="medium"
                     InputProps={{
@@ -416,7 +406,7 @@ const QnAAssistant = () => {
                   <Button
                     type="submit"
                     variant="contained"
-                    disabled={!question.trim() || processingQuestion}
+                    disabled={!question.trim() || isAssistantLoading}
                     sx={{
                       borderRadius: 3,
                       minWidth: '50px',
