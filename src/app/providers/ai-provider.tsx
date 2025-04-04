@@ -30,6 +30,19 @@ interface AssistantRequestPayload {
   };
 }
 
+// Define interface for menu analysis parameters
+interface MenuAnalysisParams {
+  file: File;
+  userId?: string;
+  displayName?: string;
+  fullName?: string;
+  email?: string;
+  restaurant?: string;
+  dietary_restrictions?: string;
+  health_conditions?: string;
+  [key: string]: any; // For any additional metadata
+}
+
 export function AIProvider({ children }) {
   const [cookies] = useCookies(["access_token"]);
 
@@ -70,22 +83,63 @@ export function AIProvider({ children }) {
     },
   });
 
+  // Menu Image Analysis mutation
+  const menuAnalysisMutation = useMutation({
+    mutationKey: ["menuAnalysis"],
+    mutationFn: async (params: MenuAnalysisParams) => {
+      console.log("Sending menu analysis request for:", params.file.name);
+      
+      // Create FormData object for file upload
+      const formData = new FormData();
+      
+      // Append the file
+      formData.append('file', params.file);
+      
+      // Append all other parameters to the form data
+      Object.keys(params).forEach(key => {
+        if (key !== 'file' && params[key] !== undefined) {
+          formData.append(key, params[key]);
+        }
+      });
+      
+      // Need to change the content type for file uploads
+      const response = await api.post("/ai/analyze-menu/", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          // Authorization header will be added by the interceptor
+        },
+      });
+      
+      return response.data;
+    },
+    onError: (error) => {
+      console.error("Menu Analysis API error:", error);
+    },
+  });
+
   // Expose AI methods and state
   const aiServices = {
     // Assistant method
     askQuestion: (data) => assistantMutation.mutateAsync(data),
     
+    // Menu Analysis method
+    analyzeMenuImage: (data) => menuAnalysisMutation.mutateAsync(data),
+    
     // Loading states
     isAssistantLoading: assistantMutation.isPending,
+    isMenuAnalysisLoading: menuAnalysisMutation.isPending,
     
     // Response data
     assistantResponse: assistantMutation.data,
+    menuAnalysisResponse: menuAnalysisMutation.data,
     
     // Error states
     assistantError: assistantMutation.error,
+    menuAnalysisError: menuAnalysisMutation.error,
     
-    // Reset function
+    // Reset functions
     resetAssistantResponse: () => assistantMutation.reset(),
+    resetMenuAnalysisResponse: () => menuAnalysisMutation.reset(),
     
     // Api instance for authenticated requests
     api,

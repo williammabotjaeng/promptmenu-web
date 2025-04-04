@@ -1,9 +1,7 @@
-// src/app/dashboard/menu-analysis/page.tsx
 "use client";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import '@/styles/globals.css';
 import Grid from '@mui/material/GridLegacy';
 import { 
@@ -35,56 +33,16 @@ import {
   Warning
 } from '@mui/icons-material';
 
-// API service for menu image analysis
-const menuAnalysisApi = {
-  analyzeMenu: async (file, userDetails) => {
-    try {
-      // Create form data for the file upload
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      // Add user details
-      if (userDetails) {
-        Object.entries(userDetails).forEach(([key, value]) => {
-          formData.append(key, value as string);
-        });
-      }
-      
-      // Add dietary restrictions and health conditions if available
-      const dietaryRestrictions = localStorage.getItem('dietary_restrictions');
-      if (dietaryRestrictions) {
-        formData.append('dietary_restrictions', dietaryRestrictions);
-      }
-      
-      const healthConditions = localStorage.getItem('health_conditions');
-      if (healthConditions) {
-        formData.append('health_conditions', healthConditions);
-      }
-      
-      // Call the Azure Function API
-      const response = await axios.post(
-        'http://localhost:7072/api/analyze-menu-image',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      
-      return response.data;
-    } catch (error) {
-      console.error('Error analyzing menu:', error);
-      throw error;
-    }
-  }
-};
+// Import the useAI hook from our AIProvider
+import { useAI } from '@/providers/ai-provider';
 
 const MenuAnalysis = () => {
   const router = useRouter();
+  // Get the AI methods and states from our context
+  const { analyzeMenuImage, isMenuAnalysisLoading, menuAnalysisResponse, menuAnalysisError, resetMenuAnalysisResponse } = useAI();
+  
   const [isLoading, setIsLoading] = useState(true);
   const [file, setFile] = useState(null);
-  const [processingFile, setProcessingFile] = useState(false);
   const [analysisResults, setAnalysisResults] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -101,6 +59,30 @@ const MenuAnalysis = () => {
     
     return () => clearTimeout(timer);
   }, []);
+
+  // Update local state when the response from AI provider changes
+  useEffect(() => {
+    if (menuAnalysisResponse) {
+      setAnalysisResults(menuAnalysisResponse);
+      
+      setSnackbar({
+        open: true,
+        message: 'Menu analysis complete!',
+        severity: 'success',
+      });
+    }
+  }, [menuAnalysisResponse]);
+
+  // Handle errors from the AI provider
+  useEffect(() => {
+    if (menuAnalysisError) {
+      setSnackbar({
+        open: true,
+        message: `Error analyzing menu: ${menuAnalysisError.response?.data?.error || menuAnalysisError.message}`,
+        severity: 'error',
+      });
+    }
+  }, [menuAnalysisError]);
 
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
@@ -132,9 +114,10 @@ const MenuAnalysis = () => {
     }
 
     try {
-      setProcessingFile(true);
+      // Reset previous analysis results when starting a new one
+      resetMenuAnalysisResponse();
       
-      // Mock user details (in a real app, these would come from authentication)
+      // User details (in a real app, these might come from authentication)
       const userDetails = {
         userId: 'demo-user-123',
         displayName: 'Demo User',
@@ -142,24 +125,35 @@ const MenuAnalysis = () => {
         email: 'demo@example.com'
       };
       
-      // Call the real API
-      const response = await menuAnalysisApi.analyzeMenu(file, userDetails);
-      setAnalysisResults(response);
+      // Get dietary restrictions and health conditions from localStorage
+      const dietaryRestrictions = localStorage.getItem('dietary_restrictions');
+      const healthConditions = localStorage.getItem('health_conditions');
       
-      setSnackbar({
-        open: true,
-        message: 'Menu analysis complete!',
-        severity: 'success',
-      });
+      // Create the params object for the analysis call
+      const analysisParams: any = {
+        file: file,
+        ...userDetails
+      };
+
+      // Add dietary restrictions and health conditions if available
+      if (dietaryRestrictions) {
+        analysisParams.dietary_restrictions = dietaryRestrictions;
+      }
+      
+      if (healthConditions) {
+        analysisParams.health_conditions = healthConditions;
+      }
+      
+      // Call our AI provider's menu analysis function
+      await analyzeMenuImage(analysisParams);
+      
     } catch (error) {
       console.error('Error analyzing menu:', error);
       setSnackbar({
         open: true,
-        message: `Error analyzing menu: ${error.response?.data?.error || error.message}`,
+        message: `Error analyzing menu: ${error.message}`,
         severity: 'error',
       });
-    } finally {
-      setProcessingFile(false);
     }
   };
 
@@ -457,13 +451,13 @@ const MenuAnalysis = () => {
                   <Button
                     variant="contained"
                     onClick={handleFileUpload}
-                    disabled={!file || processingFile}
+                    disabled={!file || isMenuAnalysisLoading}
                     sx={{ 
                       backgroundColor: '#107C10',
                       '&:hover': { backgroundColor: '#0b5e0b' }
                     }}
                   >
-                    {processingFile ? <CircularProgress size={24} color="inherit" /> : 'Analyze Menu Item'}
+                    {isMenuAnalysisLoading ? <CircularProgress size={24} color="inherit" /> : 'Analyze Menu Item'}
                   </Button>
                 </Box>
               </Grid>
@@ -503,7 +497,7 @@ const MenuAnalysis = () => {
             </Grid>
           </Paper>
           
-          {processingFile && (
+          {isMenuAnalysisLoading && (
             <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
               <Box sx={{ textAlign: 'center' }}>
                 <CircularProgress size={60} sx={{ mb: 2, color: '#107C10' }} />
