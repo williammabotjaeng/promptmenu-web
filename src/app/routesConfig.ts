@@ -26,7 +26,10 @@ export const privateRoutes: string[] = [
     '/admin',
     '/talent',
     '/apply',
-    '/applications'
+    '/applications',
+    '/assistant',
+    '/receipt',
+    '/menu-analysis',
   ];
   
   export const publicRoutes: string[] = [

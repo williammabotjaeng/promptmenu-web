@@ -76,7 +76,7 @@ export function AuthProvider({ children }) {
         originalRequest._retry = true;
 
         try {
-          const response = await refreshTokenMutation.mutateAsync(
+          const response: any = await refreshTokenMutation.mutateAsync(
             cookies.refresh_token
           );
 
@@ -110,7 +110,7 @@ export function AuthProvider({ children }) {
       const response = await api.post("/accounts/login/", { email, password });
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       console.log("Login successful:", data);
 
       // Store tokens from response structure matching your backend
@@ -153,7 +153,7 @@ export function AuthProvider({ children }) {
       const response = await api.post("/accounts/register/", userData);
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       console.log("Registration successful:", data);
 
       // Store tokens from response structure matching your backend
@@ -197,7 +197,7 @@ export function AuthProvider({ children }) {
       const response = await api.post("/accounts/verify_otp/", otpData);
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       // Store tokens
       setTokens(data.tokens.refresh, data.tokens.access);
       setAuth(true);
@@ -290,7 +290,7 @@ export function AuthProvider({ children }) {
       });
       return response.data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: any) => {
       // Update stored tokens
       setTokens(data.refresh, data.access);
 
@@ -359,7 +359,7 @@ export function AuthProvider({ children }) {
     mutationKey: ["microsoftLogin"],
     mutationFn: async () => {
       // Redirect to Microsoft login
-      const response = await api.get("/auth/microsoft/login");
+      const response: any = await api.get("/auth/microsoft/login");
       window.location.href = response.data.url;
       return true;
     },

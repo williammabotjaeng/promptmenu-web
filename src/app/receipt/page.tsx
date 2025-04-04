@@ -1,9 +1,7 @@
-// src/app/dashboard/receipt-processing/page.tsx
 "use client";
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import '@/styles/globals.css';
 import Grid from '@mui/material/GridLegacy';
 import { 
@@ -33,59 +31,23 @@ import {
   AttachFile
 } from '@mui/icons-material';
 
-// API service for receipt processing
-const receiptApi = {
-  processReceipt: async (file, userData) => {
-    try {
-      // Create form data for the file upload
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      // Add user data if available
-      if (userData) {
-        Object.entries(userData).forEach(([key, value]) => {
-          formData.append(key, value as string);
-        });
-      }
-      
-      // Call the Azure Function with the file
-      const response = await axios.post(
-        'http://localhost:7072/api/analyze-document',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      
-      return response.data;
-    } catch (error) {
-      console.error('Error processing receipt:', error);
-      throw error;
-    }
-  },
-  
-  // Get detailed information about a processed receipt
-  getReceiptDetails: async (documentId) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:7072/api/document-details?id=${documentId}`
-      );
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching receipt details:', error);
-      throw error;
-    }
-  }
-};
+// Import the AI provider hook
+import { useAI } from '@/providers/ai-provider';
 
 const ReceiptProcessing = () => {
   const router = useRouter();
+  
+  // Use our AI provider hooks
+  const { 
+    analyzeReceipt, 
+    isReceiptAnalysisLoading, 
+    receiptAnalysisResponse, 
+    receiptAnalysisError,
+    resetReceiptAnalysisResponse
+  } = useAI();
+  
   const [isLoading, setIsLoading] = useState(true);
   const [file, setFile] = useState(null);
-  const [processingFile, setProcessingFile] = useState(false);
-  const [initialResults, setInitialResults] = useState(null);
   const [detailedResults, setDetailedResults] = useState(null);
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -103,26 +65,32 @@ const ReceiptProcessing = () => {
     return () => clearTimeout(timer);
   }, []);
   
-  // When initialResults is updated with a document ID, fetch detailed results
+  // Handle responses from the API
   useEffect(() => {
-    if (initialResults && initialResults.document_id) {
-      fetchReceiptDetails(initialResults.document_id);
-    }
-  }, [initialResults]);
-  
-  const fetchReceiptDetails = async (documentId) => {
-    try {
-      const details = await receiptApi.getReceiptDetails(documentId);
-      setDetailedResults(details);
-    } catch (error) {
-      console.error('Error fetching receipt details:', error);
+    if (receiptAnalysisResponse) {
+      // When receipt analysis is complete, update the detailed results
+      setDetailedResults(receiptAnalysisResponse);
+
+      console.log("Receipt Response: ", receiptAnalysisResponse);
+      
       setSnackbar({
         open: true,
-        message: `Error fetching receipt details: ${error.message}`,
+        message: 'Receipt processed successfully!',
+        severity: 'success',
+      });
+    }
+  }, [receiptAnalysisResponse]);
+  
+  // Handle errors from the API
+  useEffect(() => {
+    if (receiptAnalysisError) {
+      setSnackbar({
+        open: true,
+        message: `Error processing receipt: ${receiptAnalysisError.response?.data?.error || receiptAnalysisError.message}`,
         severity: 'error',
       });
     }
-  };
+  }, [receiptAnalysisError]);
   
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
@@ -154,8 +122,8 @@ const ReceiptProcessing = () => {
     }
 
     try {
-      setProcessingFile(true);
-      setInitialResults(null);
+      // Reset previous analysis
+      resetReceiptAnalysisResponse();
       setDetailedResults(null);
       
       // Prepare user data
@@ -166,9 +134,11 @@ const ReceiptProcessing = () => {
         email: 'demo@example.com'
       };
       
-      // Process the receipt
-      const response = await receiptApi.processReceipt(file, userData);
-      setInitialResults(response);
+      // Process the receipt using our AIProvider
+      await analyzeReceipt({
+        file,
+        ...userData
+      });
       
       setSnackbar({
         open: true,
@@ -179,217 +149,199 @@ const ReceiptProcessing = () => {
       console.error('Error processing receipt:', error);
       setSnackbar({
         open: true,
-        message: `Error processing receipt: ${error.response?.data?.error || error.message}`,
+        message: `Error processing receipt: ${error.message}`,
         severity: 'error',
       });
-      setProcessingFile(false);
     }
   };
 
-  const renderReceiptResults = () => {
-    // Display loading state during initial processing
-    if (processingFile && !initialResults) {
-      return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', py: 4 }}>
-          <CircularProgress size={40} sx={{ mb: 2 }} />
-          <Typography>Processing your receipt...</Typography>
-        </Box>
-      );
-    }
-    
-    // Display initial processing results with status
-    if (initialResults && !detailedResults) {
-      return (
-        <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Receipt Uploaded Successfully
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            <strong>Document ID:</strong> {initialResults.document_id}
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 1 }}>
-            <strong>Document Type:</strong> {initialResults.receipt_type || 'Receipt'}
-          </Typography>
-          <Typography variant="body2" sx={{ mb: 3 }}>
-            <strong>Status:</strong> Analyzing document...
-          </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <CircularProgress size={30} />
-          </Box>
-        </Paper>
-      );
-    }
+  // Update the renderReceiptResults function in your ReceiptProcessing component:
 
-    // Display detailed receipt results once available
-    if (detailedResults) {
-      setProcessingFile(false);
+const renderReceiptResults = () => {
+  // Display loading state during processing
+  if (isReceiptAnalysisLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', py: 4 }}>
+        <CircularProgress size={40} sx={{ mb: 2 }} />
+        <Typography>Processing your receipt...</Typography>
+      </Box>
+    );
+  }
+  
+  // Display detailed receipt results once available
+  if (detailedResults) {
+    // Extract data from the API response
+    let displayData = {
+      merchant: 'Unknown Merchant',
+      date: 'Unknown Date',
+      items: [],
+      subtotal: 0,
+      tax: 0,
+      total: 0
+    };
+    
+    // Check if extracted_data is available
+    if (detailedResults.extracted_data) {
+      const extractedData = detailedResults.extracted_data;
       
-      // Extract common receipt fields from raw documents
-      let displayData = {
-        merchant: 'Unknown Merchant',
-        date: 'Unknown Date',
-        items: [],
-        subtotal: 0,
-        tax: 0,
-        total: 0
-      };
-      
-      // Extract data from the raw document if available
-      if (detailedResults.raw_documents && detailedResults.raw_documents.length > 0) {
-        const doc = detailedResults.raw_documents[0];
-        
-        // Set merchant name if available
-        if (detailedResults.merchant) {
-          displayData.merchant = detailedResults.merchant;
-        }
-        
-        // Set transaction date if available
-        if (detailedResults.date) {
-          displayData.date = detailedResults.date;
-        }
-        
-        // Extract fields from the document
-        if (doc.fields) {
-          const fields = doc.fields;
-          
-          // Extract items array
-          if (fields.Items && fields.Items.items && Array.isArray(fields.Items.items)) {
-            displayData.items = fields.Items.items.map(item => {
-              return {
-                name: item.Name?.value || item.Description?.value || 'Unknown Item',
-                quantity: item.Quantity?.value || 1,
-                price: item.Price?.value || item.TotalPrice?.value || 0
-              };
-            });
-          }
-          
-          // Extract totals
-          if (fields.Subtotal && fields.Subtotal.value) {
-            displayData.subtotal = fields.Subtotal.value;
-          }
-          
-          if (fields.Tax && fields.Tax.value) {
-            displayData.tax = fields.Tax.value;
-          }
-          
-          if (fields.Total && fields.Total.value) {
-            displayData.total = fields.Total.value;
-          } else if (detailedResults.total) {
-            displayData.total = detailedResults.total;
-          }
-        }
+      // Set merchant name
+      if (extractedData.merchant) {
+        displayData.merchant = extractedData.merchant;
       }
       
-      return (
-        <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Receipt Analysis Results
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Merchant:</strong> {displayData.merchant}
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Date:</strong> {displayData.date}
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Document Type:</strong> {detailedResults.receipt_type || initialResults.receipt_type || 'Receipt'}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              {previewUrl && (
-                <Box 
-                  component="img"
-                  src={previewUrl}
-                  alt="Receipt preview"
-                  sx={{ 
-                    maxWidth: '100%', 
-                    maxHeight: '120px',
-                    borderRadius: 1,
-                    float: 'right'
-                  }}
-                />
-              )}
-            </Grid>
-          </Grid>
-          
-          <Divider sx={{ my: 2 }} />
-          
-          <Typography variant="subtitle1" sx={{ mb: 2 }}>
-            Items:
-          </Typography>
-          
-          {displayData.items.length > 0 ? (
-            <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                    <TableCell><strong>Item</strong></TableCell>
-                    <TableCell align="right"><strong>Quantity</strong></TableCell>
-                    <TableCell align="right"><strong>Price</strong></TableCell>
-                    <TableCell align="right"><strong>Total</strong></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {displayData.items.map((item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell align="right">{item.quantity}</TableCell>
-                      <TableCell align="right">
-                        ${typeof item.price === 'number' ? (item.price / item.quantity).toFixed(2) : item.price}
-                      </TableCell>
-                      <TableCell align="right">
-                        ${typeof item.price === 'number' ? item.price.toFixed(2) : item.price}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            <Typography variant="body2" sx={{ fontStyle: 'italic', mb: 2 }}>
-              No detailed item information available
-            </Typography>
-          )}
-          
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
-              <Typography variant="body2">
-                <strong>Subtotal</strong>
-              </Typography>
-              <Typography variant="body2">
-                ${typeof displayData.subtotal === 'number' ? displayData.subtotal.toFixed(2) : displayData.subtotal}
-              </Typography>
-            </Box>
-            
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
-              <Typography variant="body2">
-                <strong>Tax</strong>
-              </Typography>
-              <Typography variant="body2">
-                ${typeof displayData.tax === 'number' ? displayData.tax.toFixed(2) : displayData.tax}
-              </Typography>
-            </Box>
-            
-            <Divider sx={{ width: '200px', my: 1 }} />
-            
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                <strong>Total</strong>
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                <strong>${typeof displayData.total === 'number' ? displayData.total.toFixed(2) : displayData.total}</strong>
-              </Typography>
-            </Box>
-          </Box>
-        </Paper>
-      );
+      // Set date
+      if (extractedData.date) {
+        displayData.date = extractedData.date;
+      }
+      
+      // Set items
+      if (extractedData.items && Array.isArray(extractedData.items)) {
+        displayData.items = extractedData.items;
+      }
+      
+      // Set totals
+      if (extractedData.subtotal !== undefined) {
+        displayData.subtotal = extractedData.subtotal;
+      }
+      
+      if (extractedData.tax !== undefined) {
+        displayData.tax = extractedData.tax;
+      }
+      
+      if (extractedData.total !== undefined) {
+        displayData.total = extractedData.total;
+      }
     }
     
-    // If no results yet, return null
-    return null;
-  };
+    return (
+      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Receipt Analysis Results
+        </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Merchant:</strong> {displayData.merchant}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Date:</strong> {displayData.date}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Document Type:</strong> {detailedResults.receipt_type || 'Receipt'}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Document ID:</strong> {detailedResults.document_id || detailedResults.id}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {previewUrl && (
+              <Box 
+                component="img"
+                src={previewUrl}
+                alt="Receipt preview"
+                sx={{ 
+                  maxWidth: '100%', 
+                  maxHeight: '120px',
+                  borderRadius: 1,
+                  float: 'right'
+                }}
+              />
+            )}
+          </Grid>
+        </Grid>
+        
+        <Divider sx={{ my: 2 }} />
+        
+        <Typography variant="subtitle1" sx={{ mb: 2 }}>
+          Items:
+        </Typography>
+        
+        {displayData.items && displayData.items.length > 0 ? (
+          <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
+            <Table size="small">
+              <TableHead>
+                <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
+                  <TableCell><strong>Item</strong></TableCell>
+                  <TableCell align="right"><strong>Quantity</strong></TableCell>
+                  <TableCell align="right"><strong>Price</strong></TableCell>
+                  <TableCell align="right"><strong>Total</strong></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {displayData.items.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell align="right">{item.quantity}</TableCell>
+                    <TableCell align="right">
+                      ${typeof item.price === 'number' ? (item.price / item.quantity).toFixed(2) : item.price}
+                    </TableCell>
+                    <TableCell align="right">
+                      ${typeof item.price === 'number' ? item.price.toFixed(2) : item.price}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Typography variant="body2" sx={{ fontStyle: 'italic', mb: 2 }}>
+            No detailed item information available
+          </Typography>
+        )}
+        
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
+            <Typography variant="body2">
+              <strong>Subtotal</strong>
+            </Typography>
+            <Typography variant="body2">
+              ${typeof displayData.subtotal === 'number' ? displayData.subtotal.toFixed(2) : displayData.subtotal}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
+            <Typography variant="body2">
+              <strong>Tax</strong>
+            </Typography>
+            <Typography variant="body2">
+              ${typeof displayData.tax === 'number' ? displayData.tax.toFixed(2) : displayData.tax}
+            </Typography>
+          </Box>
+          
+          <Divider sx={{ width: '200px', my: 1 }} />
+          
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              <strong>Total</strong>
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              <strong>${typeof displayData.total === 'number' ? displayData.total.toFixed(2) : displayData.total}</strong>
+            </Typography>
+          </Box>
+        </Box>
+        
+        {/* View original receipt button */}
+        {detailedResults.blob_url && (
+          <Box sx={{ mt: 3 }}>
+            <Button 
+              variant="outlined" 
+              href={detailedResults.blob_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              startIcon={<Image />}
+            >
+              View Original Receipt
+            </Button>
+          </Box>
+        )}
+      </Paper>
+    );
+  }
+  
+  // If no results yet, return null
+  return null;
+};
+
 
   return (
     <Box
@@ -559,13 +511,13 @@ const ReceiptProcessing = () => {
                   <Button
                     variant="contained"
                     onClick={handleFileUpload}
-                    disabled={!file || (processingFile && !detailedResults)}
+                    disabled={!file || isReceiptAnalysisLoading}
                     sx={{ 
                       backgroundColor: '#107C10',
                       '&:hover': { backgroundColor: '#0b5e0b' }
                     }}
                   >
-                    {processingFile && !detailedResults ? 
+                    {isReceiptAnalysisLoading ? 
                       <CircularProgress size={24} color="inherit" /> : 
                       'Process Receipt'
                     }

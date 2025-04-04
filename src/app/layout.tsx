@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ProtectedRoutes from "./protected-routes";
 import "@/styles/globals.css";
 import { CookiesProvider } from "react-cookie";
+import { AIProvider } from "@/providers/ai-provider";
 
 const theme = createTheme({
   palette: {
@@ -37,9 +38,9 @@ export default function RootLayout({
         <ThemeProvider theme={theme}>
           <QueryClientProvider client={queryClient}>
                           <AuthProvider>
-                            
+                            <AIProvider>
                               <ProtectedRoutes>{children}</ProtectedRoutes>
-                        
+                            </AIProvider>
                           </AuthProvider>
           </QueryClientProvider>
         </ThemeProvider>
