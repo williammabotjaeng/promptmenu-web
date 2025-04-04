@@ -12,7 +12,7 @@ import Link from 'next/link';
 import Loading from '@/components/Loading';
 
 const RegisterDiner: React.FC = () => {
-  const { register, isLoading, error } = useAuth(); // Use the auth provider hook with register function
+  const { register, isLoading, error, registerIsLoading } = useAuth(); 
   const router = useRouter();
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -70,7 +70,6 @@ const RegisterDiner: React.FC = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     // Validate form
     let hasErrors = false;
     const newErrors = {
@@ -125,12 +124,11 @@ const RegisterDiner: React.FC = () => {
         
         // Success message is handled by the auth provider,
         // which will automatically redirect after successful registration
-        setLoading(false);
         
       } catch (err) {
         console.error('Registration error:', err);
         // Error handling is done via the useEffect watching the error state from auth provider
-        setLoading(false);
+      
       }
     }
   };
@@ -155,7 +153,7 @@ const RegisterDiner: React.FC = () => {
     }
   };
 
-  if (loading) return <Loading />;
+  if (registerIsLoading) return <Loading />;
 
   return (
     <Box

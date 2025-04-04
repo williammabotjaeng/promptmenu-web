@@ -32,7 +32,7 @@ const ENV = {
 };
 
 const RegisterRestaurant = () => {
-  const { register, isLoading, error } = useAuth(); // Use auth hook functions
+  const { register, isLoading, error, registerIsLoading } = useAuth(); // Use auth hook functions
   const router = useRouter();
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -420,6 +420,8 @@ const RegisterRestaurant = () => {
       );
     }
   };
+
+  if (registerIsLoading) return <Loading />;
 
   return (
     <Box
