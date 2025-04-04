@@ -50,6 +50,7 @@ import {
   NewReleases,
   AttachMoney
 } from "@mui/icons-material";
+import { useAuth } from "@/providers/auth-providers";
 
 // Microsoft-inspired color scheme
 const theme = {
@@ -85,6 +86,13 @@ export const RestaurantDashboardHeader: React.FC = () => {
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
   const [analyticsAnchorEl, setAnalyticsAnchorEl] = useState(null);
 
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    console.log('Logging out...');
+    logout();
+  }
+
   // Get restaurant name from cookies
   const restaurantName = cookies.company_name || cookies.displayName || "My Restaurant";
   
@@ -119,24 +127,6 @@ export const RestaurantDashboardHeader: React.FC = () => {
 
   const toggleDrawer = (open: boolean) => () => {
     setDrawerOpen(open);
-  };
-
-  const handleLogout = () => {
-    // Clear auth store state
-    clearAuth();
-    
-    // Remove all auth-related cookies
-    removeCookie("access", { path: "/" });
-    removeCookie("refresh", { path: "/" });
-    removeCookie("user", { path: "/" });
-    removeCookie("user_role", { path: "/" });
-    removeCookie("username", { path: "/" });
-    removeCookie("displayName", { path: "/" });
-    removeCookie("company_name", { path: "/" });
-    removeCookie("subscription_tier", { path: "/" });
-    
-    // Redirect to login page
-    router.push("/login");
   };
 
   // Render subscription badge based on tier
