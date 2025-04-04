@@ -115,16 +115,6 @@ export function AuthProvider({ children }) {
       setCookie('username', data.username, cookieOptions);
       setCookie('firstname', data.tokens.firstname, cookieOptions);
       setCookie('lastname', data.tokens.lastname, cookieOptions);
-      setCookie('onboarding_presented', data.tokens.onboarding_presented, cookieOptions);
-      
-      // Set additional cookies if session ID is available
-      if (data.ssh_session_id) {
-        setCookie('ssh_session_id', data.ssh_session_id, cookieOptions);
-      }
-      
-      // Set profile-specific cookies
-      setCookie('has_settings', data.has_settings || false, cookieOptions);
-      setCookie('has_profile', data.has_profile || false, cookieOptions);
       
       // Set owner-specific data if applicable
       if (data.owner_profile) {
@@ -133,9 +123,9 @@ export function AuthProvider({ children }) {
       
       // Redirect based on user type
       if (data.user_type === 'owner') {
-        router.push('/dashboard');
+        router.push('/dashboard/restaurant');
       } else {
-        router.push('/dashboard');
+        router.push('/dashboard/diner');
       }
     },
     onError: (error) => {
@@ -152,8 +142,30 @@ export function AuthProvider({ children }) {
     },
     onSuccess: (data) => {
       console.log('Registration successful:', data);
-      // Redirect to login or verification page
-      router.push('/login');
+      
+      // Store tokens from response structure matching your backend
+      setTokens(data.tokens.refresh, data.tokens.access);
+      setAuth(true);
+      
+      // Set user cookies based on response data
+      setCookie('access_token', data.tokens.access, tokenCookieOptions);
+      setCookie('refresh_token', data.tokens.refresh, cookieOptions);
+      setCookie('user_role', data.tokens.user_role, cookieOptions);
+      setCookie('username', data.username, cookieOptions);
+      setCookie('firstname', data.tokens.firstname, cookieOptions);
+      setCookie('lastname', data.tokens.lastname, cookieOptions);
+      
+      // Set owner-specific data if applicable
+      if (data.owner_profile) {
+        setCookie('company_name', data.owner_profile.company_name, cookieOptions);
+      }
+
+      // Redirect based on user type
+      if (data.user_type === 'owner') {
+        router.push('/dashboard/restaurant');
+      } else {
+        router.push('/dashboard/diner');
+      }
     },
     onError: (error) => {
       console.error('Registration error:', error);
