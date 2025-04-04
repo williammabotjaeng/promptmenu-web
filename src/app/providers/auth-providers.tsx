@@ -46,10 +46,7 @@ export function AuthProvider({ children }) {
     'username',
     'firstname',
     'lastname',
-    'ssh_session_id',
-    'onboarding_presented',
-    'has_settings',
-    'has_profile',
+    'user_type',
     'company_name'
   ]);
 
@@ -154,6 +151,7 @@ export function AuthProvider({ children }) {
       setCookie('username', data.username, cookieOptions);
       setCookie('firstname', data.tokens.firstname, cookieOptions);
       setCookie('lastname', data.tokens.lastname, cookieOptions);
+      setCookie('user_type', data.user_type, cookieOptions);
       
       // Set owner-specific data if applicable
       if (data.owner_profile) {
