@@ -86,6 +86,16 @@ const ProtectedRoutes: React.FC<{ children: React.ReactNode }> = ({ children }) 
       console.log("Attempting to access private route without token, redirecting to login");
       setRoutesResolved(true);
       router.push('/login');
+    } else if (pathname === '/dashboard/') {
+        if (userType === 'owner') {
+          console.log("Redirecting to restaurant dashboard");
+          setRoutesResolved(true);
+          router.push('/dashboard/restaurant');
+        } else {
+          console.log("Redirecting to diner dashboard");
+          setRoutesResolved(true);
+          router.push('/dashboard/diner');
+        }
     }
   
     const timer = setTimeout(() => {
