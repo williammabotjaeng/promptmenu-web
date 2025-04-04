@@ -32,6 +32,7 @@ import {
 } from "@mui/icons-material";
 import useAuthStore from "@/state/use-auth-store";
 import { useState } from "react";
+import { useAuth } from "@/providers/auth-providers";
 
 // Microsoft-inspired color scheme
 const theme = {
@@ -53,6 +54,12 @@ export const Header: React.FC = () => {
   const [solutionsAnchorEl, setSolutionsAnchorEl] = useState(null);
   const [registerAnchorEl, setRegisterAnchorEl] = useState(null);
   const [accountAnchorEl, setAccountAnchorEl] = useState(null);
+
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  }
 
   const handleSolutionsClick = (event) => {
     setSolutionsAnchorEl(event.currentTarget);
@@ -632,7 +639,7 @@ export const Header: React.FC = () => {
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={handleClose}>
-                    <Link href="/logout" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
+                    <Link onClick={handleLogout} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', width: '100%' }}>
                       Sign Out
                     </Link>
                   </MenuItem>
