@@ -71,7 +71,7 @@ export const DinerDashboardHeader: React.FC = () => {
   const [notificationsAnchorEl, setNotificationsAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { logout } = useAuth();
+  const { logout, logoutIsLoading } = useAuth();
 
   // Get user display name from cookies
   const userDisplayName = cookies.displayName || cookies.username || "Diner";
@@ -97,9 +97,7 @@ export const DinerDashboardHeader: React.FC = () => {
   };
 
   const handleLogout = () => {
-     setLoading(true);
      logout();
-     setLoading(false);
   };
 
   // Drawer content for mobile view
@@ -306,7 +304,7 @@ export const DinerDashboardHeader: React.FC = () => {
     </Box>
   );
 
-  if (loading) return <LogoutLoading />;
+  if (logoutIsLoading) return <LogoutLoading />;
 
   return (
     <AppBar

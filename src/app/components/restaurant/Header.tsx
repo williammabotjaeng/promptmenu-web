@@ -88,12 +88,10 @@ export const RestaurantDashboardHeader: React.FC = () => {
   const [analyticsAnchorEl, setAnalyticsAnchorEl] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const { logout } = useAuth();
+  const { logout, logoutIsLoading } = useAuth();
 
   const handleLogout = () => {
-    setLoading(true);
     logout();
-    setLoading(false);
   }
 
   // Get restaurant name from cookies
@@ -444,7 +442,7 @@ export const RestaurantDashboardHeader: React.FC = () => {
     </Box>
   );
 
-  if (loading) return <LogoutLoading />;
+  if (logoutIsLoading) return <LogoutLoading />;
 
   return (
     <AppBar
