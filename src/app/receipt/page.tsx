@@ -70,6 +70,8 @@ const ReceiptProcessing = () => {
     if (receiptAnalysisResponse) {
       // When receipt analysis is complete, update the detailed results
       setDetailedResults(receiptAnalysisResponse);
+
+      console.log("Receipt Response: ", receiptAnalysisResponse);
       
       setSnackbar({
         open: true,
@@ -153,188 +155,193 @@ const ReceiptProcessing = () => {
     }
   };
 
-  const renderReceiptResults = () => {
-    // Display loading state during processing
-    if (isReceiptAnalysisLoading) {
-      return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', py: 4 }}>
-          <CircularProgress size={40} sx={{ mb: 2 }} />
-          <Typography>Processing your receipt...</Typography>
-        </Box>
-      );
-    }
+  // Update the renderReceiptResults function in your ReceiptProcessing component:
+
+const renderReceiptResults = () => {
+  // Display loading state during processing
+  if (isReceiptAnalysisLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', py: 4 }}>
+        <CircularProgress size={40} sx={{ mb: 2 }} />
+        <Typography>Processing your receipt...</Typography>
+      </Box>
+    );
+  }
+  
+  // Display detailed receipt results once available
+  if (detailedResults) {
+    // Extract data from the API response
+    let displayData = {
+      merchant: 'Unknown Merchant',
+      date: 'Unknown Date',
+      items: [],
+      subtotal: 0,
+      tax: 0,
+      total: 0
+    };
     
-    // Display detailed receipt results once available
-    if (detailedResults) {
-      // Extract common receipt fields from raw documents
-      let displayData = {
-        merchant: 'Unknown Merchant',
-        date: 'Unknown Date',
-        items: [],
-        subtotal: 0,
-        tax: 0,
-        total: 0
-      };
+    // Check if extracted_data is available
+    if (detailedResults.extracted_data) {
+      const extractedData = detailedResults.extracted_data;
       
-      // Extract data from the raw document if available
-      if (detailedResults.raw_document_count > 0 && detailedResults.raw_documents && detailedResults.raw_documents.length > 0) {
-        const doc = detailedResults.raw_documents[0];
-        
-        // Set merchant name if available
-        if (detailedResults.merchant) {
-          displayData.merchant = detailedResults.merchant;
-        }
-        
-        // Set transaction date if available
-        if (detailedResults.date) {
-          displayData.date = detailedResults.date;
-        }
-        
-        // Extract fields from the document
-        if (doc.fields) {
-          const fields = doc.fields;
-          
-          // Extract items array
-          if (fields.Items && fields.Items.items && Array.isArray(fields.Items.items)) {
-            displayData.items = fields.Items.items.map(item => {
-              return {
-                name: item.Name?.value || item.Description?.value || 'Unknown Item',
-                quantity: item.Quantity?.value || 1,
-                price: item.Price?.value || item.TotalPrice?.value || 0
-              };
-            });
-          }
-          
-          // Extract totals
-          if (fields.Subtotal && fields.Subtotal.value) {
-            displayData.subtotal = fields.Subtotal.value;
-          }
-          
-          if (fields.Tax && fields.Tax.value) {
-            displayData.tax = fields.Tax.value;
-          }
-          
-          if (fields.Total && fields.Total.value) {
-            displayData.total = fields.Total.value;
-          } else if (detailedResults.total) {
-            displayData.total = detailedResults.total;
-          }
-        }
+      // Set merchant name
+      if (extractedData.merchant) {
+        displayData.merchant = extractedData.merchant;
       }
       
-      return (
-        <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            Receipt Analysis Results
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Merchant:</strong> {displayData.merchant}
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Date:</strong> {displayData.date}
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Document Type:</strong> {detailedResults.receipt_type || 'Receipt'}
-              </Typography>
-              <Typography variant="body2" sx={{ mb: 1 }}>
-                <strong>Document ID:</strong> {detailedResults.document_id}
-              </Typography>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              {previewUrl && (
-                <Box 
-                  component="img"
-                  src={previewUrl}
-                  alt="Receipt preview"
-                  sx={{ 
-                    maxWidth: '100%', 
-                    maxHeight: '120px',
-                    borderRadius: 1,
-                    float: 'right'
-                  }}
-                />
-              )}
-            </Grid>
-          </Grid>
-          
-          <Divider sx={{ my: 2 }} />
-          
-          <Typography variant="subtitle1" sx={{ mb: 2 }}>
-            Items:
-          </Typography>
-          
-          {displayData.items.length > 0 ? (
-            <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
-                    <TableCell><strong>Item</strong></TableCell>
-                    <TableCell align="right"><strong>Quantity</strong></TableCell>
-                    <TableCell align="right"><strong>Price</strong></TableCell>
-                    <TableCell align="right"><strong>Total</strong></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {displayData.items.map((item, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell align="right">{item.quantity}</TableCell>
-                      <TableCell align="right">
-                        ${typeof item.price === 'number' ? (item.price / item.quantity).toFixed(2) : item.price}
-                      </TableCell>
-                      <TableCell align="right">
-                        ${typeof item.price === 'number' ? item.price.toFixed(2) : item.price}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            <Typography variant="body2" sx={{ fontStyle: 'italic', mb: 2 }}>
-              No detailed item information available
-            </Typography>
-          )}
-          
-          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
-              <Typography variant="body2">
-                <strong>Subtotal</strong>
-              </Typography>
-              <Typography variant="body2">
-                ${typeof displayData.subtotal === 'number' ? displayData.subtotal.toFixed(2) : displayData.subtotal}
-              </Typography>
-            </Box>
-            
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
-              <Typography variant="body2">
-                <strong>Tax</strong>
-              </Typography>
-              <Typography variant="body2">
-                ${typeof displayData.tax === 'number' ? displayData.tax.toFixed(2) : displayData.tax}
-              </Typography>
-            </Box>
-            
-            <Divider sx={{ width: '200px', my: 1 }} />
-            
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                <strong>Total</strong>
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                <strong>${typeof displayData.total === 'number' ? displayData.total.toFixed(2) : displayData.total}</strong>
-              </Typography>
-            </Box>
-          </Box>
-        </Paper>
-      );
+      // Set date
+      if (extractedData.date) {
+        displayData.date = extractedData.date;
+      }
+      
+      // Set items
+      if (extractedData.items && Array.isArray(extractedData.items)) {
+        displayData.items = extractedData.items;
+      }
+      
+      // Set totals
+      if (extractedData.subtotal !== undefined) {
+        displayData.subtotal = extractedData.subtotal;
+      }
+      
+      if (extractedData.tax !== undefined) {
+        displayData.tax = extractedData.tax;
+      }
+      
+      if (extractedData.total !== undefined) {
+        displayData.total = extractedData.total;
+      }
     }
     
-    // If no results yet, return null
-    return null;
-  };
+    return (
+      <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>
+          Receipt Analysis Results
+        </Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Merchant:</strong> {displayData.merchant}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Date:</strong> {displayData.date}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Document Type:</strong> {detailedResults.receipt_type || 'Receipt'}
+            </Typography>
+            <Typography variant="body2" sx={{ mb: 1 }}>
+              <strong>Document ID:</strong> {detailedResults.document_id || detailedResults.id}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            {previewUrl && (
+              <Box 
+                component="img"
+                src={previewUrl}
+                alt="Receipt preview"
+                sx={{ 
+                  maxWidth: '100%', 
+                  maxHeight: '120px',
+                  borderRadius: 1,
+                  float: 'right'
+                }}
+              />
+            )}
+          </Grid>
+        </Grid>
+        
+        <Divider sx={{ my: 2 }} />
+        
+        <Typography variant="subtitle1" sx={{ mb: 2 }}>
+          Items:
+        </Typography>
+        
+        {displayData.items && displayData.items.length > 0 ? (
+          <TableContainer component={Paper} variant="outlined" sx={{ mb: 3 }}>
+            <Table size="small">
+              <TableHead>
+                <TableRow sx={{ backgroundColor: '#f5f5f5' }}>
+                  <TableCell><strong>Item</strong></TableCell>
+                  <TableCell align="right"><strong>Quantity</strong></TableCell>
+                  <TableCell align="right"><strong>Price</strong></TableCell>
+                  <TableCell align="right"><strong>Total</strong></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {displayData.items.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell align="right">{item.quantity}</TableCell>
+                    <TableCell align="right">
+                      ${typeof item.price === 'number' ? (item.price / item.quantity).toFixed(2) : item.price}
+                    </TableCell>
+                    <TableCell align="right">
+                      ${typeof item.price === 'number' ? item.price.toFixed(2) : item.price}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <Typography variant="body2" sx={{ fontStyle: 'italic', mb: 2 }}>
+            No detailed item information available
+          </Typography>
+        )}
+        
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
+            <Typography variant="body2">
+              <strong>Subtotal</strong>
+            </Typography>
+            <Typography variant="body2">
+              ${typeof displayData.subtotal === 'number' ? displayData.subtotal.toFixed(2) : displayData.subtotal}
+            </Typography>
+          </Box>
+          
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
+            <Typography variant="body2">
+              <strong>Tax</strong>
+            </Typography>
+            <Typography variant="body2">
+              ${typeof displayData.tax === 'number' ? displayData.tax.toFixed(2) : displayData.tax}
+            </Typography>
+          </Box>
+          
+          <Divider sx={{ width: '200px', my: 1 }} />
+          
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '200px', mb: 1 }}>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              <strong>Total</strong>
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
+              <strong>${typeof displayData.total === 'number' ? displayData.total.toFixed(2) : displayData.total}</strong>
+            </Typography>
+          </Box>
+        </Box>
+        
+        {/* View original receipt button */}
+        {detailedResults.blob_url && (
+          <Box sx={{ mt: 3 }}>
+            <Button 
+              variant="outlined" 
+              href={detailedResults.blob_url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              startIcon={<Image />}
+            >
+              View Original Receipt
+            </Button>
+          </Box>
+        )}
+      </Paper>
+    );
+  }
+  
+  // If no results yet, return null
+  return null;
+};
+
 
   return (
     <Box
