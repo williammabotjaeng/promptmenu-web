@@ -157,7 +157,7 @@ export const DinerDashboardHeader: React.FC = () => {
       <Divider sx={{ mb: 2 }} />
       
       {/* Navigation items */}
-      <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+      <Link href="/" style={{ textDecoration: 'none' }}>
         <Button
           fullWidth
           startIcon={<Home />}
@@ -327,7 +327,7 @@ export const DinerDashboardHeader: React.FC = () => {
         >
           {/* Logo and Title Section */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link href="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
               <MenuBook 
                 sx={{ 
                   color: theme.colors.primary, 
@@ -358,7 +358,7 @@ export const DinerDashboardHeader: React.FC = () => {
               gap: { md: 1, lg: 2 }
             }}
           >
-            <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+            <Link href="/" style={{ textDecoration: 'none' }}>
               <Button
                 sx={{
                   color: theme.colors.text,
