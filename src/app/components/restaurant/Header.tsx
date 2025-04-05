@@ -235,7 +235,7 @@ export const RestaurantDashboardHeader: React.FC = () => {
       <Divider sx={{ mb: 2 }} />
       
       {/* Navigation items */}
-      <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+      <Link href="/" style={{ textDecoration: 'none' }}>
         <Button
           fullWidth
           startIcon={<Dashboard />}
@@ -465,7 +465,7 @@ export const RestaurantDashboardHeader: React.FC = () => {
         >
           {/* Logo and Title Section */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Link href="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
               <Restaurant 
                 sx={{ 
                   color: theme.colors.primary, 
@@ -505,7 +505,7 @@ export const RestaurantDashboardHeader: React.FC = () => {
               gap: { md: 0.5, lg: 1 }
             }}
           >
-            <Link href="/dashboard" style={{ textDecoration: 'none' }}>
+            <Link href="/" style={{ textDecoration: 'none' }}>
               <Button
                 sx={{
                   color: theme.colors.text,
