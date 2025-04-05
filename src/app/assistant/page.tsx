@@ -265,13 +265,6 @@ const QnAAssistant = () => {
             transition: 'opacity 0.5s ease-in-out, transform 0.5s ease-in-out',
           }}
         >
-          <Button
-            startIcon={<ArrowBack />}
-            onClick={() => router.push('/dashboard')}
-            sx={{ mb: 3 }}
-          >
-            Back to Dashboard
-          </Button>
           
           <Typography variant="h4" sx={{ mb: 1, fontWeight: 700 }}>
             Menu Q&A Assistant
