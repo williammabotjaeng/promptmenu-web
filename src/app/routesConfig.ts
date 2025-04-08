@@ -4,8 +4,6 @@ export const privateRoutes: string[] = [
     '/dashboard/restaurant',
     '/portal',
     '/post-event',
-    '/talent-onboarding',
-    '/influencer-onboarding',
     '/company-profile',
     '/company-success',
     '/talent-success',
