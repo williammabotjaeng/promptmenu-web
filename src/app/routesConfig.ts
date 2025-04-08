@@ -1,5 +1,4 @@
 export const privateRoutes: string[] = [
-    '/dashboard',
     '/dashboard/diner',
     '/dashboard/restaurant',
     '/portal',
